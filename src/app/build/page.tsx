@@ -15,7 +15,7 @@ import {
 } from "@/lib/estimator/types";
 import { estimate } from "@/lib/estimator/engine";
 import SiteShell from "@/components/SiteShell";
-import FancySelect from "@/components/Select";
+import Select from "@/components/Select";
 
 export default function BuildPage() {
     const [copying, setCopying] = useState(false);
@@ -93,7 +93,7 @@ export default function BuildPage() {
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 min-w-0">
                   <Field label="Business type">
-                    <FancySelect
+                    <Select
                       value={projectType}
                       onChange={(v) => setProjectType(v as ProjectType)}
                       options={[
@@ -106,7 +106,7 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Primary goal">
-                    <FancySelect
+                    <Select
                       value={goal}
                       onChange={(v) => setGoal(v as Goal)}
                       options={[
@@ -188,7 +188,7 @@ export default function BuildPage() {
                     </div>
                   </Field>
                   <Field label="Design level">
-                    <FancySelect
+                    <Select
                       value={design}
                       onChange={(v) => setDesign(v as DesignLevel)}
                       options={[
@@ -198,7 +198,7 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Content readiness">
-                    <FancySelect
+                    <Select
                       value={content}
                       onChange={(v) => setContent(v as ContentReadiness)}
                       options={[
@@ -209,7 +209,7 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Timeline">
-                    <FancySelect
+                    <Select
                       value={timeline}
                       onChange={(v) => setTimeline(v as Timeline)}
                       options={[
@@ -291,7 +291,7 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Preferred platform/framework">
-                    <FancySelect
+                    <Select
                       value={q.frameworkPref}
                       onChange={(v) => setQField("frameworkPref", v as QuoteDetails["frameworkPref"])}
                       options={[
@@ -315,7 +315,7 @@ export default function BuildPage() {
                     )}
                   </Field>
                   <Field label="Monthly maintenance (optional)">
-                    <FancySelect
+                    <Select
                       value={q.maintenancePlan}
                       onChange={(v) => setQField("maintenancePlan", v as MaintenancePlanId)}
                       options={MAINTENANCE_PLANS.map((p) => [
