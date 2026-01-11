@@ -1,0 +1,19 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface) 85%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.logoMark {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 30% 30%, var(--accent), transparent 60%),
+    linear-gradient(135deg, var(--primary), var(--secondary));
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--border) 85%, transparent);
+}

@@ -24,3 +24,30 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ===========================
+   WebCraft Labs Theme Tokens
+   =========================== */
+:root {
+  --bg: #f8fbff;
+  --surface: #ffffff;
+  --text: #0b1b2b;
+  --muted: #5b6b7a;
+  --border: #dbe5ee;
+
+  --primary: #2563eb;
+  --secondary: #0ea5a4;
+  --accent: #7dd3fc;
+}
+
+[data-theme="dark"] {
+  --bg: #070b12;
+  --surface: #0d1420;
+  --text: #e5edf5;
+  --muted: #9aa8b6;
+  --border: #1f2a38;
+
+  --primary: #60a5fa;
+  --secondary: #2dd4bf;
+  --accent: #38bdf8;
+}

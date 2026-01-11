@@ -1,0 +1,93 @@
+/* src/app/home.module.css
+   Homepage-only visuals.
+   Uses theme tokens from src/app/globals.css
+*/
+
+/* ---- Hero wrappers ---- */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* token-driven glow fields (safe for light + dark later) */
+.heroBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 18% 10%,
+      color-mix(in oklab, var(--accent) 22%, transparent),
+      transparent 60%),
+    radial-gradient(920px 520px at 82% 18%,
+      color-mix(in oklab, var(--secondary) 18%, transparent),
+      transparent 62%),
+    radial-gradient(780px 520px at 55% -10%,
+      color-mix(in oklab, var(--primary) 14%, transparent),
+      transparent 65%);
+}
+
+/* subtle futuristic grid overlay */
+.grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--border) 55%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--border) 55%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  /* fade grid out toward edges so it feels premium, not noisy */
+  mask-image: radial-gradient(circle at 30% 18%, #000 0%, #000 46%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 30% 18%, #000 0%, #000 46%, transparent 78%);
+}
+
+/* ---- Hero preview card (glass) ---- */
+.heroCard {
+  border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 1px 0 color-mix(in oklab, var(--border) 30%, transparent),
+    0 18px 54px color-mix(in oklab, var(--primary) 12%, transparent);
+}
+
+/* ---- Pills / Chips ---- */
+.pill {
+  border: 1px solid color-mix(in oklab, var(--border) 75%, transparent);
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--border) 30%, transparent);
+}
+
+/* ---- KPI tiles in hero ---- */
+.kpi {
+  border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--border) 25%, transparent);
+}
+
+/* ---- Typography helpers ---- */
+.sectionTitle {
+  letter-spacing: -0.02em;
+}
+
+/* ---- Divider ---- */
+.subtleDivider {
+  height: 1px;
+  background: color-mix(in oklab, var(--border) 70%, transparent);
+}
+
+/* ---- Optional: improved focus ring for links/buttons inside hero card ---- */
+.focusRing :is(a, button):focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--primary) 65%, transparent);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
