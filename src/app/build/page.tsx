@@ -20,7 +20,17 @@ import { RadixSelect } from "@/components/RadixSelect";
 
 export default function BuildPage() {
   const [copying, setCopying] = useState(false);
+  const [copyError, setCopyError] = useState(false);
   const copyTimeoutRef = useRef<number | null>(null);
+  
+  // Helper function for currency formatting
+  const formatPrice = (amount: number) => 
+    amount.toLocaleString(undefined, {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    });
+  
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
@@ -201,7 +211,7 @@ export default function BuildPage() {
                         type="checkbox"
                         checked={features.includes(a.id)}
                         onChange={() => toggleFeature(a.id)}
-                        className="min-w-[24px] min-h-[24px] w-6 h-6 rounded-md border-2 border-gray-300 text-blue-500 focus:ring-4 focus:ring-blue-100 focus:ring-offset-0 transition-all duration-200 cursor-pointer checked:bg-blue-500 checked:border-blue-500 hover:border-blue-400"
+                        className="w-6 h-6 rounded-md border-2 border-gray-300 text-blue-500 focus:ring-4 focus:ring-blue-100 focus:ring-offset-0 transition-all duration-200 cursor-pointer checked:bg-blue-500 checked:border-blue-500 hover:border-blue-400"
                       />
                       <span>
                         <span className="block font-medium text-gray-900">{a.label}</span>
@@ -296,7 +306,7 @@ export default function BuildPage() {
                     <textarea
                       value={q.notes}
                       onChange={(e) => setQField("notes", e.target.value)}
-                      className="min-h-[120px] w-full rounded-xl border-2 border-gray-300 bg-white px-4 py-4 text-base font-medium shadow-sm transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none hover:border-gray-400 hover:shadow-md resize-none"
+                      className="w-full rounded-xl border-2 border-gray-300 bg-white px-4 py-4 text-base font-medium shadow-sm transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none hover:border-gray-400 hover:shadow-md resize-none"
                       placeholder="Integrations, examples, style notes, deadlines..."
                       rows={6}
                     />
@@ -315,15 +325,7 @@ export default function BuildPage() {
                 {/* Price Range Main Focus */}
                 <div className="flex flex-col items-center justify-center mb-2">
                   <span className="text-3xl sm:text-4xl font-extrabold text-yellow-600 tracking-tight drop-shadow-lg">
-                    {`${est.priceLow.toLocaleString(undefined, {
-                      style: "currency",
-                      currency: "USD",
-                      maximumFractionDigits: 0,
-                    })} – ${est.priceHigh.toLocaleString(undefined, {
-                      style: "currency",
-                      currency: "USD",
-                      maximumFractionDigits: 0,
-                    })}`}
+                    {`${formatPrice(est.priceLow)} – ${formatPrice(est.priceHigh)}`}
                   </span>
                   <span className="mt-2 text-xs font-semibold text-yellow-700 bg-yellow-100 rounded-full px-3 py-1">Estimated range</span>
                 </div>
@@ -369,25 +371,33 @@ export default function BuildPage() {
                   type="button"
                   onClick={async () => {
                     setCopying(true);
+                    setCopyError(false);
                     if (copyTimeoutRef.current !== null) {
                       clearTimeout(copyTimeoutRef.current);
                     }
                     try {
                       if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
                         await navigator.clipboard.writeText(est.buildSheetText);
+                        // Success - clear copying state after brief delay
+                        copyTimeoutRef.current = window.setTimeout(() => {
+                          setCopying(false);
+                        }, 800);
                       } else {
                         throw new Error("Clipboard API not available");
                       }
                     } catch (err) {
-                      // Optionally, show a toast or fallback UI here
                       console.error("Copy failed:", err);
-                    } finally {
-                      copyTimeoutRef.current = window.setTimeout(() => setCopying(false), 800);
+                      setCopying(false);
+                      setCopyError(true);
+                      // Clear error state after 3 seconds
+                      copyTimeoutRef.current = window.setTimeout(() => {
+                        setCopyError(false);
+                      }, 3000);
                     }
                   }}
                   className="min-h-[48px] mt-3 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"
                 >
-                  Copy build sheet
+                  {copyError ? "Copy failed - try again" : "Copy build sheet"}
                   {copying && (
                     <span className="inline-block w-4 h-4 border-2 border-yellow-700 border-t-transparent rounded-full animate-spin ml-2" />
                   )}

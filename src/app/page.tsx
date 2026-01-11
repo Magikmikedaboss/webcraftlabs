@@ -49,7 +49,7 @@ type PillProps = {
 };
 function Pill({ children, className }: PillProps) {
   return (
-    <span className={`${styles.pill} inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-full shadow-md hover:shadow-lg hover:border-blue-300 transition-all duration-200 ${className ?? ""}`}>
+    <span className={`inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-full shadow-md hover:shadow-lg hover:border-blue-300 transition-all duration-200 ${className ?? ""}`}>
       {children}
     </span>
   );
