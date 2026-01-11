@@ -1,5 +1,5 @@
 export const SITE = {
-  name: "WebCraft Labs",
+  name: "WebCraft Labz",
   tagline: "Websites built like products, not brochures.",
   cta: "Start Your Build",
   nav: [

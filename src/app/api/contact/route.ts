@@ -9,20 +9,13 @@ const ContactSchema = z.object({
   website: z.string().optional(), // honeypot
 });
 
+// CSRF protection is now handled by edge-csrf middleware in src/middleware.ts
 export async function POST(req: NextRequest) {
-  // CSRF protection: only require if CONTACT_CSRF_TOKEN is set
-  const requiredCsrf = process.env.CONTACT_CSRF_TOKEN;
-  if (requiredCsrf) {
-    const csrfToken = req.headers.get('x-csrf-token');
-    if (!csrfToken || csrfToken !== requiredCsrf) {
-      return NextResponse.json({ error: 'Invalid CSRF token.' }, { status: 403 });
-    }
-  }
 
   // Rate limiting by IP
   const xff = req.headers.get('x-forwarded-for');
   const ip = xff ? xff.split(',')[0].trim() : 'unknown';
-  const rateLimitResult = await checkRateLimit();
+  const rateLimitResult = await checkRateLimit(ip);
   if (!rateLimitResult.allowed) {
     const headers: Record<string, string> = {};
     if (rateLimitResult.retryAfter) {

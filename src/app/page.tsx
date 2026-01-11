@@ -1,19 +1,41 @@
 // FeatureCard component for homepage features
 import type { ReactNode } from "react";
 import { Search, Palette, Newspaper, BarChart2, Smartphone, Zap, Sprout, Rocket, PartyPopper, PencilLine, Brain, Settings2 } from "lucide-react";
+
 function FeatureCard(props: { icon: ReactNode; title: string; text: string }) {
   const { icon, title, text } = props;
+
   return (
-    <div className="flex flex-col items-start rounded-xl bg-white/90 border border-[var(--border)] shadow p-6 h-full">
-      <div className="mb-3">{icon}</div>
-      <div className="font-bold text-lg text-blue-900 mb-1">{title}</div>
-      <div className="text-sm text-gray-700 flex-1">{text}</div>
+    <div className="group relative h-full">
+      {/* glow / border */}
+      <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-[var(--primary)]/25 via-transparent to-cyan-400/20 opacity-60 blur-sm transition-opacity group-hover:opacity-100" />
+
+      <div className="relative flex h-full flex-col rounded-2xl border border-[var(--border)] bg-white/80 p-5 shadow-sm backdrop-blur-sm transition-all duration-200 group-hover:-translate-y-0.5 group-hover:shadow-lg sm:p-6">
+        {/* icon badge */}
+        <div className="mb-4 inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2.5 shadow-sm">
+          <div className="h-6 w-6">{icon}</div>
+        </div>
+
+        <div className="text-base font-semibold tracking-tight text-blue-950 sm:text-lg">
+          {title}
+        </div>
+
+        <p className="mt-2 text-sm leading-relaxed text-gray-700 sm:text-[15px]">
+          {text}
+        </p>
+
+        {/* tiny "footer" for structure (optional but feels premium) */}
+        <div className="mt-auto pt-4">
+          <div className="h-px w-full bg-[var(--border)]/60" />
+        </div>
+      </div>
     </div>
   );
 }
 import Image from "next/image";
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
+import { SITE } from "@/lib/site";
 import Section from "@/components/Section";
 // import Card from "@/components/Card";
 import styles from "./home.module.css";
@@ -61,18 +83,19 @@ export default function HomePage() {
                 <span className="text-[var(--primary)]">mean business.</span>
               </h1>
               <p className="mt-5 max-w-2xl text-lg text-[var(--muted)]">
-                At WebCraft Labz, we believe every great brand starts with a seed—an idea ready to grow. We don’t just build beautiful websites; we craft digital experiences that connect, inspire, and deliver real results. Our team partners with you every step of the way, blending creativity, strategy, and care to nurture your vision and build for the future. Let’s plant something remarkable, together.
+                At {SITE.name}, we believe every great brand starts with a seed—an idea ready to grow. We don’t just build beautiful websites; we craft digital experiences that connect, inspire, and deliver real results. Our team partners with you every step of the way, blending creativity, strategy, and care to nurture your vision and build for the future. Let’s plant something remarkable, together.
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                   href="/build"
-                  className="rounded-md bg-[var(--primary)] px-5 py-3 font-semibold text-white hover:opacity-90"
+                  className="inline-flex h-11 items-center justify-center rounded-xl bg-[var(--primary)] px-6 text-sm font-semibold text-white shadow-md transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/40"
                 >
                   Start your build
                 </Link>
+
                 <Link
                   href="/services"
-                  className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-5 py-3 font-semibold hover:bg-[var(--bg)]"
+                  className="inline-flex h-11 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-6 text-sm font-semibold shadow-sm transition hover:bg-[var(--bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/30"
                 >
                   View marketing work
                 </Link>
@@ -92,51 +115,44 @@ export default function HomePage() {
       {/* Features Section */}
       <Section
         title="Modern Website Development, Design & SEO"
-        intro="WebCraft Labz builds more than beautiful websites—we engineer high-performance, SEO-optimized platforms for marketing, growth, and results."
+        intro={`${SITE.name} builds more than beautiful websites—we engineer high-performance, SEO-optimized platforms for marketing, growth, and results.`}
       >
         <div className="flex flex-col md:flex-row md:items-center gap-8 mb-10">
           <div className="flex-1 flex items-center justify-center">
             <div className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border border-[var(--border)] bg-white">
               <Image
                 src="/images/bright-sky-reflects-on-tranquil-water-webcraft-website-design-image.jpg"
-                alt="WebCraft Labz website design, SEO, and marketing preview"
-                className="object-cover w-full h-auto max-h-[400px] sm:max-h-[500px]"
+                alt={`${SITE.name} website design, SEO, and marketing preview`}
+                className="h-full w-full object-cover"
+                width={800}
+                height={600}
                 loading="lazy"
-                fill={false}
-                width={640}
-                height={480}
               />
               {/* Mock homepage overlay */}
               <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
                 {/* Fake header/nav */}
                 <div className="flex items-center justify-between px-6 pt-5">
-                  <span className="flex items-center gap-2 font-bold text-lg text-blue-900 drop-shadow-sm">
-                    <span className="inline-block w-6 h-6 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full"></span>
-                    WebCraft Labz
-                  </span>
-                  <nav className="flex gap-5 text-sm text-gray-700/90 font-semibold">
-                    <span className="opacity-80">Home</span>
-                    <span className="opacity-60">Work</span>
-                    <span className="opacity-60">Blog</span>
-                    <span className="opacity-60">Contact</span>
+                  <nav className="flex gap-5 text-sm text-white font-semibold drop-shadow-md">
+                    <span>Home</span>
+                    <span className="opacity-80">Work</span>
+                    <span className="opacity-80">Blog</span>
+                    <span className="opacity-80">Contact</span>
                   </nav>
                 </div>
                 {/* Fake hero text */}
                 <div className="px-8 pb-8 text-left">
-                  <div className="inline-block rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-blue-700 mb-3 shadow">Marketing Website</div>
                   <div className="text-2xl md:text-3xl font-extrabold text-white drop-shadow-lg leading-tight mb-2">
                     Grow your business<br />with a website that works
                   </div>
                   <div className="text-sm text-white/90 drop-shadow mb-4 max-w-xs">
-                    Beautiful, SEO-optimized, and built for results. Launch your next chapter with WebCraft Labz.
+                    Beautiful, SEO-optimized, and built for results. Launch your next chapter with WebCraft.
                   </div>
                   <div className="flex gap-3">
-                    <span className="inline-block rounded bg-blue-600/90 px-4 py-2 text-xs font-bold text-white shadow">Start your build</span>
-                    <span className="inline-block rounded border border-white/70 bg-white/30 px-4 py-2 text-xs font-bold text-white/90 shadow">See our work</span>
+                    <span className="inline-block rounded bg-blue-600/90 px-4 py-2 text-xs font-bold text-white shadow">Get started</span>
+                    <span className="inline-block rounded border border-white/70 bg-white/30 px-4 py-2 text-xs font-bold text-white/90 shadow">Learn more</span>
                   </div>
                 </div>
               </div>
-              <span className="absolute top-3 left-3 bg-white/80 rounded-full px-3 py-1 text-xs font-semibold text-blue-700 shadow">WebCraft Labz</span>
             </div>
           </div>
           <div className="flex-1 flex flex-col gap-4">
@@ -153,7 +169,7 @@ export default function HomePage() {
                   </defs>
                 </svg>
               </span>
-              <span className="font-bold text-xl text-blue-900">WebCraft Labz</span>
+              <span className="font-bold text-xl text-blue-900">{SITE.name}</span>
             </div>
             <div className="text-lg text-gray-800 font-semibold">Built for SEO, marketing, and growth—not just looks.</div>
             <ul className="list-disc pl-5 text-gray-700 text-base space-y-1">
@@ -168,10 +184,10 @@ export default function HomePage() {
         </div>
         <div className="mt-10 rounded-2xl bg-gradient-to-br from-blue-50/40 to-cyan-50/30 border border-[var(--border)] shadow-lg px-4 py-8 md:px-10 md:py-12">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-blue-900 mb-2 tracking-tight">Why WebCraft Labz?</h3>
+            <h3 className="text-2xl font-bold text-blue-900 mb-2 tracking-tight">Why {SITE.name}?</h3>
             <div className="text-base text-gray-700 max-w-2xl mx-auto">Everything you need for modern, SEO-driven website design, marketing, and growth—built in.</div>
           </div>
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Row 1 */}
             <FeatureCard
               icon={<Search className="w-7 h-7 text-blue-600" />}
@@ -251,7 +267,7 @@ export default function HomePage() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <div className="text-xs font-semibold tracking-wide text-[var(--primary)]">NEWSROOM + BLOG</div>
-            <h2 className={`mt-2 text-3xl font-bold ${styles.sectionTitle}`}>From the WebCraft Labz desk</h2>
+            <h2 className={`mt-2 text-3xl font-bold ${styles.sectionTitle}`}>From the {SITE.name} desk</h2>
             <p className="mt-3 max-w-2xl text-[var(--muted)]">Launch notes, case studies, and practical marketing lessons. Short, useful, and built for busy owners.</p>
           </div>
           <Link

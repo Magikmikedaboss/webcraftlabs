@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { ADDONS, MAINTENANCE_PLANS } from "@/lib/estimator/config";
 import {
   BuildSpec,
@@ -15,10 +15,19 @@ import {
 } from "@/lib/estimator/types";
 import { estimate } from "@/lib/estimator/engine";
 import SiteShell from "@/components/SiteShell";
-import Select from "@/components/Select";
+import { RadixSelect } from "@/components/RadixSelect";
 
 export default function BuildPage() {
-    const [copying, setCopying] = useState(false);
+  const [copying, setCopying] = useState(false);
+  const copyTimeoutRef = useRef<number | null>(null);
+    // Cleanup timeout on unmount
+    useEffect(() => {
+      return () => {
+        if (copyTimeoutRef.current !== null) {
+          clearTimeout(copyTimeoutRef.current);
+        }
+      };
+    }, []);
   // Wizard core
   const [projectType, setProjectType] = useState<ProjectType>("service");
   const [goal, setGoal] = useState<Goal>("leads");
@@ -93,43 +102,50 @@ export default function BuildPage() {
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 min-w-0">
                   <Field label="Business type">
-                    <Select
+                    <RadixSelect
                       value={projectType}
-                      onChange={(v) => setProjectType(v as ProjectType)}
+                      onValueChange={(v) => setProjectType(v as ProjectType)}
                       options={[
-                        ["service", "Service business"],
-                        ["agency", "Agency / studio"],
-                        ["ecommerce", "E-commerce / online store"],
-                        ["content", "Content / blog brand"],
-                        ["other", "Other"],
+                        { value: "service", label: "Service business" },
+                        { value: "agency", label: "Agency / studio" },
+                        { value: "ecommerce", label: "E-commerce / online store" },
+                        { value: "content", label: "Content / blog brand" },
+                        { value: "other", label: "Other" },
                       ]}
                     />
                   </Field>
                   <Field label="Primary goal">
-                    <Select
+                    <RadixSelect
                       value={goal}
-                      onChange={(v) => setGoal(v as Goal)}
+                      onValueChange={(v) => setGoal(v as Goal)}
                       options={[
-                        ["leads", "Get leads / bookings"],
-                        ["sales", "Sell a product"],
-                        ["brand", "Build credibility / brand presence"],
-                        ["seo", "Grow traffic (SEO/content)"],
+                        { value: "leads", label: "Get leads / bookings" },
+                        { value: "sales", label: "Sell a product" },
+                        { value: "brand", label: "Build credibility / brand presence" },
+                        { value: "seo", label: "Grow traffic (SEO/content)" },
                       ]}
                     />
                   </Field>
                   <Field label={`Pages (estimate): ${pages}`}>
-                    <input
-                      type="range"
-                      min={1}
-                      max={10}
-                      value={pages}
-                      onChange={(e) => setPages(parseInt(e.target.value, 10))}
-                      className="range-slider w-full h-2 bg-gradient-to-r from-blue-200 to-blue-400 rounded-full appearance-none cursor-pointer"
-                      style={{
-                        height: '12px',
-                        background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(pages - 1) * 11.11}%, #e5e7eb ${(pages - 1) * 11.11}%, #e5e7eb 100%)`
-                      }}
-                    />
+                    {(() => {
+                      const min = 1;
+                      const max = 10;
+                      const percent = ((pages - min) / (max - min)) * 100;
+                      return (
+                        <input
+                          type="range"
+                          min={min}
+                          max={max}
+                          value={pages}
+                          onChange={(e) => setPages(parseInt(e.target.value, 10))}
+                          className="range-slider w-full h-2 bg-gradient-to-r from-blue-200 to-blue-400 rounded-full appearance-none cursor-pointer"
+                          style={{
+                            height: '12px',
+                            background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${percent}%, #e5e7eb ${percent}%, #e5e7eb 100%)`
+                          }}
+                        />
+                      );
+                    })()}
                     <style jsx>{`
                       .range-slider::-webkit-slider-thumb {
                         appearance: none;
@@ -188,33 +204,33 @@ export default function BuildPage() {
                     </div>
                   </Field>
                   <Field label="Design level">
-                    <Select
+                    <RadixSelect
                       value={design}
-                      onChange={(v) => setDesign(v as DesignLevel)}
+                      onValueChange={(v) => setDesign(v as DesignLevel)}
                       options={[
-                        ["template", "Template-based (fast, proven layouts)"],
-                        ["custom", "Custom design (brand system + unique layouts)"],
+                        { value: "template", label: "Template-based (fast, proven layouts)" },
+                        { value: "custom", label: "Custom design (brand system + unique layouts)" },
                       ]}
                     />
                   </Field>
                   <Field label="Content readiness">
-                    <Select
+                    <RadixSelect
                       value={content}
-                      onChange={(v) => setContent(v as ContentReadiness)}
+                      onValueChange={(v) => setContent(v as ContentReadiness)}
                       options={[
-                        ["ready", "Content is ready"],
-                        ["assist", "Need light copy assistance"],
-                        ["full", "Need full copywriting"],
+                        { value: "ready", label: "Content is ready" },
+                        { value: "assist", label: "Need light copy assistance" },
+                        { value: "full", label: "Need full copywriting" },
                       ]}
                     />
                   </Field>
                   <Field label="Timeline">
-                    <Select
+                    <RadixSelect
                       value={timeline}
-                      onChange={(v) => setTimeline(v as Timeline)}
+                      onValueChange={(v) => setTimeline(v as Timeline)}
                       options={[
-                        ["standard", "Standard"],
-                        ["rush", "Rush (priority scheduling)"],
+                        { value: "standard", label: "Standard" },
+                        { value: "rush", label: "Rush (priority scheduling)" },
                       ]}
                     />
                   </Field>
@@ -291,17 +307,17 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Preferred platform/framework">
-                    <Select
+                    <RadixSelect
                       value={q.frameworkPref}
-                      onChange={(v) => setQField("frameworkPref", v as QuoteDetails["frameworkPref"])}
+                      onValueChange={(v) => setQField("frameworkPref", v as QuoteDetails["frameworkPref"])}
                       options={[
-                        ["none", "No preference (recommended)"],
-                        ["nextjs", "Next.js"],
-                        ["wordpress", "WordPress"],
-                        ["shopify", "Shopify"],
-                        ["webflow", "Webflow"],
-                        ["squarespace", "Squarespace"],
-                        ["other", "Other"],
+                        { value: "none", label: "No preference (recommended)" },
+                        { value: "nextjs", label: "Next.js" },
+                        { value: "wordpress", label: "WordPress" },
+                        { value: "shopify", label: "Shopify" },
+                        { value: "webflow", label: "Webflow" },
+                        { value: "squarespace", label: "Squarespace" },
+                        { value: "other", label: "Other" },
                       ]}
                     />
 
@@ -315,13 +331,13 @@ export default function BuildPage() {
                     )}
                   </Field>
                   <Field label="Monthly maintenance (optional)">
-                    <Select
+                    <RadixSelect
                       value={q.maintenancePlan}
-                      onChange={(v) => setQField("maintenancePlan", v as MaintenancePlanId)}
-                      options={MAINTENANCE_PLANS.map((p) => [
-                        p.id,
-                        p.monthly ? `${p.label} — $${p.monthly}/mo` : p.label,
-                      ])}
+                      onValueChange={(v) => setQField("maintenancePlan", v as MaintenancePlanId)}
+                      options={MAINTENANCE_PLANS.map((p) => ({
+                        value: p.id,
+                        label: p.monthly ? `${p.label} — $${p.monthly}/mo` : p.label,
+                      }))}
                     />
 
                     <div className="mt-2 text-xs text-gray-500 italic">
@@ -407,8 +423,21 @@ export default function BuildPage() {
                   type="button"
                   onClick={async () => {
                     setCopying(true);
-                    await navigator.clipboard.writeText(est.buildSheetText);
-                    setTimeout(() => setCopying(false), 800);
+                    if (copyTimeoutRef.current !== null) {
+                      clearTimeout(copyTimeoutRef.current);
+                    }
+                    try {
+                      if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(est.buildSheetText);
+                      } else {
+                        throw new Error("Clipboard API not available");
+                      }
+                    } catch (err) {
+                      // Optionally, show a toast or fallback UI here
+                      console.error("Copy failed:", err);
+                    } finally {
+                      copyTimeoutRef.current = window.setTimeout(() => setCopying(false), 800);
+                    }
                   }}
                   className="mt-3 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 transition active:scale-[0.98] transition-transform duration-100 flex items-center justify-center"
                   style={{ minHeight: 48 }}

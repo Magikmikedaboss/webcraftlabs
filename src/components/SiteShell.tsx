@@ -48,7 +48,7 @@ export default function SiteShell({
             </Link>
           </nav>
 
-          {/* Mobile Hamburger Menu */}
+          {/* Mobile Hamburger Menu (a11y/UX improved) */}
           <div className="md:hidden flex items-center gap-2">
             <MobileMenu />
           </div>
@@ -104,10 +104,10 @@ export default function SiteShell({
               </a>
               <span className="text-xs text-[var(--muted)]">Las Vegas / Remote</span>
               <div className="flex gap-3 mt-2">
-                <a href="https://linkedin.com/company/webcraftlabz" target="_blank" rel="noopener" aria-label="LinkedIn" className="text-blue-700 hover:text-cyan-600">
+                <a href="https://linkedin.com/company/webcraftlabz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-blue-700 hover:text-cyan-600">
                   <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M6.94 7.5H4.56V15H6.94V7.5ZM5.75 6.5C6.44 6.5 7 5.94 7 5.25C7 4.56 6.44 4 5.75 4C5.06 4 4.5 4.56 4.5 5.25C4.5 5.94 5.06 6.5 5.75 6.5ZM8.5 9.5V15H10.88V12.25C10.88 11.34 11.56 10.75 12.38 10.75C13.19 10.75 13.88 11.34 13.88 12.25V15H16.25V12.06C16.25 10.22 15.06 9.5 13.88 9.5C13.06 9.5 12.44 9.94 12.19 10.44H12.13V9.5H9.75C9.75 9.5 8.5 9.56 8.5 9.5Z"/></svg>
                 </a>
-                <a href="https://twitter.com/webcraftlabz" target="_blank" rel="noopener" aria-label="Twitter" className="text-blue-700 hover:text-cyan-600">
+                <a href="https://twitter.com/webcraftlabz" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-blue-700 hover:text-cyan-600">
                   <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M17.316 6.246c.008.176.008.352.008.528 0 5.376-4.09 11.576-11.576 11.576-2.304 0-4.448-.672-6.256-1.824.32.04.624.064.96.064 1.92 0 3.68-.656 5.088-1.76-1.792-.032-3.304-1.216-3.824-2.848.248.048.504.08.768.08.368 0 .728-.048 1.072-.144-1.872-.376-3.28-2.032-3.28-4.024v-.048c.552.304 1.184.488 1.856.512-1.104-.736-1.824-1.984-1.824-3.408 0-.752.208-1.456.576-2.064 2.096 2.576 5.232 4.264 8.768 4.44-.072-.304-.112-.624-.112-.952 0-2.304 1.872-4.176 4.176-4.176 1.2 0 2.288.504 3.048 1.32.952-.184 1.848-.536 2.656-1.016-.312.976-.976 1.792-1.84 2.312.848-.096 1.656-.328 2.408-.664-.56.84-1.264 1.584-2.08 2.176z"/></svg>
                 </a>
               </div>
@@ -125,10 +125,17 @@ export default function SiteShell({
 // Simple mobile menu component
 function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const menuId = "mobile-nav-menu";
+  // Close menu on nav click
+  function handleNav() {
+    setOpen(false);
+  }
   return (
     <>
       <button
         aria-label="Open navigation menu"
+        aria-expanded={open}
+        aria-controls={menuId}
         className="rounded-md p-2 border border-[var(--border)] bg-[var(--surface)] text-[var(--text)]"
         onClick={() => setOpen((v) => !v)}
       >
@@ -140,16 +147,25 @@ function MobileMenu() {
         </svg>
       </button>
       {open && (
-        <div className="absolute top-16 left-0 w-full bg-white border-t border-[var(--border)] shadow-lg z-50">
+        <div
+          id={menuId}
+          className="absolute top-16 left-0 w-full bg-white border-t border-[var(--border)] shadow-lg z-50"
+        >
           <nav className="flex flex-col gap-2 p-6">
             {SITE.nav.map((n) => (
-              <Link key={n.href} href={n.href} className="text-lg font-semibold text-blue-900 py-2">
+              <Link
+                key={n.href}
+                href={n.href}
+                className="text-lg font-semibold text-blue-900 py-2"
+                onClick={handleNav}
+              >
                 {n.label}
               </Link>
             ))}
             <Link
               href="/contact"
               className="mt-4 rounded-md bg-[var(--primary)] px-4 py-3 text-base font-semibold text-white text-center hover:opacity-90"
+              onClick={handleNav}
             >
               Book intro call
             </Link>

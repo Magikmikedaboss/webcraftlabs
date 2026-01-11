@@ -1,10 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Read CSRF token from cookie (set by edge-csrf middleware)
+    const match = document.cookie.match(/(?:^|; )csrf-token=([^;]*)/);
+    if (match) setCsrfToken(decodeURIComponent(match[1]));
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,8 +36,8 @@ export default function ContactForm() {
     try {
       // Replace with your API endpoint
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (process.env.NEXT_PUBLIC_CONTACT_CSRF_TOKEN) {
-        headers["x-csrf-token"] = process.env.NEXT_PUBLIC_CONTACT_CSRF_TOKEN;
+      if (csrfToken) {
+        headers["x-csrf-token"] = csrfToken;
       }
       const res = await fetch("/api/contact", {
         method: "POST",
