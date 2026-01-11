@@ -1,14 +1,14 @@
 import { MetadataRoute } from 'next';
-import { SITE } from '@/lib/site';
+import { getBaseUrl } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Use stable timestamp to avoid sitemap churn on every build
   const lastModified = new Date(process.env.VERCEL_GIT_COMMIT_SHA 
-    ? process.env.VERCEL_DEPLOYMENT_TIME || Date.now() 
+    ? process.env.VERCEL_DEPLOYMENT_TIME || new Date().toISOString() 
     : '2026-01-11T00:00:00.000Z');
   
-  // Normalize base URL (remove trailing slash)
-  const baseUrl = SITE.url.replace(/\/$/, '');
+  // Get normalized base URL (validated and trailing slash removed)
+  const baseUrl = getBaseUrl();
   
   return [
     {

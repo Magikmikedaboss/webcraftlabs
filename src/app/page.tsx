@@ -37,7 +37,6 @@ import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import { SITE } from "@/lib/site";
 import Section from "@/components/Section";
-// import Card from "@/components/Card";
 import styles from "./home.module.css";
 
 const HERO_IMAGE =
@@ -235,26 +234,26 @@ export default function HomePage() {
             {
               title: "1. Discovery Call",
               desc: "Share your goals and vision. We’ll map out the best path for your business.",
-              icon: <Sprout className="w-8 h-8 text-green-700" />,
+              icon: <Sprout className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-700" />,
             },
             {
               title: "2. Design & Plan",
               desc: "See your site take shape—wireframes, design system, and a clear content plan.",
-              icon: <Settings2 className="w-8 h-8 text-blue-500" />,
+              icon: <Settings2 className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-500" />,
             },
             {
               title: "3. Build & Review",
               desc: "We build, you preview. Feedback is welcome at every milestone.",
-              icon: <Rocket className="w-8 h-8 text-cyan-700" />,
+              icon: <Rocket className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-cyan-700" />,
             },
             {
               title: "4. Launch & Support",
               desc: "Go live! We handle QA, SEO, and handoff. Ongoing support available.",
-              icon: <PartyPopper className="w-8 h-8 text-yellow-600" />,
+              icon: <PartyPopper className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-yellow-600" />,
             },
           ].map((step) => (
             <div key={step.title} className="flex flex-col items-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center shadow-sm">
-              <div className="mb-3 text-3xl">{step.icon}</div>
+              <div className="mb-3 text-2xl sm:text-3xl">{step.icon}</div>
               <div className="text-base font-bold mb-1">{step.title}</div>
               <div className="text-sm text-[var(--muted)]">{step.desc}</div>
             </div>
@@ -282,7 +281,7 @@ export default function HomePage() {
         <div className="mt-12 grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-3">
           <article className="col-span-2 flex flex-col md:flex-row rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] to-[var(--surface-2)] shadow-lg overflow-hidden">
             <div className="md:w-1/3 bg-[var(--primary)] flex items-center justify-center text-6xl text-white" aria-hidden="true">
-              <BarChart2 className="w-12 h-12 text-white" />
+              <BarChart2 className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white" />
             </div>
             <div className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
               <div>

@@ -73,9 +73,9 @@ export default function SiteShell({
 
       <footer className="border-t border-[var(--border)]">
         <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="rounded-2xl bg-gradient-to-br from-blue-50/40 to-cyan-50/30 border border-[var(--border)] shadow-lg p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+          <div className="rounded-2xl bg-gradient-to-br from-blue-50/40 to-cyan-50/30 border border-[var(--border)] shadow-lg p-4 sm:p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6 md:gap-8">
             <div className="flex items-center gap-4 mb-6 md:mb-0">
-              <span className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white text-2xl shadow-md">
+              <span className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl shadow-md">
                 <svg width="28" height="28" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="10" cy="10" r="10" fill="url(#footer-logo-gradient)" />
                   <defs>

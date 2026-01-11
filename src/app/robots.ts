@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next';
-import { SITE } from '@/lib/site';
+import { getBaseUrl } from '@/lib/site';
 
 export default function robots(): MetadataRoute.Robots {
-  // Normalize base URL (remove trailing slash)
-  const baseUrl = SITE.url.replace(/\/$/, '');
+  // Get normalized base URL (validated and trailing slash removed)
+  const baseUrl = getBaseUrl();
   
   return {
     rules: [

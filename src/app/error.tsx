@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 /**
  * Sanitizes error messages to prevent leaking sensitive information
  * Removes stack traces, file paths, database details, and maps known errors to friendly messages
@@ -28,8 +30,8 @@ function sanitizeErrorMessage(error: Error): string {
     .replace(/\/[\w\/\-_.]+\.(ts|tsx|js|jsx|mjs):\d+:\d+/g, '') // Remove file paths with line numbers
     .replace(/file:\/\/.*?\s/g, '') // Remove file:// URLs
     .replace(/\b\w+:\/\/[^\s]+/g, '') // Remove URLs
-    .replace(/\b[A-Z_]+_[A-Z_]+\b/g, '') // Remove SCREAMING_SNAKE_CASE env vars
-    .replace(/password|token|secret|key|auth/gi, '[REDACTED]') // Redact sensitive keywords
+    .replace(/\b(NEXT_PUBLIC_|API_KEY|DATABASE_URL|REDIS_URL)[A-Z_]+\b/g, '') // Remove env var patterns only
+    .replace(/\b(password|token|secret|key)\b/gi, '[REDACTED]') // Redact sensitive keywords with word boundaries
     .trim();
   
   // If sanitization removed everything or message is too technical, use generic message
@@ -48,6 +50,16 @@ export default function ErrorBoundary({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  // Log full error details server-side for debugging (not shown to user)
+  useEffect(() => {
+    console.error('[ErrorBoundary] Caught error:', {
+      message: error.message,
+      name: error.name,
+      stack: error.stack,
+      digest: error.digest,
+      timestamp: new Date().toISOString(),
+    });
+  }, [error]);
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg)] px-4">
       <div className="max-w-md text-center">
