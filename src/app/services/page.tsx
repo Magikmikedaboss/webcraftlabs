@@ -46,8 +46,8 @@ const SERVICES = [
 export default function ServicesPage() {
   return (
     <SiteShell
-      title="Services"
-      intro="We help you grow from seed to standout. Explore our signature services—each one crafted to move your business forward, not just fill a template."
+      title={<span className="text-2xl sm:text-3xl md:text-4xl font-semibold">Services</span>}
+      intro={<span className="text-base sm:text-lg md:text-xl text-[var(--muted)]">We help you grow from seed to standout. Explore our signature serviceseach one crafted to move your business forward, not just fill a template.</span>}
     >
       {/* Visual Hero */}
       <section className="relative mx-auto max-w-5xl px-6 pt-10 pb-16 flex flex-col items-center text-center">
@@ -75,7 +75,7 @@ export default function ServicesPage() {
             alt="Signature service visual"
             width={220}
             height={180}
-            className="rounded-2xl object-cover shadow-md"
+            className="rounded-2xl object-cover shadow-md w-full max-w-[220px] h-auto"
           />
           <div className="flex-1 text-left">
             <h2 className="text-2xl font-bold mb-2 text-[var(--primary)]">Marketing Websites</h2>

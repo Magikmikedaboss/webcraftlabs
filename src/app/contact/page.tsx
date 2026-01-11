@@ -1,38 +1,42 @@
-"use client";
+export const metadata = {
+  title: "Contact WebCraft Labs | Las Vegas Web Design & Marketing",
+  description: "Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
+  openGraph: {
+    title: "Contact WebCraft Labs | Las Vegas Web Design & Marketing",
+    description: "Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
+    type: "website",
+    url: "https://webcraftlabs.studio/contact",
+    siteName: "WebCraft Labs",
+  },
+  alternates: {
+    canonical: "https://webcraftlabs.studio/contact"
+  }
+};
 
-
-import Head from "next/head";
 import SiteShell from "@/components/SiteShell";
+import ContactForm from "./ContactForm";
 export default function ContactPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'WebCraft Labs',
+    url: 'https://webcraftlabs.studio',
+    email: 'hello@webcraftlabs.studio',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Las Vegas',
+      addressRegion: 'NV',
+      addressCountry: 'US',
+    },
+    contactPoint: [{
+      '@type': 'ContactPoint',
+      email: 'hello@webcraftlabs.studio',
+      contactType: 'customer support',
+    }],
+  };
   return (
     <>
-      <Head>
-        <title>Contact WebCraft Labs | Las Vegas Web Design & Marketing</title>
-        <meta name="description" content="Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business." />
-        <meta property="og:title" content="Contact WebCraft Labs | Las Vegas Web Design & Marketing" />
-        <meta property="og:description" content="Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://webcraftlabs.studio/contact" />
-        <meta property="og:site_name" content="WebCraft Labs" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: 'WebCraft Labs',
-          url: 'https://webcraftlabs.studio',
-          email: 'hello@webcraftlabs.studio',
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: 'Las Vegas',
-            addressRegion: 'NV',
-            addressCountry: 'US',
-          },
-          contactPoint: [{
-            '@type': 'ContactPoint',
-            email: 'hello@webcraftlabs.studio',
-            contactType: 'customer support',
-          }],
-        }) }} />
-      </Head>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SiteShell
         title="Contact WebCraft Labs"
         intro="Let’s build something remarkable. Reach out for a personalized quote, marketing strategy, or to connect with our team in Las Vegas. We reply fast—usually within 24 hours."
@@ -45,41 +49,7 @@ export default function ContactPage() {
                 <p className="mt-2 text-sm text-[var(--muted)]">
                   Share your project details or paste your “Choose Your Build” configuration. We’ll review and reply with a tailored plan—no spam, just real advice from our team.
                 </p>
-                <form className="mt-6 space-y-4">
-                  <label htmlFor="contact-name" className="visually-hidden">Name</label>
-                  <input
-                    id="contact-name"
-                    className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-3 text-sm outline-none"
-                    placeholder="Your name (or company)"
-                  />
-                  <label htmlFor="contact-email" className="visually-hidden">Email</label>
-                  <input
-                    id="contact-email"
-                    className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-3 text-sm outline-none"
-                    placeholder="Your email address"
-                  />
-                  <label htmlFor="contact-project" className="visually-hidden">Project details / configuration</label>
-                  <textarea
-                    id="contact-project"
-                    className="min-h-[160px] w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-3 text-sm outline-none"
-                    placeholder="Tell us about your project, goals, or paste your configurator output."
-                  />
-                  <button
-                    type="button"
-                    className="rounded-md bg-[var(--primary)] px-5 py-3 font-semibold text-white hover:opacity-90"
-                  >
-                    Send request
-                  </button>
-                </form>
-                <style jsx global>{`
-                  .visually-hidden {
-                    position: absolute !important;
-                    height: 1px; width: 1px;
-                    overflow: hidden;
-                    clip: rect(1px, 1px, 1px, 1px);
-                    white-space: nowrap;
-                  }
-                `}</style>
+                <ContactForm />
               </div>
             </div>
             <div className="md:col-span-5">

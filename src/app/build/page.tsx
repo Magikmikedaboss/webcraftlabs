@@ -60,16 +60,16 @@ export default function BuildPage() {
 
   return (
     <SiteShell
-      title="WebCraft Labs – Website Build Estimator"
+      title={<span className="text-2xl sm:text-3xl md:text-4xl font-semibold">WebCraft Labs – Website Build Estimator</span>}
     >
-      <main className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] text-[var(--text)]">
+      <main className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] text-[var(--text)] overflow-x-hidden">
         <div className="mx-auto max-w-5xl px-2 py-8 md:py-14">
           <div className="space-y-3 mb-8">
-            <div className="text-2xl font-extrabold text-blue-900 tracking-tight flex items-center gap-2">
+            <div className="text-base sm:text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight flex items-center gap-2">
               <span className="inline-block w-7 h-7 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full mr-2"></span>
               Website Build Estimator
             </div>
-            <div className="text-base text-gray-700 max-w-2xl">
+            <div className="text-sm sm:text-base md:text-lg text-gray-700 max-w-2xl">
               Welcome to the WebCraft Labs estimator! Instantly price your next website with our transparent, step-by-step tool. Just answer a few quick questions about your project, and see your options and pricing update live.
             </div>
             <ul className="list-disc pl-6 text-sm text-gray-600">
@@ -79,10 +79,10 @@ export default function BuildPage() {
               <li>Fill in your details for a personalized build sheet you can copy or share.</li>
             </ul>
           </div>
-          <div className="mt-8 flex flex-col lg:flex-row gap-8">
+          <div className="mt-8 flex flex-col lg:flex-row gap-8 min-w-0">
             {/* Left: Wizard */}
-            <section className="flex-1 rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md">
-              <div className="grid gap-6 md:grid-cols-2">
+            <section className="flex-1 rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md min-w-0">
+              <div className="grid gap-6 md:grid-cols-2 min-w-0">
                 <Field label="Business type">
                   <Select
                     value={projectType}
@@ -356,7 +356,8 @@ export default function BuildPage() {
                 <button
                   type="button"
                   onClick={() => navigator.clipboard.writeText(est.buildSheetText)}
-                  className="mt-3 w-full rounded-lg border border-blue-200 bg-gradient-to-r from-blue-100 to-blue-200 px-4 py-2 font-semibold text-blue-900 hover:from-blue-200 hover:to-blue-100 transition"
+                  className="mt-3 w-full sm:w-auto rounded-lg border border-blue-200 bg-gradient-to-r from-blue-100 to-blue-200 px-4 py-2 font-semibold text-blue-900 hover:from-blue-200 hover:to-blue-100 transition"
+                  style={{ minHeight: 44 }}
                 >
                   Copy build sheet
                 </button>
