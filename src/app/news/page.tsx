@@ -1,44 +1,43 @@
-
-import SiteShell from "@/components/SiteShell";
 import Link from "next/link";
-import { SITE } from "@/lib/site";
+import SiteShell from "@/components/SiteShell";
+import { getAllNews } from "@/lib/news";
 
 export const metadata = {
-  title: `News | ${SITE.name}`,
-  description: 'Latest updates and announcements from WebCraft Labz.',
+  title: "News | WebCraft Labz",
+  description: "Latest updates and announcements from WebCraft Labz.",
+  alternates: {
+    canonical: "/news",
+  },
   openGraph: {
-    title: `News | ${SITE.name}`,
-    description: 'Latest updates and announcements.',
+    title: "News | WebCraft Labz",
+    description: "Latest updates and announcements from WebCraft Labz.",
+    url: "/news",
+    type: "website",
   },
 };
 
-const ITEMS = [
-  {
-    slug: "launch-build-configurator",
-    title: "Build Configurator Launched",
-    summary: "Our productized build system is live.",
-    meta: "Jan 2026 • Release note",
-  },
-];
+export default async function NewsPage() {
+  const items = await getAllNews();
 
-export default function NewsIndexPage() {
   return (
-    <SiteShell title="News" intro="Studio updates, releases, and launch notes.">
-      <section className="mx-auto max-w-7xl px-6 py-16 overflow-x-hidden">
-        <div className="grid gap-4 md:grid-cols-2 min-w-0">
-          {ITEMS.map((n) => (
+    <SiteShell title="News" intro="Updates from WebCraft Labz">
+      <div className="mx-auto max-w-4xl px-6 py-16 space-y-6">
+        {items.map((n) => (
+          <div
+            key={n.slug}
+            className="border border-[var(--border)] bg-[var(--surface)] p-5"
+          >
             <Link
-              key={n.slug}
               href={`/news/${n.slug}`}
-              className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6 hover:bg-[var(--bg)]"
+              className="font-semibold hover:opacity-80"
             >
-              <div className="text-xs font-semibold text-[var(--muted)]">{n.meta}</div>
-              <div className="mt-2 text-base sm:text-lg md:text-xl font-semibold">{n.title}</div>
-              <div className="mt-2 text-sm sm:text-base text-[var(--muted)]">{n.summary}</div>
+              {n.title}
             </Link>
-          ))}
-        </div>
-      </section>
+            <div className="mt-1 text-xs text-[var(--muted)]">{n.date}</div>
+            <p className="mt-2 text-sm text-[var(--muted)]">{n.summary}</p>
+          </div>
+        ))}
+      </div>
     </SiteShell>
   );
 }

@@ -1,6 +1,8 @@
+---
 title: Build Configurator Launched
 date: 2026-01-01
 summary: Our productized build system is live.
 tags: product, launch
+---
 
 Choose Your Build is now live.

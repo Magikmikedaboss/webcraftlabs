@@ -69,8 +69,8 @@ export default function HomePage() {
         </div>
         <div className={styles.heroBg} />
         <div className={styles.grid} />
-        <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-20 md:pb-20 md:pt-24 overflow-x-hidden">
-          <div className="grid gap-6 sm:gap-8 md:gap-10 md:grid-cols-12 md:items-center">
+        <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-16 md:pb-20 md:pt-24 overflow-x-hidden">
+          <div className="grid gap-4 sm:gap-6 md:gap-10 md:grid-cols-12 md:items-center">
             <div className="md:col-span-7">
               <div className="flex flex-wrap gap-2">
                 <Pill className="min-w-0 max-w-full truncate">Developer</Pill>
@@ -78,29 +78,29 @@ export default function HomePage() {
                 <Pill className="min-w-0 max-w-full truncate">Marketing and Strategy</Pill>
                 <Pill className="min-w-0 max-w-full truncate">Web Solutions</Pill>
               </div>
-              <h1 className={`mt-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] ${styles.sectionTitle}`}>
+              <h1 className={`mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-[1.1] ${styles.sectionTitle}`}>
                 Marketing websites that{" "}
                 <span className="text-[var(--primary)]">mean business.</span>
               </h1>
-              <p className="mt-5 max-w-2xl text-lg text-[var(--muted)]">
+              <p className="mt-4 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">
                 At {SITE.name}, we believe every great brand starts with a seed—an idea ready to grow. We don’t just build beautiful websites; we craft digital experiences that connect, inspire, and deliver real results. Our team partners with you every step of the way, blending creativity, strategy, and care to nurture your vision and build for the future. Let’s plant something remarkable, together.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                   href="/build"
-                  className="inline-flex h-11 items-center justify-center rounded-xl bg-[var(--primary)] px-6 text-sm font-semibold text-white shadow-md transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/40"
+                  className="inline-flex h-10 items-center justify-center rounded-xl bg-[var(--primary)] px-5 text-sm font-semibold text-white shadow-md transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/40"
                 >
                   Start your build
                 </Link>
 
                 <Link
                   href="/services"
-                  className="inline-flex h-11 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-6 text-sm font-semibold shadow-sm transition hover:bg-[var(--bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/30"
+                  className="inline-flex h-10 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 text-sm font-semibold shadow-sm transition hover:bg-[var(--bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/30"
                 >
                   View marketing work
                 </Link>
               </div>
-              <div className="mt-8 flex flex-wrap gap-4 text-xs text-[var(--muted)]">
+              <div className="mt-6 flex flex-wrap gap-3 sm:gap-4 text-[10px] sm:text-xs text-[var(--muted)]">
                 <span>Typical timeline: 2–6 weeks</span>
                 <span>SEO + analytics included</span>
                 <span>Built for ongoing campaigns</span>
@@ -145,7 +145,7 @@ export default function HomePage() {
                     Grow your business<br />with a website that works
                   </div>
                   <div className="text-sm text-white/90 drop-shadow mb-4 max-w-xs">
-                    Beautiful, SEO-optimized, and built for results. Launch your next chapter with WebCraft.
+                    Beautiful, SEO-optimized, and built for results. Launch your next chapter with {SITE.name}.
                   </div>
                   <div className="flex gap-3">
                     <span className="inline-block rounded bg-blue-600/90 px-4 py-2 text-xs font-bold text-white shadow">Get started</span>
@@ -266,9 +266,9 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
-            <div className="text-xs font-semibold tracking-wide text-[var(--primary)]">NEWSROOM + BLOG</div>
-            <h2 className={`mt-2 text-3xl font-bold ${styles.sectionTitle}`}>From the {SITE.name} desk</h2>
-            <p className="mt-3 max-w-2xl text-[var(--muted)]">Launch notes, case studies, and practical marketing lessons. Short, useful, and built for busy owners.</p>
+            <div className="text-[10px] sm:text-xs font-semibold tracking-wide text-[var(--primary)]">NEWSROOM + BLOG</div>
+            <h2 className={`mt-2 text-xl sm:text-2xl font-bold ${styles.sectionTitle}`}>From the {SITE.name} desk</h2>
+            <p className="mt-3 max-w-2xl text-sm text-[var(--muted)]">Launch notes, case studies, and practical marketing lessons. Short, useful, and built for busy owners.</p>
           </div>
           <Link
             href="/blog"
@@ -285,14 +285,14 @@ export default function HomePage() {
             </div>
             <div className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
               <div>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--muted)] mb-2">
+                <div className="flex flex-wrap items-center gap-2 text-[10px] sm:text-xs text-[var(--muted)] mb-2">
                   <span className="inline-block rounded bg-[var(--primary)]/10 px-2 py-1 font-semibold text-[var(--primary)]">Case Study</span>
                   <span>•</span>
                   <span>6 min read</span>
                   <span>•</span>
                   <span>Published Jan 2026</span>
                 </div>
-                <p className="text-base text-[var(--muted)] mb-4">We rebuilt a cluttered marketing site into a streamlined funnel with fewer pages, clearer CTAs, and tracking that measured what mattered.</p>
+                <p className="text-xs sm:text-sm text-[var(--muted)] mb-4">We rebuilt a cluttered marketing site into a streamlined funnel with fewer pages, clearer CTAs, and tracking that measured what mattered.</p>
               </div>
               <div className="flex flex-wrap gap-3 mt-4">
                 <Link href="/blog" className="inline-flex items-center rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90">Read case study</Link>
@@ -304,8 +304,8 @@ export default function HomePage() {
           {/* Latest Dispatches as Cards */}
           <aside className="flex flex-col gap-4">
             <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-bold">Latest dispatches</div>
-              <Link href="/news" className="text-xs font-semibold text-[var(--primary)] hover:opacity-80">View news</Link>
+              <div className="text-xs sm:text-sm font-bold">Latest dispatches</div>
+              <Link href="/news" className="text-[10px] sm:text-xs font-semibold text-[var(--primary)] hover:opacity-80">View news</Link>
             </div>
             {[
               { title: "Designing a marketing site that actually works with paid ads", meta: "7 min read", badge: "Guide", icon: <PencilLine className="w-6 h-6 text-blue-700" /> },
@@ -317,10 +317,10 @@ export default function HomePage() {
                 <div className="text-2xl mt-1">{icon}</div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="inline-block rounded bg-[var(--primary)]/10 px-2 py-0.5 text-xs font-semibold text-[var(--primary)]">{badge}</span>
-                    <span className="text-xs text-[var(--muted)]">{meta}</span>
+                    <span className="inline-block rounded bg-[var(--primary)]/10 px-2 py-0.5 text-[10px] sm:text-xs font-semibold text-[var(--primary)]">{badge}</span>
+                    <span className="text-[10px] sm:text-xs text-[var(--muted)]">{meta}</span>
                   </div>
-                  <Link href="/news" className="block text-sm font-semibold leading-snug hover:opacity-90">{title}</Link>
+                  <Link href="/news" className="block text-xs sm:text-sm font-semibold leading-snug hover:opacity-90">{title}</Link>
                 </div>
               </div>
             ))}
@@ -334,58 +334,19 @@ export default function HomePage() {
         </div>
       </section>
 
-
-      {/* Instant Estimate Section - now above final CTA */}
-      <section className="mx-auto max-w-2xl px-6 py-12">
-        <div className="rounded-3xl border border-[var(--primary)] bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] shadow-lg p-4 sm:p-6 md:p-8">
-          <div className="flex items-center justify-between">
-            <div className="text-sm font-semibold">Instant estimate</div>
-            <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs font-semibold text-[var(--muted)]">
-              Web + Marketing
-            </span>
-          </div>
-          <div className="mt-5 space-y-3 text-sm">
-            {[
-              ["Build type", "Marketing website"],
-              ["Pages", "5 pages"],
-              ["Add-ons", "SEO · Booking · Email capture"],
-              ["Timeline", "Standard (2–4 weeks)"],
-            ].map(([k, v]) => (
-              <div key={k} className="flex items-center justify-between">
-                <div className="text-[var(--muted)]">{k}</div>
-                <div className="font-semibold">{v}</div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 rounded-lg border border-[var(--border)] bg-[var(--bg)] p-4">
-            <div className="text-xs text-[var(--muted)]">Estimated range</div>
-            <div className="mt-1 text-2xl font-semibold">$2.4k – $5.6k</div>
-            <div className="mt-1 text-xs text-[var(--muted)]">
-              Final pricing depends on content + integrations.
-            </div>
-          </div>
-          <Link
-            href="/build"
-            className="mt-6 inline-flex w-full items-center justify-center rounded-md bg-[var(--secondary)] px-5 py-3 font-semibold text-white hover:opacity-90"
-          >
-            Open the configurator
-          </Link>
-        </div>
-      </section>
-
       {/* Final CTA */}
       <section className="border-t border-[var(--border)]">
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-8 md:flex md:items-center md:justify-between">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 md:py-16">
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-6 md:p-8 md:flex md:items-center md:justify-between">
             <div>
-              <div className="text-2xl font-semibold">Ready to design your own build?</div>
-              <div className="mt-2 text-[var(--muted)]">
+              <div className="text-base sm:text-lg md:text-xl font-semibold">Ready to design your own build?</div>
+              <div className="mt-2 text-xs sm:text-sm md:text-base text-[var(--muted)]">
                 Choose pages, add-ons, and timeline. Then send your configuration with one click.
               </div>
             </div>
             <a
               href="/build"
-              className="mt-6 inline-flex rounded-md bg-[var(--primary)] px-7 py-3 font-semibold text-white hover:opacity-90 md:mt-0"
+              className="mt-4 sm:mt-6 md:mt-0 inline-flex w-full md:w-auto justify-center rounded-md bg-[var(--primary)] px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white hover:opacity-90"
             >
               Open the configurator
             </a>

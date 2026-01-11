@@ -75,10 +75,8 @@ export async function POST(req: NextRequest) {
 
   // Log submission for debugging (remove in production once email/DB is set up)
   console.log('[Contact Form] New submission:', {
-    name: result.data.name,
-    email: result.data.email,
     project: result.data.project,
-    notes: result.data.notes || '(none)',
+    notes: result.data.notes ? 'present' : 'none',
     timestamp: new Date().toISOString(),
     ip,
   });

@@ -8,7 +8,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="rounded-lg px-3.5 py-2 text-sm font-semibold text-gray-700 transition-all duration-200 hover:text-blue-700 hover:bg-blue-50/50"
+      className="rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 transition-all duration-200 hover:text-blue-700 hover:bg-blue-50/50"
     >
       {label}
     </Link>
@@ -29,8 +29,8 @@ export default function SiteShell({
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <header className={styles.header}>
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <Link href="/" className="flex items-center gap-3 font-bold text-lg tracking-tight text-gray-900 transition-opacity hover:opacity-90">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+          <Link href="/" className="flex items-center gap-2 font-bold text-sm sm:text-base tracking-tight text-gray-900 transition-opacity hover:opacity-90">
             <span className={styles.logoMark} aria-hidden="true" />
             <span>{SITE.name}</span>
           </Link>
@@ -42,7 +42,7 @@ export default function SiteShell({
             ))}
             <Link
               href="/contact"
-              className="ml-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/40 hover:scale-105 active:scale-95"
+              className="ml-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md shadow-blue-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/40 hover:scale-105 active:scale-95"
             >
               Book intro call
             </Link>
@@ -62,9 +62,9 @@ export default function SiteShell({
 
       {(title || intro) && (
         <section className="border-b border-[var(--border)]">
-          <div className="mx-auto max-w-7xl px-6 py-12">
-            {title && <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold">{title}</h1>}
-            {intro && <div className="mt-3 max-w-2xl text-base sm:text-lg md:text-xl text-[var(--muted)]">{intro}</div>}
+          <div className="mx-auto max-w-7xl px-6 py-8">
+            {title && <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">{title}</h1>}
+            {intro && <div className="mt-2 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">{intro}</div>}
           </div>
         </section>
       )}
@@ -87,22 +87,22 @@ export default function SiteShell({
                 </svg>
               </span>
               <div>
-                <div className="font-bold text-lg text-blue-900">{SITE.name}</div>
-                <div className="text-xs text-[var(--muted)]">{SITE.tagline}</div>
+                <div className="font-bold text-base sm:text-lg text-blue-900">{SITE.name}</div>
+                <div className="text-xs sm:text-sm text-[var(--muted)]">{SITE.tagline}</div>
               </div>
             </div>
             <div className="flex flex-col gap-2 md:flex-row md:gap-6 items-start md:items-center">
               {SITE.nav.map((n) => (
-                <Link key={n.href} href={n.href} className="text-sm font-semibold text-blue-900 hover:text-cyan-700 transition">
+                <Link key={n.href} href={n.href} className="text-xs sm:text-sm font-semibold text-blue-900 hover:text-cyan-700 transition">
                   {n.label}
                 </Link>
               ))}
             </div>
             <div className="flex flex-col gap-2 items-start md:items-end">
-              <a className="text-sm font-semibold text-blue-900 hover:text-cyan-700 transition" href="mailto:hello@webcraftlabz.com">
+              <a className="text-xs sm:text-sm font-semibold text-blue-900 hover:text-cyan-700 transition" href="mailto:hello@webcraftlabz.com">
                 hello@webcraftlabz.com
               </a>
-              <span className="text-xs text-[var(--muted)]">Las Vegas / Remote</span>
+              <span className="text-[10px] sm:text-xs text-[var(--muted)]">Las Vegas / Remote</span>
               <div className="flex gap-3 mt-2">
                 <a href="https://linkedin.com/company/webcraftlabz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-blue-700 hover:text-cyan-600">
                   <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M6.94 7.5H4.56V15H6.94V7.5ZM5.75 6.5C6.44 6.5 7 5.94 7 5.25C7 4.56 6.44 4 5.75 4C5.06 4 4.5 4.56 4.5 5.25C4.5 5.94 5.06 6.5 5.75 6.5ZM8.5 9.5V15H10.88V12.25C10.88 11.34 11.56 10.75 12.38 10.75C13.19 10.75 13.88 11.34 13.88 12.25V15H16.25V12.06C16.25 10.22 15.06 9.5 13.88 9.5C13.06 9.5 12.44 9.94 12.19 10.44H12.13V9.5H9.75C9.75 9.5 8.5 9.56 8.5 9.5Z"/></svg>
@@ -113,7 +113,7 @@ export default function SiteShell({
               </div>
             </div>
           </div>
-          <div className="mt-8 text-center text-xs text-[var(--muted)]">
+          <div className="mt-6 sm:mt-8 text-center text-[10px] sm:text-xs text-[var(--muted)]">
             <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in Las Vegas / Remote. <span className="text-blue-700">Websites that mean business.</span></span>
           </div>
         </div>

@@ -104,18 +104,18 @@ export default function ServicesPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-blue-900/50 to-transparent" />
           </div>
-          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 drop-shadow-lg">
+          <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-12">
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2 drop-shadow-lg">
               Services Built Around You
             </h2>
-            <p className="max-w-2xl text-base md:text-lg text-white/90 drop-shadow-md mb-6">
+            <p className="max-w-2xl text-xs sm:text-sm md:text-base text-white/90 drop-shadow-md mb-3 sm:mb-4">
               We don&apos;t do cookie-cutter. Every project is a partnership, every site a launchpad. Here&apos;s how we help you grow, convert, and lead in your space.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/build" className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-blue-900 shadow-lg hover:bg-blue-50 transition">
+            <div className="flex flex-wrap gap-2">
+              <Link href="/build" className="inline-flex items-center justify-center rounded-xl bg-white px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold text-blue-900 shadow-lg hover:bg-blue-50 transition">
                 Start your build
               </Link>
-              <Link href="/contact" className="inline-flex items-center justify-center rounded-xl border-2 border-white bg-white/10 backdrop-blur-sm px-6 py-3 text-sm font-semibold text-white hover:bg-white/20 transition">
+              <Link href="/contact" className="inline-flex items-center justify-center rounded-xl border-2 border-white bg-white/10 backdrop-blur-sm px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold text-white hover:bg-white/20 transition">
                 Book intro call
               </Link>
             </div>

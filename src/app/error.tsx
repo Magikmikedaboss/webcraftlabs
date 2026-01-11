@@ -30,7 +30,7 @@ function sanitizeErrorMessage(error: Error): string {
     .replace(/\/[\w\/\-_.]+\.(ts|tsx|js|jsx|mjs):\d+:\d+/g, '') // Remove file paths with line numbers
     .replace(/file:\/\/.*?\s/g, '') // Remove file:// URLs
     .replace(/\b\w+:\/\/[^\s]+/g, '') // Remove URLs
-    .replace(/\b(NEXT_PUBLIC_|API_KEY|DATABASE_URL|REDIS_URL)[A-Z_]+\b/g, '') // Remove env var patterns only
+    .replace(/\b(NEXT_PUBLIC_[A-Z_]+|API_KEY(?:_[A-Z_]+)?|DATABASE_URL(?:_[A-Z_]+)?|REDIS_URL(?:_[A-Z_]+)?)\b/g, '[REDACTED]') // Remove env var patterns
     .replace(/\b(password|token|secret|key)\b/gi, '[REDACTED]') // Redact sensitive keywords with word boundaries
     .trim();
   
@@ -50,7 +50,8 @@ export default function ErrorBoundary({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  // Log full error details server-side for debugging (not shown to user)
+  // Log full error details to the browser console for client-side debugging
+  // (Note: server-side logging must be done server-side or via an API)
   useEffect(() => {
     console.error('[ErrorBoundary] Caught error:', {
       message: error.message,
