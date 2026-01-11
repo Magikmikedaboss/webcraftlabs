@@ -9,7 +9,7 @@ export default function ContactForm() {
 
   useEffect(() => {
     // Read CSRF token from cookie (set by edge-csrf middleware)
-    const match = document.cookie.match(/(?:^|; )csrf-token=([^;]*)/);
+    const match = document.cookie.match(/(?:^|; )_csrfSecret=([^;]*)/);
     if (match) setCsrfToken(decodeURIComponent(match[1]));
   }, []);
 
@@ -18,7 +18,7 @@ export default function ContactForm() {
     setError("");
     setSuccess("");
     setLoading(true);
-    const form = e.target as HTMLFormElement;
+    const form = e.currentTarget as HTMLFormElement;
     const name = (form.elements.namedItem("name") as HTMLInputElement)?.value.trim();
     const email = (form.elements.namedItem("email") as HTMLInputElement)?.value.trim();
     const project = (form.elements.namedItem("project") as HTMLTextAreaElement)?.value.trim();
@@ -37,18 +37,29 @@ export default function ContactForm() {
       // Replace with your API endpoint
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (csrfToken) {
-        headers["x-csrf-token"] = csrfToken;
+        headers["X-CSRF-Token"] = csrfToken;
       }
       const res = await fetch("/api/contact", {
         method: "POST",
         headers,
         body: JSON.stringify({ name, email, project }),
       });
-      if (!res.ok) throw new Error("Failed to send request.");
+      if (!res.ok) {
+        let errorMessage = "Failed to send request.";
+        try {
+          const errorData = await res.json();
+          errorMessage = errorData.error || errorData.message || errorMessage;
+        } catch {
+          const errorText = await res.text();
+          if (errorText) errorMessage = errorText;
+        }
+        throw new Error(errorMessage);
+      }
       setSuccess("Your request was sent! We'll reply soon.");
       form.reset();
-    } catch {
-      setError("There was a problem sending your request. Please try again later.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "There was a problem sending your request. Please try again later.";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -60,7 +71,7 @@ export default function ContactForm() {
       <input
         id="contact-name"
         name="name"
-        className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none"
+        className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Your name (or company)"
         autoComplete="name"
         minLength={2}
@@ -71,7 +82,7 @@ export default function ContactForm() {
         id="contact-email"
         name="email"
         type="email"
-        className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none"
+        className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Your email address"
         autoComplete="email"
         inputMode="email"
@@ -81,7 +92,7 @@ export default function ContactForm() {
       <textarea
         id="contact-project"
         name="project"
-        className="min-h-[160px] w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none"
+        className="min-h-[160px] w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Tell us about your project, goals, or paste your configurator output."
         autoComplete="off"
         required
@@ -94,8 +105,8 @@ export default function ContactForm() {
       >
         {loading ? "Sending..." : "Send request"}
       </button>
-      {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
-      {success && <div className="text-green-600 text-sm mt-2">{success}</div>}
+      {error && <div className="text-red-600 text-sm mt-2" role="status" aria-live="polite">{error}</div>}
+      {success && <div className="text-green-600 text-sm mt-2" role="status" aria-live="polite">{success}</div>}
       <style jsx global>{`
         .visually-hidden {
           position: absolute !important;

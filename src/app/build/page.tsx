@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useRef, useEffect } from "react";
 import { ADDONS, MAINTENANCE_PLANS } from "@/lib/estimator/config";
+import styles from "./build.module.css";
 import {
   BuildSpec,
   ContentReadiness,
@@ -20,14 +21,14 @@ import { RadixSelect } from "@/components/RadixSelect";
 export default function BuildPage() {
   const [copying, setCopying] = useState(false);
   const copyTimeoutRef = useRef<number | null>(null);
-    // Cleanup timeout on unmount
-    useEffect(() => {
-      return () => {
-        if (copyTimeoutRef.current !== null) {
-          clearTimeout(copyTimeoutRef.current);
-        }
-      };
-    }, []);
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current !== null) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+    };
+  }, []);
   // Wizard core
   const [projectType, setProjectType] = useState<ProjectType>("service");
   const [goal, setGoal] = useState<Goal>("leads");
@@ -138,7 +139,7 @@ export default function BuildPage() {
                           max={max}
                           value={pages}
                           onChange={(e) => setPages(parseInt(e.target.value, 10))}
-                          className="range-slider w-full h-2 bg-gradient-to-r from-blue-200 to-blue-400 rounded-full appearance-none cursor-pointer"
+                          className={`${styles.rangeSlider} w-full appearance-none cursor-pointer rounded-full`}
                           style={{
                             height: '12px',
                             background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${percent}%, #e5e7eb ${percent}%, #e5e7eb 100%)`
@@ -146,59 +147,6 @@ export default function BuildPage() {
                         />
                       );
                     })()}
-                    <style jsx>{`
-                      .range-slider::-webkit-slider-thumb {
-                        appearance: none;
-                        width: 28px;
-                        height: 28px;
-                        border-radius: 50%;
-                        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-                        cursor: pointer;
-                        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-                        border: 3px solid white;
-                        transition: all 0.2s;
-                      }
-                      .range-slider::-webkit-slider-thumb:hover {
-                        transform: scale(1.1);
-                        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
-                      }
-                      .range-slider::-webkit-slider-thumb:active {
-                        transform: scale(0.95);
-                      }
-                      .range-slider::-moz-range-thumb {
-                        width: 28px;
-                        height: 28px;
-                        border-radius: 50%;
-                        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-                        cursor: pointer;
-                        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-                        border: 3px solid white;
-                        transition: all 0.2s;
-                      }
-                      .range-slider::-ms-thumb {
-                        width: 28px;
-                        height: 28px;
-                        border-radius: 50%;
-                        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-                        cursor: pointer;
-                        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-                        border: 3px solid white;
-                        transition: all 0.2s;
-                      }
-                      .range-slider:focus {
-                        outline: none;
-                        box-shadow: 0 0 0 4px #bfdbfe;
-                      }
-                      .range-slider::-webkit-slider-runnable-track {
-                        height: 12px;
-                        border-radius: 6px;
-                        background: transparent;
-                      }
-                      .range-slider::-ms-fill-lower,
-                      .range-slider::-ms-fill-upper {
-                        background: transparent;
-                      }
-                    `}</style>
                     <div className="mt-2 text-xs text-[var(--muted)]">
                       We may recommend more pages depending on features selected.
                     </div>

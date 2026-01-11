@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import styles from "./siteShell.module.css";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
@@ -75,7 +75,7 @@ export default function SiteShell({
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="rounded-2xl bg-gradient-to-br from-blue-50/40 to-cyan-50/30 border border-[var(--border)] shadow-lg p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
             <div className="flex items-center gap-4 mb-6 md:mb-0">
-              <span className="inline-block w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white text-2xl shadow-md">
+              <span className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white text-2xl shadow-md">
                 <svg width="28" height="28" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="10" cy="10" r="10" fill="url(#footer-logo-gradient)" />
                   <defs>
@@ -126,13 +126,85 @@ export default function SiteShell({
 function MobileMenu() {
   const [open, setOpen] = useState(false);
   const menuId = "mobile-nav-menu";
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  
   // Close menu on nav click
   function handleNav() {
     setOpen(false);
   }
+  
+  // Handle Escape key to close menu
+  useEffect(() => {
+    if (!open) return;
+    
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
+    }
+    
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [open]);
+  
+  // Handle click outside to close menu
+  useEffect(() => {
+    if (!open) return;
+    
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        menuRef.current &&
+        buttonRef.current &&
+        !menuRef.current.contains(e.target as Node) &&
+        !buttonRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+    
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+  
+  // Focus trap when menu is open
+  useEffect(() => {
+    if (!open || !menuRef.current) return;
+    
+    const focusableElements = menuRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    
+    function handleTabKey(e: KeyboardEvent) {
+      if (e.key !== "Tab") return;
+      
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement?.focus();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    }
+    
+    // Focus first element when menu opens
+    firstElement?.focus();
+    
+    document.addEventListener("keydown", handleTabKey);
+    return () => document.removeEventListener("keydown", handleTabKey);
+  }, [open]);
+  
   return (
     <>
       <button
+        ref={buttonRef}
         aria-label="Open navigation menu"
         aria-expanded={open}
         aria-controls={menuId}
@@ -148,8 +220,9 @@ function MobileMenu() {
       </button>
       {open && (
         <div
+          ref={menuRef}
           id={menuId}
-          className="absolute top-16 left-0 w-full bg-white border-t border-[var(--border)] shadow-lg z-50"
+          className="fixed top-[calc(4rem+1px)] left-0 right-0 w-full bg-white border-t border-[var(--border)] shadow-lg z-50"
         >
           <nav className="flex flex-col gap-2 p-6">
             {SITE.nav.map((n) => (
