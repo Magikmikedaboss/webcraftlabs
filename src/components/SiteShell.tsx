@@ -40,6 +40,12 @@ export default function SiteShell({
             {SITE.nav.map((n) => (
               <NavLink key={n.href} href={n.href} label={n.label} />
             ))}
+            <Link
+              href="/contact"
+              className="ml-2 rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+            >
+              Book intro call
+            </Link>
           </nav>
 
           {/* Mobile Hamburger Menu */}
@@ -47,14 +53,9 @@ export default function SiteShell({
             <MobileMenu />
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Remove CTA from header on mobile */}
+          <div className="hidden md:flex items-center gap-2">
             {right}
-            <Link
-              href="/contact"
-              className="rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
-            >
-              Book intro call
-            </Link>
           </div>
         </div>
       </header>
@@ -146,6 +147,12 @@ function MobileMenu() {
                 {n.label}
               </Link>
             ))}
+            <Link
+              href="/contact"
+              className="mt-4 rounded-md bg-[var(--primary)] px-4 py-3 text-base font-semibold text-white text-center hover:opacity-90"
+            >
+              Book intro call
+            </Link>
           </nav>
         </div>
       )}

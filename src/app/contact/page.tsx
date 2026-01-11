@@ -5,22 +5,23 @@ export const metadata = {
     title: "Contact WebCraft Labs | Las Vegas Web Design & Marketing",
     description: "Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
     type: "website",
-    url: "https://webcraftlabs.studio/contact",
+    url: `${require('@/lib/site').SITE.url}/contact`,
     siteName: "WebCraft Labs",
   },
   alternates: {
-    canonical: "https://webcraftlabs.studio/contact"
+    canonical: `${require('@/lib/site').SITE.url}/contact`
   }
 };
 
 import SiteShell from "@/components/SiteShell";
 import ContactForm from "./ContactForm";
 export default function ContactPage() {
+  const { SITE } = require('@/lib/site');
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'WebCraft Labs',
-    url: 'https://webcraftlabs.studio',
+    name: SITE.name,
+    url: SITE.url,
     email: 'hello@webcraftlabs.studio',
     address: {
       '@type': 'PostalAddress',

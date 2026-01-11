@@ -59,9 +59,9 @@ export default function BuildPage() {
   }
 
   return (
-    <SiteShell
-      title={<span className="text-2xl sm:text-3xl md:text-4xl font-semibold">WebCraft Labs – Website Build Estimator</span>}
-    >
+      <SiteShell
+        title="WebCraft Labs – Website Build Estimator"
+      >
       <main className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] text-[var(--text)] overflow-x-hidden">
         <div className="mx-auto max-w-5xl px-2 py-8 md:py-14">
           <div className="space-y-3 mb-8">
@@ -81,107 +81,92 @@ export default function BuildPage() {
           </div>
           <div className="mt-8 flex flex-col lg:flex-row gap-8 min-w-0">
             {/* Left: Wizard */}
-            <section className="flex-1 rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md min-w-0">
-              <div className="grid gap-6 md:grid-cols-2 min-w-0">
-                <Field label="Business type">
-                  <Select
-                    value={projectType}
-                    onChange={(v) => setProjectType(v as ProjectType)}
-                    options={[
-                      ["service", "Service business"],
-                      ["agency", "Agency / studio"],
-                      ["ecommerce", "E-commerce / online store"],
-                      ["content", "Content / blog brand"],
-                      ["other", "Other"],
-                    ]}
-                  />
-                </Field>
-
-                <Field label="Primary goal">
-                  <Select
-                    value={goal}
-                    onChange={(v) => setGoal(v as Goal)}
-                    options={[
-                      ["leads", "Get leads / bookings"],
-                      ["sales", "Sell a product"],
-                      ["brand", "Build credibility / brand presence"],
-                      ["seo", "Grow traffic (SEO/content)"],
-                    ]}
-                  />
-                </Field>
-
-                <Field label={`Pages (estimate): ${pages}`}>
-                  <input
-                    type="range"
-                    min={1}
-                    max={10}
-                    value={pages}
-                    onChange={(e) => setPages(parseInt(e.target.value, 10))}
-                    className="w-full"
-                  />
-                  <div className="mt-2 text-xs text-[var(--muted)]">
-                    We may recommend more pages depending on features selected.
-                  </div>
-                </Field>
-
-                <Field label="Design level">
-                  <Select
-                    value={design}
-                    onChange={(v) => setDesign(v as DesignLevel)}
-                    options={[
-                      ["template", "Template-based (fast, proven layouts)"],
-                      ["custom", "Custom design (brand system + unique layouts)"],
-                    ]}
-                  />
-                </Field>
-
-                <Field label="Content readiness">
-                  <Select
-                    value={content}
-                    onChange={(v) => setContent(v as ContentReadiness)}
-                    options={[
-                      ["ready", "Content is ready"],
-                      ["assist", "Need light copy assistance"],
-                      ["full", "Need full copywriting"],
-                    ]}
-                  />
-                </Field>
-
-                <Field label="Timeline">
-                  <Select
-                    value={timeline}
-                    onChange={(v) => setTimeline(v as Timeline)}
-                    options={[
-                      ["standard", "Standard"],
-                      ["rush", "Rush (priority scheduling)"],
-                    ]}
-                  />
-                </Field>
+            <section className="flex-1 min-w-0">
+              {/* Project Info Group */}
+              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md min-w-0 mb-8">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-blue-900 mb-2">Project Info</h2>
+                  <p className="text-sm text-[var(--muted)]">Tell us about your project goals and needs.</p>
+                </div>
+                <div className="grid gap-6 md:grid-cols-2 min-w-0">
+                  <Field label="Business type">
+                    <Select
+                      value={projectType}
+                      onChange={(v) => setProjectType(v as ProjectType)}
+                      options={[
+                        ["service", "Service business"],
+                        ["agency", "Agency / studio"],
+                        ["ecommerce", "E-commerce / online store"],
+                        ["content", "Content / blog brand"],
+                        ["other", "Other"],
+                      ]}
+                    />
+                  </Field>
+                  <Field label="Primary goal">
+                    <Select
+                      value={goal}
+                      onChange={(v) => setGoal(v as Goal)}
+                      options={[
+                        ["leads", "Get leads / bookings"],
+                        ["sales", "Sell a product"],
+                        ["brand", "Build credibility / brand presence"],
+                        ["seo", "Grow traffic (SEO/content)"],
+                      ]}
+                    />
+                  </Field>
+                  <Field label={`Pages (estimate): ${pages}`}>
+                    <input
+                      type="range"
+                      min={1}
+                      max={10}
+                      value={pages}
+                      onChange={(e) => setPages(parseInt(e.target.value, 10))}
+                      className="w-full"
+                    />
+                    <div className="mt-2 text-xs text-[var(--muted)]">
+                      We may recommend more pages depending on features selected.
+                    </div>
+                  </Field>
+                  <Field label="Design level">
+                    <Select
+                      value={design}
+                      onChange={(v) => setDesign(v as DesignLevel)}
+                      options={[
+                        ["template", "Template-based (fast, proven layouts)"],
+                        ["custom", "Custom design (brand system + unique layouts)"],
+                      ]}
+                    />
+                  </Field>
+                  <Field label="Content readiness">
+                    <Select
+                      value={content}
+                      onChange={(v) => setContent(v as ContentReadiness)}
+                      options={[
+                        ["ready", "Content is ready"],
+                        ["assist", "Need light copy assistance"],
+                        ["full", "Need full copywriting"],
+                      ]}
+                    />
+                  </Field>
+                  <Field label="Timeline">
+                    <Select
+                      value={timeline}
+                      onChange={(v) => setTimeline(v as Timeline)}
+                      options={[
+                        ["standard", "Standard"],
+                        ["rush", "Rush (priority scheduling)"],
+                      ]}
+                    />
+                  </Field>
+                </div>
               </div>
 
-              {/* Maintenance Plan */}
-              <div className="mt-8">
-                <Field label="Maintenance plan">
-                  <select
-                    value={q.maintenancePlan}
-                    onChange={e => setQField("maintenancePlan", e.target.value as MaintenancePlanId)}
-                    className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
-                  >
-                    {MAINTENANCE_PLANS.map(plan => (
-                      <option key={plan.id} value={plan.id}>
-                        {plan.label} {plan.monthly ? `($${plan.monthly}/mo)` : ""}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="mt-2 text-xs text-[var(--muted)] italic">
-                    {MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan)?.includes.join(", ")}
-                  </div>
-                </Field>
-              </div>
-
-              {/* Features */}
-              <div className="mt-8">
-                <div className="text-base font-semibold mb-2 text-gray-700">Features</div>
+              {/* Features Group */}
+              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md min-w-0 mb-8">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-blue-900 mb-2">Features</h2>
+                  <p className="text-sm text-[var(--muted)]">Select add-ons and integrations for your build.</p>
+                </div>
                 <div className="grid gap-3 md:grid-cols-2">
                   {ADDONS.map((a) => (
                     <label
@@ -205,14 +190,13 @@ export default function BuildPage() {
                 </div>
               </div>
 
-              {/* Project Details (Final Step) */}
-              <div className="mt-10 border-t border-[var(--border)] pt-8">
-                <div className="text-lg font-bold text-gray-800 mb-1">Project Details <span className="font-normal text-gray-500">(optional)</span></div>
-                <p className="mt-1 text-sm text-gray-500">
-                  Add context for your quote. This info is included in the build sheet.
-                </p>
-
-                <div className="mt-5 grid gap-4 md:grid-cols-2">
+              {/* Contact Details Group */}
+              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md min-w-0">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-blue-900 mb-2">Contact Details <span className="font-normal text-gray-500 text-base">(optional)</span></h2>
+                  <p className="text-sm text-[var(--muted)]">Add context for your quote. This info is included in the build sheet.</p>
+                </div>
+                <div className="grid gap-4 md:grid-cols-2">
                   <Field label="Name">
                     <input
                       value={q.name}
@@ -221,7 +205,6 @@ export default function BuildPage() {
                       placeholder="Your name"
                     />
                   </Field>
-
                   <Field label="Email">
                     <input
                       value={q.email}
@@ -230,7 +213,6 @@ export default function BuildPage() {
                       placeholder="you@company.com"
                     />
                   </Field>
-
                   <Field label="Business name">
                     <input
                       value={q.business}
@@ -239,7 +221,6 @@ export default function BuildPage() {
                       placeholder="Business / brand"
                     />
                   </Field>
-
                   <Field label="Existing website (optional)">
                     <input
                       value={q.website}
@@ -248,7 +229,6 @@ export default function BuildPage() {
                       placeholder="https://"
                     />
                   </Field>
-
                   <Field label="Preferred platform/framework">
                     <select
                       value={q.frameworkPref}
@@ -310,29 +290,45 @@ export default function BuildPage() {
             </section>
 
             {/* Right: Output */}
-            <aside className="w-full lg:w-[370px] rounded-2xl shadow-2xl border border-[var(--border)] bg-gradient-to-br from-white/95 to-blue-50/80 p-6 md:p-8 flex flex-col gap-6">
+
+            <aside className="w-full lg:w-[370px] rounded-2xl shadow-2xl border border-[var(--border)] bg-gradient-to-br from-white/95 to-blue-50/80 p-6 md:p-8 flex flex-col gap-8">
               <div className="text-base font-bold text-gray-800 tracking-tight mb-2">Estimate</div>
 
-              <div className="rounded-xl border border-[var(--border)] bg-white/80 p-5 flex flex-col gap-2">
-                <Row k="Tier" v={est.tier.label} />
-                <Row k="Pages (normalized)" v={`${est.normalizedPages}`} />
-                <Row k="Timeline" v={`${est.weeksLow}–${est.weeksHigh} weeks`} />
-                <Row
-                  k="Price range"
-                  v={`${est.priceLow.toLocaleString(undefined, {
-                    style: "currency",
-                    currency: "USD",
-                    maximumFractionDigits: 0,
-                  })} – ${est.priceHigh.toLocaleString(undefined, {
-                    style: "currency",
-                    currency: "USD",
-                    maximumFractionDigits: 0,
-                  })}`}
-                />
-                <Row
-                  k="Maintenance"
-                  v={maintenance.monthly ? `$${maintenance.monthly}/mo` : "Optional (none selected)"}
-                />
+              {/* Premium Estimate Card */}
+              <div className="rounded-3xl border-2 border-yellow-400 bg-gradient-to-br from-white/90 to-yellow-50/60 shadow-2xl p-8 flex flex-col gap-6">
+                {/* Price Range Main Focus */}
+                <div className="flex flex-col items-center justify-center mb-2">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-yellow-600 tracking-tight drop-shadow-lg">
+                    {`${est.priceLow.toLocaleString(undefined, {
+                      style: "currency",
+                      currency: "USD",
+                      maximumFractionDigits: 0,
+                    })} – ${est.priceHigh.toLocaleString(undefined, {
+                      style: "currency",
+                      currency: "USD",
+                      maximumFractionDigits: 0,
+                    })}`}
+                  </span>
+                  <span className="mt-2 text-xs font-semibold text-yellow-700 bg-yellow-100 rounded-full px-3 py-1">Estimated range</span>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="flex flex-col items-start">
+                    <span className="font-bold text-gray-700">Tier</span>
+                    <span className="text-gray-900">{est.tier.label}</span>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="font-bold text-gray-700">Pages</span>
+                    <span className="text-gray-900">{est.normalizedPages}</span>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="font-bold text-gray-700">Timeline</span>
+                    <span className="text-gray-900">{est.weeksLow}–{est.weeksHigh} weeks</span>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="font-bold text-gray-700">Maintenance</span>
+                    <span className="text-gray-900">{maintenance.monthly ? `$${maintenance.monthly}/mo` : "Optional (none selected)"}</span>
+                  </div>
+                </div>
               </div>
 
               {est.reasons.length > 0 && (
@@ -351,13 +347,13 @@ export default function BuildPage() {
                 <textarea
                   readOnly
                   value={est.buildSheetText}
-                  className="mt-2 h-64 w-full rounded-lg border border-[var(--border)] bg-white p-3 text-xs text-gray-800 shadow-inner"
+                  className="mt-2 h-64 w-full rounded-2xl border-2 border-yellow-200 bg-gradient-to-br from-white/90 to-yellow-50/40 p-4 text-xs text-gray-800 shadow-inner"
                 />
                 <button
                   type="button"
                   onClick={() => navigator.clipboard.writeText(est.buildSheetText)}
-                  className="mt-3 w-full sm:w-auto rounded-lg border border-blue-200 bg-gradient-to-r from-blue-100 to-blue-200 px-4 py-2 font-semibold text-blue-900 hover:from-blue-200 hover:to-blue-100 transition"
-                  style={{ minHeight: 44 }}
+                  className="mt-3 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 transition"
+                  style={{ minHeight: 48 }}
                 >
                   Copy build sheet
                 </button>
