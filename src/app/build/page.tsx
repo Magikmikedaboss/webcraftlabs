@@ -15,8 +15,10 @@ import {
 } from "@/lib/estimator/types";
 import { estimate } from "@/lib/estimator/engine";
 import SiteShell from "@/components/SiteShell";
+import FancySelect from "@/components/Select";
 
 export default function BuildPage() {
+    const [copying, setCopying] = useState(false);
   // Wizard core
   const [projectType, setProjectType] = useState<ProjectType>("service");
   const [goal, setGoal] = useState<Goal>("leads");
@@ -38,9 +40,10 @@ export default function BuildPage() {
     maintenancePlan: "none",
   });
 
-  const spec: BuildSpec = { projectType, goal, pages, design, timeline, content, features };
-
-  const est = useMemo(() => estimate(spec, q), [spec, q]);
+  const est = useMemo(() => {
+    const spec: BuildSpec = { projectType, goal, pages, design, timeline, content, features };
+    return estimate(spec, q);
+  }, [projectType, goal, pages, design, timeline, content, features, q]);
   const maintenance = useMemo(() => {
     return (
       MAINTENANCE_PLANS.find((p) => p.id === q.maintenancePlan) ??
@@ -90,7 +93,7 @@ export default function BuildPage() {
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 min-w-0">
                   <Field label="Business type">
-                    <Select
+                    <FancySelect
                       value={projectType}
                       onChange={(v) => setProjectType(v as ProjectType)}
                       options={[
@@ -103,7 +106,7 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Primary goal">
-                    <Select
+                    <FancySelect
                       value={goal}
                       onChange={(v) => setGoal(v as Goal)}
                       options={[
@@ -121,14 +124,71 @@ export default function BuildPage() {
                       max={10}
                       value={pages}
                       onChange={(e) => setPages(parseInt(e.target.value, 10))}
-                      className="w-full"
+                      className="range-slider w-full h-2 bg-gradient-to-r from-blue-200 to-blue-400 rounded-full appearance-none cursor-pointer"
+                      style={{
+                        height: '12px',
+                        background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(pages - 1) * 11.11}%, #e5e7eb ${(pages - 1) * 11.11}%, #e5e7eb 100%)`
+                      }}
                     />
+                    <style jsx>{`
+                      .range-slider::-webkit-slider-thumb {
+                        appearance: none;
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                        cursor: pointer;
+                        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+                        border: 3px solid white;
+                        transition: all 0.2s;
+                      }
+                      .range-slider::-webkit-slider-thumb:hover {
+                        transform: scale(1.1);
+                        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+                      }
+                      .range-slider::-webkit-slider-thumb:active {
+                        transform: scale(0.95);
+                      }
+                      .range-slider::-moz-range-thumb {
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                        cursor: pointer;
+                        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+                        border: 3px solid white;
+                        transition: all 0.2s;
+                      }
+                      .range-slider::-ms-thumb {
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                        cursor: pointer;
+                        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+                        border: 3px solid white;
+                        transition: all 0.2s;
+                      }
+                      .range-slider:focus {
+                        outline: none;
+                        box-shadow: 0 0 0 4px #bfdbfe;
+                      }
+                      .range-slider::-webkit-slider-runnable-track {
+                        height: 12px;
+                        border-radius: 6px;
+                        background: transparent;
+                      }
+                      .range-slider::-ms-fill-lower,
+                      .range-slider::-ms-fill-upper {
+                        background: transparent;
+                      }
+                    `}</style>
                     <div className="mt-2 text-xs text-[var(--muted)]">
                       We may recommend more pages depending on features selected.
                     </div>
                   </Field>
                   <Field label="Design level">
-                    <Select
+                    <FancySelect
                       value={design}
                       onChange={(v) => setDesign(v as DesignLevel)}
                       options={[
@@ -138,7 +198,7 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Content readiness">
-                    <Select
+                    <FancySelect
                       value={content}
                       onChange={(v) => setContent(v as ContentReadiness)}
                       options={[
@@ -149,7 +209,7 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Timeline">
-                    <Select
+                    <FancySelect
                       value={timeline}
                       onChange={(v) => setTimeline(v as Timeline)}
                       options={[
@@ -177,7 +237,8 @@ export default function BuildPage() {
                         type="checkbox"
                         checked={features.includes(a.id)}
                         onChange={() => toggleFeature(a.id)}
-                        className="mt-1 accent-blue-500"
+                        className="w-6 h-6 rounded-md border-2 border-gray-300 text-blue-500 focus:ring-4 focus:ring-blue-100 focus:ring-offset-0 transition-all duration-200 cursor-pointer checked:bg-blue-500 checked:border-blue-500"
+                        style={{ minWidth: 24, minHeight: 24 }}
                       />
                       <span>
                         <span className="block font-medium text-gray-900">{a.label}</span>
@@ -230,21 +291,19 @@ export default function BuildPage() {
                     />
                   </Field>
                   <Field label="Preferred platform/framework">
-                    <select
+                    <FancySelect
                       value={q.frameworkPref}
-                      onChange={(e) =>
-                        setQField("frameworkPref", e.target.value as QuoteDetails["frameworkPref"])
-                      }
-                      className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
-                    >
-                      <option value="none">No preference (recommended)</option>
-                      <option value="nextjs">Next.js</option>
-                      <option value="wordpress">WordPress</option>
-                      <option value="shopify">Shopify</option>
-                      <option value="webflow">Webflow</option>
-                      <option value="squarespace">Squarespace</option>
-                      <option value="other">Other</option>
-                    </select>
+                      onChange={(v) => setQField("frameworkPref", v as QuoteDetails["frameworkPref"])}
+                      options={[
+                        ["none", "No preference (recommended)"],
+                        ["nextjs", "Next.js"],
+                        ["wordpress", "WordPress"],
+                        ["shopify", "Shopify"],
+                        ["webflow", "Webflow"],
+                        ["squarespace", "Squarespace"],
+                        ["other", "Other"],
+                      ]}
+                    />
 
                     {q.frameworkPref === "other" && (
                       <input
@@ -256,20 +315,14 @@ export default function BuildPage() {
                     )}
                   </Field>
                   <Field label="Monthly maintenance (optional)">
-                    <select
+                    <FancySelect
                       value={q.maintenancePlan}
-                      onChange={(e) =>
-                        setQField("maintenancePlan", e.target.value as MaintenancePlanId)
-                      }
-                      className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
-                    >
-                      {MAINTENANCE_PLANS.map((p) => (
-                        <option key={p.id} value={p.id}>
-                          {p.label}
-                          {p.monthly ? ` — $${p.monthly}/mo` : ""}
-                        </option>
-                      ))}
-                    </select>
+                      onChange={(v) => setQField("maintenancePlan", v as MaintenancePlanId)}
+                      options={MAINTENANCE_PLANS.map((p) => [
+                        p.id,
+                        p.monthly ? `${p.label} — $${p.monthly}/mo` : p.label,
+                      ])}
+                    />
 
                     <div className="mt-2 text-xs text-gray-500 italic">
                       Optional. You can decide after launch too.
@@ -280,9 +333,10 @@ export default function BuildPage() {
                     <textarea
                       value={q.notes}
                       onChange={(e) => setQField("notes", e.target.value)}
-                      className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
+                      className="w-full rounded-xl border-2 border-gray-300 bg-white px-4 py-4 text-base font-medium shadow-sm transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none hover:border-gray-400 hover:shadow-md resize-none"
                       placeholder="Integrations, examples, style notes, deadlines..."
-                      rows={5}
+                      rows={6}
+                      style={{ minHeight: 120 }}
                     />
                   </Field>
                 </div>
@@ -351,11 +405,18 @@ export default function BuildPage() {
                 />
                 <button
                   type="button"
-                  onClick={() => navigator.clipboard.writeText(est.buildSheetText)}
-                  className="mt-3 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 transition"
+                  onClick={async () => {
+                    setCopying(true);
+                    await navigator.clipboard.writeText(est.buildSheetText);
+                    setTimeout(() => setCopying(false), 800);
+                  }}
+                  className="mt-3 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 transition active:scale-[0.98] transition-transform duration-100 flex items-center justify-center"
                   style={{ minHeight: 48 }}
                 >
                   Copy build sheet
+                  {copying && (
+                    <span className="inline-block w-4 h-4 border-2 border-yellow-700 border-t-transparent rounded-full animate-spin ml-2" />
+                  )}
                 </button>
               </div>
             </aside>
@@ -375,36 +436,6 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function Select({
-  value,
-  onChange,
-  options,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  options: Array<[string, string]>;
-}) {
-  return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full border border-[var(--border)] bg-[var(--bg)] p-2 text-sm"
-    >
-      {options.map(([v, label]: [string, string]) => (
-        <option key={v} value={v}>
-          {label}
-        </option>
-      ))}
-    </select>
-  );
-}
 
-function Row({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="flex items-center justify-between py-1 text-sm">
-      <div className="text-[var(--muted)]">{k}</div>
-      <div className="font-semibold">{v}</div>
-    </div>
-  );
-}
+
 

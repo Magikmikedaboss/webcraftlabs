@@ -9,5 +9,5 @@ export const SITE = {
     { href: "/news", label: "News" },
     { href: "/contact", label: "Contact" },
   ],
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcraftlabs.studio",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcraftlabz.com",
 } as const;

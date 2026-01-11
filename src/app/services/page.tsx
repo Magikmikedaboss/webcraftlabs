@@ -1,5 +1,5 @@
 import SiteShell from "@/components/SiteShell";
-import Card from "@/components/Card";
+// import Card from "@/components/Card";
 import Link from "next/link";
 import Image from "next/image";
 

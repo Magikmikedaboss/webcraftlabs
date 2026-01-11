@@ -28,15 +28,19 @@ export default function ContactForm() {
     }
     try {
       // Replace with your API endpoint
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (process.env.NEXT_PUBLIC_CONTACT_CSRF_TOKEN) {
+        headers["x-csrf-token"] = process.env.NEXT_PUBLIC_CONTACT_CSRF_TOKEN;
+      }
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ name, email, project }),
       });
       if (!res.ok) throw new Error("Failed to send request.");
       setSuccess("Your request was sent! We'll reply soon.");
       form.reset();
-    } catch (err) {
+    } catch {
       setError("There was a problem sending your request. Please try again later.");
     } finally {
       setLoading(false);

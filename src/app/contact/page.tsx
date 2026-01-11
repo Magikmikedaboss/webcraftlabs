@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/site";
 export const metadata = {
   title: "Contact WebCraft Labs | Las Vegas Web Design & Marketing",
   description: "Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
@@ -5,24 +6,24 @@ export const metadata = {
     title: "Contact WebCraft Labs | Las Vegas Web Design & Marketing",
     description: "Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
     type: "website",
-    url: `${require('@/lib/site').SITE.url}/contact`,
+    url: new URL('/contact', SITE.url).toString(),
     siteName: "WebCraft Labs",
   },
   alternates: {
-    canonical: `${require('@/lib/site').SITE.url}/contact`
+    canonical: new URL('/contact', SITE.url).toString()
   }
 };
 
 import SiteShell from "@/components/SiteShell";
 import ContactForm from "./ContactForm";
+import Script from "next/script";
 export default function ContactPage() {
-  const { SITE } = require('@/lib/site');
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: SITE.name,
     url: SITE.url,
-    email: 'hello@webcraftlabs.studio',
+    email: 'hello@webcraftlabz.com',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Las Vegas',
@@ -31,13 +32,15 @@ export default function ContactPage() {
     },
     contactPoint: [{
       '@type': 'ContactPoint',
-      email: 'hello@webcraftlabs.studio',
+      email: 'hello@webcraftlabz.com',
       contactType: 'customer support',
     }],
   };
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Script id="contact-jsonld" type="application/ld+json">
+        {JSON.stringify(jsonLd)}
+      </Script>
       <SiteShell
         title="Contact WebCraft Labs"
         intro="Let’s build something remarkable. Reach out for a personalized quote, marketing strategy, or to connect with our team in Las Vegas. We reply fast—usually within 24 hours."
@@ -58,7 +61,7 @@ export default function ContactPage() {
                 <div className="text-sm font-semibold text-blue-900">WebCraft Labs HQ</div>
                 <div className="mt-2 text-sm text-[var(--muted)]">
                   Las Vegas, NV & Remote<br />
-                  <span className="font-semibold text-blue-900">hello@webcraftlabs.studio</span>
+                  <span className="font-semibold text-blue-900">hello@webcraftlabz.com</span>
                 </div>
                 <div className="mt-6 text-sm">
                   <div className="font-semibold">Typical turnaround</div>

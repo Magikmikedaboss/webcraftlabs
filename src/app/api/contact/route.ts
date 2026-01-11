@@ -10,17 +10,28 @@ const ContactSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  // CSRF protection: check custom header or token (for demo, require 'x-csrf-token')
-  const csrfToken = req.headers.get('x-csrf-token');
-  if (!csrfToken || csrfToken !== process.env.CONTACT_CSRF_TOKEN) {
-    return NextResponse.json({ error: 'Invalid CSRF token.' }, { status: 403 });
+  // CSRF protection: only require if CONTACT_CSRF_TOKEN is set
+  const requiredCsrf = process.env.CONTACT_CSRF_TOKEN;
+  if (requiredCsrf) {
+    const csrfToken = req.headers.get('x-csrf-token');
+    if (!csrfToken || csrfToken !== requiredCsrf) {
+      return NextResponse.json({ error: 'Invalid CSRF token.' }, { status: 403 });
+    }
   }
 
   // Rate limiting by IP
-  const ip = req.headers.get('x-forwarded-for') || 'unknown';
-  const rateLimitResult = await checkRateLimit(ip as string);
+  const xff = req.headers.get('x-forwarded-for');
+  const ip = xff ? xff.split(',')[0].trim() : 'unknown';
+  const rateLimitResult = await checkRateLimit();
   if (!rateLimitResult.allowed) {
-    return NextResponse.json({ error: 'Rate limit exceeded. Please try again later.' }, { status: 429 });
+    const headers: Record<string, string> = {};
+    if (rateLimitResult.retryAfter) {
+      headers['Retry-After'] = String(rateLimitResult.retryAfter);
+    }
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Please try again later.' },
+      { status: 429, headers }
+    );
   }
 
   // Parse and validate body
@@ -37,13 +48,10 @@ export async function POST(req: NextRequest) {
   // Zod validation
   const result = ContactSchema.safeParse(data);
   if (!result.success) {
-    const errorMsg = result.error.errors.map(e => e.message).join(' ');
+    const errorMsg = result.error.issues.map((e: z.ZodIssue) => e.message).join(' ');
     return NextResponse.json({ error: errorMsg }, { status: 400 });
   }
-  // Sanitize fields
-  const name = result.data.name.trim();
-  const email = result.data.email.trim().toLowerCase();
-  const project = result.data.project.trim();
+  // Sanitize fields (not used, so skip assignment)
 
   // TODO: Save to database or send email
 
