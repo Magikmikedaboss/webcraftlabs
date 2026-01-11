@@ -8,7 +8,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="rounded-md px-3 py-2 text-sm font-semibold text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--text)]"
+      className="rounded-lg px-3.5 py-2 text-sm font-semibold text-gray-700 transition-all duration-200 hover:text-blue-700 hover:bg-blue-50/50"
     >
       {label}
     </Link>
@@ -29,8 +29,8 @@ export default function SiteShell({
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <header className={styles.header}>
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+          <Link href="/" className="flex items-center gap-3 font-bold text-lg tracking-tight text-gray-900 transition-opacity hover:opacity-90">
             <span className={styles.logoMark} aria-hidden="true" />
             <span>{SITE.name}</span>
           </Link>
@@ -42,7 +42,7 @@ export default function SiteShell({
             ))}
             <Link
               href="/contact"
-              className="ml-2 rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+              className="ml-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/40 hover:scale-105 active:scale-95"
             >
               Book intro call
             </Link>
@@ -64,7 +64,7 @@ export default function SiteShell({
         <section className="border-b border-[var(--border)]">
           <div className="mx-auto max-w-7xl px-6 py-12">
             {title && <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold">{title}</h1>}
-            {intro && <p className="mt-3 max-w-2xl text-base sm:text-lg md:text-xl text-[var(--muted)]">{intro}</p>}
+            {intro && <div className="mt-3 max-w-2xl text-base sm:text-lg md:text-xl text-[var(--muted)]">{intro}</div>}
           </div>
         </section>
       )}

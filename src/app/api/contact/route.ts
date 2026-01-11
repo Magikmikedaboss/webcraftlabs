@@ -12,7 +12,7 @@ const ContactSchema = z.object({
 // CSRF protection is now handled by edge-csrf middleware in src/middleware.ts
 export async function POST(req: NextRequest) {
 
-  // Rate limiting by IP
+  // ⚠️ Rate limiting by IP (dev-only - see rateLimit.ts for production alternatives)
   const xff = req.headers.get('x-forwarded-for');
   const ip = xff ? xff.split(',')[0].trim() : 'unknown';
   const rateLimitResult = checkRateLimit(ip);
