@@ -1,14 +1,7 @@
-import createMiddleware from 'edge-csrf';
 import { NextRequest, NextResponse } from 'next/server';
 
-const csrfMiddleware = createMiddleware({
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-  },
-});
-
 export async function middleware(request: NextRequest) {
-  // Check Origin/Referer headers BEFORE CSRF middleware
+  // CSRF Protection via Origin/Referer validation
   const origin = request.headers.get('origin');
   const referer = request.headers.get('referer');
   const method = request.method;
@@ -44,14 +37,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
   }
   
-  // Apply CSRF protection AFTER origin validation
-  const response = NextResponse.next();
-  const csrfError = await csrfMiddleware(request, response);
-  if (csrfError) {
-    return NextResponse.json({ error: 'Invalid CSRF token.' }, { status: 403 });
-  }
-  
-  return response;
+  // Allow request to proceed
+  return NextResponse.next();
 }
 
 export const config = {

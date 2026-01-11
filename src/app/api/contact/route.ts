@@ -9,7 +9,7 @@ const ContactSchema = z.object({
   website: z.string().optional(), // honeypot
 });
 
-// CSRF protection is now handled by edge-csrf middleware in src/middleware.ts
+// CSRF protection is handled by origin/referer validation in src/middleware.ts
 export async function POST(req: NextRequest) {
 
   // ⚠️ Rate limiting by IP (dev-only - see rateLimit.ts for production alternatives)
