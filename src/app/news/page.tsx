@@ -1,6 +1,16 @@
 
 import SiteShell from "@/components/SiteShell";
 import Link from "next/link";
+import { SITE } from "@/lib/site";
+
+export const metadata = {
+  title: `News | ${SITE.name}`,
+  description: 'Latest updates and announcements from WebCraft Labz.',
+  openGraph: {
+    title: `News | ${SITE.name}`,
+    description: 'Latest updates and announcements.',
+  },
+};
 
 const ITEMS = [
   {

@@ -76,7 +76,7 @@ export default function BuildPage() {
         title="WebCraft Labs – Website Build Estimator"
       >
       <main className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] text-[var(--text)] overflow-x-hidden">
-        <div className="mx-auto max-w-5xl px-2 py-8 md:py-14">
+        <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 md:py-14">
           <div className="space-y-3 mb-8">
             <div className="text-base sm:text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight flex items-center gap-2">
               <span className="inline-block w-7 h-7 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full mr-2"></span>
@@ -92,16 +92,16 @@ export default function BuildPage() {
               <li>Fill in your details for a personalized build sheet you can copy or share.</li>
             </ul>
           </div>
-          <div className="mt-8 flex flex-col lg:flex-row gap-8 min-w-0">
+          <div className="mt-8 flex flex-col lg:flex-row gap-4 sm:gap-6 md:gap-8 min-w-0">
             {/* Left: Wizard */}
             <section className="flex-1 min-w-0">
               {/* Project Info Group */}
-              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md min-w-0 mb-8">
+              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-md min-w-0 mb-8">
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-blue-900 mb-2">Project Info</h2>
                   <p className="text-sm text-[var(--muted)]">Tell us about your project goals and needs.</p>
                 </div>
-                <div className="grid gap-6 md:grid-cols-2 min-w-0">
+                <div className="grid gap-4 sm:gap-6 md:grid-cols-2 min-w-0">
                   <Field label="Business type">
                     <RadixSelect
                       value={projectType}
@@ -186,12 +186,12 @@ export default function BuildPage() {
               </div>
 
               {/* Features Group */}
-              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md min-w-0 mb-8">
+              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-md min-w-0 mb-8">
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-blue-900 mb-2">Features</h2>
                   <p className="text-sm text-[var(--muted)]">Select add-ons and integrations for your build.</p>
                 </div>
-                <div className="grid gap-3 md:grid-cols-2">
+                <div className="grid gap-2 sm:gap-3 md:grid-cols-2">
                   {ADDONS.map((a) => (
                     <label
                       key={a.id}
@@ -201,8 +201,7 @@ export default function BuildPage() {
                         type="checkbox"
                         checked={features.includes(a.id)}
                         onChange={() => toggleFeature(a.id)}
-                        className="w-6 h-6 rounded-md border-2 border-gray-300 text-blue-500 focus:ring-4 focus:ring-blue-100 focus:ring-offset-0 transition-all duration-200 cursor-pointer checked:bg-blue-500 checked:border-blue-500"
-                        style={{ minWidth: 24, minHeight: 24 }}
+                        className="min-w-[24px] min-h-[24px] w-6 h-6 rounded-md border-2 border-gray-300 text-blue-500 focus:ring-4 focus:ring-blue-100 focus:ring-offset-0 transition-all duration-200 cursor-pointer checked:bg-blue-500 checked:border-blue-500 hover:border-blue-400"
                       />
                       <span>
                         <span className="block font-medium text-gray-900">{a.label}</span>
@@ -216,7 +215,7 @@ export default function BuildPage() {
               </div>
 
               {/* Contact Details Group */}
-              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-6 md:p-10 backdrop-blur-md min-w-0">
+              <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-md min-w-0">
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-blue-900 mb-2">Contact Details <span className="font-normal text-gray-500 text-base">(optional)</span></h2>
                   <p className="text-sm text-[var(--muted)]">Add context for your quote. This info is included in the build sheet.</p>
@@ -297,10 +296,9 @@ export default function BuildPage() {
                     <textarea
                       value={q.notes}
                       onChange={(e) => setQField("notes", e.target.value)}
-                      className="w-full rounded-xl border-2 border-gray-300 bg-white px-4 py-4 text-base font-medium shadow-sm transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none hover:border-gray-400 hover:shadow-md resize-none"
+                      className="min-h-[120px] w-full rounded-xl border-2 border-gray-300 bg-white px-4 py-4 text-base font-medium shadow-sm transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none hover:border-gray-400 hover:shadow-md resize-none"
                       placeholder="Integrations, examples, style notes, deadlines..."
                       rows={6}
-                      style={{ minHeight: 120 }}
                     />
                   </Field>
                 </div>
@@ -309,11 +307,11 @@ export default function BuildPage() {
 
             {/* Right: Output */}
 
-            <aside className="w-full lg:w-[370px] rounded-2xl shadow-2xl border border-[var(--border)] bg-gradient-to-br from-white/95 to-blue-50/80 p-6 md:p-8 flex flex-col gap-8">
+            <aside className="w-full lg:w-[370px] rounded-2xl shadow-2xl border border-[var(--border)] bg-gradient-to-br from-white/95 to-blue-50/80 p-4 sm:p-6 md:p-8 flex flex-col gap-4 sm:gap-6 md:gap-8">
               <div className="text-base font-bold text-gray-800 tracking-tight mb-2">Estimate</div>
 
               {/* Premium Estimate Card */}
-              <div className="rounded-3xl border-2 border-yellow-400 bg-gradient-to-br from-white/90 to-yellow-50/60 shadow-2xl p-8 flex flex-col gap-6">
+              <div className="rounded-3xl border-2 border-yellow-400 bg-gradient-to-br from-white/90 to-yellow-50/60 shadow-2xl p-4 sm:p-6 md:p-8 flex flex-col gap-4 sm:gap-5 md:gap-6">
                 {/* Price Range Main Focus */}
                 <div className="flex flex-col items-center justify-center mb-2">
                   <span className="text-3xl sm:text-4xl font-extrabold text-yellow-600 tracking-tight drop-shadow-lg">
@@ -387,8 +385,7 @@ export default function BuildPage() {
                       copyTimeoutRef.current = window.setTimeout(() => setCopying(false), 800);
                     }
                   }}
-                  className="mt-3 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 transition active:scale-[0.98] transition-transform duration-100 flex items-center justify-center"
-                  style={{ minHeight: 48 }}
+                  className="min-h-[48px] mt-3 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"
                 >
                   Copy build sheet
                   {copying && (

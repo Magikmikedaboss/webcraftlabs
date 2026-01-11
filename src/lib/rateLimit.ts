@@ -25,14 +25,18 @@ const ipMap = new Map<string, { count: number; resetAt: number }>();
 const CLEANUP_THRESHOLD = 100; // Trigger cleanup when map exceeds this size
 const CLEANUP_BATCH_SIZE = 10; // Max entries to clean per invocation
 
+// Module-level flag to warn only once about serverless usage
+let warnedServerlessRateLimit = false;
+
 /**
  * Check rate limit for given IP address
  * ⚠️ Only effective in local development - see warning above
  */
 export function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: number } {
   // In production serverless, log warning on first use
-  if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+  if (!warnedServerlessRateLimit && process.env.NODE_ENV === 'production' && (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.K_SERVICE || process.env.FUNCTION_NAME)) {
     console.warn('[RATE LIMIT] Using in-memory rate limiting in serverless environment - THIS WILL NOT WORK. Use Vercel KV or Upstash Redis instead.');
+    warnedServerlessRateLimit = true;
   }
   const now = Date.now();
   

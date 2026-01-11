@@ -99,8 +99,7 @@ export default function ContactForm() {
       />
       <button
         type="submit"
-        className="rounded-md bg-[var(--primary)] px-4 sm:px-5 py-4 font-semibold text-white text-base hover:opacity-90 w-full sm:w-auto"
-        style={{ minHeight: 44 }}
+        className="min-h-[44px] rounded-md bg-[var(--primary)] px-4 sm:px-5 py-4 font-semibold text-white text-base hover:opacity-90 hover:shadow-lg transition-all duration-200 active:scale-[0.98] w-full sm:w-auto"
         disabled={loading}
       >
         {loading ? "Sending..." : "Send request"}

@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
       }
     }
-  } catch (error) {
+  } catch {
     // Invalid URL format in headers
     return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
   }

@@ -1,6 +1,16 @@
 
 import SiteShell from "@/components/SiteShell";
 import Link from "next/link";
+import { SITE } from "@/lib/site";
+
+export const metadata = {
+  title: `Blog | ${SITE.name}`,
+  description: 'Latest insights on web design, SEO, and digital marketing from WebCraft Labz.',
+  openGraph: {
+    title: `Blog | ${SITE.name}`,
+    description: 'Latest insights on web design, SEO, and digital marketing.',
+  },
+};
 
 const POSTS = [
   {

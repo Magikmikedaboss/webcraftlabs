@@ -2,6 +2,16 @@ import SiteShell from "@/components/SiteShell";
 // import Card from "@/components/Card";
 import Link from "next/link";
 import Image from "next/image";
+import { SITE } from "@/lib/site";
+
+export const metadata = {
+  title: `Services | ${SITE.name}`,
+  description: 'SEO-optimized website design, marketing funnels, and growth strategies.',
+  openGraph: {
+    title: `Services | ${SITE.name}`,
+    description: 'SEO-optimized website design, marketing funnels, and growth strategies.',
+  },
+};
 
 const SERVICES = [
   {
@@ -99,7 +109,7 @@ export default function ServicesPage() {
               Services Built Around You
             </h2>
             <p className="max-w-2xl text-base md:text-lg text-white/90 drop-shadow-md mb-6">
-              We don't do cookie-cutter. Every project is a partnership, every site a launchpad. Here's how we help you grow, convert, and lead in your space.
+              We don&apos;t do cookie-cutter. Every project is a partnership, every site a launchpad. Here&apos;s how we help you grow, convert, and lead in your space.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/build" className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-blue-900 shadow-lg hover:bg-blue-50 transition">
@@ -114,7 +124,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Signature Service Feature */}
-      <section className="mx-auto max-w-4xl px-6 py-10">
+      <section className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8 md:py-10">
         <div className="rounded-3xl border-2 border-[var(--primary)] bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] shadow-xl p-8 flex flex-col md:flex-row items-center gap-8">
           <Image
             src="/images/advertising-beautiful-landscape-with-trees-and-mountains-small.jpg"
@@ -143,7 +153,7 @@ export default function ServicesPage() {
           <h2 className="text-2xl font-semibold">More ways we help you grow</h2>
           <p className="mt-2 max-w-2xl mx-auto text-sm text-[var(--muted)]">From high-converting funnels to ongoing growth, our services are designed to meet you where you are and take you further.</p>
         </div>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {SERVICES.slice(1).map((s, i) => (
             <div
               key={s.title}

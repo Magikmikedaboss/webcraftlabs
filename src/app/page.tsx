@@ -49,7 +49,7 @@ type PillProps = {
 };
 function Pill({ children, className }: PillProps) {
   return (
-    <span className={`${styles.pill} inline-flex items-center px-4 py-2 text-sm font-semibold text-[var(--muted)] ${className ?? ""}`}>
+    <span className={`${styles.pill} inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-full shadow-md hover:shadow-lg hover:border-blue-300 transition-all duration-200 ${className ?? ""}`}>
       {children}
     </span>
   );
@@ -71,14 +71,15 @@ export default function HomePage() {
         <div className={styles.heroBg} />
         <div className={styles.grid} />
         <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-20 md:pb-20 md:pt-24 overflow-x-hidden">
-          <div className="grid gap-10 md:grid-cols-12 md:items-center">
+          <div className="grid gap-6 sm:gap-8 md:gap-10 md:grid-cols-12 md:items-center">
             <div className="md:col-span-7">
               <div className="flex flex-wrap gap-2">
-                <Pill className="min-w-0 max-w-full truncate">Marketing Websites</Pill>
-                <Pill className="min-w-0 max-w-full truncate">SEO + Local</Pill>
-                <Pill className="min-w-0 max-w-full truncate">Funnels + Lead Capture</Pill>
+                <Pill className="min-w-0 max-w-full truncate">Developer</Pill>
+                <Pill className="min-w-0 max-w-full truncate">Architect</Pill>
+                <Pill className="min-w-0 max-w-full truncate">Marketing and Strategy</Pill>
+                <Pill className="min-w-0 max-w-full truncate">Web Solutions</Pill>
               </div>
-              <h1 className={`mt-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] ${styles.sectionTitle}`}>
+              <h1 className={`mt-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] ${styles.sectionTitle}`}>
                 Marketing websites that{" "}
                 <span className="text-[var(--primary)]">mean business.</span>
               </h1>
@@ -117,7 +118,7 @@ export default function HomePage() {
         title="Modern Website Development, Design & SEO"
         intro={`${SITE.name} builds more than beautiful websites—we engineer high-performance, SEO-optimized platforms for marketing, growth, and results.`}
       >
-        <div className="flex flex-col md:flex-row md:items-center gap-8 mb-10">
+        <div className="flex flex-col md:flex-row md:items-center gap-4 sm:gap-6 md:gap-8 mb-10">
           <div className="flex-1 flex items-center justify-center">
             <div className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border border-[var(--border)] bg-white">
               <Image
@@ -140,7 +141,7 @@ export default function HomePage() {
                   </nav>
                 </div>
                 {/* Fake hero text */}
-                <div className="px-8 pb-8 text-left">
+                <div className="px-4 pb-4 sm:px-6 sm:pb-6 md:px-8 md:pb-8 text-left">
                   <div className="text-2xl md:text-3xl font-extrabold text-white drop-shadow-lg leading-tight mb-2">
                     Grow your business<br />with a website that works
                   </div>
@@ -157,7 +158,7 @@ export default function HomePage() {
           </div>
           <div className="flex-1 flex flex-col gap-4">
             <div className="flex items-center gap-3 mb-2">
-              <span className="inline-block w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white text-xl shadow-md">
+              <span className="inline-block w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white text-xl shadow-md">
                 <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="10" cy="10" r="10" fill="url(#paint0_linear)" />
                   <path d="M6 10.5L9 13.5L14 8.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -182,7 +183,7 @@ export default function HomePage() {
             </ul>
           </div>
         </div>
-        <div className="mt-10 rounded-2xl bg-gradient-to-br from-blue-50/40 to-cyan-50/30 border border-[var(--border)] shadow-lg px-4 py-8 md:px-10 md:py-12">
+        <div className="mt-10 rounded-2xl bg-gradient-to-br from-blue-50/40 to-cyan-50/30 border border-[var(--border)] shadow-lg px-4 py-6 sm:px-6 sm:py-8 md:px-10 md:py-12">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-blue-900 mb-2 tracking-tight">Why {SITE.name}?</h3>
             <div className="text-base text-gray-700 max-w-2xl mx-auto">Everything you need for modern, SEO-driven website design, marketing, and growth—built in.</div>
@@ -229,7 +230,7 @@ export default function HomePage() {
         title="Your 4-Step Onboarding: From Kickoff to Launch"
         intro="A simple, guided process—so you always know what’s next. We handle the details, you stay in control."
       >
-        <div className="mx-auto max-w-4xl grid gap-8 grid-cols-1 md:grid-cols-4">
+        <div className="mx-auto max-w-4xl grid gap-4 sm:gap-6 md:gap-8 grid-cols-1 md:grid-cols-4">
           {[
             {
               title: "1. Discovery Call",
@@ -278,12 +279,12 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-8 md:grid-cols-3">
+        <div className="mt-12 grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-3">
           <article className="col-span-2 flex flex-col md:flex-row rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] to-[var(--surface-2)] shadow-lg overflow-hidden">
             <div className="md:w-1/3 bg-[var(--primary)] flex items-center justify-center text-6xl text-white" aria-hidden="true">
               <BarChart2 className="w-12 h-12 text-white" />
             </div>
-            <div className="flex-1 p-8 flex flex-col justify-between">
+            <div className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
               <div>
                 <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--muted)] mb-2">
                   <span className="inline-block rounded bg-[var(--primary)]/10 px-2 py-1 font-semibold text-[var(--primary)]">Case Study</span>
@@ -337,7 +338,7 @@ export default function HomePage() {
 
       {/* Instant Estimate Section - now above final CTA */}
       <section className="mx-auto max-w-2xl px-6 py-12">
-        <div className="rounded-3xl border border-[var(--primary)] bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] shadow-lg p-8">
+        <div className="rounded-3xl border border-[var(--primary)] bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] shadow-lg p-4 sm:p-6 md:p-8">
           <div className="flex items-center justify-between">
             <div className="text-sm font-semibold">Instant estimate</div>
             <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs font-semibold text-[var(--muted)]">

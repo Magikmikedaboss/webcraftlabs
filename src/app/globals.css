@@ -10,6 +10,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Enable transitions and shadows */
+  --transition-all: all 0.2s ease-in-out;
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
