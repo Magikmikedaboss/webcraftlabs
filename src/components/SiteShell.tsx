@@ -3,6 +3,8 @@ import { SITE } from "@/lib/site";
 import styles from "./siteShell.module.css";
 import React from "react";
 import MobileMenu from "./MobileMenu";
+import Image from "next/image";
+import PoweredBy from "./PoweredBy";
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
@@ -31,7 +33,13 @@ export default function SiteShell({
       <header className={styles.header}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
           <Link href="/" className="flex items-center gap-2 font-bold text-sm sm:text-base tracking-tight text-gray-900 transition-opacity hover:opacity-90">
-            <span className={styles.logoMark} aria-hidden="true" />
+            <Image 
+              src="/images/branding/flaming-phoenix-logo-design-website-marketing-developer.svg"
+              alt={`${SITE.name} Phoenix Logo`}
+              width={32}
+              height={32}
+              className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
+            />
             <span>{SITE.name}</span>
           </Link>
 
@@ -113,8 +121,12 @@ export default function SiteShell({
               </div>
             </div>
           </div>
-          <div className="mt-6 sm:mt-8 text-center text-[10px] sm:text-xs text-[var(--muted)]">
-            <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in Las Vegas / Remote. <span className="text-blue-700">Websites that mean business.</span></span>
+          <div className="mt-6 sm:mt-8 flex flex-col items-center gap-4">
+            <div className="text-center text-[10px] sm:text-xs text-[var(--muted)]">
+              <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in Las Vegas / Remote. <span className="text-blue-700">Websites that mean business.</span></span>
+            </div>
+            {/* Example of PoweredBy badge - you can remove this from your own site and give to clients */}
+            <PoweredBy variant="light" size="sm" />
           </div>
         </div>
       </footer>
