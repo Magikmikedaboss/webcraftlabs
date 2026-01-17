@@ -1,3 +1,14 @@
+import type { Metadata } from 'next';
+import { SITE } from '@/lib/site';
+
+export const metadata: Metadata = {
+  title: `Blog | ${SITE.name}`,
+  description: 'Latest insights on web design, SEO, and digital marketing from WebCraft Labz.',
+  openGraph: {
+    title: `Blog | ${SITE.name}`,
+    description: 'Latest insights on web design, SEO, and digital marketing.',
+  },
+};
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import { getAllBlogPosts } from "@/lib/blog";

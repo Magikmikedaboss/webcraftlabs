@@ -10,6 +10,16 @@
 			"label": "lint",
 			"type": "shell",
 			"command": "next lint"
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "next build"
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "next build"
 		}
 	]
 }

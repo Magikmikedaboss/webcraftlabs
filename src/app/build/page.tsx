@@ -1,4 +1,16 @@
+
 "use client";
+import type { Metadata } from 'next';
+import { SITE } from '@/lib/site';
+
+export const metadata: Metadata = {
+  title: `Build Calculator | ${SITE.name}`,
+  description: 'Get an instant estimate for your custom website project. Configure features, pages, and integrations.',
+  openGraph: {
+    title: `Build Calculator | ${SITE.name}`,
+    description: 'Get an instant estimate for your custom website project.',
+  },
+};
 
 import { useMemo, useState, useRef, useEffect } from "react";
 import { ADDONS, MAINTENANCE_PLANS } from "@/lib/estimator/config";
@@ -277,58 +289,11 @@ export default function BuildPage() {
                         { value: "other", label: "Other" },
                       ]}
                     />
-
-                    {q.frameworkPref === "other" && (
-                      <input
-                        value={q.frameworkOther}
-                        onChange={(e) => setQField("frameworkOther", e.target.value)}
-                        className="mt-2 w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
-                        placeholder="Tell us what platform/framework"
-                      />
-                    )}
                   </Field>
-                  <Field label="Monthly maintenance (optional)">
-                    <RadixSelect
-                      value={q.maintenancePlan}
-                      onValueChange={(v) => setQField("maintenancePlan", v as MaintenancePlanId)}
-                      options={MAINTENANCE_PLANS.map((p) => ({
-                        value: p.id,
-                        label: p.monthly ? `${p.label} — $${p.monthly}/mo` : p.label,
-                      }))}
-                    />
-
-                    <div className="mt-2 text-xs text-gray-500 italic">
-                      Optional. You can decide after launch too.
-                    </div>
-                  </Field>
-
-                  <Field label="Notes / requirements">
-                    <textarea
-                      value={q.notes}
-                      onChange={(e) => setQField("notes", e.target.value)}
-                      className="w-full rounded-xl border-2 border-gray-300 bg-white px-4 py-4 text-base font-medium shadow-sm transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none hover:border-gray-400 hover:shadow-md resize-none"
-                      placeholder="Integrations, examples, style notes, deadlines..."
-                      rows={6}
-                    />
-                  </Field>
-                </div>
-              </div>
-            </section>
-
-            {/* Right: Output */}
-
-            <aside className="w-full lg:w-[370px] rounded-2xl shadow-2xl border border-[var(--border)] bg-gradient-to-br from-white/95 to-blue-50/80 p-4 sm:p-6 md:p-8 flex flex-col gap-4 sm:gap-6 md:gap-8">
-              <div className="text-base font-bold text-gray-800 tracking-tight mb-2">Estimate</div>
-
-              {/* Premium Estimate Card */}
-              <div className="rounded-3xl border-2 border-yellow-400 bg-gradient-to-br from-white/90 to-yellow-50/60 shadow-2xl p-4 sm:p-6 md:p-8 flex flex-col gap-4 sm:gap-5 md:gap-6">
-                {/* Price Range Main Focus */}
-                <div className="flex flex-col items-center justify-center mb-2">
-                  <span className="text-3xl sm:text-4xl font-extrabold text-yellow-600 tracking-tight drop-shadow-lg">
-                    {`${formatPrice(est.priceLow)} – ${formatPrice(est.priceHigh)}`}
-                  </span>
+                  {/* Additional fields or elements can be added here if needed */}
                   <span className="mt-2 text-xs font-semibold text-yellow-700 bg-yellow-100 rounded-full px-3 py-1">Estimated range</span>
                 </div>
+
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex flex-col items-start">
                     <span className="font-bold text-gray-700">Tier</span>

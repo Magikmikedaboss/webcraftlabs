@@ -1,3 +1,16 @@
+import type { Metadata } from 'next';
+import { SITE } from '@/lib/site';
+
+export const metadata: Metadata = {
+  title: SITE.name,
+  description: SITE.tagline,
+  openGraph: {
+    title: SITE.name,
+    description: SITE.tagline,
+    url: SITE.url,
+    type: 'website',
+  },
+};
 // FeatureCard component for homepage features
 import type { ReactNode } from "react";
 import { Search, Palette, Newspaper, BarChart2, Smartphone, Zap, Sprout, Rocket, PartyPopper, PencilLine, Brain, Settings2 } from "lucide-react";
@@ -35,7 +48,6 @@ function FeatureCard(props: { icon: ReactNode; title: string; text: string }) {
 import Image from "next/image";
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
-import { SITE } from "@/lib/site";
 import Section from "@/components/Section";
 import styles from "./home.module.css";
 
@@ -169,7 +181,7 @@ export default function HomePage() {
                   </defs>
                 </svg>
               </span>
-              <span className="font-bold text-xl text-blue-900">{SITE.name}</span>
+              <span className="font-bold text-lg sm:text-xl text-blue-900">{SITE.name}</span>
             </div>
             <div className="text-lg text-gray-800 font-semibold">Built for SEO, marketing, and growth—not just looks.</div>
             <ul className="list-disc pl-5 text-gray-700 text-base space-y-1">
@@ -184,7 +196,7 @@ export default function HomePage() {
         </div>
         <div className="mt-10 rounded-2xl bg-gradient-to-br from-blue-50/40 to-cyan-50/30 border border-[var(--border)] shadow-lg px-4 py-6 sm:px-6 sm:py-8 md:px-10 md:py-12">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-blue-900 mb-2 tracking-tight">Why {SITE.name}?</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-blue-900 mb-2 tracking-tight">Why {SITE.name}?</h3>
             <div className="text-base text-gray-700 max-w-2xl mx-auto">Everything you need for modern, SEO-driven website design, marketing, and growth—built in.</div>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -280,7 +292,7 @@ export default function HomePage() {
 
         <div className="mt-12 grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-3">
           <article className="col-span-2 flex flex-col md:flex-row rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] to-[var(--surface-2)] shadow-lg overflow-hidden">
-            <div className="md:w-1/3 bg-[var(--primary)] flex items-center justify-center text-6xl text-white" aria-hidden="true">
+            <div className="md:w-1/3 bg-[var(--primary)] flex items-center justify-center text-4xl sm:text-5xl md:text-6xl text-white" aria-hidden="true">
               <BarChart2 className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white" />
             </div>
             <div className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col justify-between">

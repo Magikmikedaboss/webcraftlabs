@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SITE } from "@/lib/site";
 
 interface PoweredByProps {
   variant?: "light" | "dark" | "simple";
@@ -18,10 +19,12 @@ export default function PoweredBy({
     lg: "text-base gap-2.5"
   };
 
-  const logoSizes = {
-    sm: { width: 16, height: 16, className: "w-4 h-4" },
-    md: { width: 20, height: 20, className: "w-5 h-5" },
-    lg: { width: 24, height: 24, className: "w-6 h-6" }
+  // Use only the largest expected size for width/height for optimization
+  const logoSize = { width: 24, height: 24 };
+  const logoClassNames = {
+    sm: "w-4 h-4",
+    md: "w-5 h-5",
+    lg: "w-6 h-6"
   };
 
   const variantClasses = {
@@ -30,22 +33,23 @@ export default function PoweredBy({
     simple: "text-gray-500 hover:text-gray-900"
   };
 
-  const logo = logoSizes[size];
+  const logoClass = logoClassNames[size];
 
   return (
     <Link
-      href="https://webcraftlabz.com"
+      href={SITE.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center ${sizeClasses[size]} ${variantClasses[variant]} rounded-lg px-3 py-1.5 transition-all duration-200 ${className}`}
+      // Responsive vertical padding: min 2.5 (10px) on mobile, 3 (12px) on md+
+      className={`inline-flex items-center ${sizeClasses[size]} ${variantClasses[variant]} rounded-lg px-3 py-2.5 md:py-3 transition-all duration-200 ${className}`}
       title="Built by WebCraft Labz"
     >
       <Image
         src="/images/branding/flaming-phoenix-logo-design-website-marketing-developer.svg"
         alt="WebCraft Labz"
-        width={logo.width}
-        height={logo.height}
-        className={logo.className}
+        width={logoSize.width}
+        height={logoSize.height}
+        className={logoClass}
       />
       <span className="font-medium">
         Powered by <span className="font-bold">WebCraft Labz</span>
