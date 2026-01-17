@@ -17,6 +17,15 @@ export const metadata: Metadata = {
   title: SITE.name,
   description: SITE.tagline,
   metadataBase: new URL(SITE.url),
+  icons: {
+    icon: [
+      { url: '/images/branding/png/phoenix-icon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/images/branding/png/phoenix-icon-32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/images/branding/png/phoenix-icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+  },
 };
 
 export const viewport = {
@@ -33,9 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/branding/png/phoenix-icon-192.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/images/branding/png/phoenix-icon-32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/images/branding/png/phoenix-icon-16.png" />
+        <link rel="icon" href="/images/branding/png/phoenix-icon-32.png" sizes="32x32" type="image/png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
