@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 
 export default function ShareBar({
   title,
@@ -10,6 +10,16 @@ export default function ShareBar({
   url: string; // absolute URL
 }) {
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
+  const copyTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const links = useMemo(() => {
     const t = encodeURIComponent(title);
@@ -21,11 +31,12 @@ export default function ShareBar({
   }, [title, url]);
 
   return (
-    <div className="mt-8 flex flex-wrap items-center gap-3 rounded-2xl border border-[var(--border)] bg-white/90 p-4 shadow-sm">
-      <div className="text-sm font-semibold text-gray-800">Share</div>
+    <div className="mt-8 flex flex-wrap items-center gap-3 rounded-2xl border p-4 shadow-sm" style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}>
+      <div className="text-sm font-semibold" style={{ color: 'var(--text)' }}>Share</div>
 
       <a
-        className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:shadow"
+        className="rounded-xl border px-3 py-2 text-sm font-semibold hover:shadow"
+        style={{ borderColor: 'var(--border)', background: 'var(--surface)', color: 'var(--primary)' }}
         href={links.x}
         target="_blank"
         rel="noreferrer"
@@ -34,7 +45,8 @@ export default function ShareBar({
       </a>
 
       <a
-        className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:shadow"
+        className="rounded-xl border px-3 py-2 text-sm font-semibold hover:shadow"
+        style={{ borderColor: 'var(--border)', background: 'var(--surface)', color: 'var(--primary)' }}
         href={links.linkedin}
         target="_blank"
         rel="noreferrer"
@@ -46,16 +58,20 @@ export default function ShareBar({
         type="button"
         className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:shadow"
         onClick={async () => {
+          if (copyTimeoutRef.current) {
+            clearTimeout(copyTimeoutRef.current);
+          }
+          setCopyError(false);
           try {
             await navigator.clipboard.writeText(url);
             setCopied(true);
-            window.setTimeout(() => setCopied(false), 1200);
+            copyTimeoutRef.current = window.setTimeout(() => setCopied(false), 1200);
           } catch {
-            // fallback: select + copy can be added later if needed
+            setCopyError(true);
           }
         }}
       >
-        {copied ? "Copied ✓" : "Copy link"}
+        {copied ? "Copied ✓" : copyError ? "Copy failed" : "Copy link"}
       </button>
     </div>
   );

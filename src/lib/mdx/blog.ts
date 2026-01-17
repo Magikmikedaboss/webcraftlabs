@@ -1,15 +1,20 @@
+function sanitizeSlug(slug: string): string {
+  // Decode and strictly allow only [a-z0-9-_]
+  const decoded = decodeURIComponent(slug);
+  if (!/^[a-z0-9-_]+$/.test(decoded)) {
+    throw new Error('Invalid slug');
+  }
+  return decoded;
+}
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { BlogFrontmatterSchema, BlogFrontmatter } from "./frontmatterSchema";
+import { BLOG_DIR } from "../blog";
 
-export type BlogFrontmatter = {
-  title: string;
-  description: string;
-  date: string; // "2026-01-17"
-  tags?: string[];
-};
 
-const BLOG_DIR = path.join(process.cwd(), "src", "content", "blog");
+
+
 
 export function getAllPostSlugs() {
   return fs
@@ -17,18 +22,25 @@ export function getAllPostSlugs() {
     .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
     .map((f) => f.replace(/\.(mdx|md)$/, ""));
 }
-
-export function getPostBySlug(slug: string) {
-  let fullPath = path.join(BLOG_DIR, `${slug}.mdx`);
+export function getPostBySlug(slug: string): { slug: string; content: string; frontmatter: typeof BlogFrontmatterSchema._input } {
+  const safeSlug = sanitizeSlug(slug);
+  let fullPath = path.join(BLOG_DIR, `${safeSlug}.mdx`);
   if (!fs.existsSync(fullPath)) {
-    fullPath = path.join(BLOG_DIR, `${slug}.md`);
+    fullPath = path.join(BLOG_DIR, `${safeSlug}.md`);
+  }
+  if (!fs.existsSync(fullPath)) {
+    throw new Error(`Post not found: ${safeSlug} in ${BLOG_DIR}`);
   }
   const raw = fs.readFileSync(fullPath, "utf8");
   const { content, data } = matter(raw);
+  const parsed = BlogFrontmatterSchema.safeParse(data);
+  if (!parsed.success) {
+    throw new Error(`Invalid frontmatter for slug '${safeSlug}': ${parsed.error.message}`);
+  }
   return {
-    slug,
+    slug: safeSlug,
     content,
-    frontmatter: data as BlogFrontmatter,
+    frontmatter: parsed.data,
   };
 }
 

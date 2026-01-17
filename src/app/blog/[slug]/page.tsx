@@ -16,18 +16,22 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {
-    const { slug } = await params;
+    let { slug } = await params;
+    slug = decodeURIComponent(slug);
+    if (!/^[a-z0-9-_]+$/.test(slug)) {
+      return { title: "Post | WebCraft Labs" };
+    }
     const post = getPostBySlug(slug);
     return {
       title: `${post.frontmatter.title} | WebCraft Labs`,
       description: post.frontmatter.description,
       alternates: {
-        canonical: `/blog/${slug}`,
+        canonical: `${SITE_URL}/blog/${slug}`,
       },
       openGraph: {
         title: post.frontmatter.title,
         description: post.frontmatter.description,
-        url: `/blog/${slug}`,
+        url: `${SITE_URL}/blog/${slug}`,
         type: "article",
         publishedTime: post.frontmatter.date,
       },
@@ -42,6 +46,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   let slug: string;
   try {
     ({ slug } = await params);
+    slug = decodeURIComponent(slug);
+    if (!/^[a-z0-9-_]+$/.test(slug)) {
+      notFound();
+    }
     post = getPostBySlug(slug);
     if (!post) {
       notFound();

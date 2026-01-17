@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: SITE.name,
   description: SITE.tagline,
+  metadataBase: new URL(SITE.url),
 };
 
 export const viewport = {
