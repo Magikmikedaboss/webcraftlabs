@@ -1,16 +1,31 @@
-import { NextResponse } from 'next/server';
-import { join } from 'path';
-import { promises as fs } from 'fs';
+import { ImageResponse } from 'next/og';
 
+export const size = {
+	width: 32,
+	height: 32,
+};
 export const contentType = 'image/png';
 
-export default async function handler() {
-  const filePath = join(process.cwd(), 'public', 'apple-touch-icon.png');
-  const file = await fs.readFile(filePath);
-  return new NextResponse(file, {
-    headers: {
-      'Content-Type': 'image/png',
-      'Cache-Control': 'public, max-age=31536000, immutable',
-    },
-  });
+export default function Icon() {
+	return new ImageResponse(
+		(
+			<div
+				style={{
+					fontSize: 20,
+					background: 'linear-gradient(135deg, #2563eb 0%, #0ea5e4 100%)',
+					width: '100%',
+					height: '100%',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					color: 'white',
+					fontWeight: 'bold',
+					borderRadius: '6px',
+				}}
+			>
+				WL
+			</div>
+		),
+		{ ...size }
+	);
 }
