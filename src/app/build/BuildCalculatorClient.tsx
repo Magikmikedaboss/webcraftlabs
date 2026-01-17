@@ -21,7 +21,7 @@ export default function BuildCalculatorClient() {
   const [content, setContent] = useState<ContentReadiness>("ready");
   const [timeline, setTimeline] = useState<Timeline>("standard");
   const [features, setFeatures] = useState<string[]>([]);
-  const [maintenance, setMaintenance] = useState<{ monthly?: number }>({});
+  const [maintenance] = useState<{ monthly?: number }>({});
   const [q, setQ] = useState<QuoteDetails>({
     name: "",
     email: "",

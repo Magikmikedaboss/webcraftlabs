@@ -1,35 +1,15 @@
 {
 	"version": "2.0.0",
 	"tasks": [
-		{
-			"label": "build",
-			"type": "shell",
-			"command": "next build"
-		},
-		{
-			"label": "lint",
-			"type": "shell",
-			"command": "next lint"
-		},
-		{
-			"label": "build",
-			"type": "shell",
-			"command": "next build"
-		},
-		{
-			"label": "build",
-			"type": "shell",
-			"command": "next build"
-		},
-		{
-			"label": "lint",
-			"type": "shell",
-			"command": "next lint"
-		},
-		{
-			"label": "build",
-			"type": "shell",
-			"command": "next build"
-		}
+		   {
+			   "label": "build",
+			   "type": "shell",
+			   "command": "next build"
+		   },
+		   {
+			   "label": "lint",
+			   "type": "shell",
+			   "command": "next lint"
+		   }
 	]
 }

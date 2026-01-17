@@ -16,35 +16,28 @@ import path from "path";
 import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
-import { BLOG_DIR } from "../blog";
 
+const NEWS_DIR = path.join(process.cwd(), "src/content/news");
 
-
-
-
-export function getAllPostSlugs() {
+export function getAllNewsSlugs() {
   return fs
-    .readdirSync(BLOG_DIR)
+    .readdirSync(NEWS_DIR)
     .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
     .map((f) => f.replace(/\.(mdx|md)$/, ""));
 }
-export function getPostBySlug(slug: string): { slug: string; content: string; frontmatter: z.infer<typeof BlogFrontmatterSchema> } {
+export function getNewsBySlug(slug: string): { slug: string; content: string; frontmatter: z.infer<typeof BlogFrontmatterSchema> } {
   const safeSlug = sanitizeSlug(slug);
-  let fullPath = path.join(BLOG_DIR, `${safeSlug}.mdx`);
-  console.log('[getPostBySlug] Looking for:', fullPath);
+  let fullPath = path.join(NEWS_DIR, `${safeSlug}.mdx`);
   if (!fs.existsSync(fullPath)) {
-    fullPath = path.join(BLOG_DIR, `${safeSlug}.md`);
-    console.log('[getPostBySlug] Fallback to:', fullPath);
+    fullPath = path.join(NEWS_DIR, `${safeSlug}.md`);
   }
   if (!fs.existsSync(fullPath)) {
-    console.error(`[getPostBySlug] Post not found: ${safeSlug} in ${BLOG_DIR}`);
-    throw new Error(`Post not found: ${safeSlug} in ${BLOG_DIR}`);
+    throw new Error(`Post not found: ${safeSlug} in ${NEWS_DIR}`);
   }
   const raw = fs.readFileSync(fullPath, "utf8");
   const { content, data } = matter(raw);
   const parsed = BlogFrontmatterSchema.safeParse(data);
   if (!parsed.success) {
-    console.error(`[getPostBySlug] Invalid frontmatter for slug '${safeSlug}': ${parsed.error.message}`);
     throw new Error(`Invalid frontmatter for slug '${safeSlug}': ${parsed.error.message}`);
   }
   return {
@@ -54,8 +47,8 @@ export function getPostBySlug(slug: string): { slug: string; content: string; fr
   };
 }
 
-export function getAllPosts() {
-  return getAllPostSlugs()
-    .map((slug) => getPostBySlug(slug))
+export function getAllNews() {
+  return getAllNewsSlugs()
+    .map((slug) => getNewsBySlug(slug))
     .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
 }

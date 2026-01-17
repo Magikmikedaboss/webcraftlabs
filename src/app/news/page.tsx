@@ -1,43 +1,36 @@
-import Link from "next/link";
-import SiteShell from "@/components/SiteShell";
-import { getAllNews } from "@/lib/news";
+import PostIndexClient from "@/components/content/PostIndexClient";
+import { getAllNews } from "@/lib/mdx/news";
 
 export const metadata = {
-  title: "News | WebCraft Labz",
-  description: "Latest updates and announcements from WebCraft Labz.",
-  alternates: {
-    canonical: "/news",
-  },
-  openGraph: {
-    title: "News | WebCraft Labz",
-    description: "Latest updates and announcements from WebCraft Labz.",
-    url: "/news",
-    type: "website",
-  },
+  title: "News | WebCraft Labs",
+  description: "Launches, updates, client wins, and what we’re building.",
 };
 
-export default async function NewsPage() {
-  const items = await getAllNews();
+export default function NewsIndexPage() {
+  const posts = getAllNews().map((p) => ({
+    slug: p.slug,
+    title: p.frontmatter.title,
+    description: p.frontmatter.description,
+    date: p.frontmatter.date,
+    tags: p.frontmatter.tags || [],
+    kind: "news" as const,
+  }));
 
   return (
-    <SiteShell title="News" intro="Updates from WebCraft Labz">
-      <div className="mx-auto max-w-4xl px-6 py-16 space-y-6">
-        {items.map((n) => (
-          <div
-            key={n.slug}
-            className="border border-[var(--border)] bg-[var(--surface)] p-5"
-          >
-            <Link
-              href={`/news/${n.slug}`}
-              className="font-semibold hover:opacity-80"
-            >
-              {n.title}
-            </Link>
-            <div className="mt-1 text-xs text-[var(--muted)]">{n.date}</div>
-            <p className="mt-2 text-sm text-[var(--muted)]">{n.summary}</p>
-          </div>
-        ))}
-      </div>
-    </SiteShell>
+    <main className="mx-auto max-w-6xl px-6 py-12">
+      <header className="mb-10 border-b border-[var(--border)] pb-8">
+        <div className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+          WebCraft Labs
+        </div>
+        <h1 className="mt-3 text-5xl font-extrabold tracking-tight text-[var(--text)]">
+          Newsroom
+        </h1>
+        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
+          Updates, launches, experiments, and client results.
+        </p>
+      </header>
+
+      <PostIndexClient posts={posts} kind="news" />
+    </main>
   );
 }

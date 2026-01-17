@@ -69,14 +69,17 @@ export default function SiteShell({
   title,
   intro,
   right,
+  background = 'surface', // 'surface' (light) or 'bg' (theme default)
 }: {
   children: React.ReactNode;
   title?: React.ReactNode;
   intro?: React.ReactNode;
   right?: React.ReactNode;
+  background?: 'surface' | 'bg';
 }) {
+  const bgClass = background === 'surface' ? 'bg-[var(--surface)]' : 'bg-[var(--bg)]';
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+    <div className={`min-h-screen ${bgClass} text-[var(--text)]`}>
       <header className={styles.header}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
           <Link href="/" className="flex items-center gap-2 font-bold text-sm sm:text-base tracking-tight text-gray-900 transition-opacity hover:opacity-90">
