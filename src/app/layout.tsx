@@ -32,7 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/branding/png/phoenix-icon-192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/branding/png/phoenix-icon-32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/branding/png/phoenix-icon-16.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

@@ -5,9 +5,8 @@ export const SITE = {
   nav: [
     { href: "/build", label: "Build" },
     { href: "/services", label: "Services" },
-    { href: "/blog", label: "Blog" },
-    { href: "/news", label: "News" },
     { href: "/contact", label: "Contact" },
+    { href: "/portfolio", label: "Portfolio" },
   ],
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcraftlabz.com",
 } as const;

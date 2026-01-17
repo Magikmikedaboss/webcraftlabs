@@ -1,7 +1,9 @@
+"use client";
 import Link from "next/link";
+import { FaLinkedin } from "react-icons/fa";
 import { SITE } from "@/lib/site";
 import styles from "./siteShell.module.css";
-import React from "react";
+import React, { useState, useRef } from "react";
 import MobileMenu from "./MobileMenu";
 import Image from "next/image";
 import PoweredBy from "./PoweredBy";
@@ -14,6 +16,51 @@ function NavLink({ href, label }: { href: string; label: string }) {
     >
       {label}
     </Link>
+  );
+}
+
+function DropdownNav({ label, items }: { label: string; items: { href: string; label: string }[] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  React.useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        className="rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 transition-all duration-200 hover:text-blue-700 hover:bg-blue-50/50 flex items-center gap-1"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        {label}
+        <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+      </button>
+      {open && (
+        <div className="absolute left-0 mt-2 w-36 rounded-lg bg-white shadow-lg border border-gray-200 z-50">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="block px-4 py-2 text-xs text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg"
+              onClick={() => setOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -33,9 +80,9 @@ export default function SiteShell({
       <header className={styles.header}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
           <Link href="/" className="flex items-center gap-2 font-bold text-sm sm:text-base tracking-tight text-gray-900 transition-opacity hover:opacity-90">
-            <Image 
-              src="/images/branding/flaming-phoenix-logo-design-website-marketing-developer.svg"
-              alt={`${SITE.name} Phoenix Logo`}
+            <Image
+              src="/apple-touch-icon.png"
+              alt={`${SITE.name} Icon`}
               width={32}
               height={32}
               className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
@@ -45,9 +92,17 @@ export default function SiteShell({
 
           {/* Desktop Navigation */}
           <nav className="hidden items-center gap-1 md:flex">
-            {SITE.nav.map((n) => (
+            {SITE.nav.filter(n => n.label !== "Portfolio").map((n) => (
               <NavLink key={n.href} href={n.href} label={n.label} />
             ))}
+            <DropdownNav
+              label="Blog & News"
+              items={[
+                { href: "/blog", label: "Blog" },
+                { href: "/news", label: "News" },
+              ]}
+            />
+            <NavLink href="/portfolio" label="Portfolio" />
             <Link
               href="/contact"
               className="ml-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md shadow-blue-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/40 hover:scale-105 active:scale-95"
@@ -103,13 +158,7 @@ export default function SiteShell({
               <span className="text-[10px] sm:text-xs text-[var(--muted)]">Las Vegas / Remote</span>
               <div className="flex gap-3 mt-2">
                 <a href="https://linkedin.com/company/webcraftlabz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-blue-700 hover:text-cyan-600">
-                  <Image
-                    src="/images/branding/256.png"
-                    alt="LinkedIn"
-                    width={20}
-                    height={20}
-                    className="rounded"
-                  />
+                  <FaLinkedin size={20} />
                 </a>
                 <a href="https://twitter.com/webcraftlabz" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-blue-700 hover:text-cyan-600">
                   <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M17.316 6.246c.008.176.008.352.008.528 0 5.376-4.09 11.576-11.576 11.576-2.304 0-4.448-.672-6.256-1.824.32.04.624.064.96.064 1.92 0 3.68-.656 5.088-1.76-1.792-.032-3.304-1.216-3.824-2.848.248.048.504.08.768.08.368 0 .728-.048 1.072-.144-1.872-.376-3.28-2.032-3.28-4.024v-.048c.552.304 1.184.488 1.856.512-1.104-.736-1.824-1.984-1.824-3.408 0-.752.208-1.456.576-2.064 2.096 2.576 5.232 4.264 8.768 4.44-.072-.304-.112-.624-.112-.952 0-2.304 1.872-4.176 4.176-4.176 1.2 0 2.288.504 3.048 1.32.952-.184 1.848-.536 2.656-1.016-.312.976-.976 1.792-1.84 2.312.848-.096 1.656-.328 2.408-.664-.56.84-1.264 1.584-2.08 2.176z"/></svg>

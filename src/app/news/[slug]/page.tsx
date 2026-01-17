@@ -1,5 +1,9 @@
 import { getNewsItem, getAllNews } from "@/lib/news";
 import SiteShell from "@/components/SiteShell";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import Callout from "@/components/mdx/Callout";
+import Stat from "@/components/mdx/Stat";
+import Checklist from "@/components/mdx/Checklist";
 
 export async function generateStaticParams() {
   const items = await getAllNews();
@@ -41,11 +45,13 @@ export default async function NewsItemPage({
   return (
     <SiteShell title={item.title} intro={item.summary}>
       <article className="mx-auto max-w-3xl px-6 py-16">
-        <div className="mb-6 text-xs text-[var(--muted)]">{item.date}</div>
-        <div
-          className="prose prose-blue max-w-none"
-          dangerouslySetInnerHTML={{ __html: item.contentHtml }}
-        />
+        <div className="mb-6 text-xs text-[var(--muted)]">{String(item.date)}</div>
+        <div className="prose prose-blue max-w-none">
+          <MDXRemote
+            source={item.mdxSource}
+            components={{ Callout, Stat, Checklist }}
+          />
+        </div>
       </article>
     </SiteShell>
   );

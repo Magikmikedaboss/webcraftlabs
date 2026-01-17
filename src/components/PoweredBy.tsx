@@ -45,8 +45,8 @@ export default function PoweredBy({
       title="Built by WebCraft Labz"
     >
       <Image
-        src="/images/branding/flaming-phoenix-logo-design-website-marketing-developer.svg"
-        alt="WebCraft Labz"
+        src="/apple-touch-icon.png"
+        alt="WebCraft Phoenix Icon"
         width={logoSize.width}
         height={logoSize.height}
         className={logoClass}

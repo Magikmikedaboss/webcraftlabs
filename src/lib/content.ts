@@ -63,11 +63,11 @@ export async function loadAllMarkdown(
 ): Promise<ContentMeta[]> {
   const files = fs
     .readdirSync(baseDir)
-    .filter((f) => f.endsWith(".md"));
+    .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"));
 
   return files
     .map((file) => {
-      const slug = file.replace(/\.md$/, "");
+      const slug = file.replace(/\.(mdx|md)$/, "");
       const fullPath = path.join(baseDir, file);
       const raw = fs.readFileSync(fullPath, "utf8");
       const { data } = matter(raw);
