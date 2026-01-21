@@ -45,3 +45,6 @@
 ### 11. src/lib/theme-toggle.ts
 - [x] Add server-side guard to toggleTheme (check typeof document === 'undefined')
 - [x] Add server-side guard to getCurrentTheme (return 'light' when typeof document === 'undefined')
+
+### 12. docs/MDX-Writing-Guide.md
+- [x] Update Takeaways component examples to use object array format with {id, text} instead of string arrays (lines 76-83 and 308-316)

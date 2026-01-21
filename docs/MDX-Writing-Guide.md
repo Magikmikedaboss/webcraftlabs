@@ -76,9 +76,9 @@ This is a success callout. Use it for tips, best practices, or positive outcomes
 <Takeaways 
   title="Key Takeaways"
   items={[
-    "First important point readers should remember",
-    "Second key insight from this section",
-    "Third actionable takeaway they can implement"
+    { id: "takeaway-1", text: "First important point readers should remember" },
+    { id: "takeaway-2", text: "Second key insight from this section" },
+    { id: "takeaway-3", text: "Third actionable takeaway they can implement" }
   ]}
 />
 
@@ -308,10 +308,10 @@ Prioritize above-the-fold content to improve perceived performance:
 <Takeaways 
   title="Remember These Points"
   items={[
-    "Optimize images with modern formats and lazy loading",
-    "Minimize JavaScript by removing unused code",
-    "Enable compression and use a CDN for global performance",
-    "Prioritize critical rendering path for faster perceived load times"
+    { id: "opt-img", text: "Optimize images with modern formats and lazy loading" },
+    { id: "min-js", text: "Minimize JavaScript by removing unused code" },
+    { id: "cdn", text: "Enable compression and use a CDN for global performance" },
+    { id: "critical-path", text: "Prioritize critical rendering path for faster perceived load times" }
   ]}
 />
 
