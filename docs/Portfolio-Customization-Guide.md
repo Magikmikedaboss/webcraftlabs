@@ -1,4 +1,4 @@
-ortfolio yo# Portfolio Page Customization Guide
+# Portfolio Page Customization Guide
 
 Your new portfolio page is ready! Here's how to customize it with your actual projects and make it uniquely yours.
 

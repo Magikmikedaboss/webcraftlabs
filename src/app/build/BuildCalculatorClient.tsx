@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { RadixSelect } from "../../components/RadixSelect";
 import SiteShell from "../../components/SiteShell";
 import styles from "./build.module.css";
@@ -36,6 +36,15 @@ export default function BuildCalculatorClient() {
   const [copying, setCopying] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const copyTimeoutRef = useRef<number | null>(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current !== null) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+    };
+  }, []);
 
   function toggleFeature(id: string) {
     setFeatures((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -225,6 +234,8 @@ export default function BuildCalculatorClient() {
 
                 <Field label="Email">
                   <input
+                    type="email"
+                    autoComplete="email"
                     value={q.email}
                     onChange={(e) => setQField("email", e.target.value)}
                     className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
@@ -243,6 +254,8 @@ export default function BuildCalculatorClient() {
 
                 <Field label="Existing website (optional)">
                   <input
+                    type="url"
+                    autoComplete="url"
                     value={q.website}
                     onChange={(e) => setQField("website", e.target.value)}
                     className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"

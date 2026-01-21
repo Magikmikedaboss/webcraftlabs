@@ -66,11 +66,13 @@ export default function PostIndexClient({
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search posts…"
+            aria-label="Search posts"
             className="w-full sm:w-72 rounded-xl border border-[var(--border)] bg-white/90 px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
           />
           <select
             value={tag}
             onChange={(e) => setTag(e.target.value)}
+            aria-label="Filter by tag"
             className="w-full sm:w-56 rounded-xl border border-[var(--border)] bg-white/90 px-3 py-2 text-sm shadow-sm"
           >
             {tags.map((t) => (

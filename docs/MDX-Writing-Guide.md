@@ -8,7 +8,7 @@ This guide shows you how to write well-structured, readable blog posts and news 
 ---
 title: "Your Post Title Here"
 description: "A compelling 1-2 sentence summary that appears in previews and meta tags"
-date: "2024-01-15"
+date: "2026-01-15"
 tags: ["web-development", "design", "performance"]
 featured: true  # Optional: shows as featured post on index page
 ---
@@ -20,7 +20,7 @@ featured: true  # Optional: shows as featured post on index page
 ---
 title: "How to Build Fast Marketing Websites"
 description: "Learn the essential techniques for creating high-performance marketing sites that convert visitors into customers."
-date: "2024-01-15"
+date: "2026-01-15"
 tags: ["web-development", "marketing", "performance"]
 featured: true
 ---
@@ -214,7 +214,7 @@ Here's a complete example showing all elements together:
 ---
 title: "5 Essential Web Performance Tips"
 description: "Boost your website speed with these proven optimization techniques that improve user experience and conversions."
-date: "2024-01-15"
+date: "2026-01-15"
 tags: ["performance", "web-development", "optimization"]
 featured: true
 ---

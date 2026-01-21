@@ -16,10 +16,16 @@ export function setTheme(theme: 'light' | 'dark') {
 }
 
 export function toggleTheme() {
+  if (typeof document === 'undefined') {
+    return;
+  }
   const isDark = document.documentElement.classList.contains('dark');
   setTheme(isDark ? 'light' : 'dark');
 }
 
 export function getCurrentTheme(): 'light' | 'dark' {
+  if (typeof document === 'undefined') {
+    return 'light';
+  }
   return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 }

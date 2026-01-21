@@ -3,14 +3,14 @@ export default function Takeaways({
   items,
 }: {
   title?: string;
-  items: string[];
+  items: { id: string; text: string }[];
 }) {
   return (
     <div className="takeaways">
       <h3>{title}</h3>
       <ul>
-        {items.map((t) => (
-          <li key={t}>{t}</li>
+        {items.map((item) => (
+          <li key={item.id}>{item.text}</li>
         ))}
       </ul>
     </div>

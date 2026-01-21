@@ -57,5 +57,9 @@ export function getPostBySlug(slug: string): { slug: string; content: string; fr
 export function getAllPosts() {
   return getAllPostSlugs()
     .map((slug) => getPostBySlug(slug))
-    .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
+    .sort((a, b) => {
+      if (a.frontmatter.date < b.frontmatter.date) return 1;
+      if (a.frontmatter.date > b.frontmatter.date) return -1;
+      return 0;
+    });
 }

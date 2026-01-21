@@ -31,7 +31,7 @@ const projects = [
       speed: '95/100',
       revenue: '+$2.4M'
     },
-    link: '#',
+    link: '',
     featured: true,
   },
   {
@@ -46,7 +46,7 @@ const projects = [
       leads: '2,400/mo',
       bounce: '-45%'
     },
-    link: '#',
+    link: '',
     featured: true,
   },
   {
@@ -61,7 +61,7 @@ const projects = [
       users: '50K+',
       speed: '98/100'
     },
-    link: '#',
+    link: '',
     featured: false,
   },
   {
@@ -76,7 +76,7 @@ const projects = [
       satisfaction: '4.8/5',
       uptime: '99.9%'
     },
-    link: '#',
+    link: '',
     featured: false,
   },
   {
@@ -91,7 +91,7 @@ const projects = [
       locations: '25',
       rating: '4.9/5'
     },
-    link: '#',
+    link: '',
     featured: false,
   },
   {
@@ -106,7 +106,7 @@ const projects = [
       bookings: '8K/mo',
       retention: '85%'
     },
-    link: '#',
+    link: '',
     featured: false,
   },
 ];
@@ -149,15 +149,17 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           )}
 
           {/* View project button (appears on hover) */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <Link
-              href={project.link}
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-gray-900 shadow-xl transition-transform hover:scale-105"
-            >
-              View Project
-              <ExternalLink className="h-4 w-4" />
-            </Link>
-          </div>
+          {project.link && (
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <Link
+                href={project.link}
+                className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-gray-900 shadow-xl transition-transform hover:scale-105"
+              >
+                View Project
+                <ExternalLink className="h-4 w-4" />
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Content */}
@@ -193,15 +195,17 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           </div>
 
           {/* Link */}
-          <div className="mt-auto pt-4">
-            <Link
-              href={project.link}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--primary)] transition-colors hover:text-blue-700"
-            >
-              View case study
-              <ExternalLink className="h-4 w-4" />
-            </Link>
-          </div>
+          {project.link && (
+            <div className="mt-auto pt-4">
+              <Link
+                href={project.link}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--primary)] transition-colors hover:text-blue-700"
+              >
+                View case study
+                <ExternalLink className="h-4 w-4" />
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -286,16 +290,16 @@ export default function PortfolioPage() {
         {/* Category Filter */}
         <div className="mb-12 flex flex-wrap justify-center gap-3">
           {categories.map((category) => (
-            <button
+            <span
               key={category}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all cursor-not-allowed ${
                 category === 'All'
-                  ? 'bg-[var(--primary)] text-white shadow-md hover:opacity-90'
-                  : 'border border-[var(--border)] bg-white text-gray-700 hover:border-[var(--primary)] hover:text-[var(--primary)]'
+                  ? 'bg-[var(--primary)] text-white shadow-md opacity-60'
+                  : 'border border-[var(--border)] bg-white text-gray-700 opacity-60'
               }`}
             >
               {category}
-            </button>
+            </span>
           ))}
         </div>
 
