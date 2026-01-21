@@ -3,6 +3,7 @@ export const SITE = {
   tagline: "Websites built like products, not brochures.",
   cta: "Start Your Build",
   nav: [
+    { href: "/about", label: "About" },
     { href: "/build", label: "Build" },
     { href: "/services", label: "Services" },
     { href: "/contact", label: "Contact" },

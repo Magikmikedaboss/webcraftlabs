@@ -48,3 +48,14 @@
 
 ### 12. docs/MDX-Writing-Guide.md
 - [x] Update Takeaways component examples to use object array format with {id, text} instead of string arrays (lines 76-83 and 308-316)
+
+## New Features Added:
+
+### 13. About Page & Navigation
+- [x] Created comprehensive About page at src/app/about/page.tsx
+- [x] Added "About" link to navigation in src/lib/site.ts
+- [x] Included "What the Z Stands For" section (Transparency, Design, Impact)
+- [x] Added company overview and services highlights
+- [x] Included customer service and support section
+- [x] Used imagery from public/images folder
+- [x] Added CTAs and conversion-focused sections
