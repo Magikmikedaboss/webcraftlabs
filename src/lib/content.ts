@@ -66,13 +66,17 @@ export async function loadAllMarkdown(
     .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"));
 
   return files
+    .filter((file) => {
+      const fullPath = path.join(baseDir, file);
+      const raw = fs.readFileSync(fullPath, "utf8");
+      const { data } = matter(raw);
+      return data.title && typeof data.title === 'string' && data.date;
+    })
     .map((file) => {
       const slug = file.replace(/\.(mdx|md)$/, "");
       const fullPath = path.join(baseDir, file);
       const raw = fs.readFileSync(fullPath, "utf8");
       const { data } = matter(raw);
-      if (!data.title || typeof data.title !== 'string') return undefined;
-      if (!data.date) return undefined;
       return {
         slug,
         title: data.title,
@@ -81,6 +85,5 @@ export async function loadAllMarkdown(
         tags: data.tags ?? [],
       };
     })
-    .filter((x): x is ContentMeta => Boolean(x))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }

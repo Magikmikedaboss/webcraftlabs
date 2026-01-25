@@ -6,19 +6,21 @@ export default function ContactForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
-  const [name, setName] = useState(() => localStorage.getItem('quoteName') || "");
-  const [email, setEmail] = useState(() => localStorage.getItem('quoteEmail') || "");
-  const [project, setProject] = useState(() => localStorage.getItem('buildSheet') || "");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [project, setProject] = useState("");
 
   useEffect(() => {
+    // Only run in browser
+    if (typeof window === "undefined") return;
     // Read CSRF token from cookie (set by edge-csrf middleware)
     const match = document.cookie.match(/(?:^|; )_csrfSecret=([^;]*)/);
     if (match) setCsrfToken(decodeURIComponent(match[1]));
 
     // Pre-fill from localStorage
-    const storedName = localStorage.getItem('quoteName');
-    const storedEmail = localStorage.getItem('quoteEmail');
-    const storedBuildSheet = localStorage.getItem('buildSheet');
+    const storedName = window.localStorage.getItem('quoteName');
+    const storedEmail = window.localStorage.getItem('quoteEmail');
+    const storedBuildSheet = window.localStorage.getItem('buildSheet');
     if (storedName) setName(storedName);
     if (storedEmail) setEmail(storedEmail);
     if (storedBuildSheet) setProject(storedBuildSheet);
@@ -64,9 +66,11 @@ export default function ContactForm() {
       }
       setSuccess("Your request was sent! We'll reply soon.");
       // Clear localStorage and reset form
-      localStorage.removeItem('quoteName');
-      localStorage.removeItem('quoteEmail');
-      localStorage.removeItem('buildSheet');
+      if (typeof window !== "undefined") {
+        window.localStorage.removeItem('quoteName');
+        window.localStorage.removeItem('quoteEmail');
+        window.localStorage.removeItem('buildSheet');
+      }
       setName("");
       setEmail("");
       setProject("");
