@@ -173,8 +173,8 @@ export default function SiteShell({
               ))}
             </div>
             <div className="flex flex-col gap-2 items-start md:items-end">
-              <a className="text-xs sm:text-sm font-semibold text-blue-900 hover:text-cyan-700 transition" href="mailto:hello@webcraftlabz.com">
-                hello@webcraftlabz.com
+              <a className="text-xs sm:text-sm font-semibold text-blue-900 hover:text-cyan-700 transition" href="mailto:info@webcraftlabz.com">
+                info@webcraftlabz.com
               </a>
               <span className="text-[10px] sm:text-xs text-[var(--muted)]">Las Vegas / Remote</span>
               <div className="flex gap-3 mt-2">

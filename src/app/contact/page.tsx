@@ -23,7 +23,7 @@ export default function ContactPage() {
     '@type': 'Organization',
     name: SITE.name,
     url: SITE.url,
-    email: 'hello@webcraftlabz.com',
+    email: 'info@webcraftlabz.com',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Las Vegas',
@@ -32,7 +32,7 @@ export default function ContactPage() {
     },
     contactPoint: [{
       '@type': 'ContactPoint',
-      email: 'hello@webcraftlabz.com',
+      email: 'info@webcraftlabz.com',
       contactType: 'customer support',
     }],
   };
@@ -61,7 +61,7 @@ export default function ContactPage() {
                 <div className="text-sm font-semibold text-blue-900">WebCraft LabZ HQ</div>
                 <div className="mt-2 text-sm text-[var(--muted)]">
                   Las Vegas, NV & Remote<br />
-                  <span className="font-semibold text-blue-900">hello@webcraftlabz.com</span>
+                  <span className="font-semibold text-blue-900">info@webcraftlabz.com</span>
                 </div>
                 <div className="mt-6 text-sm">
                   <div className="font-semibold">Typical turnaround</div>
