@@ -74,17 +74,17 @@ All images are 1200x630 pixels (optimal for social media sharing).
 ### How to Test Social Media Previews
 
 1. **Facebook Sharing Debugger**:
-   - URL: https://developers.facebook.com/tools/debug/
+   - URL: <https://developers.facebook.com/tools/debug/>
    - Enter your page URL and click "Debug"
    - Check Open Graph tags
 
 2. **Twitter Card Validator**:
-   - URL: https://cards-dev.twitter.com/validator
+   - URL: <https://cards-dev.twitter.com/validator>
    - Enter your page URL
    - Preview the card appearance
 
 3. **LinkedIn Post Inspector**:
-   - URL: https://www.linkedin.com/post-inspector/
+   - URL: <https://www.linkedin.com/post-inspector/>
    - Enter your page URL
    - Check preview
 

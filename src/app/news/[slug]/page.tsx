@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         description: post.frontmatter.description,
         type: "article",
         url: url,
-        publishedTime: post.frontmatter.date,
+        publishedTime: new Date(post.frontmatter.date).toISOString(),
         authors: [SITE.name],
         tags: post.frontmatter.tags || [],
         images: [
