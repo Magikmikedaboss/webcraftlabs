@@ -22,9 +22,34 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const { slug } = await params;
     const post = getNewsBySlug(slug as string);
+    const url = `${SITE.url}/news/${slug}`;
+    
     return {
-      title: `${post.frontmatter.title} | ${SITE.name} News`,
+      title: post.frontmatter.title,
       description: post.frontmatter.description,
+      openGraph: {
+        title: post.frontmatter.title,
+        description: post.frontmatter.description,
+        type: "article",
+        url: url,
+        publishedTime: new Date(post.frontmatter.date).toISOString(),
+        authors: [SITE.name],
+        tags: post.frontmatter.tags || [],
+        images: [
+          {
+            url: "/images/business-marketing-solutions-concept-art.jpg",
+            width: 1200,
+            height: 630,
+            alt: post.frontmatter.title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.frontmatter.title,
+        description: post.frontmatter.description,
+        images: ["/images/business-marketing-solutions-concept-art.jpg"],
+      },
     };
   } catch {
     return { title: `News | ${SITE.name}` };

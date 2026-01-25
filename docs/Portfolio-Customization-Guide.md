@@ -100,7 +100,6 @@ The portfolio UI currently uses a `PlaceholderImage` component in `src/app/portf
 
 Sample filenames:
 ```text
-```
 public/images/portfolio/project-1.jpg
 public/images/portfolio/project-2.jpg
 public/images/portfolio/project-3.jpg
@@ -303,7 +302,8 @@ type Project = {
 const categories = ["All", "Productivity", "Healthcare", "E-commerce"];
 ```
 
-// Example filter usage:
+**Example filter usage:**
+
 ```typescript
 'use client';
 import { useState } from 'react';

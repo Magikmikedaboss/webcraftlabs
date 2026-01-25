@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,8 +23,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: SITE.name,
+  title: {
+    default: SITE.name,
+    template: `%s | ${SITE.name}`,
+  },
   description: SITE.tagline,
+  keywords: [
+    "web development",
+    "website design",
+    "marketing websites",
+    "SaaS development",
+    "Las Vegas web developer",
+    "custom websites",
+    "web applications",
+  ],
+  authors: [{ name: SITE.name }],
+  creator: SITE.name,
   // Normalize SITE.url to ensure absolute and valid
   metadataBase: (() => {
     let url = SITE.url;
@@ -36,6 +51,39 @@ export const metadata: Metadata = {
       return undefined;
     }
   })(),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE.url,
+    siteName: SITE.name,
+    title: SITE.name,
+    description: SITE.tagline,
+    images: [
+      {
+        url: "/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: `${SITE.name} - ${SITE.tagline}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE.name,
+    description: SITE.tagline,
+    images: ["/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export const viewport = {
@@ -79,6 +127,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <GoogleAnalytics />
         <ThemeProvider>
           {children}
         </ThemeProvider>

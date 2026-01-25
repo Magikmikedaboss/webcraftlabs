@@ -25,9 +25,34 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const { slug } = await params;
     const post = getPostBySlug(slug);
+    const url = `${SITE_URL}/blog/${slug}`;
+    
     return {
-      title: `${post.frontmatter.title} | WebCraft LabZ`,
+      title: post.frontmatter.title,
       description: post.frontmatter.description,
+      openGraph: {
+        title: post.frontmatter.title,
+        description: post.frontmatter.description,
+        type: "article",
+        url: url,
+        publishedTime: post.frontmatter.date,
+        authors: ["WebCraft LabZ"],
+        tags: post.frontmatter.tags || [],
+        images: [
+          {
+            url: "/images/structure-database-software-development.jpg",
+            width: 1200,
+            height: 630,
+            alt: post.frontmatter.title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.frontmatter.title,
+        description: post.frontmatter.description,
+        images: ["/images/structure-database-software-development.jpg"],
+      },
     };
   } catch {
     return { title: "Blog | WebCraft LabZ" };
