@@ -23,6 +23,7 @@ export const RadixSelect: React.FC<RadixSelectProps> = ({
   options,
   value,
   onValueChange,
+  onOpenChange,
   label,
   placeholder = "Select an option",
   error,
