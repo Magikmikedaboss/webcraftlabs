@@ -29,6 +29,9 @@ export async function parseMarkdownFile(
   let fullPath = path.join(baseDir, `${sanitizedSlug}.mdx`);
   if (!fs.existsSync(fullPath)) {
     fullPath = path.join(baseDir, `${sanitizedSlug}.md`);
+    if (!fs.existsSync(fullPath)) {
+      throw new Error("Content file not found for slug: " + sanitizedSlug);
+    }
   }
   
   // Ensure resolved path is within baseDir

@@ -293,6 +293,7 @@ type Project = {
   next?: string[];
   links?: { label: string; href: string }[];
   category: string;
+  featured?: boolean;
 };
 ```
 

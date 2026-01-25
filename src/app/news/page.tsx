@@ -110,15 +110,11 @@ export default async function NewsIndexPage() {
             We love sharing client success stories and project showcases. Let&apos;s build something worth announcing together.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact" passHref legacyBehavior>
-              <a className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-base font-semibold text-cyan-700 shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-                Start Your Project
-              </a>
+            <Link href="/contact" className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-base font-semibold text-cyan-700 shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+              Start Your Project
             </Link>
-            <Link href="/portfolio" passHref legacyBehavior>
-              <a className="inline-flex items-center justify-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-base font-semibold text-white hover:bg-white/10 transition-all">
-                View Our Work
-              </a>
+            <Link href="/portfolio" className="inline-flex items-center justify-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-base font-semibold text-white hover:bg-white/10 transition-all">
+              View Our Work
             </Link>
           </div>
         </div>

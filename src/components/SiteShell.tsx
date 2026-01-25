@@ -98,7 +98,7 @@ export default function SiteShell({
 
           <Link href="/" className="flex items-center gap-2 font-bold text-sm sm:text-base tracking-tight text-gray-900 transition-opacity hover:opacity-90">
             <Image
-              src="/apple-touch-icon.png"
+              src="/images/branding/180.png"
               alt={`${SITE.name} Icon`}
               width={32}
               height={32}

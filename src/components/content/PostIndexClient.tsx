@@ -1,3 +1,4 @@
+"use client";
 // Client component for rendering post/news index
 // Accepts posts and kind props for blog/news index rendering
 type Post = {

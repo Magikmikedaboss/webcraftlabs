@@ -27,6 +27,9 @@ function sanitizeSlug(slug: string): string {
 
 
 export function getAllPostSlugs() {
+  if (!fs.existsSync(BLOG_DIR)) {
+    return [];
+  }
   return fs
     .readdirSync(BLOG_DIR)
     .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))

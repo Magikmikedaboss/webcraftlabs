@@ -71,9 +71,9 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* Favicon and manifest */}
-        <link rel="icon" href="/images/branding/webcraft-labz-phoenix-32.png" sizes="32x32" type="image/png" />
-        <link rel="icon" href="/images/branding/webcraft-labz-phoenix-192.png" sizes="192x192" type="image/png" />
+        {/* Favicon and manifest - Using red phoenix icon (180.png) for all sizes */}
+        <link rel="icon" href="/images/branding/180.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/images/branding/180.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
       </head>
       <body

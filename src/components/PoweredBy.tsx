@@ -45,7 +45,7 @@ export default function PoweredBy({
       title="Built by WebCraft Labz"
     >
       <Image
-        src="/apple-touch-icon.png"
+        src="/images/branding/180.png"
         alt="WebCraft Phoenix Icon"
         width={logoSize.width}
         height={logoSize.height}

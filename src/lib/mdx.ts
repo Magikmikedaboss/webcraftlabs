@@ -1,4 +1,3 @@
-
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import fs from 'fs';
@@ -8,6 +7,7 @@ import matter from 'gray-matter';
 export type MdxContent = {
   slug: string;
   mdxSource: MDXRemoteSerializeResult;
+  frontmatter?: any;
   title?: string;
   summary?: string;
   date?: string;
@@ -35,7 +35,7 @@ export async function getMdxContent(baseDir: string, slug: string): Promise<MdxC
   const { data, content } = matter(file);
   const mdxSource = await serialize(content, { scope: data });
   return {
-    ...data,
+    frontmatter: data,
     slug: sanitizedSlug,
     mdxSource,
   };

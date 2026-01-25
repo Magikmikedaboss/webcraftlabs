@@ -1,3 +1,8 @@
+// Sanitize name for email subject to prevent header injection
+function sanitizeName(name: string): string {
+  // Remove CR, LF, trim, and limit length
+  return name.replace(/[\r\n]+/g, '').trim().slice(0, 100);
+}
 // Simple HTML escape utility
 function escapeHtml(str: string): string {
   return str.replace(/[&<>'"]/g, (tag) => {
@@ -108,7 +113,8 @@ export async function POST(req: NextRequest) {
     const mailOptions = {
       from: `"WebCraft Contact Form" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_TO,
-      subject: `New Contact Form: ${result.data.name}`,
+      // Sanitize name to prevent header injection
+      subject: `New Contact Form: ${sanitizeName(result.data.name)}`,
       // Escape all user fields before interpolation
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

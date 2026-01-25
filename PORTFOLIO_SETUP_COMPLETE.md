@@ -79,9 +79,9 @@ Portfolio page added to sitemap with high priority (0.9) for SEO.
 
 ### Immediate (5-10 minutes):
 1. **Replace Sample Projects**
-   - Open `src/app/portfolio/page.tsx`
-   - Find the `projects` array (line ~24)
-   - Replace with your actual projects
+   - Open `src/app/portfolio/projects.ts`
+   - Edit the exported `projects` array to include your actual projects
+   - Save your changes; `page.tsx` will automatically import from this file
 
 2. **Add Your Images**
    - Create folder: `public/images/portfolio/`
@@ -184,7 +184,7 @@ Portfolio page included with high priority:
 
 ### SEO
 Metadata configured for search engines:
-- Title: "Portfolio | WebCraft Labs"
+- Title: "Portfolio | WebCraft Labz"
 - Description: Optimized for search
 - Open Graph tags for social sharing
 
