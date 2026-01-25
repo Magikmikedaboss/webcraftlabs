@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { MetadataRoute } from 'next';
 import { getBaseUrl } from '@/lib/site';
 
@@ -7,16 +8,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   async function fetchVercelDeploymentCreatedAt(sha: string): Promise<string> {
     // Example: fetch from Vercel API (requires token)
     // Replace with your actual API call and error handling
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
     try {
-      const res = await fetch(`https://api.vercel.com/v6/deployments?commit=${sha}`, {
-        headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}` },
-      });
+      const res = await fetch(`https://api.vercel.com/v6/deployments?commit=${sha}`,
+        {
+          headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}` },
+          cache: 'force-cache',
+          signal: controller.signal,
+        }
+      );
+      clearTimeout(timeout);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch deployments: ${res.status} - ${await res.text()}`);
+      }
       const data = await res.json();
       if (data.deployments && data.deployments.length > 0) {
         return data.deployments[0].createdAt;
       }
       throw new Error('No deployments found');
     } catch (err) {
+      clearTimeout(timeout);
       console.warn('Failed to fetch Vercel deployment timestamp:', err);
       throw err;
     }

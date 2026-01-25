@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { RadixSelect } from "../../components/RadixSelect";
 import SiteShell from "../../components/SiteShell";
@@ -43,9 +43,14 @@ export default function BuildCalculatorClient() {
     setQ((prev) => ({ ...prev, [key]: value }));
   }
 
-  useEffect(() => {
-    const plan = MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan);
-    setMaintenance({ monthly: plan?.monthly });
+  // Update maintenance when q.maintenancePlan changes
+  // Set maintenance synchronously when q.maintenancePlan changes
+  const plan = MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan);
+  useMemo(() => {
+    if (plan && maintenance.monthly !== plan.monthly) {
+      setMaintenance({ monthly: plan.monthly });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q.maintenancePlan]);
 
   // --- Estimation (placeholder/dummy) ---
@@ -168,6 +173,14 @@ export default function BuildCalculatorClient() {
                       { value: "rush", label: "ASAP (rush)" },
                       { value: "standard", label: "Standard (4-8 weeks)" },
                     ]}
+                  />
+                </Field>
+
+                <Field label="Maintenance plan">
+                  <RadixSelect
+                    value={q.maintenancePlan}
+                    onValueChange={(v: string) => setQ(prev => ({ ...prev, maintenancePlan: v as typeof prev.maintenancePlan }))}
+                    options={MAINTENANCE_PLANS.map(plan => ({ value: plan.id, label: plan.label }))}
                   />
                 </Field>
               </div>
@@ -364,7 +377,7 @@ function buildSheetText(args: {
     `Design: ${args.design}`,
     `Content: ${args.content}`,
     `Timeline preference: ${args.timeline}`,
-    `Add-ons: ${args.features.length ? args.features.join(", ") : "None"}`,
+    `Add-ons: ${args.features.length ? args.features.map(id => (ADDONS.find(a => a.id === id)?.label || id)).join(", ") : "None"}`,
     `Maintenance: ${args.maintenance.monthly ? `$${args.maintenance.monthly}/mo` : "None"}`,
     ``,
     `Contact`,

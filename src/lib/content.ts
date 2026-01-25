@@ -42,11 +42,12 @@ export async function parseMarkdownFile(
   const { data, content } = matter(file);
 
   // Validate required frontmatter fields
+  const ext = fullPath.endsWith('.mdx') ? '.mdx' : '.md';
   if (!data.title || typeof data.title !== 'string') {
-    throw new Error(`Missing or invalid title in ${sanitizedSlug}.md`);
+    throw new Error(`Missing or invalid title in ${sanitizedSlug}${ext}`);
   }
   if (!data.date) {
-    throw new Error(`Missing date in ${sanitizedSlug}.md`);
+    throw new Error(`Missing date in ${sanitizedSlug}${ext}`);
   }
 
   const processed = await remark().use(html).process(content);

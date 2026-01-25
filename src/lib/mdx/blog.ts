@@ -7,14 +7,16 @@ import { z } from "zod";
 import { BLOG_DIR } from "../blog";
 
 function sanitizeSlug(slug: string): string {
-  // Decode and strictly allow only [a-z0-9-_]
+  // Decode and allow [a-zA-Z0-9-_]
   let decoded: string;
   try {
     decoded = decodeURIComponent(slug);
   } catch {
+    console.error('[sanitizeSlug] Could not decode slug:', slug);
     throw new Error('Invalid slug');
   }
-  if (!/^[a-z0-9-_]+$/.test(decoded)) {
+  if (!/^[a-zA-Z0-9-_]+$/.test(decoded)) {
+    console.error('[sanitizeSlug] Rejected slug:', decoded);
     throw new Error('Invalid slug');
   }
   return decoded;

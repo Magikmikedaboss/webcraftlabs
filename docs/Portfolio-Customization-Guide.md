@@ -93,16 +93,6 @@ public/
       project-3.jpg
 ```
 
-Then update the `image` field in your project data:
-```typescript
-image: '/images/portfolio/project-1.jpg'
-```
-
-**Image Recommendations:**
-- **Size**: 1200x800px (3:2 aspect ratio)
-- **Format**: JPG or WebP
-- **Quality**: High quality but optimized (under 200KB)
-- **Content**: Screenshots, mockups, or hero images
 
 ---
 
@@ -127,43 +117,47 @@ image: '/images/portfolio/project-1.jpg'
 }
 ```
 
+
 ### Example 2: Personal Project
+
 
 ```typescript
 {
-  id: 2,
-  title: 'Task Management App',
-  category: 'SaaS',
-  description: 'Built a modern task management application with real-time collaboration, used by 5,000+ teams worldwide.',
-  image: '/images/portfolio/task-app.jpg',
-  tags: ['React', 'Firebase', 'Material-UI', 'WebSockets'],
-  metrics: {
-    users: '5,000+',
-    uptime: '99.9%',
-    rating: '4.8/5'
-  },
-  link: 'https://taskapp.com',
-  featured: false,
+  id: "2",
+  year: "2024",
+  phase: "SaaS",
+  category: "Productivity",
+  title: "Task Management App",
+  tagline: "Built a modern task management application with real-time collaboration, used by 5,000+ teams worldwide.",
+  role: "Full-stack Developer",
+  problem: "Teams needed a collaborative platform for task management and real-time updates.",
+  build: ["Firebase backend", "Material-UI interface", "WebSockets for live sync"],
+  stack: ["React", "Firebase", "Material-UI", "WebSockets"],
+  wins: ["5,000+ users", "99.9% uptime", "4.8/5 rating"],
+  next: ["Mobile app", "Advanced analytics"],
+  links: [{ label: "Live Site", href: "https://taskapp.com" }],
 }
 ```
 
+
 ### Example 3: Case Study (No Live Link)
+
 
 ```typescript
 {
-  id: 3,
-  title: 'Healthcare Portal Redesign',
-  category: 'Healthcare',
-  description: 'Redesigned patient portal for a major healthcare provider, improving appointment booking efficiency by 60%.',
-  image: '/images/portfolio/healthcare.jpg',
-  tags: ['Next.js', 'HIPAA', 'PostgreSQL', 'AWS'],
-  metrics: {
-    efficiency: '+60%',
-    satisfaction: '4.9/5',
-    patients: '100K+'
-  },
-  link: '#', // No public link (NDA project)
-  featured: true,
+  id: "3",
+  year: "2023",
+  phase: "Healthcare",
+  category: "Healthcare",
+  title: "Healthcare Portal Redesign",
+  tagline: "Redesigned patient portal for a major healthcare provider, improving appointment booking efficiency by 60%.",
+  role: "Lead Designer",
+  problem: "The provider needed a secure, user-friendly portal to improve patient experience and booking efficiency.",
+  build: ["HIPAA compliance", "PostgreSQL database", "AWS hosting"],
+  stack: ["Next.js", "HIPAA", "PostgreSQL", "AWS"],
+  wins: ["+60% efficiency", "4.9/5 satisfaction", "100K+ patients"],
+  next: ["Telemedicine integration", "Patient feedback system"],
+  links: [{ label: "NDA Project", href: "#" }],
 }
 ```
 
@@ -263,10 +257,36 @@ className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
 
 ---
 
+
 ## 🔗 Making Category Filters Functional
 
-Currently, the category filters are visual only. To make them functional:
+> **Note:** The `Project` type and all project objects must include a `category` property (e.g., `category: "Productivity"`).
 
+Example Project type:
+```typescript
+type Project = {
+  id: string;
+  year: string;
+  phase: string;
+  category: string;
+  title: string;
+  tagline: string;
+  role: string;
+  problem: string;
+  build: string[];
+  stack: string[];
+  wins: string[];
+  next: string[];
+  links: { label: string; href: string }[];
+};
+```
+
+// Example categories array:
+```typescript
+const categories = ["All", "Productivity", "Healthcare", "E-commerce"];
+```
+
+// Example filter usage:
 ```typescript
 'use client';
 import { useState } from 'react';
@@ -280,7 +300,6 @@ export default function PortfolioPage() {
 
   return (
     // ... rest of component
-    
     {/* Category Filter */}
     <div className="mb-12 flex flex-wrap justify-center gap-3">
       {categories.map((category) => (

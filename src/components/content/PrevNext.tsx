@@ -35,7 +35,9 @@ export default function PrevNext({
           </div>
           <div className="mt-2 font-extrabold text-slate-900">{next.title}</div>
         </Link>
-      ) : null}
+      ) : (
+        <div />
+      )}
     </div>
   );
 }

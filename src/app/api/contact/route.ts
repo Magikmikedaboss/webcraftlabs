@@ -153,8 +153,8 @@ IP: ${ip}
     await transporter.sendMail(mailOptions);
     console.log('[Contact Form] Email sent successfully');
   } catch (emailError) {
-    const msg = typeof emailError === 'object' && emailError && 'message' in emailError ? (emailError as any).message : 'Unknown error';
-    const code = typeof emailError === 'object' && emailError && 'code' in emailError ? (emailError as any).code : 'N/A';
+    const msg = typeof emailError === 'object' && emailError && 'message' in emailError ? (emailError as unknown as { message?: string }).message ?? 'Unknown error' : 'Unknown error';
+    const code = typeof emailError === 'object' && emailError && 'code' in emailError ? (emailError as unknown as { code?: string }).code ?? 'N/A' : 'N/A';
     console.warn(`[Contact Form] Email send failed: ${msg} (code:${code})`);
     // Don't fail the request if email fails - log it and continue
     // In production, you might want to queue this for retry

@@ -37,9 +37,8 @@ function MetaLine({ item }: { item: FeedItem }) {
   );
 }
 
-
 type HomeMagazineFeedProps = {
-  featured: FeedItem;
+  featured?: FeedItem;
   latest: FeedItem[];
 };
 
@@ -48,51 +47,59 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
-      {/* ...existing code for layout, featured, sidebar, etc. ... */}
       <div className="mt-10 grid gap-6 lg:grid-cols-12">
         {/* Featured */}
         <article className="lg:col-span-8 overflow-hidden rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] to-[var(--surface-2)] shadow-lg">
-          <div className="grid md:grid-cols-2">
-            <div className="relative min-h-[240px] md:min-h-[340px]">
-              <Image
-                src={featured.image ?? "/images/bright-sky-reflects-on-tranquil-water-webcraft-website-design-image.jpg"}
-                alt={featured.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority={false}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
-            </div>
-            <div className="p-6 sm:p-8 flex flex-col">
-              <MetaLine item={featured} />
-              <h3 className="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-blue-950">
-                {featured.title}
-              </h3>
-              {featured.description ? (
-                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)] line-clamp-4">
-                  {featured.description}
-                </p>
-              ) : null}
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Link
-                  href={featured.href}
-                  className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
-                >
-                  Continue reading
-                </Link>
-                <Link
-                  href="/build"
-                  className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold hover:bg-[var(--bg)]"
-                >
-                  Start your build
-                </Link>
+          {featured ? (
+            <div className="grid md:grid-cols-2">
+              <div className="relative min-h-[240px] md:min-h-[340px]">
+                <Image
+                  src={featured.image ?? "/images/bright-sky-reflects-on-tranquil-water-webcraft-website-design-image.jpg"}
+                  alt={featured.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={false}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
               </div>
-              <div className="mt-auto pt-6">
-                <div className="h-px w-full bg-[var(--border)]/60" />
+              <div className="p-6 sm:p-8 flex flex-col">
+                <MetaLine item={featured} />
+                <h3 className="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-blue-950">
+                  {featured.title}
+                </h3>
+                {featured.description ? (
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--muted)] line-clamp-4">
+                    {featured.description}
+                  </p>
+                ) : null}
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link
+                    href={featured.href}
+                    className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+                  >
+                    Continue reading
+                  </Link>
+                  <Link
+                    href="/build"
+                    className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold hover:bg-[var(--bg)]"
+                  >
+                    Start your build
+                  </Link>
+                </div>
+                <div className="mt-auto pt-6">
+                  <div className="h-px w-full bg-[var(--border)]/60" />
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center justify-center h-full min-h-[240px] p-8">
+              <div className="text-center text-[var(--muted)]">
+                <div className="text-2xl font-bold mb-2">No posts found</div>
+                <div className="text-sm">Check back soon for updates!</div>
+              </div>
+            </div>
+          )}
         </article>
         {/* Sidebar latest */}
         <aside className="lg:col-span-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">

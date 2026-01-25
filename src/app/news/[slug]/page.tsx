@@ -47,7 +47,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
 
   const url = `${SITE.url}/news/${post.slug}`;
 
-  const list = getAllNews();
+  const list = await getAllNews();
   const idx = list.findIndex((p) => p.slug === post.slug);
   const prev = idx > 0 ? list[idx - 1] : null;
   const next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
