@@ -1,5 +1,4 @@
 import SiteShell from "@/components/SiteShell";
-// import Card from "@/components/Card";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
@@ -70,7 +69,7 @@ export default function ServicesPage() {
   return (
     <SiteShell
       title={
-        <span style={{ display: "inline-flex", flexDirection: "column", gap: "0.75rem" }}>
+        <span className="inline-flex flex-col gap-3">
           <span className="inline-block px-4 py-1.5 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 text-xs font-semibold text-[var(--primary)] uppercase tracking-wide self-start">
             Services
           </span>
@@ -83,7 +82,7 @@ export default function ServicesPage() {
       intro={
         <div className="max-w-3xl space-y-4">
           <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-            WebCraft Labz builds premium web solutions for businesses that refuse to settle. We specialize in high-performance marketing websites and digital SaaS platforms engineered to convert, scale, and dominate your market.
+            {SITE.name} builds premium web solutions for businesses that refuse to settle. We specialize in high-performance marketing websites and digital SaaS platforms engineered to convert, scale, and dominate your market.
           </p>
           <p className="text-base text-[var(--muted)]">
             No templates. No cookie-cutter approaches. Just strategic, custom-built solutions designed around your goals—because standing out is no longer optional.

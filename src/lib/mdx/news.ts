@@ -1,6 +1,6 @@
 
 import fs from "fs";
-import path from "path";
+import { NEWS_DIR } from "../news";
 import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
@@ -20,19 +20,22 @@ function sanitizeSlug(slug: string): string {
   return normalized;
 }
 
-const NEWS_DIR = path.join(process.cwd(), "src/content/news");
-
 export function getAllNewsSlugs() {
-  return fs
-    .readdirSync(NEWS_DIR)
-    .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
-    .map((f) => f.replace(/\.(mdx|md)$/, ""));
+  try {
+    return fs
+      .readdirSync(NEWS_DIR)
+      .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"))
+      .map((f) => f.replace(/\.(mdx|md)$/, ""));
+  } catch {
+    // Directory missing, return empty array
+    return [];
+  }
 }
 export function getNewsBySlug(slug: string): { slug: string; content: string; frontmatter: z.infer<typeof BlogFrontmatterSchema> } {
   const safeSlug = sanitizeSlug(slug);
-  let fullPath = path.join(NEWS_DIR, `${safeSlug}.mdx`);
+  let fullPath = `${NEWS_DIR}/${safeSlug}.mdx`;
   if (!fs.existsSync(fullPath)) {
-    fullPath = path.join(NEWS_DIR, `${safeSlug}.md`);
+    fullPath = `${NEWS_DIR}/${safeSlug}.md`;
   }
   if (!fs.existsSync(fullPath)) {
     throw new Error(`Post not found: ${safeSlug} in ${NEWS_DIR}`);

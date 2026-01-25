@@ -29,7 +29,7 @@ export default async function HomeMagazineFeedServer() {
 
   // Combine and sort
   const combined = [...blogItems, ...newsItems].sort((a, b) => String(b.date ?? "").localeCompare(String(a.date ?? "")));
-  const featured = combined[0] ?? blogItems[0] ?? newsItems[0];
+  const featured = combined[0] ?? undefined;
   const latest = combined.slice(1, 5);
 
   return <HomeMagazineFeed featured={featured} latest={latest} />;

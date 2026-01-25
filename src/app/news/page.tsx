@@ -41,7 +41,7 @@ export default async function NewsIndexPage() {
             </div>
             
             <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
-              WebCraft LabZ
+              {SITE.name}
               <span className="block mt-2 bg-gradient-to-r from-cyan-200 to-blue-200 bg-clip-text text-transparent">
                 Newsroom
               </span>

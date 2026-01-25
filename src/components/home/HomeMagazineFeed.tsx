@@ -45,6 +45,16 @@ type HomeMagazineFeedProps = {
 export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
   const { featured, latest } = props;
 
+  // Extract 'View all' href logic for clarity
+  const allTypes = [featured, ...(latest || [])].filter(Boolean).map(p => p?.type);
+  const unique = Array.from(new Set(allTypes));
+  let viewAllHref = "/blog";
+  if (unique.length === 1) {
+    viewAllHref = unique[0] === "news" ? "/news" : "/blog";
+  } else if (unique.includes("news")) {
+    viewAllHref = "/news";
+  }
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
       <div className="mt-10 grid gap-6 lg:grid-cols-12">
@@ -55,7 +65,7 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
               <div className="relative min-h-[240px] md:min-h-[340px]">
                 <Image
                   src={featured.image ?? "/images/bright-sky-reflects-on-tranquil-water-webcraft-website-design-image.jpg"}
-                  alt={featured.title}
+                  alt={featured.title ?? "Featured post"}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -66,21 +76,25 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
               </div>
               <div className="p-6 sm:p-8 flex flex-col">
                 <MetaLine item={featured} />
-                <h3 className="mt-3 text-xl sm:text-2xl font-bold tracking-tight" style={{ color: 'var(--featured-title, var(--text))' }}>
-                  {featured.title}
-                </h3>
+                {featured.title && (
+                  <h3 className="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-[var(--featured-title,var(--text))]">
+                    {featured.title}
+                  </h3>
+                )}
                 {featured.description ? (
                   <p className="mt-3 text-sm leading-relaxed text-[var(--muted)] line-clamp-4">
                     {featured.description}
                   </p>
                 ) : null}
                 <div className="mt-5 flex flex-wrap gap-3">
-                  <Link
-                    href={featured.href}
-                    className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
-                  >
-                    Continue reading
-                  </Link>
+                  {featured.href && (
+                    <Link
+                      href={featured.href}
+                      className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+                    >
+                      Continue reading
+                    </Link>
+                  )}
                   <Link
                     href="/build"
                     className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold hover:bg-[var(--bg)]"
@@ -107,21 +121,9 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
           <div className="p-5 sm:p-6">
             <div className="flex items-center justify-between">
               <div className="text-sm font-bold">Latest updates</div>
-              {(() => {
-                const allTypes = [featured, ...latest].filter(Boolean).map(p => p?.type);
-                const unique = Array.from(new Set(allTypes));
-                let href = "/blog";
-                if (unique.length === 1) {
-                  href = unique[0] === "news" ? "/news" : "/blog";
-                } else if (unique.includes("news")) {
-                  href = "/news";
-                }
-                return (
-                  <Link href={href} className="text-xs font-semibold text-[var(--primary)] hover:opacity-80">
-                    View all
-                  </Link>
-                );
-              })()}
+              <Link href={viewAllHref} className="text-xs font-semibold text-[var(--primary)] hover:opacity-80">
+                View all
+              </Link>
             </div>
             <div className="mt-4 flex flex-col divide-y divide-[var(--border)]">
               {latest.map((p) => (
@@ -131,7 +133,7 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
                     {p.date ? ` • ${p.date}` : ""}
                     {p.readingTime ? ` • ${p.readingTime}` : ""}
                   </div>
-                  <div className="mt-1 text-sm font-semibold leading-snug group-hover:opacity-90" style={{ color: 'var(--featured-title, var(--text))' }}>
+                  <div className="mt-1 text-sm font-semibold leading-snug group-hover:opacity-90 text-[var(--featured-title,var(--text))]">
                     {p.title}
                   </div>
                 </Link>

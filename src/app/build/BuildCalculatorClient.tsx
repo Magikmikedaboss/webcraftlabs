@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { RadixSelect } from "../../components/RadixSelect";
 import SiteShell from "../../components/SiteShell";
@@ -17,13 +17,6 @@ import { formatPrice } from "../../lib/formatPrice";
 import { ADDONS, MAINTENANCE_PLANS } from "../../lib/estimator/config";
 
 export default function BuildCalculatorClient() {
-  const router = useRouter();
-  const [pages, setPages] = useState(5);
-  const [design, setDesign] = useState<DesignLevel>("template");
-  const [content, setContent] = useState<ContentReadiness>("ready");
-  const [timeline, setTimeline] = useState<Timeline>("standard");
-  const [features, setFeatures] = useState<string[]>([]);
-  const [maintenance, setMaintenance] = useState<{ monthly?: number }>({});
   const [q, setQ] = useState<QuoteDetails>({
     name: "",
     email: "",
@@ -34,6 +27,17 @@ export default function BuildCalculatorClient() {
     frameworkOther: "",
     maintenancePlan: "none",
   });
+  const router = useRouter();
+  const [pages, setPages] = useState(5);
+  const [design, setDesign] = useState<DesignLevel>("template");
+  const [content, setContent] = useState<ContentReadiness>("ready");
+  const [timeline, setTimeline] = useState<Timeline>("standard");
+  const [features, setFeatures] = useState<string[]>([]);
+  // Derive maintenance from plan, memoized to avoid unnecessary recalculation
+  const maintenance = useMemo(() => {
+    const plan = MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan);
+    return plan ? { monthly: plan.monthly } : {};
+  }, [q.maintenancePlan]);
 
   function toggleFeature(id: string) {
     setFeatures((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -43,15 +47,6 @@ export default function BuildCalculatorClient() {
     setQ((prev) => ({ ...prev, [key]: value }));
   }
 
-  // Update maintenance when q.maintenancePlan changes
-  // Set maintenance synchronously when q.maintenancePlan changes
-  useEffect(() => {
-    const plan = MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan);
-    if (!plan) return;
-    if (maintenance.monthly !== plan.monthly) {
-      setMaintenance({ monthly: plan.monthly });
-    }
-  }, [q.maintenancePlan, maintenance.monthly]);
 
   // --- Estimation (placeholder/dummy) ---
   // Swap this for your real estimator when ready.

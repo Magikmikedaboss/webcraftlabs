@@ -285,13 +285,6 @@ type Project = {
   category: string;
 };
 ```
-  stack: string[];
-  wins: string[];
-  next?: string[];
-  links?: { label: string; href: string }[];
-  category: string;
-};
-```
 
 // Example categories array:
 ```typescript

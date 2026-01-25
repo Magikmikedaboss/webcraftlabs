@@ -25,15 +25,6 @@ export const metadata: Metadata = {
   title: SITE.name,
   description: SITE.tagline,
   metadataBase: new URL(SITE.url),
-  icons: {
-    icon: [
-      { url: '/images/branding/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/images/branding/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/images/branding/180.png', sizes: '180x180', type: 'image/png' },
-    ],
-  },
 };
 
 export const viewport = {
@@ -50,8 +41,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/images/branding/180.png" sizes="any" type="image/png" />
-        {/* Preconnect to font sources for faster loading */}
+        {/* Preconnect to Google Fonts stylesheet first for Next.js compliance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com/css2" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* DNS prefetch as fallback */}

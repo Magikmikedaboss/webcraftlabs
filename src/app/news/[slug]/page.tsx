@@ -47,10 +47,11 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
 
   const url = `${SITE.url}/news/${post.slug}`;
 
-  const list = await getAllNews();
-  const idx = list.findIndex((p) => p.slug === post.slug);
-  const prev = idx > 0 ? list[idx - 1] : null;
-  const next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
+  // Cache news list to avoid repeated file reads
+  const staticNewsList = await getAllNews();
+  const idx = staticNewsList.findIndex((p) => p.slug === post.slug);
+  const prev = idx > 0 ? staticNewsList[idx - 1] : null;
+  const next = idx >= 0 && idx < staticNewsList.length - 1 ? staticNewsList[idx + 1] : null;
 
   return (
     <SiteShell background="bg">
@@ -58,7 +59,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
       <div className="grid gap-10 lg:grid-cols-[1fr,280px]">
         <article className="min-w-0">
           <header className="mb-10 border-b border-[var(--border)] pb-8">
-            <div className="kicker">WebCraft LabZ Newsroom</div>
+            <div className="kicker">{SITE.name} Newsroom</div>
 
             <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-[var(--text)] sm:text-5xl">
               {post.frontmatter.title}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FaLinkedin } from "react-icons/fa";
 import { SITE } from "@/lib/site";
 import styles from "./siteShell.module.css";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useId } from "react";
 import MobileMenu from "./MobileMenu";
 import Image from "next/image";
 import PoweredBy from "./PoweredBy";
@@ -23,6 +23,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
 function DropdownNav({ label, items }: { label: string; items: { href: string; label: string }[] }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const dropdownId = useId();
 
   // Close dropdown on outside click and Escape key
   React.useEffect(() => {
@@ -51,18 +52,18 @@ function DropdownNav({ label, items }: { label: string; items: { href: string; l
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-controls="dropdown-menu"
+        aria-controls={dropdownId}
       >
         {label}
         <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
       </button>
       {open && (
-        <div id="dropdown-menu" role="menu" className="absolute left-0 mt-2 w-36 rounded-lg bg-white shadow-lg border border-gray-200 z-50">
+        <div id={dropdownId} role="menu" className="absolute left-0 mt-2 w-36 rounded-lg bg-[var(--surface)] shadow-lg border border-gray-200 z-50">
           {items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="block px-4 py-2 text-xs text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg"
+              className="block px-4 py-2 text-xs text-gray-700 hover:bg-[var(--hoverSurface)] hover:text-blue-700 rounded-lg"
               onClick={() => setOpen(false)}
               role="menuitem"
             >
