@@ -6,13 +6,27 @@ import { SITE } from "@/lib/site";
 import Link from "next/link";
 
 export const metadata = {
-  title: `Company News & Updates | ${SITE.name}`,
+  title: "News",
   description: `Latest product launches, feature updates, client success stories, and company announcements from ${SITE.name}. Stay updated on our journey building the future of web development.`,
   keywords: `${SITE.name} news, product launches, company updates, tech announcements, client success stories, web development updates`,
   openGraph: {
     title: `Company News & Updates | ${SITE.name}`,
     description: `Latest product launches, feature updates, and company announcements from ${SITE.name}.`,
     type: "website",
+    images: [
+      {
+        url: "/images/business-marketing-solutions-concept-art.jpg",
+        width: 1200,
+        height: 630,
+        alt: "WebCraft Labz News - Company Updates & Announcements",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Company News & Updates | ${SITE.name}`,
+    description: `Latest product launches, feature updates, and company announcements from ${SITE.name}.`,
+    images: ["/images/business-marketing-solutions-concept-art.jpg"],
   },
 };
 

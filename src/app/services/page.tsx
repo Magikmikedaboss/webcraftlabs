@@ -4,11 +4,26 @@ import Image from "next/image";
 import { SITE } from "@/lib/site";
 
 export const metadata = {
-  title: `Services | ${SITE.name}`,
-  description: 'SEO-optimized website design, marketing funnels, and growth strategies.',
+  title: "Services",
+  description: 'SEO-optimized website design, marketing funnels, and growth strategies. Custom web development, SaaS platforms, and digital solutions built for real business growth.',
   openGraph: {
     title: `Services | ${SITE.name}`,
-    description: 'SEO-optimized website design, marketing funnels, and growth strategies.',
+    description: 'SEO-optimized website design, marketing funnels, and growth strategies. Custom web development, SaaS platforms, and digital solutions built for real business growth.',
+    type: "website",
+    images: [
+      {
+        url: "/images/web-development-cross-platform-solutions-design-and-development.jpg",
+        width: 1200,
+        height: 630,
+        alt: "WebCraft Labz Services - Custom Web Development",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Services | ${SITE.name}`,
+    description: 'SEO-optimized website design, marketing funnels, and growth strategies. Custom web development, SaaS platforms, and digital solutions built for real business growth.',
+    images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
   },
 };
 

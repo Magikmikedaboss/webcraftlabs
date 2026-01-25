@@ -4,11 +4,26 @@ import Image from "next/image";
 import { SITE } from "@/lib/site";
 
 export const metadata = {
-  title: `About | ${SITE.name}`,
+  title: "About",
   description: 'Learn about WebCraft Labz - a web development company building powerful marketing websites, SaaS platforms, and web tools for real-world business needs.',
   openGraph: {
     title: `About | ${SITE.name}`,
     description: 'Learn about WebCraft Labz - a web development company building powerful marketing websites, SaaS platforms, and web tools for real-world business needs.',
+    type: "website",
+    images: [
+      {
+        url: "/images/web-development-cross-platform-solutions-design-and-development.jpg",
+        width: 1200,
+        height: 630,
+        alt: "About WebCraft Labz - Web Development Company",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `About | ${SITE.name}`,
+    description: 'Learn about WebCraft Labz - a web development company building powerful marketing websites, SaaS platforms, and web tools for real-world business needs.',
+    images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
   },
 };
 

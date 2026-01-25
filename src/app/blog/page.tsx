@@ -3,14 +3,28 @@ import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";
 
 export const metadata = {
-  title: "Tech & Development Blog | WebCraft LabZ",
+  title: "Blog",
   description:
     "Cutting-edge insights on web development, AI, emerging technologies, and the future of software. From practical coding tutorials to industry trends - everything developers need to stay ahead.",
   keywords: "web development blog, AI technology, software development, tech news, programming tutorials, future of tech, developer insights, coding best practices",
   openGraph: {
     title: "Tech & Development Blog | WebCraft LabZ",
-    description: "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
+    description: "Cutting-edge insights on web development, AI, emerging technologies, and the future of software. From practical coding tutorials to industry trends.",
     type: "website",
+    images: [
+      {
+        url: "/images/structure-database-software-development.jpg",
+        width: 1200,
+        height: 630,
+        alt: "WebCraft Labz Tech Blog - Web Development & AI Insights",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tech & Development Blog | WebCraft LabZ",
+    description: "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
+    images: ["/images/structure-database-software-development.jpg"],
   },
 };
 

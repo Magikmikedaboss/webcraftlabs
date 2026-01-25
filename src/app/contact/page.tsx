@@ -1,6 +1,6 @@
 import { SITE } from "@/lib/site";
 export const metadata = {
-  title: "Contact WebCraft LabZ | Las Vegas Web Design & Marketing",
+  title: "Contact",
   description: "Contact WebCraft LabZ for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
   openGraph: {
     title: "Contact WebCraft LabZ | Las Vegas Web Design & Marketing",
@@ -8,6 +8,20 @@ export const metadata = {
     type: "website",
     url: new URL('/contact', SITE.url).toString(),
     siteName: "WebCraft LabZ",
+    images: [
+      {
+        url: "/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Contact WebCraft Labz - Get in Touch",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact WebCraft LabZ | Las Vegas Web Design & Marketing",
+    description: "Contact WebCraft LabZ for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
+    images: ["/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg"],
   },
   alternates: {
     canonical: new URL('/contact', SITE.url).toString()
