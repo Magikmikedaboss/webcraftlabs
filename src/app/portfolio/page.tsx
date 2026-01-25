@@ -5,11 +5,6 @@ import SiteShell from "@/components/SiteShell";
 
 type Project = {
   id: string;
-  year: string;
-  phase: string;
-  title: string;
-  tagline: string;
-  role?: string;
   problem: string;
   build: string[];
   stack: string[];
@@ -24,6 +19,10 @@ const PROJECTS: Project[] = [
     id: "fixitwithmike",
     year: "2024-2025",
     phase: "Monetization & Content",
+
+  import React, { useRef, useEffect, useMemo, useState } from "react";
+  import SiteShell from "@/components/SiteShell";
+
     title: "Fix It With Mike",
     tagline: "Content blog and local service website with affiliate system and lead generation.",
     role: "Content architecture + monetization + design + dev",
@@ -255,7 +254,6 @@ function Chip(props: { children: React.ReactNode; tone?: "neutral" | "soft" }) {
   );
 }
 
-import React, { useRef, useEffect } from "react";
 
 function Drawer(props: {
   open: boolean;

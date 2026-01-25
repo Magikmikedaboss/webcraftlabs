@@ -72,7 +72,6 @@ Place your project images in the `public/images/` folder:
 ```
 public/
   images/
-    portfolio/
       project-1.jpg
       project-2.jpg
       project-3.jpg
@@ -86,6 +85,7 @@ image: '/images/portfolio/project-1.jpg'
 **Image Recommendations:**
 - **Size**: 1200x800px (3:2 aspect ratio)
 - **Format**: JPG or WebP
+    ```text
 - **Quality**: High quality but optimized (under 200KB)
 - **Content**: Screenshots, mockups, or hero images
 
