@@ -109,13 +109,13 @@ export default function SiteShell({
 
           {/* Desktop Navigation */}
           <nav className="hidden items-center gap-1 md:flex">
-            <NavLink href="/build" label="Build" />
+            <NavLink href="/about" label="About" />
             <DropdownNav
               label="Explore"
               items={[
                 { href: "/services", label: "Services" },
                 { href: "/portfolio", label: "Portfolio" },
-                { href: "/about", label: "About" },
+                { href: "/build", label: "Build" },
                 { href: "/blog", label: "Blog" },
                 { href: "/news", label: "News" },
               ]}
