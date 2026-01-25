@@ -1,4 +1,5 @@
-export type { MaintenancePlanId } from "./config";
+// MaintenancePlanId is now defined here to break circular dependency
+export type MaintenancePlanId = "care" | "growth" | "priority";
 export type ProjectType = "service" | "agency" | "ecommerce" | "content" | "other";
 export type Goal = "leads" | "sales" | "brand" | "seo";
 export type DesignLevel = "template" | "custom";
@@ -67,7 +68,7 @@ export type QuoteDetails = {
     | "squarespace"
     | "other";
   frameworkOther: string;
-  maintenancePlan: MaintenancePlanId;
+  maintenancePlan: MaintenancePlanId | "none";
 };
 
 export type Estimate = {

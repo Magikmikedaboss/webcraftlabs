@@ -1,4 +1,4 @@
-import { AddOn, Tier } from "./types";
+import { AddOn, Tier, MaintenancePlanId } from "./types";
 
 // Global time rules
 export const TIME = {
@@ -162,7 +162,7 @@ export const MAINTENANCE_PLANS = [
   },
 ] as const;
 
-export type MaintenancePlanId = (typeof MAINTENANCE_PLANS)[number]["id"];
+// MaintenancePlanId type is now imported from types.ts
 
 // Tier picker
 export function pickTier(pages: number): Tier {
