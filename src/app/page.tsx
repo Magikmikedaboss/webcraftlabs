@@ -7,24 +7,24 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Home",
-  description: "WebCraft Labz builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs. Websites built like products, not brochures.",
+  description: `${SITE.name} builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs. Websites built like products, not brochures.`,
   openGraph: {
     title: `${SITE.name} - ${SITE.tagline}`,
-    description: "WebCraft Labz builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs. Websites built like products, not brochures.",
+    description: `${SITE.name} builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs. Websites built like products, not brochures.`,
     type: "website",
     images: [
       {
         url: "/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg",
         width: 1200,
         height: 630,
-        alt: "WebCraft Labz - Professional Web Development",
+        alt: `${SITE.name} - Professional Web Development`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE.name} - ${SITE.tagline}`,
-    description: "WebCraft Labz builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs.",
+    description: `${SITE.name} builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs.`,
     images: ["/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg"],
   },
 };

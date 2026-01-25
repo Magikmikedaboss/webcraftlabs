@@ -1,5 +1,10 @@
 import { SITE } from "@/lib/site";
-export const metadata = {
+import SiteShell from "@/components/SiteShell";
+import ContactForm from "./ContactForm";
+import Script from "next/script";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Contact",
   description: "Contact WebCraft LabZ for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
   openGraph: {
@@ -13,7 +18,8 @@ export const metadata = {
         url: "/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg",
         width: 1200,
         height: 630,
-        alt: "Contact WebCraft LabZ - Get in Touch",      },
+        alt: "Contact WebCraft LabZ - Get in Touch",
+      },
     ],
   },
   twitter: {
@@ -27,9 +33,6 @@ export const metadata = {
   }
 };
 
-import SiteShell from "@/components/SiteShell";
-import ContactForm from "./ContactForm";
-import Script from "next/script";
 export default function ContactPage() {
   const jsonLd = {
     '@context': 'https://schema.org',

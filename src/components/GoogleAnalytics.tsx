@@ -51,6 +51,7 @@ export default function GoogleAnalytics() {
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
       />
+      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Required for Google Analytics initialization */}
       <Script
         id="google-analytics"
         strategy="afterInteractive"
