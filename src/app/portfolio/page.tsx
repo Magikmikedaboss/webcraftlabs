@@ -455,15 +455,26 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
                   <section className="space-y-2">
                     <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Links</div>
                     <div className="flex flex-wrap gap-2">
-                      {p.links.map((l) => (
-                        <a
-                          key={l.label}
-                          href={l.href}
-                          className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                        >
-                          {l.label}
-                        </a>
-                      ))}
+                      {p.links.map((l) =>
+                        l.href && l.href !== "#" ? (
+                          <a
+                            key={l.label}
+                            href={l.href}
+                            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                          >
+                            {l.label}
+                          </a>
+                        ) : (
+                          <span
+                            key={l.label}
+                            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700"
+                            aria-disabled="true"
+                            tabIndex={-1}
+                          >
+                            {l.label}
+                          </span>
+                        )
+                      )}
                     </div>
                   </section>
                 ) : null}

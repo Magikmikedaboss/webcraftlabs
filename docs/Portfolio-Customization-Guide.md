@@ -85,7 +85,6 @@ image: '/images/portfolio/project-1.jpg'
 **Image Recommendations:**
 - **Size**: 1200x800px (3:2 aspect ratio)
 - **Format**: JPG or WebP
-    ```text
 - **Quality**: High quality but optimized (under 200KB)
 - **Content**: Screenshots, mockups, or hero images
 
