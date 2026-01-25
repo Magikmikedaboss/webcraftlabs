@@ -66,7 +66,7 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
               </div>
               <div className="p-6 sm:p-8 flex flex-col">
                 <MetaLine item={featured} />
-                <h3 className="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-blue-950">
+                <h3 className="mt-3 text-xl sm:text-2xl font-bold tracking-tight" style={{ color: 'var(--featured-title, var(--text))' }}>
                   {featured.title}
                 </h3>
                 {featured.description ? (
@@ -107,9 +107,21 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
           <div className="p-5 sm:p-6">
             <div className="flex items-center justify-between">
               <div className="text-sm font-bold">Latest updates</div>
-              <Link href="/blog" className="text-xs font-semibold text-[var(--primary)] hover:opacity-80">
-                View all
-              </Link>
+              {(() => {
+                const allTypes = [featured, ...latest].filter(Boolean).map(p => p?.type);
+                const unique = Array.from(new Set(allTypes));
+                let href = "/blog";
+                if (unique.length === 1) {
+                  href = unique[0] === "news" ? "/news" : "/blog";
+                } else if (unique.includes("news")) {
+                  href = "/news";
+                }
+                return (
+                  <Link href={href} className="text-xs font-semibold text-[var(--primary)] hover:opacity-80">
+                    View all
+                  </Link>
+                );
+              })()}
             </div>
             <div className="mt-4 flex flex-col divide-y divide-[var(--border)]">
               {latest.map((p) => (
@@ -119,7 +131,7 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
                     {p.date ? ` • ${p.date}` : ""}
                     {p.readingTime ? ` • ${p.readingTime}` : ""}
                   </div>
-                  <div className="mt-1 text-sm font-semibold leading-snug text-blue-950 group-hover:opacity-90">
+                  <div className="mt-1 text-sm font-semibold leading-snug group-hover:opacity-90" style={{ color: 'var(--featured-title, var(--text))' }}>
                     {p.title}
                   </div>
                 </Link>

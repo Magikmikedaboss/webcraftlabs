@@ -16,15 +16,17 @@ Your portfolio page features:
 - **Featured Projects**: Highlight your best work with special badges
 
 ### 📊 Project Showcase
-Each project card displays:
-- Project image with overlay
-- Category badge
-- Featured badge (for standout projects)
-- Project title and description
-- 3 key metrics (conversion, revenue, performance, etc.)
-- Technology tags
-- "View Project" button
-- "View case study" link
+
+Each project card displays (see the `Project` schema below for field names):
+- Project title (`title`)
+- Tagline/description (`tagline`)
+- Category badge (`category`)
+- Year/phase (`year`, `phase`)
+- Role (`role`, optional)
+- Problem, build, stack, wins, next steps (case study fields)
+- Links (optional, `links`)
+
+**Note:** Fields like image, metrics, tags, and featured are not present on the `Project` type by default. If you need these, extend the `Project` type or derive them from related resources. See the `Example Project type` section for the canonical schema.
 
 ### 📈 Stats Section
 - Projects delivered
@@ -267,7 +269,28 @@ className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
 
 Example Project type:
 ```typescript
-//
+type Project = {
+  id: string;
+  year: string; // ex: "2024", "2024-2025", "2026"
+  phase: string;
+  title: string;
+  tagline: string;
+  role?: string;
+  problem: string;
+  build: string[];
+  stack: string[];
+  wins: string[];
+  next?: string[];
+  links?: { label: string; href: string }[];
+  category: string;
+};
+```
+  stack: string[];
+  wins: string[];
+  next?: string[];
+  links?: { label: string; href: string }[];
+  category: string;
+};
 ```
 
 // Example categories array:

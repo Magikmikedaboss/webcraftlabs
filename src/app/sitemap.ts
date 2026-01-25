@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       throw err;
     }
   }
-  if (process.env.VERCEL_GIT_COMMIT_SHA) {
+  if (process.env.VERCEL_GIT_COMMIT_SHA && process.env.VERCEL_TOKEN) {
     try {
       const ts = await fetchVercelDeploymentCreatedAt(process.env.VERCEL_GIT_COMMIT_SHA);
       lastModified = new Date(ts);

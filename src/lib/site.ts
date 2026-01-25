@@ -18,20 +18,19 @@ export const SITE = {
  */
 export function getBaseUrl(): string {
   const rawUrl = SITE.url;
-  
-  // Validate URL format
+  let parsed: URL;
+  // Validate URL format (catch only parsing errors)
   try {
-    const parsed = new URL(rawUrl);
-    // Ensure it's http or https
-    if (!['http:', 'https:'].includes(parsed.protocol)) {
-      throw new Error(`SITE.url must use http or https protocol, got: ${parsed.protocol}`);
-    }
+    parsed = new URL(rawUrl);
   } catch (err) {
     const errorMsg = `Invalid SITE.url configuration: "${rawUrl}". Must be a valid HTTP(S) URL.`;
     console.error(errorMsg, err);
     throw new Error(errorMsg);
   }
-  
+  // Ensure it's http or https (protocol check outside catch)
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    throw new Error(`SITE.url must use http or https protocol, got: ${parsed.protocol}`);
+  }
   // Remove trailing slash for consistent URL construction
   return rawUrl.replace(/\/$/, '');
 }

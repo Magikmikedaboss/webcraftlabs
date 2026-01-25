@@ -1,14 +1,16 @@
+
 import PostIndexClient from "@/components/content/PostIndexClient";
 import { getAllNews } from "@/lib/mdx/news";
 import SiteShell from "@/components/SiteShell";
+import { SITE } from "@/lib/site";
 
 export const metadata = {
-  title: "Company News & Updates | WebCraft LabZ",
-  description: "Latest product launches, feature updates, client success stories, and company announcements from WebCraft LabZ. Stay updated on our journey building the future of web development.",
-  keywords: "WebCraft LabZ news, product launches, company updates, tech announcements, client success stories, web development updates",
+  title: `Company News & Updates | ${SITE.name}`,
+  description: `Latest product launches, feature updates, client success stories, and company announcements from ${SITE.name}. Stay updated on our journey building the future of web development.`,
+  keywords: `${SITE.name} news, product launches, company updates, tech announcements, client success stories, web development updates`,
   openGraph: {
-    title: "Company News & Updates | WebCraft LabZ",
-    description: "Latest product launches, feature updates, and company announcements from WebCraft LabZ.",
+    title: `Company News & Updates | ${SITE.name}`,
+    description: `Latest product launches, feature updates, and company announcements from ${SITE.name}.`,
     type: "website",
   },
 };

@@ -38,6 +38,7 @@ body {
 /* ===========================
    WebCraft Labs Theme Tokens
    =========================== */
+
 :root {
   --bg: #f8fbff;
   --surface: #ffffff;
@@ -48,9 +49,13 @@ body {
   --primary: #2563eb;
   --secondary: #0ea5a4;
   --accent: #7dd3fc;
+
+  --hoverSurface: #e0e7ef;
+  --focusSurface: #bae6fd;
 }
 
-[data-theme="dark"] {
+[
+data-theme="dark"] {
   --bg: #070b12;
   --surface: #0d1420;
   --text: #e5edf5;
@@ -58,6 +63,8 @@ body {
   --border: #1f2a38;
 
   --primary: #60a5fa;
+  --hoverSurface: #1e293b;
+  --focusSurface: #0ea5a4;
   --secondary: #2dd4bf;
   --accent: #38bdf8;
 }
@@ -84,11 +91,20 @@ body {
   --tw-prose-td-borders: var(--border);
 }
 
+
 .prose-custom :where(a):not(:where([class~="not-prose"] *)) {
   color: var(--primary);
   text-decoration: underline;
   text-decoration-color: var(--accent);
   transition: color 0.2s ease-in-out;
+}
+
+.prose-custom :where(a):focus-visible:not(:where([class~="not-prose"] *)) {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+  color: var(--secondary);
+  box-shadow: 0 0 0 2px var(--focusSurface);
+  transition: color 0.2s, box-shadow 0.2s;
 }
 
 .prose-custom :where(a):hover:not(:where([class~="not-prose"] *)) {

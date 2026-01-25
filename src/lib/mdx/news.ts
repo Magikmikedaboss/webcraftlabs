@@ -6,17 +6,18 @@ import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
 
 function sanitizeSlug(slug: string): string {
-  // Decode and strictly allow only [a-z0-9-_]
+  // Decode and allow [A-Za-z0-9-_], normalize to lowercase for consistency
   let decoded: string;
   try {
     decoded = decodeURIComponent(slug);
   } catch {
     throw new Error('Invalid slug');
   }
-  if (!/^[a-z0-9-_]+$/.test(decoded)) {
+  const normalized = decoded.toLowerCase();
+  if (!/^[a-z0-9-_]+$/.test(normalized)) {
     throw new Error('Invalid slug');
   }
-  return decoded;
+  return normalized;
 }
 
 const NEWS_DIR = path.join(process.cwd(), "src/content/news");

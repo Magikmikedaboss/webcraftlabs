@@ -7,6 +7,7 @@ import React, { useState, useRef } from "react";
 import MobileMenu from "./MobileMenu";
 import Image from "next/image";
 import PoweredBy from "./PoweredBy";
+import ThemeToggle from "./ThemeToggle";
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
@@ -47,7 +48,6 @@ function DropdownNav({ label, items }: { label: string; items: { href: string; l
     <div ref={ref} className="relative">
       <button
         type="button"
-        className="rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 transition-all duration-200 hover:text-blue-700 hover:bg-blue-50/50 flex items-center gap-1"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -93,6 +93,7 @@ export default function SiteShell({
     <div className={`min-h-screen ${bgClass} text-[var(--text)]`}>
       <header className={styles.header}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+
           <Link href="/" className="flex items-center gap-2 font-bold text-sm sm:text-base tracking-tight text-gray-900 transition-opacity hover:opacity-90">
             <Image
               src="/apple-touch-icon.png"
@@ -123,6 +124,7 @@ export default function SiteShell({
             >
               Contact
             </Link>
+            <ThemeToggle />
           </nav>
 
           {/* Mobile Hamburger Menu (a11y/UX improved) */}

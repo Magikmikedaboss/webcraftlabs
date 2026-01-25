@@ -45,13 +45,13 @@ export default function BuildCalculatorClient() {
 
   // Update maintenance when q.maintenancePlan changes
   // Set maintenance synchronously when q.maintenancePlan changes
-  const plan = MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan);
   useEffect(() => {
-    if (plan && maintenance.monthly !== plan.monthly) {
+    const plan = MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan);
+    if (!plan) return;
+    if (maintenance.monthly !== plan.monthly) {
       setMaintenance({ monthly: plan.monthly });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q.maintenancePlan]);
+  }, [q.maintenancePlan, maintenance.monthly]);
 
   // --- Estimation (placeholder/dummy) ---
   // Swap this for your real estimator when ready.

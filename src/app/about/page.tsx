@@ -16,7 +16,7 @@ export default function AboutPage() {
   return (
     <SiteShell
       title={
-        <div className="flex flex-col gap-3">
+        <span style={{ display: "inline-flex", flexDirection: "column", gap: "0.75rem" }}>
           <span className="inline-block px-4 py-1.5 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 text-xs font-semibold text-[var(--primary)] uppercase tracking-wide self-start">
             About Us
           </span>
@@ -24,7 +24,7 @@ export default function AboutPage() {
             We Build Websites<br />
             <span className="text-[var(--primary)]">That Mean Business.</span>
           </span>
-        </div>
+        </span>
       }
       intro={
         <div className="max-w-3xl space-y-4">

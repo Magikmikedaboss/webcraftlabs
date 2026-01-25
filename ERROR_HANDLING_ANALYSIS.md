@@ -32,7 +32,7 @@ Your website has **comprehensive and well-designed error handling** across all c
 - ✅ Uses CSS variables for theming
 
 **Design:**
-```
+```text
 ┌─────────────────────────────────┐
 │         404                     │
 │    Page Not Found               │
@@ -82,7 +82,7 @@ Your website has **comprehensive and well-designed error handling** across all c
 - Generic errors → "An unexpected error occurred..."
 
 **Design:**
-```
+```text
 ┌─────────────────────────────────┐
 │         Oops!                   │
 │   Something went wrong          │
