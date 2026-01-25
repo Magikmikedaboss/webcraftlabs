@@ -127,7 +127,7 @@ export default function BuildCalculatorClient() {
                     onChange={(e) => setPages(Number(e.target.value))}
                     className={`${styles.rangeSlider} w-full h-2 rounded-full appearance-none cursor-pointer`}
                     style={{
-                      background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${sliderPct}%, #e5e7eb ${sliderPct}%, #e5e7eb 100%)`,
+                      background: `linear-gradient(to right, var(--primary, #3b82f6) 0%, var(--primary, #3b82f6) ${sliderPct}%, var(--border, #e5e7eb) ${sliderPct}%, var(--border, #e5e7eb) 100%)`,
                     }}
                     aria-label="Pages"
                   />
@@ -362,7 +362,7 @@ function buildSheetText(args: {
   weeksHigh: number;
 }) {
   const lines = [
-    `WEBCRAFT LABZ - BUILD SHEET`,
+    `WebCraft Labs - Build Sheet`,
     ``,
     `Estimate: ${formatPrice(args.priceLow)} - ${formatPrice(args.priceHigh)}`,
     `Timeline: ${args.weeksLow}-${args.weeksHigh} weeks`,

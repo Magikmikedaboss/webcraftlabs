@@ -9,7 +9,9 @@ export default function HomePage() {
       <Suspense
         fallback={
           <div className="min-h-[400px] flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-blue-300 border-t-transparent rounded-full animate-spin" aria-label="Loading" />
+            <div className="w-12 h-12 border-4 border-blue-300 border-t-transparent rounded-full animate-spin motion-reduce:animate-none" role="status" aria-live="polite">
+              <span className="sr-only">Loading…</span>
+            </div>
           </div>
         }
       >

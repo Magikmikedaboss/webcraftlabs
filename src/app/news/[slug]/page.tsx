@@ -47,7 +47,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
 
   const url = `${SITE.url}/news/${post.slug}`;
 
-  // Cache news list to avoid repeated file reads
+  // Fetch all news posts (not cached)
   const staticNewsList = await getAllNews();
   const idx = staticNewsList.findIndex((p) => p.slug === post.slug);
   const prev = idx > 0 ? staticNewsList[idx - 1] : null;

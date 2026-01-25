@@ -117,30 +117,32 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
           )}
         </article>
         {/* Sidebar latest */}
-        <aside className="lg:col-span-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
-          <div className="p-5 sm:p-6">
-            <div className="flex items-center justify-between">
-              <div className="text-sm font-bold">Latest updates</div>
-              <Link href={viewAllHref} className="text-xs font-semibold text-[var(--primary)] hover:opacity-80">
-                View all
-              </Link>
-            </div>
-            <div className="mt-4 flex flex-col divide-y divide-[var(--border)]">
-              {latest.map((p) => (
-                <Link key={p.href} href={p.href} className="group py-4 first:pt-0 last:pb-0">
-                  <div className="text-[10px] sm:text-xs text-[var(--muted)]">
-                    {(p.type === "blog" ? "Blog" : "News")}
-                    {p.date ? ` • ${p.date}` : ""}
-                    {p.readingTime ? ` • ${p.readingTime}` : ""}
-                  </div>
-                  <div className="mt-1 text-sm font-semibold leading-snug group-hover:opacity-90 text-[var(--featured-title,var(--text))]">
-                    {p.title}
-                  </div>
+        {latest.length > 0 && (
+          <aside className="lg:col-span-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
+            <div className="p-5 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-bold">Latest updates</div>
+                <Link href={viewAllHref} className="text-xs font-semibold text-[var(--primary)] hover:opacity-80">
+                  View all
                 </Link>
-              ))}
+              </div>
+              <div className="mt-4 flex flex-col divide-y divide-[var(--border)]">
+                {latest.map((p) => (
+                  <Link key={p.href} href={p.href} className="group py-4 first:pt-0 last:pb-0">
+                    <div className="text-[10px] sm:text-xs text-[var(--muted)]">
+                      {(p.type === "blog" ? "Blog" : "News")}
+                      {p.date ? ` • ${p.date}` : ""}
+                      {p.readingTime ? ` • ${p.readingTime}` : ""}
+                    </div>
+                    <div className="mt-1 text-sm font-semibold leading-snug group-hover:opacity-90 text-[var(--featured-title,var(--text))]">
+                      {p.title}
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        </aside>
+          </aside>
+        )}
       </div>
     </section>
   );

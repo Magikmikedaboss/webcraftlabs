@@ -87,11 +87,13 @@ const PROJECTS: Project[] = [
 
 ### 2. **Add Your Project Images**
 
-Place your project images in the `public/images/` folder:
+
+Place your project images in the `public/images/portfolio/` folder:
 
 ```
 public/
   images/
+    portfolio/
       project-1.jpg
       project-2.jpg
       project-3.jpg
