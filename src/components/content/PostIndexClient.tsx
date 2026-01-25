@@ -28,7 +28,19 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 		: posts;
 
 	const kindLabel = kind === "blog" ? "Blog" : "News";
-	const kindColor = kind === "blog" ? "blue" : "cyan";
+	
+	const kindTheme =
+		kind === "blog"
+			? {
+					btnActive: "bg-blue-600 text-white shadow-md",
+					pillBg: "bg-blue-100",
+					pillText: "text-blue-700",
+				}
+			: {
+					btnActive: "bg-cyan-600 text-white shadow-md",
+					pillBg: "bg-cyan-100",
+					pillText: "text-cyan-700",
+				};
 
 	if (posts.length === 0) {
 		return (
@@ -50,7 +62,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 							onClick={() => setSelectedTag(null)}
 							className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
 								selectedTag === null
-									? `bg-${kindColor}-600 text-white shadow-md`
+									? kindTheme.btnActive
 									: 'bg-[var(--surface)] text-[var(--text)] border border-[var(--border)] hover:bg-[var(--hoverSurface)]'
 							}`}
 						>
@@ -64,7 +76,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 									onClick={() => setSelectedTag(tag)}
 									className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
 										selectedTag === tag
-											? `bg-${kindColor}-600 text-white shadow-md`
+											? kindTheme.btnActive
 											: 'bg-[var(--surface)] text-[var(--text)] border border-[var(--border)] hover:bg-[var(--hoverSurface)]'
 									}`}
 								>
@@ -90,7 +102,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 								{post.tags.map(tag => (
 									<span
 										key={tag}
-										className={`inline-flex items-center rounded-full bg-${kindColor}-100 px-2.5 py-0.5 text-xs font-semibold text-${kindColor}-700`}
+										className={`inline-flex items-center rounded-full ${kindTheme.pillBg} px-2.5 py-0.5 text-xs font-semibold ${kindTheme.pillText}`}
 									>
 										{tag}
 									</span>
@@ -138,7 +150,8 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 				<div className="text-center py-16">
 					<div className="text-4xl mb-4">🔍</div>
 					<h3 className="text-xl font-bold text-[var(--text)] mb-2">
-						No posts found with tag "{selectedTag}"
+						No posts found with tag{" "}
+						<span className="font-semibold">{selectedTag}</span>
 					</h3>
 					<button
 						onClick={() => setSelectedTag(null)}
