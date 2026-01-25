@@ -81,6 +81,6 @@ export async function loadAllMarkdown(
         tags: data.tags ?? [],
       };
     })
-    .filter(Boolean)
+    .filter((x): x is ContentMeta => Boolean(x))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
