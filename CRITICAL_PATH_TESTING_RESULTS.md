@@ -23,7 +23,7 @@
 
 ### Development Server
 - **Status**: RUNNING
-- **Port**: http://localhost:3000
+- **Port**: <http://localhost:3000>
 - **Startup Time**: ~1.3s
 - **Hot Reload**: ✅ Working
 
