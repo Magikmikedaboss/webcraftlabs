@@ -11,6 +11,7 @@ interface RadixSelectProps {
   options: RadixSelectOption[];
   value: string;
   onValueChange: (value: string) => void;
+  onOpenChange?: (open: boolean) => void;
   label?: string;
   placeholder?: string;
   error?: string;
@@ -43,7 +44,7 @@ export const RadixSelect: React.FC<RadixSelectProps> = ({
           {label}
         </label>
       )}
-      <Select.Root value={value} onValueChange={onValueChange}>
+      <Select.Root value={value} onValueChange={onValueChange} onOpenChange={onOpenChange}>
         <Select.Trigger
           id={effectiveId}
           className={`inline-flex items-center justify-between w-full rounded-lg border px-3 sm:px-4 py-2 bg-[var(--surface)] text-sm sm:text-base text-[var(--text)] shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent)] transition-all ${
