@@ -13,8 +13,7 @@ export const metadata = {
         url: "/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg",
         width: 1200,
         height: 630,
-        alt: "Contact WebCraft Labz - Get in Touch",
-      },
+        alt: "Contact WebCraft LabZ - Get in Touch",      },
     ],
   },
   twitter: {

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Build Calculator",
   description: "Calculate your website project cost and timeline instantly. Use our interactive configurator to choose pages, design, and features for an accurate estimate. Get started today!",
   openGraph: {
-    title: "Website Cost Calculator | Get Instant Quote - WebCraft LabZ",
+    title: "Website Cost Calculator | Get Instant Quote - WebCraft Labz",
     description: "Calculate your website project cost and timeline instantly. Use our interactive configurator to choose pages, design, and features for an accurate estimate. Get started today!",
     type: "website",
     images: [
@@ -19,12 +19,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Website Cost Calculator | Get Instant Quote - WebCraft LabZ",
+    title: "Website Cost Calculator | Get Instant Quote - WebCraft Labz",
     description: "Calculate your website project cost and timeline instantly. Use our interactive configurator to choose pages, design, and features for an accurate estimate.",
     images: ["/images/dynamic-website-speed-light-trails-with-long-exposure-.jpg"],
   },
 };
-
 export default function BuildPage() {
   return <BuildCalculatorClient />;
 }
