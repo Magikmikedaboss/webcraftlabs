@@ -42,28 +42,44 @@ Each project card displays:
 
 ### 1. **Update Project Data**
 
-Open `src/app/portfolio/page.tsx` and find the `projects` array (around line 24):
+Open `src/app/portfolio/page.tsx` and find the `PROJECTS` constant (around line 10). The data model uses the `Project` type, which you can reference in the same file for all available fields:
 
 ```typescript
-const projects = [
+type Project = {
+  id: string;
+  year: string; // e.g. "2024", "2024-2025"
+  phase: string;
+  title: string;
+  tagline: string;
+  role?: string;
+  problem: string;
+  build: string[];
+  stack: string[];
+  wins: string[];
+  next?: string[];
+  links?: { label: string; href: string }[];
+};
+
+const PROJECTS: Project[] = [
   {
-    id: 1,
-    title: 'YOUR PROJECT NAME',
-    category: 'YOUR CATEGORY',
-    description: 'Brief description of the project and results achieved.',
-    image: '/images/your-project-image.jpg',
-    tags: ['Next.js', 'Your', 'Tech', 'Stack'],
-    metrics: {
-      conversion: '+300%',  // Or any metric name
-      speed: '95/100',      // Or any metric name
-      revenue: '+$2.4M'     // Or any metric name
-    },
-    link: 'https://yourproject.com', // Or '#' for placeholder
-    featured: true, // Set to true for featured projects
+    id: "yourprojectid",
+    year: "2026",
+    phase: "Launch",
+    title: "Your Project Name",
+    tagline: "Short tagline for your project.",
+    role: "Design + Development",
+    problem: "Describe the main challenge or goal.",
+    build: ["List key features or deliverables"],
+    stack: ["Tech1", "Tech2"],
+    wins: ["Highlight results or wins"],
+    next: ["Planned improvements"],
+    links: [{ label: "Live Site", href: "#" }],
   },
   // Add more projects...
 ];
-```text
+```
+
+**Note:** Fields like `category`, `image`, `metrics`, `tags`, `link`, and `featured` are not part of the actual schema. Always refer to the `Project` type and `PROJECTS` constant for the correct structure.
 
 ### 2. **Add Your Project Images**
 
@@ -96,19 +112,18 @@ image: '/images/portfolio/project-1.jpg'
 
 ```typescript
 {
-  id: 1,
-  title: 'Acme Corp Website Redesign',
-  category: 'E-Commerce',
-  description: 'Complete redesign of Acme Corp\'s e-commerce platform, resulting in 250% increase in online sales and 40% reduction in cart abandonment.',
-  image: '/images/portfolio/acme-corp.jpg',
-  tags: ['Next.js', 'Shopify', 'Tailwind CSS', 'TypeScript'],
-  metrics: {
-    sales: '+250%',
-    cart: '-40%',
-    speed: '98/100'
-  },
-  link: 'https://acmecorp.com',
-  featured: true,
+  id: "acme-corp",
+  year: "2025",
+  phase: "E-Commerce",
+  title: "Acme Corp Website Redesign",
+  tagline: "Complete redesign of Acme Corp's e-commerce platform, resulting in 250% increase in online sales and 40% reduction in cart abandonment.",
+  role: "Design + Development",
+  problem: "Acme Corp needed a modern, scalable e-commerce solution to boost sales and reduce cart abandonment.",
+  build: ["Shopify integration", "Custom checkout flow", "Performance optimization"],
+  stack: ["Next.js", "Shopify", "Tailwind CSS", "TypeScript"],
+  wins: ["+250% sales", "-40% cart abandonment", "98/100 speed"],
+  next: ["Expand product catalog", "Add loyalty program"],
+  links: [{ label: "Live Site", href: "https://acmecorp.com" }],
 }
 ```
 

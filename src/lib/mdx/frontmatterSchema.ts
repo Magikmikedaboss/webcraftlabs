@@ -8,6 +8,7 @@ export const BlogFrontmatterSchema = z.object({
     message: 'Date must be in YYYY-MM-DD format',
   }),
   tags: z.array(z.string()).optional(),
+  featured: z.boolean().optional(),
 });
 
 export type BlogFrontmatter = z.infer<typeof BlogFrontmatterSchema>;

@@ -68,6 +68,10 @@ export default function ShareBar({
             copyTimeoutRef.current = window.setTimeout(() => setCopied(false), 1200);
           } catch {
             setCopyError(true);
+            if (copyTimeoutRef.current) {
+              clearTimeout(copyTimeoutRef.current);
+            }
+            copyTimeoutRef.current = window.setTimeout(() => setCopyError(false), 1200);
           }
         }}
       >

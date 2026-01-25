@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { RadixSelect } from "../../components/RadixSelect";
 import SiteShell from "../../components/SiteShell";
@@ -14,7 +14,7 @@ import type {
 } from "../../lib/estimator/types";
 
 import { formatPrice } from "../../lib/formatPrice";
-import { ADDONS } from "../../lib/estimator/config";
+import { ADDONS, MAINTENANCE_PLANS } from "../../lib/estimator/config";
 
 export default function BuildCalculatorClient() {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function BuildCalculatorClient() {
   const [content, setContent] = useState<ContentReadiness>("ready");
   const [timeline, setTimeline] = useState<Timeline>("standard");
   const [features, setFeatures] = useState<string[]>([]);
-  const [maintenance] = useState<{ monthly?: number }>({});
+  const [maintenance, setMaintenance] = useState<{ monthly?: number }>({});
   const [q, setQ] = useState<QuoteDetails>({
     name: "",
     email: "",
@@ -42,6 +42,11 @@ export default function BuildCalculatorClient() {
   function setQField<K extends keyof QuoteDetails>(key: K, value: QuoteDetails[K]) {
     setQ((prev) => ({ ...prev, [key]: value }));
   }
+
+  useEffect(() => {
+    const plan = MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan);
+    setMaintenance({ monthly: plan?.monthly });
+  }, [q.maintenancePlan]);
 
   // --- Estimation (placeholder/dummy) ---
   // Swap this for your real estimator when ready.
@@ -303,9 +308,13 @@ export default function BuildCalculatorClient() {
                 <button
                   type="button"
                   onClick={() => {
-                    localStorage.setItem('buildSheet', est.buildSheetText);
-                    localStorage.setItem('quoteName', q.name);
-                    localStorage.setItem('quoteEmail', q.email);
+                    try {
+                      localStorage.setItem('buildSheet', est.buildSheetText);
+                      localStorage.setItem('quoteName', q.name);
+                      localStorage.setItem('quoteEmail', q.email);
+                    } catch (err) {
+                      console.error('localStorage error:', err);
+                    }
                     router.push('/contact');
                   }}
                   className="min-h-[48px] mt-4 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"

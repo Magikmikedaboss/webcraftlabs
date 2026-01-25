@@ -537,19 +537,84 @@ export default function PortfolioPage() {
   return (
     <SiteShell background="surface">
       <main className="mx-auto max-w-6xl px-6 py-12">
-        {/* (Your existing hero + UI can remain unchanged below this point) */}
+        {/* Hero Section with Brand Colors */}
+        <header className="mb-12 relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 p-8 md:p-12 shadow-xl">
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-white border border-white/30">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clipRule="evenodd"/>
+              </svg>
+              Portfolio
+            </div>
+
+            <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
+              WebCraft LabZ
+              <span className="block mt-2 bg-gradient-to-r from-cyan-200 to-blue-200 bg-clip-text text-transparent">
+                Project Timeline
+              </span>
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-lg md:text-xl leading-relaxed text-blue-50">
+              A visual journey through our work. Scroll the timeline, click any project, and explore the problems we solved, the technologies we used, and the results we achieved.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <div className="flex items-center gap-2 text-white/90">
+                <svg className="w-5 h-5 text-cyan-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                </svg>
+                <span className="text-sm font-semibold">Interactive Timeline</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/90">
+                <svg className="w-5 h-5 text-cyan-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                </svg>
+                <span className="text-sm font-semibold">Case Studies</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/90">
+                <svg className="w-5 h-5 text-cyan-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                </svg>
+                <span className="text-sm font-semibold">Tech Stack Details</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Decorative Elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl"></div>
+        </header>
+
+        {/* Stats Section */}
+        <div className="mb-12 grid gap-6 sm:grid-cols-3">
+          <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50 p-6 shadow-sm">
+            <div className="text-3xl font-extrabold text-blue-700">{PROJECTS.length}</div>
+            <div className="mt-1 text-sm font-semibold text-blue-600">Projects</div>
+            <div className="mt-2 text-xs text-gray-600">From concept to completion</div>
+          </div>
+          <div className="rounded-2xl border border-cyan-200 bg-gradient-to-br from-cyan-50 to-blue-50 p-6 shadow-sm">
+            <div className="text-3xl font-extrabold text-cyan-700">2024-2026</div>
+            <div className="mt-1 text-sm font-semibold text-cyan-600">Timeline</div>
+            <div className="mt-2 text-xs text-gray-600">Building the future</div>
+          </div>
+          <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50 p-6 shadow-sm">
+            <div className="text-3xl font-extrabold text-blue-700">∞</div>
+            <div className="mt-1 text-sm font-semibold text-blue-600">Technologies</div>
+            <div className="mt-2 text-xs text-gray-600">Always learning, always evolving</div>
+          </div>
+        </div>
 
         {/* BODY */}
         <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
           {/* TIMELINE RAIL */}
           <aside className="lg:sticky lg:top-6 lg:self-start">
-            <div className="rounded-2xl border border-neutral-200 bg-white p-4">
-              <div className="text-sm font-semibold text-neutral-900">Timeline</div>
+            <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50 p-4 shadow-sm">
+              <div className="text-sm font-semibold text-blue-900">Timeline</div>
 
               <div className="mt-3 space-y-4">
                 {phases.map(([phase, items]) => (
                   <div key={phase} className="space-y-2">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-blue-600">
                       {phase}
                     </div>
 
@@ -561,21 +626,21 @@ export default function PortfolioPage() {
                             key={p.id}
                             onClick={() => openProject(p.id)}
                             className={classNames(
-                              "group flex w-full items-start gap-3 rounded-xl border px-3 py-2 text-left transition",
+                              "group flex w-full items-start gap-3 rounded-xl border px-3 py-2 text-left transition-all duration-200",
                               active
-                                ? "border-neutral-300 bg-neutral-50"
-                                : "border-neutral-200 bg-white hover:bg-neutral-50"
+                                ? "border-blue-400 bg-gradient-to-r from-blue-100 to-cyan-100 shadow-md"
+                                : "border-blue-200 bg-white hover:border-blue-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:shadow-sm"
                             )}
                           >
                             <span
                               className={classNames(
-                                "mt-1 h-2.5 w-2.5 flex-none rounded-full",
-                                active ? "bg-neutral-900" : "bg-neutral-300 group-hover:bg-neutral-500"
+                                "mt-1 h-2.5 w-2.5 flex-none rounded-full transition-all duration-200",
+                                active ? "bg-gradient-to-r from-blue-600 to-cyan-600" : "bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:from-cyan-500 group-hover:to-blue-500"
                               )}
                             />
                             <span className="min-w-0">
-                              <span className="block text-xs font-medium text-neutral-500">{p.year}</span>
-                              <span className="block truncate text-sm font-semibold text-neutral-900">
+                              <span className="block text-xs font-medium text-blue-600">{p.year}</span>
+                              <span className="block truncate text-sm font-semibold text-blue-900 group-hover:text-cyan-700">
                                 {p.title}
                               </span>
                             </span>
@@ -587,7 +652,7 @@ export default function PortfolioPage() {
                 ))}
               </div>
 
-              <div className="mt-4 border-t border-neutral-200 pt-4 text-xs text-neutral-500">
+              <div className="mt-4 border-t border-blue-200 pt-4 text-xs text-blue-600">
                 Tip: Click any project to open the mini case study drawer.
               </div>
             </div>
@@ -597,12 +662,12 @@ export default function PortfolioPage() {
           <div className="space-y-8">
             {phases.map(([phase, items]) => (
               <div key={phase} className="space-y-3">
-                <div className="flex items-end justify-between gap-4">
+                <div className="flex items-end justify-between gap-4 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 p-3">
                   <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-blue-600">
                       {phase}
                     </div>
-                    <div className="mt-1 text-lg font-semibold text-neutral-900">
+                    <div className="mt-1 text-lg font-semibold text-blue-900">
                       {items[0]?.year} – {items[items.length - 1]?.year}
                     </div>
                   </div>
@@ -662,12 +727,13 @@ export default function PortfolioPage() {
                 >
                   Contact
                 </a>
-                <a
-                  href="#"
-                  className="inline-flex items-center justify-center rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800 hover:bg-neutral-50"
+                <span
+                  className="inline-flex items-center justify-center rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800"
+                  aria-disabled="true"
+                  tabIndex={-1}
                 >
                   Download PDF (later)
-                </a>
+                </span>
               </div>
             </div>
           </div>

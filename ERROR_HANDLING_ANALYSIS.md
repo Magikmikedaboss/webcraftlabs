@@ -41,7 +41,7 @@ Your website has **comprehensive and well-designed error handling** across all c
 │  doesn't exist or has been      │
 │  moved.                         │
 │                                 │
-│  [Back to WebCraft Labz]        │
+│  [Back to WebCraft Labs]        │
 └─────────────────────────────────┘
 ```
 

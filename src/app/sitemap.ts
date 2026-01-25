@@ -1,15 +1,31 @@
 import { MetadataRoute } from 'next';
 import { getBaseUrl } from '@/lib/site';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Use stable timestamp to avoid sitemap churn on every build
   let lastModified: Date;
+  async function fetchVercelDeploymentCreatedAt(sha: string): Promise<string> {
+    // Example: fetch from Vercel API (requires token)
+    // Replace with your actual API call and error handling
+    try {
+      const res = await fetch(`https://api.vercel.com/v6/deployments?commit=${sha}`, {
+        headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}` },
+      });
+      const data = await res.json();
+      if (data.deployments && data.deployments.length > 0) {
+        return data.deployments[0].createdAt;
+      }
+      throw new Error('No deployments found');
+    } catch (err) {
+      console.warn('Failed to fetch Vercel deployment timestamp:', err);
+      throw err;
+    }
+  }
   if (process.env.VERCEL_GIT_COMMIT_SHA) {
-    if (process.env.VERCEL_DEPLOYMENT_TIME) {
-      lastModified = new Date(process.env.VERCEL_DEPLOYMENT_TIME);
-    } else if (process.env.VERCEL_GIT_COMMIT_DATE) {
-      lastModified = new Date(process.env.VERCEL_GIT_COMMIT_DATE);
-    } else {
+    try {
+      const ts = await fetchVercelDeploymentCreatedAt(process.env.VERCEL_GIT_COMMIT_SHA);
+      lastModified = new Date(ts);
+    } catch {
       lastModified = new Date('2026-01-11T00:00:00.000Z');
     }
   } else {

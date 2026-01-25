@@ -79,7 +79,7 @@ export const ADDONS: AddOn[] = [
   { id: "payments", label: "Payments", price: 700, hours: 9.5, description: "Payment page/flow + confirmations." },
   { id: "membership", label: "Membership / login", price: 1100, hours: 18.0, description: "Auth + protected area scaffolding." },
   { id: "funnel", label: "Funnel / landing page", price: 450, hours: 6.0, description: "Dedicated conversion landing page + routing." },
-  { id: "blackHatWelders", label: "Black Hat Welders service site", price: 800, hours: 12.0, description: "Custom service site for Black Hat Welders." },
+  { id: "blackHatWelders", label: "Black Hat Welders Service Site", price: 800, hours: 12.0, description: "Custom service site for Black Hat Welders." },
 ];
 
 // Content readiness pricing (LOCKED v1)

@@ -26,7 +26,10 @@ export async function parseMarkdownFile(
     throw new Error(`Invalid slug: ${slug}`);
   }
 
-  const fullPath = path.join(baseDir, `${sanitizedSlug}.md`);
+  let fullPath = path.join(baseDir, `${sanitizedSlug}.mdx`);
+  if (!fs.existsSync(fullPath)) {
+    fullPath = path.join(baseDir, `${sanitizedSlug}.md`);
+  }
   
   // Ensure resolved path is within baseDir
   const resolvedBase = path.resolve(baseDir);
