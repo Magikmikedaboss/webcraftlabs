@@ -74,10 +74,12 @@ export const ADDONS: AddOn[] = [
   { id: "seo", label: "SEO setup (technical baseline)", price: 450, hours: 4.5, description: "Sitemap/robots, metadata patterns, structure checks." },
   { id: "gbp", label: "Google Business Profile setup", price: 250, hours: 2.0, description: "Setup or optimization checklist." },
   { id: "analytics", label: "Analytics + conversion events", price: 250, hours: 2.5, description: "GA4 + baseline conversion events + verification." },
+  { id: "analyticsResearch", label: "Analytics research", price: 350, hours: 4.0, description: "In-depth analytics setup and research." },
   { id: "crm", label: "CRM integration", price: 600, hours: 9.0, description: "Lead routing + field mapping + testing." },
   { id: "payments", label: "Payments", price: 700, hours: 9.5, description: "Payment page/flow + confirmations." },
   { id: "membership", label: "Membership / login", price: 1100, hours: 18.0, description: "Auth + protected area scaffolding." },
   { id: "funnel", label: "Funnel / landing page", price: 450, hours: 6.0, description: "Dedicated conversion landing page + routing." },
+  { id: "blackHatWelders", label: "Black Hat Welders Service Site", price: 800, hours: 12.0, description: "Custom service site for Black Hat Welders." },
 ];
 
 // Content readiness pricing (LOCKED v1)
@@ -95,12 +97,14 @@ export const FEATURE_PAGE_RULES: Record<string, { minPagesAdded: number; reason:
   emailCapture: { minPagesAdded: 0, reason: "Email capture is usually embedded." },
   seo: { minPagesAdded: 0, reason: "SEO affects structure, not page count." },
   analytics: { minPagesAdded: 0, reason: "Analytics is backend-only." },
+  analyticsResearch: { minPagesAdded: 0, reason: "Analytics research is backend-only." },
   gbp: { minPagesAdded: 0, reason: "GBP is external." },
   crm: { minPagesAdded: 0, reason: "CRM is an integration, not a page." },
   payments: { minPagesAdded: 1, reason: "Payments typically require a checkout/payment page." },
   membership: { minPagesAdded: 2, reason: "Membership requires login and protected area surfaces." },
   funnel: { minPagesAdded: 1, reason: "Funnels typically require a dedicated landing page." },
   advancedContact: { minPagesAdded: 0, reason: "Advanced contact form doesn't require a new page." },
+  blackHatWelders: { minPagesAdded: 1, reason: "Service site requires a dedicated service page." },
 };
 
 // Compound overrides
@@ -158,7 +162,7 @@ export const MAINTENANCE_PLANS = [
   },
 ] as const;
 
-export type MaintenancePlanId = (typeof MAINTENANCE_PLANS)[number]["id"];
+// MaintenancePlanId type is now imported from types.ts
 
 // Tier picker
 export function pickTier(pages: number): Tier {

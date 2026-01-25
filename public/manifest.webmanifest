@@ -1,0 +1,26 @@
+{
+  "name": "WebCraft Labz",
+  "short_name": "WebCraft",
+  "icons": [
+    {
+      "src": "/images/branding/webcraft-labz-phoenix-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/branding/webcraft-labz-phoenix-single-transparent-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/branding/webcraft-labz-phoenix-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}

@@ -93,7 +93,7 @@ export function estimate(spec: BuildSpec, quote?: QuoteDetails): Estimate {
   const design = DESIGN[spec.design];
 
   let priceBase = tier.basePrice + addonsPrice + content.price;
-  let hours = tier.baseHours + addonsHours + content.hours + design.hoursAdd;
+  const hours = tier.baseHours + addonsHours + content.hours + design.hoursAdd;
 
   // design multiplier
   priceBase = priceBase * design.priceMultiplier;

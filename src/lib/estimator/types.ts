@@ -1,4 +1,5 @@
-export type MaintenancePlanId = "none" | "care" | "growth" | "priority";
+// MaintenancePlanId is now defined here to break circular dependency
+export type MaintenancePlanId = "care" | "growth" | "priority";
 export type ProjectType = "service" | "agency" | "ecommerce" | "content" | "other";
 export type Goal = "leads" | "sales" | "brand" | "seo";
 export type DesignLevel = "template" | "custom";
@@ -15,10 +16,12 @@ export type FeatureId =
   | "seo"
   | "gbp"
   | "analytics"
+  | "analyticsResearch"
   | "crm"
   | "payments"
   | "membership"
-  | "funnel";
+  | "funnel"
+  | "blackHatWelders";
 
 export type AddOn = {
   id: FeatureId;
@@ -64,8 +67,8 @@ export type QuoteDetails = {
     | "webflow"
     | "squarespace"
     | "other";
-  frameworkOther: string;
-  maintenancePlan: MaintenancePlanId;
+  frameworkOther: string; // Used only when frameworkPref is 'other'
+  maintenancePlan: MaintenancePlanId | "none";
 };
 
 export type Estimate = {

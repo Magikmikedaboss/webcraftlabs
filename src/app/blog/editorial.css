@@ -1,0 +1,236 @@
+/* Editorial skin for MDX pages - uses theme variables */
+.editorial {
+  /* These are now inherited from the theme */
+}
+
+.editorial .prose {
+  max-width: 68ch;
+}
+
+.editorial .kicker {
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.editorial .dek {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.editorial .section-rule {
+  height: 1px;
+  background: var(--border);
+  margin: 3rem 0;
+}
+
+/* Drop cap hook: wrap first paragraph in <p className="dropcap"> ... */
+.editorial .dropcap:first-letter {
+  float: left;
+  font-size: 3.25rem;
+  line-height: 1;
+  padding-right: .5rem;
+  padding-top: .25rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+/* Pullquote */
+.editorial .pullquote {
+  margin: 2.5rem 0;
+  padding: 1.5rem 1.75rem;
+  border-left: 4px solid var(--primary);
+  background: var(--surface);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  font-style: italic;
+}
+
+/* Takeaways */
+.editorial .takeaways {
+  margin: 2.5rem 0;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.editorial .takeaways h3 {
+  margin: 0 0 1rem 0;
+  font-size: .9rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.editorial .takeaways ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.editorial .takeaways li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+
+/* Enhanced prose styling for better readability */
+.editorial .prose {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+/* Headings with better hierarchy */
+.editorial .prose :where(h2) { 
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.editorial .prose :where(h3) { 
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.editorial .prose :where(h4) { 
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* Paragraphs with better spacing */
+.editorial .prose :where(p) { 
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+/* First paragraph after heading - reduce top margin */
+.editorial .prose :where(h2 + p, h3 + p, h4 + p) {
+  margin-top: 0.75rem;
+}
+
+/* Links with subtle styling */
+.editorial .prose :where(a) { 
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: all 0.2s ease;
+}
+
+.editorial .prose :where(a:hover) { 
+  color: var(--secondary);
+  text-decoration-thickness: 2px;
+}
+
+/* Lists with better spacing */
+.editorial .prose :where(ul, ol) {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.75rem;
+}
+
+.editorial .prose :where(li) {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.75;
+}
+
+.editorial .prose :where(li > p) {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Nested lists */
+.editorial .prose :where(ul ul, ul ol, ol ul, ol ol) {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Blockquotes with emphasis */
+.editorial .prose :where(blockquote) {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--primary);
+  background: var(--surface);
+  border-radius: 0.5rem;
+  font-style: italic;
+  font-size: 1.125rem;
+}
+
+.editorial .prose :where(blockquote p) {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Code blocks with better styling */
+.editorial .prose :where(pre) {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.editorial .prose :where(code) {
+  font-size: 0.9em;
+}
+
+/* Inline code */
+.editorial .prose :where(:not(pre) > code) {
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+
+/* Images with captions */
+.editorial .prose :where(img) {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+}
+
+/* Horizontal rules */
+.editorial .prose :where(hr) {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  border-color: var(--border);
+}
+
+/* Tables */
+.editorial .prose :where(table) {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 0.9375rem;
+}
+
+/* Strong emphasis */
+.editorial .prose :where(strong) {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Emphasis */
+.editorial .prose :where(em) {
+  font-style: italic;
+}

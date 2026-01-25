@@ -1,0 +1,4 @@
+- [x] Change "Copy build sheet" button to "Send Quote Request" in BuildCalculatorClient.tsx
+- [x] On click, store build sheet and user details in localStorage and navigate to /contact
+- [x] Modify ContactForm.tsx to read from localStorage and pre-fill fields on mount
+- [x] Clear localStorage after successful submission

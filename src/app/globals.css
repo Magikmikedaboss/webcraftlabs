@@ -1,3 +1,13 @@
+/* Visually hidden utility for accessibility */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+@config "../../tailwind.config.js";
 @import "tailwindcss";
 
 :root {
@@ -10,24 +20,25 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Enable transitions and shadows */
+  --transition-all: all 0.2s ease-in-out;
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: ease-in-out;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Removed automatic dark mode - using explicit theme control instead */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
 /* ===========================
    WebCraft Labs Theme Tokens
    =========================== */
+
 :root {
   --bg: #f8fbff;
   --surface: #ffffff;
@@ -38,9 +49,18 @@ body {
   --primary: #2563eb;
   --secondary: #0ea5a4;
   --accent: #7dd3fc;
+
+  --hoverSurface: #e0e7ef;
+  --focusSurface: #bae6fd;
+  
+  /* Card-specific variables for stats cards */
+  --card-border: #bfdbfe;
+  --card-bg-start: #dbeafe;
+  --card-bg-end: #eff6ff;
+  --card-foreground: #1e40af;
 }
 
-[data-theme="dark"] {
+ [data-theme="dark"] {
   --bg: #070b12;
   --surface: #0d1420;
   --text: #e5edf5;
@@ -48,6 +68,141 @@ body {
   --border: #1f2a38;
 
   --primary: #60a5fa;
+  --hoverSurface: #1e293b;
+  --focusSurface: #0ea5a4;
   --secondary: #2dd4bf;
   --accent: #38bdf8;
+  
+  /* Card-specific variables for stats cards in dark mode */
+  --card-border: #1e3a5f;
+  --card-bg-start: #0f1f3a;
+  --card-bg-end: #1a2942;
+  --card-foreground: #93c5fd;
+}
+
+/* ===========================
+   Prose Styling for Blog Posts
+   =========================== */
+.prose-custom {
+  --tw-prose-body: var(--text);
+  --tw-prose-headings: var(--text);
+  --tw-prose-lead: var(--muted);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--text);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--text);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-code: var(--text);
+  --tw-prose-pre-code: var(--text);
+  --tw-prose-pre-bg: var(--surface);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+
+.prose-custom :where(a):not(:where([class~="not-prose"] *)) {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  transition: color 0.2s ease-in-out;
+}
+
+.prose-custom :where(a):focus-visible:not(:where([class~="not-prose"] *)) {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+  color: var(--secondary);
+  box-shadow: 0 0 0 2px var(--focusSurface);
+  transition: color 0.2s, box-shadow 0.2s;
+}
+
+.prose-custom :where(a):hover:not(:where([class~="not-prose"] *)) {
+  color: var(--secondary);
+}
+
+.prose-custom :where(code):not(:where([class~="not-prose"] *)) {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.875em;
+  color: var(--text);
+}
+
+.prose-custom :where(pre):not(:where([class~="not-prose"] *)) {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.prose-custom :where(pre code):not(:where([class~="not-prose"] *)) {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose-custom :where(blockquote):not(:where([class~="not-prose"] *)) {
+  border-left-color: var(--primary);
+  color: var(--text);
+  background-color: var(--surface);
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.prose-custom :where(h1, h2, h3, h4, h5, h6):not(:where([class~="not-prose"] *)) {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.prose-custom :where(strong):not(:where([class~="not-prose"] *)) {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.prose-custom :where(ul, ol):not(:where([class~="not-prose"] *)) {
+  color: var(--text);
+}
+
+.prose-custom :where(li):not(:where([class~="not-prose"] *)) {
+  color: var(--text);
+}
+
+.prose-custom :where(p):not(:where([class~="not-prose"] *)) {
+  color: var(--text);
+}
+
+.prose-custom :where(hr):not(:where([class~="not-prose"] *)) {
+  border-color: var(--border);
+}
+
+.prose-custom :where(table):not(:where([class~="not-prose"] *)) {
+  color: var(--text);
+}
+
+.prose-custom :where(thead):not(:where([class~="not-prose"] *)) {
+  border-bottom-color: var(--border);
+}
+
+.prose-custom :where(tbody tr):not(:where([class~="not-prose"] *)) {
+  border-bottom-color: var(--border);
+}
+
+/* ===========================
+   Animations
+   =========================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-in-out;
 }

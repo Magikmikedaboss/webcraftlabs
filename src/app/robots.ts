@@ -1,0 +1,18 @@
+import { MetadataRoute } from 'next';
+import { getBaseUrl } from '@/lib/site';
+
+export default function robots(): MetadataRoute.Robots {
+  // Get normalized base URL (validated and trailing slash removed)
+  const baseUrl = getBaseUrl();
+  
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/'],
+      },
+    ],
+    sitemap: `${baseUrl}/sitemap.xml`,
+  };
+}

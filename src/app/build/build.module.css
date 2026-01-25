@@ -1,0 +1,77 @@
+/* Range slider styles */
+.rangeSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  border: 3px solid white;
+  transition: all 0.2s;
+}
+
+.rangeSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+}
+
+.rangeSlider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+}
+
+.rangeSlider::-ms-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+}
+
+.rangeSlider::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+}
+
+.rangeSlider::-moz-range-thumb:active {
+  transform: scale(0.95);
+}
+
+.rangeSlider::-ms-thumb:active {
+  transform: scale(0.95);
+}
+
+.rangeSlider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  border: 3px solid white;
+  transition: all 0.2s;
+}
+
+.rangeSlider::-ms-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  border: 3px solid white;
+  transition: all 0.2s;
+}
+
+.rangeSlider:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px #bfdbfe;
+}
+
+.rangeSlider::-webkit-slider-runnable-track {
+  height: 12px;
+  border-radius: 6px;
+  background: transparent;
+}
+
+.rangeSlider::-ms-fill-lower,
+.rangeSlider::-ms-fill-upper {
+  background: transparent;
+}
