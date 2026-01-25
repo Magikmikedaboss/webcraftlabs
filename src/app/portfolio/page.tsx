@@ -296,12 +296,12 @@ function yearSortKey(y: string) {
 }
 
 function Drawer(props: { open: boolean; onClose: () => void; project: Project | null }) {
-  const p = props.project;
+  const { open, onClose, project: p } = props;
   const asideRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocused = useRef<Element | null>(null);
 
   useEffect(() => {
-    if (!props.open) return;
+    if (!open) return;
 
     previouslyFocused.current = document.activeElement;
 
@@ -317,7 +317,7 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        props.onClose();
+        onClose();
         return;
       }
       if (e.key === "Tab") {
@@ -350,17 +350,17 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
       document.removeEventListener("keydown", handleKeyDown);
       if (previouslyFocused.current instanceof HTMLElement) previouslyFocused.current.focus();
     };
-  }, [props.open, props.onClose]);
+  }, [open, onClose]);
 
   return (
     <div
-      aria-hidden={!props.open}
-      className={classNames("fixed inset-0 z-50", props.open ? "pointer-events-auto" : "pointer-events-none")}
+      aria-hidden={!open}
+      className={classNames("fixed inset-0 z-50", open ? "pointer-events-auto" : "pointer-events-none")}
     >
       {/* Backdrop */}
       <button
-        onClick={props.onClose}
-        className={classNames("absolute inset-0 transition-opacity", props.open ? "opacity-100" : "opacity-0")}
+        onClick={onClose}
+        className={classNames("absolute inset-0 transition-opacity", open ? "opacity-100" : "opacity-0")}
         style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
         aria-label="Close case study"
       />
@@ -641,7 +641,7 @@ export default function PortfolioPage() {
             <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-6">
               <div className="text-lg font-semibold text-neutral-900">Want a build like this?</div>
               <p className="mt-2 max-w-2xl text-sm text-neutral-600">
-                If you're trying to turn a website into a lead system, admin system, or content engine,
+                If you&apos;re trying to turn a website into a lead system, admin system, or content engine,
                 I can help you ship something clean, fast, and scalable.
               </p>
               <div className="mt-4 flex flex-wrap gap-3">

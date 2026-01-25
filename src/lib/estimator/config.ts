@@ -1,4 +1,4 @@
-import { AddOn, Tier, MaintenancePlanId } from "./types";
+import { AddOn, Tier } from "./types";
 
 // Global time rules
 export const TIME = {

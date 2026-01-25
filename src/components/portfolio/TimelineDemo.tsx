@@ -207,7 +207,7 @@ export default function TimelineDemo() {
                         🏢 Core Business Sites
                       </span>
                       <h3 className="mt-2 text-2xl font-bold text-gray-900">
-                        Mike's PRO Handyman
+                        Mike&apos;s PRO Handyman
                       </h3>
                       <p className="text-sm text-gray-500">Q2 2023 • 6 weeks</p>
                     </div>

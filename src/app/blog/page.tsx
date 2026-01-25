@@ -116,7 +116,7 @@ export default function BlogIndexPage() {
               href="/contact"
               className="inline-flex items-center justify-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-base font-semibold text-white hover:bg-white/10 transition-all"
             >
-              Let's Talk Tech
+              Let&apos;s Talk Tech
             </a>
           </div>
         </div>

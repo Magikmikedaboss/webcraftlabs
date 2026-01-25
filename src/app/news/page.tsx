@@ -45,7 +45,7 @@ export default function NewsIndexPage() {
             </h1>
             
             <p className="mt-6 max-w-2xl text-lg md:text-xl leading-relaxed text-blue-50">
-              Product launches, feature updates, client success stories, and company announcements. Follow our journey as we build cutting-edge web solutions and push the boundaries of what's possible.
+              Product launches, feature updates, client success stories, and company announcements. Follow our journey as we build cutting-edge web solutions and push the boundaries of what&apos;s possible.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -103,7 +103,7 @@ export default function NewsIndexPage() {
             Want to Be Featured?
           </h2>
           <p className="mt-4 text-lg text-blue-50 max-w-2xl mx-auto">
-            We love sharing client success stories and project showcases. Let's build something worth announcing together.
+            We love sharing client success stories and project showcases. Let&apos;s build something worth announcing together.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <a

@@ -32,7 +32,7 @@ export default function AboutPage() {
             WebCraft Labz is a web development company specializing in high-performance marketing websites, SaaS platforms, and custom web tools built for real-world business needs.
           </p>
           <p className="text-base text-[var(--muted)]">
-            We don't do templates or cookie-cutter solutions. Every project is custom-built, strategically designed, and engineered to help you grow, convert, and lead in your market.
+            We don&apos;t do templates or cookie-cutter solutions. Every project is custom-built, strategically designed, and engineered to help you grow, convert, and lead in your market.
           </p>
         </div>
       }
@@ -55,7 +55,7 @@ export default function AboutPage() {
               Built for Growth. Designed to Last.
             </h2>
             <p className="max-w-2xl text-sm sm:text-base md:text-lg text-white/95 drop-shadow-md mb-4">
-              We're a team of developers, designers, and strategists who believe your website should be more than just a digital brochure—it should be a powerful tool that drives real business results.
+              We&apos;re a team of developers, designers, and strategists who believe your website should be more than just a digital brochure—it should be a powerful tool that drives real business results.
             </p>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">What the <span className="text-[var(--primary)]">Z</span> Stands For</h2>
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-[var(--muted)]">
-            The "Z" in WebCraft Labz represents our core values—the principles that guide every project we build.
+            The &quot;Z&quot; in WebCraft Labz represents our core values—the principles that guide every project we build.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl font-bold mb-4">Who We Work With</h2>
               <p className="text-base text-[var(--muted)] mb-6">
-                We partner with ambitious businesses, startups, and entrepreneurs who understand that their website is more than just an online presence—it's a growth engine.
+                We partner with ambitious businesses, startups, and entrepreneurs who understand that their website is more than just an online presence—it&apos;s a growth engine.
               </p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-3">
@@ -205,7 +205,7 @@ export default function AboutPage() {
             <div className="text-3xl font-bold text-[var(--primary)] mb-2">03</div>
             <h3 className="text-lg font-semibold mb-2">Performance Obsessed</h3>
             <p className="text-sm text-[var(--muted)]">
-              Fast load times, SEO optimization, and accessibility aren't optional—they're built into every project.
+              Fast load times, SEO optimization, and accessibility aren&apos;t optional—they&apos;re built into every project.
             </p>
           </div>
 
@@ -234,7 +234,7 @@ export default function AboutPage() {
             <div className="order-1 md:order-2">
               <h2 className="text-3xl font-bold mb-4">World-Class Support</h2>
               <p className="text-base text-[var(--muted)] mb-6">
-                When you work with WebCraft Labz, you're not just getting a website—you're getting a dedicated partner committed to your success.
+                When you work with WebCraft Labz, you&apos;re not just getting a website—you&apos;re getting a dedicated partner committed to your success.
               </p>
               <div className="space-y-4 mb-6">
                 <div className="flex items-start gap-3">
@@ -303,7 +303,7 @@ export default function AboutPage() {
             Ready to Build Something Great?
           </h2>
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/90 mb-8">
-            Let's talk about your project. Whether you need a marketing website, SaaS platform, or custom web tool, we're here to help you succeed.
+            Let&apos;s talk about your project. Whether you need a marketing website, SaaS platform, or custom web tool, we&apos;re here to help you succeed.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

@@ -55,7 +55,7 @@ export default function ContactForm() {
       });
       if (!res.ok) {
         let errorMessage = "Failed to send request.";
-          let bodyText = await res.text();
+          const bodyText = await res.text();
           try {
             const errorData = JSON.parse(bodyText);
             errorMessage = errorData.error || errorData.message || errorMessage;
