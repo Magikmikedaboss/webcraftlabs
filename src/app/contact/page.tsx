@@ -1,13 +1,13 @@
 import { SITE } from "@/lib/site";
 export const metadata = {
-  title: "Contact WebCraft Labs | Las Vegas Web Design & Marketing",
-  description: "Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
+  title: "Contact WebCraft LabZ | Las Vegas Web Design & Marketing",
+  description: "Contact WebCraft LabZ for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
   openGraph: {
-    title: "Contact WebCraft Labs | Las Vegas Web Design & Marketing",
-    description: "Contact WebCraft Labs for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
+    title: "Contact WebCraft LabZ | Las Vegas Web Design & Marketing",
+    description: "Contact WebCraft LabZ for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
     type: "website",
     url: new URL('/contact', SITE.url).toString(),
-    siteName: "WebCraft Labs",
+    siteName: "WebCraft LabZ",
   },
   alternates: {
     canonical: new URL('/contact', SITE.url).toString()
@@ -42,7 +42,7 @@ export default function ContactPage() {
         {JSON.stringify(jsonLd)}
       </Script>
       <SiteShell
-        title="Contact WebCraft Labs"
+        title="Contact WebCraft LabZ"
         intro="Let’s build something remarkable. Reach out for a personalized quote, marketing strategy, or to connect with our team in Las Vegas. We reply fast—usually within 24 hours."
       >
         <section className="mx-auto max-w-7xl px-6 py-16">
@@ -58,7 +58,7 @@ export default function ContactPage() {
             </div>
             <div className="md:col-span-5">
               <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6">
-                <div className="text-sm font-semibold text-blue-900">WebCraft Labs HQ</div>
+                <div className="text-sm font-semibold text-blue-900">WebCraft LabZ HQ</div>
                 <div className="mt-2 text-sm text-[var(--muted)]">
                   Las Vegas, NV & Remote<br />
                   <span className="font-semibold text-blue-900">hello@webcraftlabz.com</span>

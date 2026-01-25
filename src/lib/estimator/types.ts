@@ -15,10 +15,12 @@ export type FeatureId =
   | "seo"
   | "gbp"
   | "analytics"
+  | "analyticsResearch"
   | "crm"
   | "payments"
   | "membership"
-  | "funnel";
+  | "funnel"
+  | "blackHatWelders";
 
 export type AddOn = {
   id: FeatureId;

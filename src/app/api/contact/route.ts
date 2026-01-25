@@ -1,6 +1,20 @@
+// Simple HTML escape utility
+function escapeHtml(str: string): string {
+  return str.replace(/[&<>'"]/g, (tag) => {
+    const chars: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;',
+    };
+    return chars[tag] || tag;
+  });
+}
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { z } from 'zod';
+import nodemailer from 'nodemailer';
 
 const ContactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -73,21 +87,76 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: errorMsg }, { status: 400 });
   }
 
-  // Log submission for debugging (remove in production once email/DB is set up)
+  // Log submission for debugging (PII redacted)
   console.log('[Contact Form] New submission:', {
-    project: result.data.project,
+    project: result.data.project ? 'present' : 'none',
     notes: result.data.notes ? 'present' : 'none',
     timestamp: new Date().toISOString(),
-    ip,
+    // Optionally, add a non-identifying fingerprint if needed
   });
 
-  // TODO: Implement data persistence and notification
-  // Options when ready:
-  // 1. Send email via Resend, SendGrid, or Nodemailer
-  // 2. Save to database (Postgres, MongoDB, etc.)
-  // 3. Send to Slack/Discord webhook for notifications
-  // Note: Validated data is in result.data - no additional sanitization needed for email/DB
-  //       since Zod validation already ensures string types and format
+  // Send email notification
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"WebCraft Contact Form" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_TO,
+      replyTo: process.env.EMAIL_FROM,
+      subject: `New Contact Form: ${result.data.name}`,
+      // Escape all user fields before interpolation
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">
+            New Contact Form Submission
+          </h2>
+          
+          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 10px 0;"><strong>Name:</strong> ${escapeHtml(result.data.name || '')}</p>
+            <p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:${escapeHtml(result.data.email || '')}">${escapeHtml(result.data.email || '')}</a></p>
+            <p style="margin: 10px 0;"><strong>Project:</strong> ${escapeHtml(result.data.project || '')}</p>
+            ${result.data.notes ? `<p style="margin: 10px 0;"><strong>Notes:</strong><br/>${escapeHtml(result.data.notes || '').replace(/\n/g, '<br/>')}</p>` : ''}
+          </div>
+          
+          <div style="margin-top: 20px; padding: 15px; background-color: #eff6ff; border-left: 4px solid #2563eb; border-radius: 4px;">
+            <p style="margin: 0; color: #1e40af;">
+              <strong>Quick Actions:</strong><br/>
+              Reply to this email to respond directly to ${escapeHtml(result.data.name || '')}
+            </p>
+          </div>
+          
+          <p style="margin-top: 20px; color: #6b7280; font-size: 12px;">
+            Submitted: ${new Date().toLocaleString()}<br/>
+            IP: ${escapeHtml(ip || '')}
+          </p>
+        </div>
+      `,
+      text: `
+New Contact Form Submission
+
+Name: ${result.data.name}
+Email: ${result.data.email}
+Project: ${result.data.project}
+${result.data.notes ? `Notes: ${result.data.notes}` : ''}
+
+Submitted: ${new Date().toLocaleString()}
+IP: ${ip}
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('[Contact Form] Email sent successfully');
+  } catch (emailError) {
+    console.error('[Contact Form] Email send failed:', emailError);
+    // Don't fail the request if email fails - log it and continue
+    // In production, you might want to queue this for retry
+  }
 
   return NextResponse.json({ ok: true });
 }

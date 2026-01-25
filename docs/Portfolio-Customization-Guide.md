@@ -63,7 +63,7 @@ const projects = [
   },
   // Add more projects...
 ];
-```
+```text
 
 ### 2. **Add Your Project Images**
 

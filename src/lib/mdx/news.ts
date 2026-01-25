@@ -1,3 +1,10 @@
+
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { BlogFrontmatterSchema } from "./frontmatterSchema";
+import { z } from "zod";
+
 function sanitizeSlug(slug: string): string {
   // Decode and strictly allow only [a-z0-9-_]
   let decoded: string;
@@ -11,11 +18,6 @@ function sanitizeSlug(slug: string): string {
   }
   return decoded;
 }
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-import { BlogFrontmatterSchema } from "./frontmatterSchema";
-import { z } from "zod";
 
 const NEWS_DIR = path.join(process.cwd(), "src/content/news");
 

@@ -95,22 +95,22 @@ export default function SiteShell({
 
           {/* Desktop Navigation */}
           <nav className="hidden items-center gap-1 md:flex">
-            {SITE.nav.filter(n => n.label !== "Portfolio").map((n) => (
-              <NavLink key={n.href} href={n.href} label={n.label} />
-            ))}
+            <NavLink href="/build" label="Build" />
             <DropdownNav
-              label="Blog & News"
+              label="Explore"
               items={[
+                { href: "/services", label: "Services" },
+                { href: "/portfolio", label: "Portfolio" },
+                { href: "/about", label: "About" },
                 { href: "/blog", label: "Blog" },
                 { href: "/news", label: "News" },
               ]}
             />
-            <NavLink href="/portfolio" label="Portfolio" />
             <Link
               href="/contact"
               className="ml-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md shadow-blue-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/40 hover:scale-105 active:scale-95"
             >
-              Book intro call
+              Contact
             </Link>
           </nav>
 

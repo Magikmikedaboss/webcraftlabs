@@ -13,6 +13,7 @@ import Checklist from "@/components/mdx/Checklist";
 import PullQuote from "@/components/mdx/PullQuote";
 import Takeaways from "@/components/mdx/Takeaways";
 import PrevNext from "@/components/content/PrevNext";
+import SiteShell from "@/components/SiteShell";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
 
@@ -25,11 +26,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const post = getPostBySlug(slug);
     return {
-      title: `${post.frontmatter.title} | WebCraft Labs`,
+      title: `${post.frontmatter.title} | WebCraft LabZ`,
       description: post.frontmatter.description,
     };
   } catch {
-    return { title: "Blog | WebCraft Labs" };
+    return { title: "Blog | WebCraft LabZ" };
   }
 }
 
@@ -51,11 +52,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
 
   return (
-    <main className="editorial mx-auto max-w-6xl px-6 py-12 bg-[var(--bg)] min-h-screen">
+    <SiteShell background="bg">
+      <main className="editorial mx-auto max-w-6xl px-6 py-12">
       <div className="grid gap-10 lg:grid-cols-[1fr,280px]">
         <article className="min-w-0">
           <header className="mb-10 border-b border-[var(--border)] pb-8">
-            <div className="kicker">WebCraft Labs Editorial</div>
+            <div className="kicker">WebCraft LabZ Editorial</div>
 
             <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-[var(--text)] sm:text-5xl">
               {post.frontmatter.title}
@@ -159,6 +161,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </aside>
       </div>
     </main>
+    </SiteShell>
   );
 }
 

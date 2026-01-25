@@ -354,16 +354,18 @@ Based on code review:
 
 ## 📞 Support & Resources
 
+
 ### Documentation:
-- Next.js: https://nextjs.org/docs
-- Vercel Deployment: https://vercel.com/docs
-- MDX: https://mdxjs.com/
+- [Next.js](https://nextjs.org/docs)
+- [Vercel Deployment](https://vercel.com/docs)
+- [MDX](https://mdxjs.com/)
+
 
 ### Recommended Services:
-- **Email:** Resend (https://resend.com)
-- **Analytics:** Plausible (https://plausible.io) or Google Analytics
-- **Error Tracking:** Sentry (https://sentry.io)
-- **Uptime:** UptimeRobot (https://uptimerobot.com)
+- [Resend](https://resend.com) (Email)
+- [Plausible](https://plausible.io) or Google Analytics (Analytics)
+- [Sentry](https://sentry.io) (Error Tracking)
+- [UptimeRobot](https://uptimerobot.com) (Uptime)
 
 ---
 

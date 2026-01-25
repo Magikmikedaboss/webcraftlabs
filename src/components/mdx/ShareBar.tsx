@@ -56,7 +56,7 @@ export default function ShareBar({
 
       <button
         type="button"
-        className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:shadow"
+        className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-semibold hover:shadow"
         onClick={async () => {
           if (copyTimeoutRef.current) {
             clearTimeout(copyTimeoutRef.current);

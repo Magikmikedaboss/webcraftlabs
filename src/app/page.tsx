@@ -76,7 +76,9 @@ export default function HomePage() {
             alt="Marketing sunrise"
             fill
             priority
+            fetchPriority="high"
             className="object-cover opacity-[0.14]"
+            sizes="100vw"
           />
         </div>
         <div className={styles.heroBg} />
@@ -139,6 +141,7 @@ export default function HomePage() {
                 width={800}
                 height={600}
                 loading="lazy"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               {/* Mock homepage overlay */}
               <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">

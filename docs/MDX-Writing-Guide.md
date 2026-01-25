@@ -325,7 +325,7 @@ Need help optimizing your website? [Contact us](/contact) for a free performance
 
 ---
 
-*Last updated: January 15, 2024*
+*Last updated: 2026-01-15*
 ```
 
 ## Best Practices Summary

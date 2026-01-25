@@ -6,11 +6,22 @@ export default function ContactForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
+  const [name, setName] = useState(() => localStorage.getItem('quoteName') || "");
+  const [email, setEmail] = useState(() => localStorage.getItem('quoteEmail') || "");
+  const [project, setProject] = useState(() => localStorage.getItem('buildSheet') || "");
 
   useEffect(() => {
     // Read CSRF token from cookie (set by edge-csrf middleware)
     const match = document.cookie.match(/(?:^|; )_csrfSecret=([^;]*)/);
     if (match) setCsrfToken(decodeURIComponent(match[1]));
+
+    // Pre-fill from localStorage
+    const storedName = localStorage.getItem('quoteName');
+    const storedEmail = localStorage.getItem('quoteEmail');
+    const storedBuildSheet = localStorage.getItem('buildSheet');
+    if (storedName) setName(storedName);
+    if (storedEmail) setEmail(storedEmail);
+    if (storedBuildSheet) setProject(storedBuildSheet);
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -18,11 +29,7 @@ export default function ContactForm() {
     setError("");
     setSuccess("");
     setLoading(true);
-    const form = e.currentTarget as HTMLFormElement;
-    const name = (form.elements.namedItem("name") as HTMLInputElement)?.value.trim();
-    const email = (form.elements.namedItem("email") as HTMLInputElement)?.value.trim();
-    const project = (form.elements.namedItem("project") as HTMLTextAreaElement)?.value.trim();
-    if (!name || !email || !project) {
+    if (!name.trim() || !email.trim() || !project.trim()) {
       setError("All fields are required.");
       setLoading(false);
       return;
@@ -42,21 +49,27 @@ export default function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers,
-        body: JSON.stringify({ name, email, project }),
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), project: project.trim() }),
       });
       if (!res.ok) {
         let errorMessage = "Failed to send request.";
-        try {
-          const errorData = await res.json();
-          errorMessage = errorData.error || errorData.message || errorMessage;
-        } catch {
-          const errorText = await res.text();
-          if (errorText) errorMessage = errorText;
-        }
+          let bodyText = await res.text();
+          try {
+            const errorData = JSON.parse(bodyText);
+            errorMessage = errorData.error || errorData.message || errorMessage;
+          } catch {
+            errorMessage = bodyText || errorMessage;
+          }
         throw new Error(errorMessage);
       }
       setSuccess("Your request was sent! We'll reply soon.");
-      form.reset();
+      // Clear localStorage and reset form
+      localStorage.removeItem('quoteName');
+      localStorage.removeItem('quoteEmail');
+      localStorage.removeItem('buildSheet');
+      setName("");
+      setEmail("");
+      setProject("");
     } catch (err) {
       const message = err instanceof Error ? err.message : "There was a problem sending your request. Please try again later.";
       setError(message);
@@ -71,6 +84,8 @@ export default function ContactForm() {
       <input
         id="contact-name"
         name="name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
         className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Your name (or company)"
         autoComplete="name"
@@ -82,6 +97,8 @@ export default function ContactForm() {
         id="contact-email"
         name="email"
         type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Your email address"
         autoComplete="email"
@@ -92,6 +109,8 @@ export default function ContactForm() {
       <textarea
         id="contact-project"
         name="project"
+        value={project}
+        onChange={(e) => setProject(e.target.value)}
         className="min-h-[160px] w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Tell us about your project, goals, or paste your configurator output."
         autoComplete="off"

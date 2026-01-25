@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { RadixSelect } from "../../components/RadixSelect";
 import SiteShell from "../../components/SiteShell";
 import styles from "./build.module.css";
@@ -16,6 +17,7 @@ import { formatPrice } from "../../lib/formatPrice";
 import { ADDONS } from "../../lib/estimator/config";
 
 export default function BuildCalculatorClient() {
+  const router = useRouter();
   const [pages, setPages] = useState(5);
   const [design, setDesign] = useState<DesignLevel>("template");
   const [content, setContent] = useState<ContentReadiness>("ready");
@@ -32,19 +34,6 @@ export default function BuildCalculatorClient() {
     frameworkOther: "",
     maintenancePlan: "none",
   });
-
-  const [copying, setCopying] = useState(false);
-  const [copyError, setCopyError] = useState(false);
-  const copyTimeoutRef = useRef<number | null>(null);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (copyTimeoutRef.current !== null) {
-        clearTimeout(copyTimeoutRef.current);
-      }
-    };
-  }, []);
 
   function toggleFeature(id: string) {
     setFeatures((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -109,8 +98,8 @@ export default function BuildCalculatorClient() {
 
   return (
     <SiteShell
-      title="Build Configurator"
-      intro="Estimate your website project cost and timeline. Pick your build, add features, and copy a clean build sheet."
+      title="Website Cost Calculator"
+      intro="Get an instant, accurate quote for your website project. Select your pages, design level, and features below. When ready, send your personalized quote request to start building."
     >
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid gap-6 lg:grid-cols-[1fr,384px]">
@@ -211,75 +200,7 @@ export default function BuildCalculatorClient() {
               </div>
             </div>
 
-            {/* Contact Details Group */}
-            <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-md min-w-0">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-blue-900 mb-2">
-                  Contact Details <span className="font-normal text-gray-500 text-base">(optional)</span>
-                </h2>
-                <p className="text-sm text-[var(--muted)]">
-                  Add context for your quote. This info is included in the build sheet.
-                </p>
-              </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Name">
-                  <input
-                    value={q.name}
-                    onChange={(e) => setQField("name", e.target.value)}
-                    className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
-                    placeholder="Your name"
-                  />
-                </Field>
-
-                <Field label="Email">
-                  <input
-                    type="email"
-                    autoComplete="email"
-                    value={q.email}
-                    onChange={(e) => setQField("email", e.target.value)}
-                    className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
-                    placeholder="you@company.com"
-                  />
-                </Field>
-
-                <Field label="Business name">
-                  <input
-                    value={q.business}
-                    onChange={(e) => setQField("business", e.target.value)}
-                    className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
-                    placeholder="Business / brand"
-                  />
-                </Field>
-
-                <Field label="Existing website (optional)">
-                  <input
-                    type="url"
-                    autoComplete="url"
-                    value={q.website}
-                    onChange={(e) => setQField("website", e.target.value)}
-                    className="w-full rounded-lg border border-[var(--border)] bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
-                    placeholder="https://"
-                  />
-                </Field>
-
-                <Field label="Preferred platform/framework">
-                  <RadixSelect
-                    value={q.frameworkPref}
-                    onValueChange={(v: string) => setQField("frameworkPref", v as QuoteDetails["frameworkPref"])}
-                    options={[
-                      { value: "none", label: "No preference (recommended)" },
-                      { value: "nextjs", label: "Next.js" },
-                      { value: "wordpress", label: "WordPress" },
-                      { value: "shopify", label: "Shopify" },
-                      { value: "webflow", label: "Webflow" },
-                      { value: "squarespace", label: "Squarespace" },
-                      { value: "other", label: "Other" },
-                    ]}
-                  />
-                </Field>
-              </div>
-            </div>
           </section>
 
           {/* Right: Output */}
@@ -332,34 +253,64 @@ export default function BuildCalculatorClient() {
                   className="min-h-[120px] mt-2 h-64 w-full rounded-2xl border-2 border-yellow-200 bg-gradient-to-br from-white/90 to-yellow-50/40 p-4 text-xs text-gray-800 shadow-inner transition-all duration-200"
                 />
 
+                <div className="mt-6">
+                  <div className="text-sm font-semibold text-gray-700 mb-2">Your Details</div>
+                  <div className="space-y-3">
+                    <input
+                      value={q.name}
+                      onChange={(e) => setQField("name", e.target.value)}
+                      className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                      placeholder="Your name"
+                    />
+                    <input
+                      type="email"
+                      autoComplete="email"
+                      value={q.email}
+                      onChange={(e) => setQField("email", e.target.value)}
+                      className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                      placeholder="you@company.com"
+                    />
+                    <input
+                      value={q.business}
+                      onChange={(e) => setQField("business", e.target.value)}
+                      className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                      placeholder="Business / brand"
+                    />
+                    <input
+                      type="url"
+                      autoComplete="url"
+                      value={q.website}
+                      onChange={(e) => setQField("website", e.target.value)}
+                      className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                      placeholder="https://"
+                    />
+                    <RadixSelect
+                      value={q.frameworkPref}
+                      onValueChange={(v: string) => setQField("frameworkPref", v as QuoteDetails["frameworkPref"])}
+                      options={[
+                        { value: "none", label: "No preference (recommended)" },
+                        { value: "nextjs", label: "Next.js" },
+                        { value: "wordpress", label: "WordPress" },
+                        { value: "shopify", label: "Shopify" },
+                        { value: "webflow", label: "Webflow" },
+                        { value: "squarespace", label: "Squarespace" },
+                        { value: "other", label: "Other" },
+                      ]}
+                    />
+                  </div>
+                </div>
+
                 <button
                   type="button"
-                  onClick={async () => {
-                    setCopying(true);
-                    setCopyError(false);
-
-                    if (copyTimeoutRef.current !== null) clearTimeout(copyTimeoutRef.current);
-
-                    try {
-                      if (navigator?.clipboard?.writeText) {
-                        await navigator.clipboard.writeText(est.buildSheetText);
-                        copyTimeoutRef.current = window.setTimeout(() => setCopying(false), 800);
-                      } else {
-                        throw new Error("Clipboard API not available");
-                      }
-                    } catch (err) {
-                      console.error("Copy failed:", err);
-                      setCopying(false);
-                      setCopyError(true);
-                      copyTimeoutRef.current = window.setTimeout(() => setCopyError(false), 3000);
-                    }
+                  onClick={() => {
+                    localStorage.setItem('buildSheet', est.buildSheetText);
+                    localStorage.setItem('quoteName', q.name);
+                    localStorage.setItem('quoteEmail', q.email);
+                    router.push('/contact');
                   }}
-                  className="min-h-[48px] mt-3 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"
+                  className="min-h-[48px] mt-4 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"
                 >
-                  {copyError ? "Copy failed - try again" : "Copy build sheet"}
-                  {copying && (
-                    <span className="inline-block w-4 h-4 border-2 border-yellow-700 border-t-transparent rounded-full animate-spin ml-2" />
-                  )}
+                  Send Quote Request
                 </button>
               </div>
             </div>

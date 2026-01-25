@@ -3,9 +3,18 @@ import { getBaseUrl } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Use stable timestamp to avoid sitemap churn on every build
-  const lastModified = new Date(process.env.VERCEL_GIT_COMMIT_SHA 
-    ? process.env.VERCEL_DEPLOYMENT_TIME || new Date().toISOString() 
-    : '2026-01-11T00:00:00.000Z');
+  let lastModified: Date;
+  if (process.env.VERCEL_GIT_COMMIT_SHA) {
+    if (process.env.VERCEL_DEPLOYMENT_TIME) {
+      lastModified = new Date(process.env.VERCEL_DEPLOYMENT_TIME);
+    } else if (process.env.VERCEL_GIT_COMMIT_DATE) {
+      lastModified = new Date(process.env.VERCEL_GIT_COMMIT_DATE);
+    } else {
+      lastModified = new Date('2026-01-11T00:00:00.000Z');
+    }
+  } else {
+    lastModified = new Date('2026-01-11T00:00:00.000Z');
+  }
   
   // Get normalized base URL (validated and trailing slash removed)
   const baseUrl = getBaseUrl();

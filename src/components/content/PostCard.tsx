@@ -23,20 +23,20 @@ export default function PostCard({
     return (
       <Link
         href={href}
-        className="group block rounded-3xl border border-[var(--border)] bg-[var(--card)] p-7 shadow-sm hover:shadow-lg transition"
+        className="group block rounded-3xl border-2 border-blue-200 bg-gradient-to-br from-white to-blue-50/30 p-7 shadow-lg hover:shadow-2xl hover:border-blue-300 transition-all duration-300"
       >
-        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--muted)]">
-          <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-2 py-1">
+        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
+          <span className="rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 px-3 py-1 text-white shadow-md">
             {badge}
           </span>
-          <span>{post.date}</span>
+          <span className="text-gray-600">{post.date}</span>
         </div>
 
-        <div className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text)] group-hover:underline">
+        <div className="mt-4 text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-700 to-cyan-700 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-cyan-600 transition-all">
           {post.title}
         </div>
 
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-[var(--muted)]">
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-gray-700">
           {post.description}
         </p>
 
@@ -45,7 +45,7 @@ export default function PostCard({
             {post.tags.slice(0, 4).map((t) => (
               <span
                 key={t}
-                className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--text)]"
+                className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700"
               >
                 {t}
               </span>
@@ -53,8 +53,8 @@ export default function PostCard({
           </div>
         ) : null}
 
-        <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--primary)]">
-          Read story <span className="transition group-hover:translate-x-0.5">→</span>
+        <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 group-hover:text-cyan-600 transition-colors">
+          Read article <span className="transition group-hover:translate-x-1">→</span>
         </div>
       </Link>
     );
@@ -85,25 +85,32 @@ export default function PostCard({
   return (
     <Link
       href={href}
-      className="group block rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm hover:shadow-md transition"
+      className="group block rounded-2xl border border-blue-100 bg-white p-6 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all duration-300 hover:-translate-y-1"
     >
-      <div className="text-xs font-semibold text-[var(--muted)]">{post.date}</div>
-      <div className="mt-2 text-xl font-extrabold text-[var(--text)] group-hover:underline">
+      <div className="flex items-center gap-2">
+        <div className="text-xs font-semibold text-gray-500">{post.date}</div>
+        <span className="text-xs text-blue-600">•</span>
+        <span className="text-xs font-semibold text-blue-600">{badge}</span>
+      </div>
+      <div className="mt-3 text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
         {post.title}
       </div>
-      <p className="mt-2 text-sm text-[var(--muted)]">{post.description}</p>
+      <p className="mt-2 text-sm text-gray-600 leading-relaxed">{post.description}</p>
       {post.tags?.length ? (
         <div className="mt-4 flex flex-wrap gap-2">
           {post.tags.slice(0, 3).map((t) => (
             <span
               key={t}
-              className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--text)]"
+              className="rounded-full border border-cyan-200 bg-cyan-50 px-2.5 py-1 text-xs font-semibold text-cyan-700"
             >
               {t}
             </span>
           ))}
         </div>
       ) : null}
+      <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-blue-600 group-hover:gap-2 transition-all">
+        Read more <span>→</span>
+      </div>
     </Link>
   );
 }

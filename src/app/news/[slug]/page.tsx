@@ -4,7 +4,9 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 
 import "@/app/blog/editorial.css";
 
+
 import { getAllNewsSlugs, getNewsBySlug, getAllNews } from "@/lib/mdx/news";
+import { SITE } from "@/lib/site";
 
 import ShareBar from "@/components/mdx/ShareBar";
 import Callout from "@/components/mdx/Callout";
@@ -13,8 +15,9 @@ import Checklist from "@/components/mdx/Checklist";
 import PullQuote from "@/components/mdx/PullQuote";
 import Takeaways from "@/components/mdx/Takeaways";
 import PrevNext from "@/components/content/PrevNext";
+import SiteShell from "@/components/SiteShell";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+
 
 export function generateStaticParams() {
   return getAllNewsSlugs().map((slug) => ({ slug }));
@@ -25,11 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const post = getNewsBySlug(slug);
     return {
-      title: `${post.frontmatter.title} | WebCraft Labs News`,
+      title: `${post.frontmatter.title} | WebCraft LabZ News`,
       description: post.frontmatter.description,
     };
   } catch {
-    return { title: "News | WebCraft Labs" };
+    return { title: "News | WebCraft LabZ" };
   }
 }
 
@@ -50,11 +53,12 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
   const next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
 
   return (
-    <main className="editorial mx-auto max-w-6xl px-6 py-12 bg-[var(--bg)] min-h-screen">
+    <SiteShell background="bg">
+      <main className="editorial mx-auto max-w-6xl px-6 py-12">
       <div className="grid gap-10 lg:grid-cols-[1fr,280px]">
         <article className="min-w-0">
           <header className="mb-10 border-b border-[var(--border)] pb-8">
-            <div className="kicker">WebCraft Labs Newsroom</div>
+            <div className="kicker">WebCraft LabZ Newsroom</div>
 
             <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-[var(--text)] sm:text-5xl">
               {post.frontmatter.title}
@@ -133,5 +137,6 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
         </aside>
       </div>
     </main>
+    </SiteShell>
   );
 }
