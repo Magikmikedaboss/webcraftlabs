@@ -58,7 +58,7 @@ For non-React sites, use the HTML snippet below:
   onmouseout="this.style.color='#4b5563'; this.style.boxShadow='0 1px 2px 0 rgba(0,0,0,0.05)';"
 >
   <img 
-    src="/apple-touch-icon.png" 
+    src="https://webcraftlabz.com/apple-touch-icon.png" 
     alt="WebCraft Labz" 
     width="20" 
     height="20"

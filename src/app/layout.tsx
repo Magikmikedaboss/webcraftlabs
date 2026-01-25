@@ -24,7 +24,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: SITE.name,
   description: SITE.tagline,
-  metadataBase: new URL(SITE.url),
+  // Normalize SITE.url to ensure absolute and valid
+  metadataBase: (() => {
+    let url = SITE.url;
+    if (!/^https?:\/\//.test(url)) {
+      url = `https://${url.replace(/^\/*/, "")}`;
+    }
+    try {
+      return new URL(url);
+    } catch {
+      return undefined;
+    }
+  })(),
 };
 
 export const viewport = {
@@ -52,7 +63,7 @@ export default function RootLayout({
                   document.documentElement.classList.add('dark');
                   document.documentElement.style.colorScheme = 'dark';
                 } else {
-                  document.documentElement.removeAttribute('data-theme');
+                  document.documentElement.setAttribute('data-theme', 'light');
                   document.documentElement.classList.remove('dark');
                   document.documentElement.style.colorScheme = 'light';
                 }
@@ -60,17 +71,10 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* Preconnect to Google Fonts origins for Next.js compliance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Favicon and manifest */}
         <link rel="icon" href="/images/branding/webcraft-labz-phoenix-32.png" sizes="32x32" type="image/png" />
         <link rel="icon" href="/images/branding/webcraft-labz-phoenix-192.png" sizes="192x192" type="image/png" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
-        {/* DNS prefetch as fallback */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

@@ -276,6 +276,7 @@ export default function BuildCalculatorClient() {
                       onChange={(e) => setQField("name", e.target.value)}
                       className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
                       placeholder="Your name"
+                      aria-label="Your name"
                     />
                     <label htmlFor="quote-email" className="sr-only">Email</label>
                     <input
@@ -286,6 +287,7 @@ export default function BuildCalculatorClient() {
                       onChange={(e) => setQField("email", e.target.value)}
                       className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
                       placeholder="you@company.com"
+                      aria-label="Your email address"
                     />
                     <label htmlFor="quote-business" className="sr-only">Business or Brand</label>
                     <input
@@ -294,6 +296,7 @@ export default function BuildCalculatorClient() {
                       onChange={(e) => setQField("business", e.target.value)}
                       className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
                       placeholder="Business / brand"
+                      aria-label="Business or brand"
                     />
                     <label htmlFor="quote-website" className="sr-only">Website</label>
                     <input
@@ -304,8 +307,12 @@ export default function BuildCalculatorClient() {
                       onChange={(e) => setQField("website", e.target.value)}
                       className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
                       placeholder="https://"
+                      aria-label="Website URL"
                     />
+                    <label htmlFor="framework-pref-select" className="sr-only">Framework preference</label>
                     <RadixSelect
+                      id="framework-pref-select"
+                      aria-label="Framework preference"
                       value={q.frameworkPref}
                       onValueChange={(v: string) => setQField("frameworkPref", v as QuoteDetails["frameworkPref"])}
                       options={[
@@ -318,6 +325,19 @@ export default function BuildCalculatorClient() {
                         { value: "other", label: "Other" },
                       ]}
                     />
+                    {q.frameworkPref === "other" && (
+                      <>
+                        <label htmlFor="quote-framework-other" className="sr-only">Other framework</label>
+                        <input
+                          id="quote-framework-other"
+                          value={q.frameworkOther}
+                          onChange={(e) => setQField("frameworkOther", e.target.value)}
+                          className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                          placeholder="Please specify framework"
+                          aria-label="Other framework details"
+                        />
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -389,6 +409,7 @@ function buildSheetText(args: {
     `Business: ${args.q.business || "-"}`,
     `Website: ${args.q.website || "-"}`,
     `Framework: ${args.q.frameworkPref || "-"}`,
+    ...(args.q.frameworkPref === "other" && args.q.frameworkOther ? [`Other framework: ${args.q.frameworkOther}`] : []),
   ];
 
   return lines.join("\n");

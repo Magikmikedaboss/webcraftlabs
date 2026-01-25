@@ -34,7 +34,8 @@ export async function parseMarkdownFile(
   // Ensure resolved path is within baseDir
   const resolvedBase = path.resolve(baseDir);
   const resolvedPath = path.resolve(fullPath);
-  if (!resolvedPath.startsWith(resolvedBase)) {
+  const sep = path.sep;
+  if (!resolvedPath.startsWith(resolvedBase + sep)) {
     throw new Error('Path traversal detected');
   }
 

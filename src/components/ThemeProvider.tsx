@@ -11,17 +11,27 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
 
   // Use default state, hydration handled by layout script
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window !== "undefined") {
+      const stored = window.localStorage?.getItem("theme");
+      if (stored === "dark" || stored === "light") {
+        return stored;
+      } else if (document.documentElement.classList.contains("dark")) {
+        return "dark";
+      } else if (document.documentElement.classList.contains("light")) {
+        return "light";
+      }
+    }
+    return "light";
+  });
 
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.setAttribute("data-theme", "dark");
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-      document.documentElement.classList.remove("dark");
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.classList.add(theme);
+    document.documentElement.classList.remove(theme === "dark" ? "light" : "dark");
+    if (typeof window !== "undefined") {
+      window.localStorage?.setItem("theme", theme);
     }
-    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));

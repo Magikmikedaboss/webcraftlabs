@@ -15,16 +15,21 @@ export type MdxContent = {
 };
 
 export async function getMdxContent(baseDir: string, slug: string): Promise<MdxContent> {
-  const sanitizedSlug = path.basename(slug.replace(/[/\\]/g, ''));
-  if (!sanitizedSlug || sanitizedSlug !== slug) {
+  if (slug.includes("..") || slug.includes("/") || slug.includes("\\")) {
     throw new Error(`Invalid slug: ${slug}`);
   }
-  let fullPath = path.join(baseDir, `${sanitizedSlug}.mdx`);
+  const sanitizedSlug = slug;
+  let fullPath = path.resolve(baseDir, `${sanitizedSlug}.mdx`);
   if (!fs.existsSync(fullPath)) {
-    fullPath = path.join(baseDir, `${sanitizedSlug}.md`);
+    fullPath = path.resolve(baseDir, `${sanitizedSlug}.md`);
     if (!fs.existsSync(fullPath)) {
       throw new Error(`File not found for slug: ${slug}`);
     }
+  }
+  const resolvedBase = path.resolve(baseDir);
+  const sep = path.sep;
+  if (!fullPath.startsWith(resolvedBase + sep)) {
+    throw new Error('Path traversal detected');
   }
   const file = fs.readFileSync(fullPath, 'utf8');
   const { data, content } = matter(file);

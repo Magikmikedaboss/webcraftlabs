@@ -109,7 +109,8 @@ export default function MobileMenu() {
               <Link
                 key={n.href}
                 href={n.href}
-                className="text-lg font-semibold text-blue-900 py-2"
+                className="text-lg font-semibold py-2"
+                style={{ color: "var(--text)" }}
                 onClick={handleNav}
               >
                 {n.label}

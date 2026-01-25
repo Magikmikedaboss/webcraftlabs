@@ -67,7 +67,7 @@ export type QuoteDetails = {
     | "webflow"
     | "squarespace"
     | "other";
-  frameworkOther: string;
+  frameworkOther: string; // Used only when frameworkPref is 'other'
   maintenancePlan: MaintenancePlanId | "none";
 };
 

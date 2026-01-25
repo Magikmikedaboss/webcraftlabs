@@ -61,6 +61,7 @@ type Project = {
   wins: string[];
   next?: string[];
   links?: { label: string; href: string }[];
+  featured?: boolean; // Optional: highlight project as featured
 };
 
 const PROJECTS: Project[] = [
@@ -83,22 +84,28 @@ const PROJECTS: Project[] = [
 ];
 ```
 
-**Note:** Fields like `image`, `metrics`, `tags`, `link`, and `featured` are not part of the actual schema. Always refer to the `Project` type and `PROJECTS` constant for the correct structure.
+**Note:** Fields like `image`, `metrics`, `tags`, and `link` are not part of the actual schema. The `featured` field is now optional—add `featured: true` to any project you want to highlight. Always refer to the `Project` type and `PROJECTS` constant for the correct structure.
 
 ### 2. **Add Your Project Images**
 
 
 Place your project images in the `public/images/portfolio/` folder:
+The portfolio UI currently uses a `PlaceholderImage` component in `src/app/portfolio/page.tsx` to render project screenshots. To display real images:
 
+1. Place your screenshots in `public/images/portfolio/` (e.g. `project-1.jpg`, `project-2.jpg`).
+2. In `src/app/portfolio/page.tsx`, replace `<PlaceholderImage label={...} />` with:
+   - `<img src="/images/portfolio/project-1.jpg" alt="Project 1" className="..." />` for static images, or
+   - Use Next.js `<Image src="/images/portfolio/project-1.jpg" alt="Project 1" ... />` for optimized images.
+3. Update the image-loading logic in the portfolio page component to reference your actual filenames and alt text.
+
+Sample filenames:
 ```
-public/
-  images/
-    portfolio/
-      project-1.jpg
-      project-2.jpg
-      project-3.jpg
+public/images/portfolio/project-1.jpg
+public/images/portfolio/project-2.jpg
+public/images/portfolio/project-3.jpg
 ```
 
+Component to edit: `PlaceholderImage` and its usages in `src/app/portfolio/page.tsx`.
 
 ---
 
@@ -252,6 +259,7 @@ className="bg-gradient-to-br from-blue-600 to-cyan-600"
 **Make featured projects larger:**
 ```typescript
 // In ProjectCard component
+// Note: The `featured` property is optional on Project. Add `featured: true` to any project you want to highlight.
 className={`... ${project.featured ? 'md:col-span-2 lg:col-span-2' : ''}`}
 ```
 
@@ -447,17 +455,17 @@ Embed video demos or screen recordings.
 ## 📝 Example Portfolio Structure
 
 **Beginner (3-6 projects):**
-- 2 featured projects (your best work)
+ - 2 featured projects (your best work; add `featured: true` to these in your data)
 - 4 regular projects
 - Focus on quality and detailed case studies
 
 **Intermediate (6-12 projects):**
-- 3-4 featured projects
+ - 3-4 featured projects (add `featured: true` to these in your data)
 - 8-9 regular projects
 - Mix of client work and personal projects
 
 **Advanced (12+ projects):**
-- 4-6 featured projects
+ - 4-6 featured projects (add `featured: true` to these in your data)
 - 10+ regular projects
 - Consider pagination or "Load More"
 - Add filtering and search

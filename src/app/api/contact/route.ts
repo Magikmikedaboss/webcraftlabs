@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
             <p style="margin: 0; color: #1e40af;">
               <strong>Quick Actions:</strong><br/>
               To contact the submitter, use their email address shown above (<a href="mailto:${escapeHtml(result.data.email || '')}">${escapeHtml(result.data.email || '')}</a>).<br/>
-              Replies to this email will go to the site address (${process.env.EMAIL_FROM}).
+              Replies to this email will go to the site address (${process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@webcraftlabz.com'}).
             </p>
           </div>
           
