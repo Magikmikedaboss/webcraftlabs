@@ -38,12 +38,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function NewsPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  let post: ReturnType<typeof getNewsBySlug>;
-  try {
-    post = getNewsBySlug(slug);
-  } catch {
-    notFound();
-  }
+  const post = (() => {
+    try {
+      return getNewsBySlug(slug);
+    } catch {
+      notFound();
+      return undefined as never;
+    }
+  })();
 
   const url = `${SITE.url}/news/${post.slug}`;
 

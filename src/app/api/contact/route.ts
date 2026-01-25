@@ -108,7 +108,6 @@ export async function POST(req: NextRequest) {
     const mailOptions = {
       from: `"WebCraft Contact Form" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_TO,
-      replyTo: process.env.EMAIL_FROM,
       subject: `New Contact Form: ${result.data.name}`,
       // Escape all user fields before interpolation
       html: `

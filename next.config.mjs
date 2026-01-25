@@ -13,7 +13,7 @@ const nextConfig = withMDXConfig({
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   reactCompiler: true,
   experimental: {
-    optimizeCss: true,
+    // reactCompiler: true,
   },
   images: {
     formats: ['image/avif', 'image/webp'],

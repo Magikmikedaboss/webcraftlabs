@@ -85,7 +85,7 @@ export default function MobileMenu() {
     <>
       <button
         ref={buttonRef}
-        aria-label="Open navigation menu"
+        aria-label={open ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={open}
         aria-controls={menuId}
         className="rounded-md p-2 border border-[var(--border)] bg-[var(--surface)] text-[var(--text)]"

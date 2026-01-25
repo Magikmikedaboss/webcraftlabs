@@ -269,13 +269,17 @@ export default function BuildCalculatorClient() {
                 <div className="mt-6">
                   <div className="text-sm font-semibold text-gray-700 mb-2">Your Details</div>
                   <div className="space-y-3">
+                    <label htmlFor="quote-name" className="sr-only">Name</label>
                     <input
+                      id="quote-name"
                       value={q.name}
                       onChange={(e) => setQField("name", e.target.value)}
                       className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
                       placeholder="Your name"
                     />
+                    <label htmlFor="quote-email" className="sr-only">Email</label>
                     <input
+                      id="quote-email"
                       type="email"
                       autoComplete="email"
                       value={q.email}
@@ -283,13 +287,17 @@ export default function BuildCalculatorClient() {
                       className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
                       placeholder="you@company.com"
                     />
+                    <label htmlFor="quote-business" className="sr-only">Business or Brand</label>
                     <input
+                      id="quote-business"
                       value={q.business}
                       onChange={(e) => setQField("business", e.target.value)}
                       className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
                       placeholder="Business / brand"
                     />
+                    <label htmlFor="quote-website" className="sr-only">Website</label>
                     <input
+                      id="quote-website"
                       type="url"
                       autoComplete="url"
                       value={q.website}

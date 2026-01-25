@@ -288,7 +288,7 @@ type Project = {
 };
 ```
 
-// Example categories array:
+**Example categories array:**
 ```typescript
 const categories = ["All", "Productivity", "Healthcare", "E-commerce"];
 ```
