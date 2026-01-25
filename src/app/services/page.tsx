@@ -101,6 +101,7 @@ export default function ServicesPage() {
               fill
               className="object-cover object-center"
               priority
+              fetchPriority="high"
             />
             <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-blue-900/50 to-transparent" />
           </div>

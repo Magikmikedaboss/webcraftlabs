@@ -47,6 +47,7 @@ export default function AboutPage() {
               fill
               className="object-cover object-center"
               priority
+              fetchPriority="high"
             />
             <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-blue-900/60 to-transparent" />
           </div>

@@ -59,7 +59,8 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  priority={false}
+                  priority
+                  fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
               </div>

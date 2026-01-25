@@ -15,18 +15,22 @@ export default function RadixSelectDemo() {
   const [touched, setTouched] = useState(false);
   
   const handleValueChange = (newValue: string) => {
-    setTouched(true);
     setValue(newValue);
   };
-  
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) setTouched(true);
+  };
+
   const showError = touched && !value;
-  
+
   return (
     <div className="max-w-xs mx-auto mt-10">
       <RadixSelect
         options={options}
         value={value}
         onValueChange={handleValueChange}
+        onOpenChange={handleOpenChange}
         label="Choose a project type"
         placeholder="Select type..."
         error={showError ? "Please select a type" : undefined}

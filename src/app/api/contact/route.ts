@@ -127,7 +127,8 @@ export async function POST(req: NextRequest) {
           <div style="margin-top: 20px; padding: 15px; background-color: #eff6ff; border-left: 4px solid #2563eb; border-radius: 4px;">
             <p style="margin: 0; color: #1e40af;">
               <strong>Quick Actions:</strong><br/>
-              Reply to this email to respond directly to ${escapeHtml(result.data.name || '')}
+              To contact the submitter, use their email address shown above (<a href="mailto:${escapeHtml(result.data.email || '')}">${escapeHtml(result.data.email || '')}</a>).<br/>
+              Replies to this email will go to the site address (${process.env.EMAIL_FROM}).
             </p>
           </div>
           

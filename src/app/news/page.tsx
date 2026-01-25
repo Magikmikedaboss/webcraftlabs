@@ -13,8 +13,9 @@ export const metadata = {
   },
 };
 
-export default function NewsIndexPage() {
-  const posts = getAllNews().map((p) => ({
+
+export default async function NewsIndexPage() {
+  const posts = (await getAllNews()).map((p) => ({
     slug: p.slug,
     title: p.frontmatter.title,
     description: p.frontmatter.description,

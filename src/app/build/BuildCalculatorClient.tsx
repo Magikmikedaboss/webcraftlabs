@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RadixSelect } from "../../components/RadixSelect";
 import SiteShell from "../../components/SiteShell";
@@ -46,7 +46,7 @@ export default function BuildCalculatorClient() {
   // Update maintenance when q.maintenancePlan changes
   // Set maintenance synchronously when q.maintenancePlan changes
   const plan = MAINTENANCE_PLANS.find(p => p.id === q.maintenancePlan);
-  useMemo(() => {
+  useEffect(() => {
     if (plan && maintenance.monthly !== plan.monthly) {
       setMaintenance({ monthly: plan.monthly });
     }

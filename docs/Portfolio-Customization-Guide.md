@@ -49,6 +49,7 @@ type Project = {
   id: string;
   year: string; // e.g. "2024", "2024-2025"
   phase: string;
+  category: string;
   title: string;
   tagline: string;
   role?: string;
@@ -65,6 +66,7 @@ const PROJECTS: Project[] = [
     id: "yourprojectid",
     year: "2026",
     phase: "Launch",
+    category: "Productivity",
     title: "Your Project Name",
     tagline: "Short tagline for your project.",
     role: "Design + Development",
@@ -79,7 +81,7 @@ const PROJECTS: Project[] = [
 ];
 ```
 
-**Note:** Fields like `category`, `image`, `metrics`, `tags`, `link`, and `featured` are not part of the actual schema. Always refer to the `Project` type and `PROJECTS` constant for the correct structure.
+**Note:** Fields like `image`, `metrics`, `tags`, `link`, and `featured` are not part of the actual schema. Always refer to the `Project` type and `PROJECTS` constant for the correct structure.
 
 ### 2. **Add Your Project Images**
 
@@ -105,6 +107,7 @@ public/
   id: "acme-corp",
   year: "2025",
   phase: "E-Commerce",
+  category: "E-commerce",
   title: "Acme Corp Website Redesign",
   tagline: "Complete redesign of Acme Corp's e-commerce platform, resulting in 250% increase in online sales and 40% reduction in cart abandonment.",
   role: "Design + Development",
@@ -264,21 +267,7 @@ className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
 
 Example Project type:
 ```typescript
-type Project = {
-  id: string;
-  year: string;
-  phase: string;
-  category: string;
-  title: string;
-  tagline: string;
-  role: string;
-  problem: string;
-  build: string[];
-  stack: string[];
-  wins: string[];
-  next: string[];
-  links: { label: string; href: string }[];
-};
+//
 ```
 
 // Example categories array:

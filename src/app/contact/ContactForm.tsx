@@ -129,15 +129,6 @@ export default function ContactForm() {
       </button>
       {error && <div className="text-red-600 text-sm mt-2" role="status" aria-live="polite">{error}</div>}
       {success && <div className="text-green-600 text-sm mt-2" role="status" aria-live="polite">{success}</div>}
-      <style jsx global>{`
-        .visually-hidden {
-          position: absolute !important;
-          height: 1px; width: 1px;
-          overflow: hidden;
-          clip: rect(1px, 1px, 1px, 1px);
-          white-space: nowrap;
-        }
-      `}</style>
     </form>
   );
 }
