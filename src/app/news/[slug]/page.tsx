@@ -45,7 +45,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  const url = `${SITE_URL}/news/${post.slug}`;
+  const url = `${SITE.url}/news/${post.slug}`;
 
   const list = getAllNews();
   const idx = list.findIndex((p) => p.slug === post.slug);
