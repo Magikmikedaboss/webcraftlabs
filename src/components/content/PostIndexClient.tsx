@@ -137,7 +137,9 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 			{filteredPosts.length === 0 && selectedTag && (
 				<div className="text-center py-16">
 					<div className="text-4xl mb-4">🔍</div>
-					<h3 className="text-xl font-bold text-[var(--text)] mb-2">No posts found with tag "{selectedTag}"</h3>
+					<h3 className="text-xl font-bold text-[var(--text)] mb-2">
+						No posts found with tag "{selectedTag}"
+					</h3>
 					<button
 						onClick={() => setSelectedTag(null)}
 						className="mt-4 text-[var(--primary)] hover:underline font-semibold"

@@ -7,7 +7,7 @@ import matter from 'gray-matter';
 export type MdxContent = {
   slug: string;
   mdxSource: MDXRemoteSerializeResult;
-  frontmatter?: any;
+  frontmatter?: Record<string, unknown>;
   title?: string;
   summary?: string;
   date?: string;
@@ -37,7 +37,7 @@ export async function getMdxContent(baseDir: string, slug: string): Promise<MdxC
   let file: string;
   try {
     file = fs.readFileSync(fullPath, 'utf8');
-  } catch (err) {
+  } catch {
     throw new Error(`Failed to read file for slug: ${slug}`);
   }
   
