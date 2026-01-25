@@ -33,23 +33,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function NewsPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = (() => {
-    try {
-      return getNewsBySlug(slug as string);
-    } catch {
-      notFound();
-      return undefined as never;
-    }
-  })();
+  
+  let post;
+  try {
+    post = getNewsBySlug(slug as string);
+  } catch {
+    notFound();
+  }
 
   const url = `${SITE.url}/news/${post.slug}`;
 
   // Fetch all news posts (not cached)
   const staticNewsList = await getAllNews();
   const idx = staticNewsList.findIndex((p: { slug: string }) => p.slug === post.slug);
-  // getAllNews() returns newest-first, so prev should be newer, next should be older
-  const prev = idx >= 0 && idx < staticNewsList.length - 1 ? staticNewsList[idx + 1] : null;
-  const next = idx > 0 ? staticNewsList[idx - 1] : null;
+  // getAllNews() returns newest-first, so prev should be newer (idx - 1), next should be older (idx + 1)
+  const prev = idx > 0 ? staticNewsList[idx - 1] : null;
+  const next = idx >= 0 && idx < staticNewsList.length - 1 ? staticNewsList[idx + 1] : null;
 
   return (
     <SiteShell background="bg">

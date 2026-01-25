@@ -29,9 +29,10 @@ export async function parseMarkdownFile(
   let fullPath = path.join(baseDir, `${sanitizedSlug}.mdx`);
   if (!fs.existsSync(fullPath)) {
     fullPath = path.join(baseDir, `${sanitizedSlug}.md`);
-    if (!fs.existsSync(fullPath)) {
-      throw new Error("Content file not found for slug: " + sanitizedSlug);
-    }
+  }
+  
+  if (!fs.existsSync(fullPath)) {
+    throw new Error(`Content not found for slug: ${sanitizedSlug}`);
   }
   
   // Ensure resolved path is within baseDir
@@ -73,25 +74,27 @@ export async function loadAllMarkdown(
     .readdirSync(baseDir)
     .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"));
 
-  return files
-    .filter((file) => {
-      const fullPath = path.join(baseDir, file);
-      const raw = fs.readFileSync(fullPath, "utf8");
-      const { data } = matter(raw);
-      return data.title && typeof data.title === 'string' && data.date;
-    })
-    .map((file) => {
-      const slug = file.replace(/\.(mdx|md)$/, "");
-      const fullPath = path.join(baseDir, file);
-      const raw = fs.readFileSync(fullPath, "utf8");
-      const { data } = matter(raw);
-      return {
-        slug,
-        title: data.title,
-        date: String(data.date),
-        summary: data.summary ?? "",
-        tags: data.tags ?? [],
-      };
-    })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+  const items: ContentMeta[] = [];
+  
+  for (const file of files) {
+    const fullPath = path.join(baseDir, file);
+    const raw = fs.readFileSync(fullPath, "utf8");
+    const { data } = matter(raw);
+    
+    // Skip files without required frontmatter
+    if (!data.title || typeof data.title !== 'string' || !data.date) {
+      continue;
+    }
+    
+    const slug = file.replace(/\.(mdx|md)$/, "");
+    items.push({
+      slug,
+      title: data.title,
+      date: String(data.date),
+      summary: data.summary ?? "",
+      tags: data.tags ?? [],
+    });
+  }
+  
+  return items.sort((a, b) => (a.date < b.date ? 1 : -1));
 }

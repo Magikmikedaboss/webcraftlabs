@@ -18,25 +18,39 @@ export async function getMdxContent(baseDir: string, slug: string): Promise<MdxC
   if (slug.includes("..") || slug.includes("/") || slug.includes("\\")) {
     throw new Error(`Invalid slug: ${slug}`);
   }
-  const sanitizedSlug = slug;
-  let fullPath = path.resolve(baseDir, `${sanitizedSlug}.mdx`);
+  
+  let fullPath = path.resolve(baseDir, `${slug}.mdx`);
   if (!fs.existsSync(fullPath)) {
-    fullPath = path.resolve(baseDir, `${sanitizedSlug}.md`);
-    if (!fs.existsSync(fullPath)) {
-      throw new Error(`File not found for slug: ${slug}`);
-    }
+    fullPath = path.resolve(baseDir, `${slug}.md`);
   }
+  
+  if (!fs.existsSync(fullPath)) {
+    throw new Error(`File not found for slug: ${slug}`);
+  }
+  
   const resolvedBase = path.resolve(baseDir);
   const sep = path.sep;
   if (!fullPath.startsWith(resolvedBase + sep)) {
     throw new Error('Path traversal detected');
   }
-  const file = fs.readFileSync(fullPath, 'utf8');
+  
+  let file: string;
+  try {
+    file = fs.readFileSync(fullPath, 'utf8');
+  } catch (err) {
+    throw new Error(`Failed to read file for slug: ${slug}`);
+  }
+  
   const { data, content } = matter(file);
   const mdxSource = await serialize(content, { scope: data });
+  
   return {
-    frontmatter: data,
-    slug: sanitizedSlug,
+    slug,
     mdxSource,
+    frontmatter: data,
+    title: data.title,
+    summary: data.summary,
+    date: data.date,
+    tags: data.tags,
   };
 }

@@ -71,7 +71,7 @@ Portfolio page added to sitemap with high priority (0.9) for SEO.
 - 📈 Stats that showcase your impact
 
 ### 4. **Modern Tech Stack**
- ⚡ Next.js 15 with App Router
+- ⚡ Next.js 15 with App Router
 
 ---
 
@@ -80,7 +80,8 @@ Portfolio page added to sitemap with high priority (0.9) for SEO.
 ### Immediate (5-10 minutes):
 1. **Replace Sample Projects**
    - Open `src/app/portfolio/projects.ts`
-   - Edit the exported `projects` array to include your actual projects
+   - Find the `PROJECTS` constant and the `Project` type
+   - Edit or replace `PROJECTS` with your real project entries
    - Save your changes; `page.tsx` will automatically import from this file
 
 2. **Add Your Images**

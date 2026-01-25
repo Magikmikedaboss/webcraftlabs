@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const DEFAULT_FEATURED_IMAGE = "/images/bright-sky-reflects-on-tranquil-water-webcraft-website-design-image.jpg";
 
 type FeedItem = {
   type: "blog" | "news";
@@ -64,12 +65,13 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
             <div className="grid md:grid-cols-2">
               <div className="relative min-h-[240px] md:min-h-[340px]">
                 <Image
-                  src={featured.image ?? "/images/bright-sky-reflects-on-tranquil-water-webcraft-website-design-image.jpg"}
+                  src={featured.image ?? DEFAULT_FEATURED_IMAGE}
                   alt={featured.title ?? "Featured post"}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
+                  fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
               </div>
@@ -128,11 +130,7 @@ export default function HomeMagazineFeed(props: HomeMagazineFeedProps) {
               <div className="mt-4 flex flex-col divide-y divide-[var(--border)]">
                 {latest.map((p) => (
                   <Link key={p.href} href={p.href} className="group py-4 first:pt-0 last:pb-0">
-                    <div className="text-[10px] sm:text-xs text-[var(--muted)]">
-                      {(p.type === "blog" ? "Blog" : "News")}
-                      {p.date ? ` • ${p.date}` : ""}
-                      {p.readingTime ? ` • ${p.readingTime}` : ""}
-                    </div>
+                    <MetaLine item={p} />
                     <div className="mt-1 text-sm font-semibold leading-snug group-hover:opacity-90 text-[var(--featured-title,var(--text))]">
                       {p.title}
                     </div>

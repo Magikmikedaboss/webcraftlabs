@@ -266,7 +266,20 @@ export default function BuildCalculatorClient() {
                   className="min-h-[120px] mt-2 h-64 w-full rounded-2xl border-2 border-yellow-200 bg-gradient-to-br from-white/90 to-yellow-50/40 p-4 text-xs text-gray-800 shadow-inner transition-all duration-200"
                 />
 
-                <div className="mt-6">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    try {
+                      localStorage.setItem('buildSheet', est.buildSheetText);
+                      localStorage.setItem('quoteName', q.name);
+                      localStorage.setItem('quoteEmail', q.email);
+                    } catch (err) {
+                      console.error('localStorage error:', err);
+                    }
+                    router.push('/contact');
+                  }}
+                  className="mt-6"
+                >
                   <div className="text-sm font-semibold text-gray-700 mb-2">Your Details</div>
                   <div className="space-y-3">
                     <label htmlFor="quote-name" className="sr-only">Name</label>
@@ -339,24 +352,14 @@ export default function BuildCalculatorClient() {
                       </>
                     )}
                   </div>
-                </div>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    try {
-                      localStorage.setItem('buildSheet', est.buildSheetText);
-                      localStorage.setItem('quoteName', q.name);
-                      localStorage.setItem('quoteEmail', q.email);
-                    } catch (err) {
-                      console.error('localStorage error:', err);
-                    }
-                    router.push('/contact');
-                  }}
-                  className="min-h-[48px] mt-4 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"
-                >
-                  Send Quote Request
-                </button>
+                  <button
+                    type="submit"
+                    className="min-h-[48px] mt-4 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"
+                  >
+                    Send Quote Request
+                  </button>
+                </form>
               </div>
             </div>
           </aside>

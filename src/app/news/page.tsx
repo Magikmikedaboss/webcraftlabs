@@ -81,20 +81,20 @@ export default async function NewsIndexPage() {
 
         {/* Stats Section */}
         <div className="mb-12 grid gap-6 sm:grid-cols-3">
-          <div className="rounded-2xl border border-cyan-200 bg-gradient-to-br from-cyan-50 to-blue-50 p-6 shadow-sm">
-            <div className="text-3xl font-extrabold text-cyan-700">{posts.length}</div>
-            <div className="mt-1 text-sm font-semibold text-cyan-600">Announcements</div>
-            <div className="mt-2 text-xs text-gray-600">Latest updates & launches</div>
+          <div className="rounded-2xl border border-[var(--card-border)] bg-gradient-to-br from-[var(--card-bg-start)] to-[var(--card-bg-end)] p-6 shadow-sm">
+            <div className="text-3xl font-extrabold text-[var(--card-foreground)]">{posts.length}</div>
+            <div className="mt-1 text-sm font-semibold text-[var(--card-foreground)]">Announcements</div>
+            <div className="mt-2 text-xs text-[var(--muted)]">Latest updates & launches</div>
           </div>
-          <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50 p-6 shadow-sm">
-            <div className="text-3xl font-extrabold text-blue-700">Live</div>
-            <div className="mt-1 text-sm font-semibold text-blue-600">Real-Time</div>
-            <div className="mt-2 text-xs text-gray-600">Fresh news as it happens</div>
+          <div className="rounded-2xl border border-[var(--card-border)] bg-gradient-to-br from-[var(--card-bg-start)] to-[var(--card-bg-end)] p-6 shadow-sm">
+            <div className="text-3xl font-extrabold text-[var(--card-foreground)]">Live</div>
+            <div className="mt-1 text-sm font-semibold text-[var(--card-foreground)]">Real-Time</div>
+            <div className="mt-2 text-xs text-[var(--muted)]">Fresh news as it happens</div>
           </div>
-          <div className="rounded-2xl border border-cyan-200 bg-gradient-to-br from-cyan-50 to-blue-50 p-6 shadow-sm">
-            <div className="text-3xl font-extrabold text-cyan-700">{new Date().getFullYear()}</div>
-            <div className="mt-1 text-sm font-semibold text-cyan-600">Building Forward</div>
-            <div className="mt-2 text-xs text-gray-600">Innovation never stops</div>
+          <div className="rounded-2xl border border-[var(--card-border)] bg-gradient-to-br from-[var(--card-bg-start)] to-[var(--card-bg-end)] p-6 shadow-sm">
+            <div className="text-3xl font-extrabold text-[var(--card-foreground)]">{new Date().getFullYear()}</div>
+            <div className="mt-1 text-sm font-semibold text-[var(--card-foreground)]">Building Forward</div>
+            <div className="mt-2 text-xs text-[var(--muted)]">Innovation never stops</div>
           </div>
         </div>
 

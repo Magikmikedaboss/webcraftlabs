@@ -6,8 +6,10 @@ export const SITE = {
     { href: "/about", label: "About" },
     { href: "/build", label: "Build" },
     { href: "/services", label: "Services" },
-    { href: "/contact", label: "Contact" },
     { href: "/portfolio", label: "Portfolio" },
+    { href: "/blog", label: "Blog" },
+    { href: "/news", label: "News" },
+    { href: "/contact", label: "Contact" },
   ],
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcraftlabz.com",
 } as const;

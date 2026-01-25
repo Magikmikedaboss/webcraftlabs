@@ -99,6 +99,7 @@ The portfolio UI currently uses a `PlaceholderImage` component in `src/app/portf
 3. Update the image-loading logic in the portfolio page component to reference your actual filenames and alt text.
 
 Sample filenames:
+```text
 ```
 public/images/portfolio/project-1.jpg
 public/images/portfolio/project-2.jpg

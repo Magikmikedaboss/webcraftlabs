@@ -344,7 +344,7 @@ export default function PortfolioClient(props: { projects: Project[] }) {
                             key={p.id}
                             onClick={() => openProject(p.id)}
                             className={classNames(
-                              "group flex w-full items-start gap-3 rounded-xl border px-3 py-2 text-left transition-all duration-200",
+                              "group flex w-full items-start gap-3 rounded-xl border px-3 py-3 min-h-[48px] text-left transition-all duration-200",
                               active
                                 ? "border-blue-400 bg-gradient-to-r from-blue-100 to-cyan-100 shadow-md"
                                 : "border-blue-200 bg-white hover:border-blue-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:shadow-sm"

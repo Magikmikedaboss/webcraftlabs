@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { useState, useEffect, useRef } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 export default function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -109,20 +110,15 @@ export default function MobileMenu() {
               <Link
                 key={n.href}
                 href={n.href}
-                className="text-lg font-semibold py-2"
-                style={{ color: "var(--text)" }}
+                className="text-lg font-semibold py-3 min-h-[48px] text-[var(--text)] hover:text-[var(--primary)] transition-colors"
                 onClick={handleNav}
               >
                 {n.label}
               </Link>
             ))}
-            <Link
-              href="/contact"
-              className="mt-4 rounded-md bg-[var(--primary)] px-4 py-3 text-base font-semibold text-white text-center hover:opacity-90"
-              onClick={handleNav}
-            >
-              Book intro call
-            </Link>
+            <div className="mt-4 pt-4 border-t border-[var(--border)]">
+              <ThemeToggle />
+            </div>
           </nav>
         </div>
       )}

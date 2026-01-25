@@ -102,6 +102,15 @@ export async function POST(req: NextRequest) {
 
   // Send email notification
   try {
+    // Validate email configuration
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.EMAIL_TO) {
+      console.error('[Contact Form] Email configuration missing. Required: EMAIL_USER, EMAIL_PASS, EMAIL_TO');
+      return NextResponse.json(
+        { error: 'Email service is not configured. Please contact support.' },
+        { status: 500 }
+      );
+    }
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -139,7 +148,7 @@ export async function POST(req: NextRequest) {
           
           <p style="margin-top: 20px; color: #6b7280; font-size: 12px;">
             Submitted: ${new Date().toLocaleString()}<br/>
-            IP: ${escapeHtml(ip || '')}
+            <!-- IP address logged for anti-spam purposes only. Retention: 30 days. -->
           </p>
         </div>
       `,
@@ -152,7 +161,6 @@ Project: ${result.data.project}
 ${result.data.notes ? `Notes: ${result.data.notes}` : ''}
 
 Submitted: ${new Date().toLocaleString()}
-IP: ${ip}
       `,
     };
 

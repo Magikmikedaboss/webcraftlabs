@@ -2,6 +2,7 @@ export type Project = {
   id: string;
   year: string;
   phase: string;
+  category?: string; // Optional category for filtering (e.g., "E-Commerce", "SaaS", "Healthcare")
   title: string;
   tagline: string;
   role: string;
