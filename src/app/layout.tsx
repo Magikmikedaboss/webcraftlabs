@@ -58,20 +58,11 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     title: SITE.name,
     description: SITE.tagline,
-    images: [
-      {
-        url: "/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: `${SITE.name} - ${SITE.tagline}`,
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE.name,
     description: SITE.tagline,
-    images: ["/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg"],
   },
   robots: {
     index: true,
