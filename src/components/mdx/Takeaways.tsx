@@ -1,10 +1,14 @@
 export default function Takeaways({
   title = "Key takeaways",
-  items,
+  items = [],
 }: {
   title?: string;
-  items: { id: string; text: string }[];
+  items?: { id: string; text: string }[];
 }) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return null;
+  }
+
   return (
     <div className="takeaways">
       <h3>{title}</h3>

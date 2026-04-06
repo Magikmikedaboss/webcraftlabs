@@ -10,6 +10,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -22,16 +23,19 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
           : "light";
 
     setTheme(nextTheme);
+    setIsInitialized(true);
   }, []);
 
   useEffect(() => {
+    if (!isInitialized) return;
+
     const root = document.documentElement;
     root.setAttribute("data-theme", theme);
     root.classList.toggle("dark", theme === "dark");
     root.classList.toggle("light", theme === "light");
     root.style.colorScheme = theme;
     window.localStorage?.setItem("theme", theme);
-  }, [theme]);
+  }, [theme, isInitialized]);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 

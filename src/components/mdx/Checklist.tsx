@@ -1,4 +1,8 @@
-export default function Checklist({ items }: { items: string[] }) {
+export default function Checklist({ items = [] }: { items?: string[] }) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return null;
+  }
+
   return (
     <ul className="my-6 space-y-2">
       {items.map((t, i) => (
