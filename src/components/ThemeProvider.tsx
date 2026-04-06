@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 
 interface ThemeContextType {
   theme: "light" | "dark";
+  isInitialized: boolean;
   toggleTheme: () => void;
 }
 
@@ -14,7 +15,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    const stored = window.localStorage?.getItem("theme");
+    let stored: string | null = null;
+
+    try {
+      stored = window.localStorage?.getItem("theme") ?? null;
+    } catch {
+      stored = null;
+    }
+
     const nextTheme =
       stored === "dark" || stored === "light"
         ? stored
@@ -34,12 +42,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.classList.toggle("dark", theme === "dark");
     root.classList.toggle("light", theme === "light");
     root.style.colorScheme = theme;
-    window.localStorage?.setItem("theme", theme);
+
+    try {
+      window.localStorage?.setItem("theme", theme);
+    } catch {
+      // Ignore persistence failures (e.g. private mode or blocked storage)
+    }
   }, [theme, isInitialized]);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
+  return <ThemeContext.Provider value={{ theme, isInitialized, toggleTheme }}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {

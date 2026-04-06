@@ -3,8 +3,8 @@ import React from "react";
 import { useTheme } from "./ThemeProvider";
 
 export default function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
-  
+  const { theme, isInitialized, toggleTheme } = useTheme();
+
   return (
     <button
       type="button"
@@ -14,7 +14,7 @@ export default function ThemeToggle() {
       suppressHydrationWarning
     >
       <span suppressHydrationWarning>
-        {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+        {!isInitialized ? "Theme" : theme === "dark" ? "🌙 Dark" : "☀️ Light"}
       </span>
     </button>
   );
