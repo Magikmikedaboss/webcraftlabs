@@ -111,6 +111,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="prose prose-custom max-w-none">
             <MDXRemote
               source={post.content}
+              options={{ blockJS: false, blockDangerousJS: true }}
               components={{
                 Callout,
                 Stat,

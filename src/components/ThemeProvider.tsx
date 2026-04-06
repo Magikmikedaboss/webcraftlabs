@@ -3,44 +3,56 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 
 interface ThemeContextType {
   theme: "light" | "dark";
+  isInitialized: boolean;
   toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-
-  // Use default state, hydration handled by layout script
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window !== "undefined") {
-      const stored = window.localStorage?.getItem("theme");
-      if (stored === "dark" || stored === "light") {
-        return stored;
-      } else if (document.documentElement.classList.contains("dark")) {
-        return "dark";
-      } else if (document.documentElement.classList.contains("light")) {
-        return "light";
-      }
-    }
-    return "light";
-  });
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    document.documentElement.classList.add(theme);
-    document.documentElement.classList.remove(theme === "dark" ? "light" : "dark");
-    if (typeof window !== "undefined") {
-      window.localStorage?.setItem("theme", theme);
+    const root = document.documentElement;
+    let stored: string | null = null;
+
+    try {
+      stored = window.localStorage?.getItem("theme") ?? null;
+    } catch {
+      stored = null;
     }
-  }, [theme]);
+
+    const nextTheme =
+      stored === "dark" || stored === "light"
+        ? stored
+        : root.getAttribute("data-theme") === "dark" || root.classList.contains("dark")
+          ? "dark"
+          : "light";
+
+    setTheme(nextTheme);
+    setIsInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const root = document.documentElement;
+    root.setAttribute("data-theme", theme);
+    root.classList.toggle("dark", theme === "dark");
+    root.classList.toggle("light", theme === "light");
+    root.style.colorScheme = theme;
+
+    try {
+      window.localStorage?.setItem("theme", theme);
+    } catch {
+      // Ignore persistence failures (e.g. private mode or blocked storage)
+    }
+  }, [theme, isInitialized]);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
-  return (
-    <ThemeContext.Provider value={{ theme: theme || "light", toggleTheme }}>
-      <div suppressHydrationWarning>{children}</div>
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, isInitialized, toggleTheme }}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {
