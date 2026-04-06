@@ -17,7 +17,7 @@ try {
   throw new Error(errorMsg);
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // CSRF Protection via Origin/Referer validation
   const origin = request.headers.get('origin');
   const referer = request.headers.get('referer');
