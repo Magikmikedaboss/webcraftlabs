@@ -37,15 +37,7 @@ export default function ContactPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: SITE.name,
-    url: SITE.url,
-    email: SITE.email,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: SITE.address.locality,
-      addressRegion: SITE.address.region,
-      addressCountry: SITE.address.country,
-    },
+    '@id': `${SITE.url}#organization`,
     contactPoint: [{
       '@type': 'ContactPoint',
       email: SITE.email,

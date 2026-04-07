@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.tagline,
+  verification: {
+    google: "NwcP77o_prc_TT0gvnIokf52eBx9gJW7QXkVKC7MwfM",
+  },
   keywords: [
     "web development",
     "website design",
