@@ -22,6 +22,11 @@ const geistMono = Geist_Mono({
   fallback: ['ui-monospace', 'monospace'],
 });
 
+const baseUrl = getBaseUrl();
+const googleSiteVerification =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+  "NwcP77o_prc_TT0gvnIokf52eBx9gJW7QXkVKC7MwfM";
+
 export const metadata: Metadata = {
   title: {
     default: SITE.name,
@@ -29,7 +34,7 @@ export const metadata: Metadata = {
   },
   description: SITE.tagline,
   verification: {
-    google: "NwcP77o_prc_TT0gvnIokf52eBx9gJW7QXkVKC7MwfM",
+    google: googleSiteVerification,
   },
   keywords: [
     "web development",
@@ -42,22 +47,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: SITE.name }],
   creator: SITE.name,
-  // Normalize SITE.url to ensure absolute and valid
-  metadataBase: (() => {
-    let url = SITE.url;
-    if (!/^https?:\/\//.test(url)) {
-      url = `https://${url.replace(/^\/*/, "")}`;
-    }
-    try {
-      return new URL(url);
-    } catch {
-      return undefined;
-    }
-  })(),
+  metadataBase: new URL(baseUrl),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: SITE.url,
+    url: baseUrl,
     siteName: SITE.name,
     title: SITE.name,
     description: SITE.tagline,
@@ -91,7 +85,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const baseUrl = getBaseUrl();
   const siteJsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -121,6 +114,7 @@ export default function RootLayout({
       },
     ],
   };
+  const safeSiteJsonLd = JSON.stringify(siteJsonLd).replace(/</g, "\\u003c");
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -150,7 +144,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.webmanifest" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: safeSiteJsonLd }}
         />
       </head>
       <body
