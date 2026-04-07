@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     description: `${SITE.name} builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs.`,
     images: ["/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg"],
   },
+  alternates: {
+    canonical: new URL("/", SITE.url).toString(),
+  },
 };
 
 export default function HomePage() {

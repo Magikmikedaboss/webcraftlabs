@@ -2,6 +2,17 @@ export const SITE = {
   name: "WebCraft Labz",
   tagline: "Websites built like products, not brochures.",
   cta: "Start Your Build",
+  email: "info@webcraftlabz.com",
+  social: {
+    linkedin: "https://linkedin.com/company/webcraftlabz",
+    twitter: "https://twitter.com/webcraftlabz",
+  },
+  address: {
+    locality: "Las Vegas",
+    region: "NV",
+    country: "US",
+    label: "Las Vegas, NV & Remote",
+  },
   nav: [
     { href: "/about", label: "About" },
     { href: "/build", label: "Build" },

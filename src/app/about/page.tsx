@@ -25,6 +25,9 @@ export const metadata = {
     description: 'Learn about WebCraft Labz - a web development company building powerful marketing websites, SaaS platforms, and web tools for real-world business needs.',
     images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
   },
+  alternates: {
+    canonical: new URL('/about', SITE.url).toString(),
+  },
 };
 
 export default function AboutPage() {
@@ -33,21 +36,24 @@ export default function AboutPage() {
       title={
         <span style={{ display: "inline-flex", flexDirection: "column", gap: "0.75rem" }}>
           <span className="inline-block px-4 py-1.5 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 text-xs font-semibold text-[var(--primary)] uppercase tracking-wide self-start">
-            About Us
+            About WebCraft Labz
           </span>
           <span className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-            We Build Websites<br />
-            <span className="text-[var(--primary)]">That Mean Business.</span>
+            A More Thoughtful<br />
+            <span className="text-[var(--primary)]">Web Partner.</span>
           </span>
         </span>
       }
       intro={
         <div className="max-w-3xl space-y-4">
           <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-            WebCraft Labz is a web development company specializing in high-performance marketing websites, SaaS platforms, and custom web tools built for real-world business needs.
+            WebCraft Labz was built for businesses that want more than a generic website. We create high-performance websites, web applications, and digital systems that feel sharp, clear, and built to last.
           </p>
           <p className="text-base text-[var(--muted)]">
-            We don&apos;t do templates or cookie-cutter solutions. Every project is custom-built, strategically designed, and engineered to help you grow, convert, and lead in your market.
+            Our work blends custom development, SEO-aware structure, conversion thinking, and calm design so local service businesses, startups, and growing brands can show up with more confidence online.
+          </p>
+          <p className="text-base text-[var(--muted)]">
+            In short: we build digital experiences that earn trust quickly and keep working long after launch.
           </p>
         </div>
       }
@@ -57,9 +63,10 @@ export default function AboutPage() {
         <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[var(--border)]">
           <div className="w-full h-96 relative">
             <Image
-              src="/images/web-development-lone-tree-in-the-middle-of-a-field-with-mountains.jpg"
+              src="/images/web-development-lone-tree-in-the-middle-of-a-field-with-mountains.webp"
               alt="Dedicated support and partnership"
               fill
+              sizes="100vw"
               className="object-cover object-center"
               priority
               fetchPriority="high"
@@ -68,70 +75,70 @@ export default function AboutPage() {
           </div>
           <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-12">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 drop-shadow-lg">
-              Built for Growth. Designed to Last.
+              Built with care. Backed by strategy.
             </h2>
             <p className="max-w-2xl text-sm sm:text-base md:text-lg text-white/95 drop-shadow-md mb-4">
-              We&apos;re a team of developers, designers, and strategists who believe your website should be more than just a digital brochure—it should be a powerful tool that drives real business results.
+              We take a more deliberate approach to digital work—less noise, more clarity, better execution. The result is a website that feels premium and performs like it matters.
             </p>
           </div>
         </div>
       </section>
 
-      {/* What the Z Stands For */}
+      {/* What We Build Around */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">What the <span className="text-[var(--primary)]">Z</span> Stands For</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">What We Build Around</h2>
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-[var(--muted)]">
-            The &quot;Z&quot; in WebCraft Labz represents our core values—the principles that guide every project we build.
+            Our work is guided by a few non-negotiables: clarity in communication, care in execution, and outcomes that genuinely move the business forward.
           </p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
-          {/* Transparency */}
+          {/* Clarity */}
           <div className="rounded-2xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] p-8 shadow-lg hover:shadow-xl transition-shadow">
             <div className="w-16 h-16 rounded-full bg-[var(--primary)]/10 flex items-center justify-center mb-6">
               <svg className="w-8 h-8 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Transparency</h3>
+            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Clarity</h3>
             <p className="text-base text-[var(--text)] mb-4">
-              Clear flows. Clear choices.
+              Straight answers. Clean decisions.
             </p>
             <p className="text-sm text-[var(--muted)]">
-              No hidden steps, dark patterns, or surprises. We believe in honest communication, straightforward pricing, and building trust through clarity at every interaction.
+              No agency theater, no vague process, and no unnecessary complexity. We keep the work understandable so you can move with confidence.
             </p>
           </div>
 
-          {/* Design */}
+          {/* Craft */}
           <div className="rounded-2xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] p-8 shadow-lg hover:shadow-xl transition-shadow">
             <div className="w-16 h-16 rounded-full bg-[var(--primary)]/10 flex items-center justify-center mb-6">
               <svg className="w-8 h-8 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Design</h3>
+            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Craft</h3>
             <p className="text-base text-[var(--text)] mb-4">
-              Thoughtfully crafted pages that remove friction.
+              Thoughtful design. Precise execution.
             </p>
             <p className="text-sm text-[var(--muted)]">
-              Every element serves a purpose. We design with intention—creating beautiful, intuitive experiences that build trust and guide users toward action.
+              We obsess over the details that make premium work feel premium—layout, speed, rhythm, typography, and the invisible polish users remember.
             </p>
           </div>
 
-          {/* Impact */}
+          {/* Momentum */}
           <div className="rounded-2xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] p-8 shadow-lg hover:shadow-xl transition-shadow">
             <div className="w-16 h-16 rounded-full bg-[var(--primary)]/10 flex items-center justify-center mb-6">
               <svg className="w-8 h-8 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Impact</h3>
+            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Momentum</h3>
             <p className="text-base text-[var(--text)] mb-4">
-              Built to last. Made for real people.
+              Built to create traction, not just attention.
             </p>
             <p className="text-sm text-[var(--muted)]">
-              We build for communities, not vanity metrics. Our work is designed to create meaningful results—driving growth, conversions, and lasting value for your business.
+              The goal is never just to launch something nice. It&apos;s to help your business get found, build trust fast, and keep growing with less friction.
             </p>
           </div>
         </div>
@@ -142,9 +149,9 @@ export default function AboutPage() {
         <div className="rounded-3xl border border-[var(--border)] bg-white/60 backdrop-blur-sm p-8 md:p-12 shadow-xl">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-4">Who We Work With</h2>
+              <h2 className="text-3xl font-bold mb-4">Who We Work Best With</h2>
               <p className="text-base text-[var(--muted)] mb-6">
-                We partner with ambitious businesses, startups, and entrepreneurs who understand that their website is more than just an online presence—it&apos;s a growth engine.
+                We do our best work with founders, service businesses, and lean teams who care about quality, responsiveness, and long-term digital leverage—not just getting something online fast.
               </p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-3">
@@ -181,9 +188,10 @@ export default function AboutPage() {
             </div>
             <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg">
               <Image
-                src="/images/business-marketing-solutions-concept-art.jpg"
+                src="/images/business-marketing-solutions-concept-art.webp"
                 alt="Business marketing solutions"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>
@@ -194,9 +202,9 @@ export default function AboutPage() {
       {/* Our Approach */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Our Approach</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">How We Work</h2>
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-[var(--muted)]">
-            We combine strategic thinking, modern technology, and thoughtful design to build websites that perform.
+            Our process is simple: listen carefully, design intentionally, build cleanly, and stay involved after launch.
           </p>
         </div>
 
@@ -241,16 +249,17 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg order-2 md:order-1">
               <Image
-                src="/images/web-development-cross-platform-solutions-design-and-development.jpg"
+                src="/images/web-development-cross-platform-solutions-design-and-development.webp"
                 alt="Web development and cross-platform solutions"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>
             <div className="order-1 md:order-2">
-              <h2 className="text-3xl font-bold mb-4">World-Class Support</h2>
+              <h2 className="text-3xl font-bold mb-4">World-Class Support & Ongoing Partnership</h2>
               <p className="text-base text-[var(--muted)] mb-6">
-                When you work with WebCraft Labz, you&apos;re not just getting a website—you&apos;re getting a dedicated partner committed to your success.
+                When you work with WebCraft Labz, you&apos;re not just getting a website — you&apos;re gaining a long-term digital partner focused on SEO, performance, reliability, and real business growth.
               </p>
               <div className="space-y-4 mb-6">
                 <div className="flex items-start gap-3">
@@ -261,7 +270,7 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Direct Communication</h3>
-                    <p className="text-sm text-[var(--muted)]">No ticket systems or outsourced support. You work directly with our team.</p>
+                    <p className="text-sm text-[var(--muted)]">No ticket systems. No outsourcing. You work directly with experienced developers who understand your project and your goals.</p>
                   </div>
                 </div>
 
@@ -273,7 +282,7 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Fast Response Times</h3>
-                    <p className="text-sm text-[var(--muted)]">We respond quickly to questions, updates, and support requests.</p>
+                    <p className="text-sm text-[var(--muted)]">We provide quick turnaround on updates, fixes, and support requests so your business keeps moving without delays.</p>
                   </div>
                 </div>
 
@@ -284,8 +293,8 @@ export default function AboutPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Proactive Maintenance</h3>
-                    <p className="text-sm text-[var(--muted)]">Regular updates, security patches, and performance monitoring included.</p>
+                    <h3 className="font-semibold mb-1">Proactive Website Maintenance</h3>
+                    <p className="text-sm text-[var(--muted)]">We handle security updates, performance optimization, bug fixes, and ongoing monitoring so your website stays fast, secure, and reliable.</p>
                   </div>
                 </div>
 
@@ -296,16 +305,19 @@ export default function AboutPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Growth Partnership</h3>
-                    <p className="text-sm text-[var(--muted)]">We help you iterate, improve, and scale as your business grows.</p>
+                    <h3 className="font-semibold mb-1">Growth-Focused Development</h3>
+                    <p className="text-sm text-[var(--muted)]">We help you improve search visibility, optimize conversions, expand features, and integrate automation as your business grows.</p>
                   </div>
                 </div>
               </div>
+              <p className="text-sm text-[var(--muted)] mb-6">
+                Looking for a web developer who understands SEO, performance, and real business growth? Let&apos;s build something that gets results.
+              </p>
               <Link
                 href="/contact"
                 className="inline-flex items-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white hover:opacity-90 transition"
               >
-                Get in Touch →
+                Let&apos;s Talk About Your Project →
               </Link>
             </div>
           </div>
@@ -316,10 +328,10 @@ export default function AboutPage() {
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-600 p-8 md:p-12 text-center shadow-2xl">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Ready to Build Something Great?
+            If the work matters, the website should too.
           </h2>
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/90 mb-8">
-            Let&apos;s talk about your project. Whether you need a marketing website, SaaS platform, or custom web tool, we&apos;re here to help you succeed.
+            If you&apos;re ready for a site or system that feels refined, performs fast, and supports real business growth, we&apos;d love to hear what you&apos;re building.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

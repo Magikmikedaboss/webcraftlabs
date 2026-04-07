@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import Script from "next/script";
 
 import "@/app/blog/editorial.css";
 
@@ -12,10 +13,10 @@ import Stat from "@/components/mdx/Stat";
 import Checklist from "@/components/mdx/Checklist";
 import PullQuote from "@/components/mdx/PullQuote";
 import Takeaways from "@/components/mdx/Takeaways";
+import MdxImage from "@/components/mdx/MdxImage";
 import PrevNext from "@/components/content/PrevNext";
 import SiteShell from "@/components/SiteShell";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+import { getBaseUrl, SITE } from "@/lib/site";
 
 export function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }));
@@ -25,22 +26,30 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const { slug } = await params;
     const post = getPostBySlug(slug);
-    const url = `${SITE_URL}/blog/${slug}`;
-    
+    const siteUrl = getBaseUrl();
+    const url = `${siteUrl}/blog/${slug}`;
+    const socialImage = new URL(
+      post.frontmatter.image || "/images/structure-database-software-development.jpg",
+      siteUrl,
+    ).toString();
+
     return {
       title: post.frontmatter.title,
       description: post.frontmatter.description,
+      alternates: {
+        canonical: url,
+      },
       openGraph: {
         title: post.frontmatter.title,
         description: post.frontmatter.description,
         type: "article",
-        url: url,
+        url,
         publishedTime: post.frontmatter.date,
-        authors: ["WebCraft LabZ"],
+        authors: [post.frontmatter.author || SITE.name],
         tags: post.frontmatter.tags || [],
         images: [
           {
-            url: "/images/structure-database-software-development.jpg",
+            url: socialImage,
             width: 1200,
             height: 630,
             alt: post.frontmatter.title,
@@ -51,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         card: "summary_large_image",
         title: post.frontmatter.title,
         description: post.frontmatter.description,
-        images: ["/images/structure-database-software-development.jpg"],
+        images: [socialImage],
       },
     };
   } catch {
@@ -68,7 +77,34 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  const url = `${SITE_URL}/blog/${post.slug}`;
+  const siteUrl = getBaseUrl();
+  const url = `${siteUrl}/blog/${post.slug}`;
+  const socialImage = new URL(
+    post.frontmatter.image || "/images/structure-database-software-development.jpg",
+    siteUrl,
+  ).toString();
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.frontmatter.title,
+    description: post.frontmatter.description,
+    datePublished: post.frontmatter.date,
+    dateModified: post.frontmatter.date,
+    author: {
+      '@type': 'Organization',
+      name: post.frontmatter.author || SITE.name,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE.name,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/images/branding/180.png`,
+      },
+    },
+    mainEntityOfPage: url,
+    image: [socialImage],
+  };
 
   // prev/next
   const list = getAllPosts();
@@ -78,6 +114,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <SiteShell background="bg">
+      <Script id={`blog-jsonld-${post.slug}`} type="application/ld+json">
+        {JSON.stringify(articleJsonLd)}
+      </Script>
       <main className="editorial mx-auto max-w-6xl px-6 py-12">
       <div className="grid gap-10 lg:grid-cols-[1fr,280px]">
         <article className="min-w-0">
@@ -118,6 +157,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 Checklist,
                 PullQuote,
                 Takeaways,
+                img: MdxImage,
               }}
             />
           </div>

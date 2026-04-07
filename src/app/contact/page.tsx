@@ -5,14 +5,14 @@ import Script from "next/script";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: "Contact WebCraft LabZ for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
+  title: `Contact | ${SITE.name}`,
+  description: `Contact ${SITE.name} for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.`,
   openGraph: {
-    title: "Contact WebCraft LabZ | Las Vegas Web Design & Marketing",
-    description: "Contact WebCraft LabZ for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
+    title: `Contact ${SITE.name} | Las Vegas Web Design & Marketing`,
+    description: `Contact ${SITE.name} for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.`,
     type: "website",
     url: new URL('/contact', SITE.url).toString(),
-    siteName: "WebCraft LabZ",
+    siteName: SITE.name,
     images: [
       {
         url: "/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg",
@@ -24,8 +24,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact WebCraft LabZ | Las Vegas Web Design & Marketing",
-    description: "Contact WebCraft LabZ for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.",
+    title: `Contact ${SITE.name} | Las Vegas Web Design & Marketing`,
+    description: `Contact ${SITE.name} for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.`,
     images: ["/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg"],
   },
   alternates: {
@@ -37,18 +37,10 @@ export default function ContactPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: SITE.name,
-    url: SITE.url,
-    email: 'info@webcraftlabz.com',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Las Vegas',
-      addressRegion: 'NV',
-      addressCountry: 'US',
-    },
+    '@id': `${SITE.url}#organization`,
     contactPoint: [{
       '@type': 'ContactPoint',
-      email: 'info@webcraftlabz.com',
+      email: SITE.email,
       contactType: 'customer support',
     }],
   };
@@ -65,7 +57,7 @@ export default function ContactPage() {
           <div className="grid gap-6 md:grid-cols-12">
             <div className="md:col-span-7">
               <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6">
-                <div className="text-sm font-semibold text-blue-900">Request a personalized quote</div>
+                <div className="text-sm font-semibold text-[var(--primary)]">Request a personalized quote</div>
                 <p className="mt-2 text-sm text-[var(--muted)]">
                   Share your project details or paste your “Choose Your Build” configuration. We’ll review and reply with a tailored plan—no spam, just real advice from our team.
                 </p>
@@ -74,10 +66,10 @@ export default function ContactPage() {
             </div>
             <div className="md:col-span-5">
               <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6">
-                <div className="text-sm font-semibold text-blue-900">WebCraft LabZ HQ</div>
+                <div className="text-sm font-semibold text-[var(--primary)]">WebCraft LabZ HQ</div>
                 <div className="mt-2 text-sm text-[var(--muted)]">
-                  Las Vegas, NV & Remote<br />
-                  <span className="font-semibold text-blue-900">info@webcraftlabz.com</span>
+                  {SITE.address.label}<br />
+                  <span className="font-semibold text-[var(--primary)]">{SITE.email}</span>
                 </div>
                 <div className="mt-6 text-sm">
                   <div className="font-semibold">Typical turnaround</div>

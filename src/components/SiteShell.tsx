@@ -173,15 +173,15 @@ export default function SiteShell({
               ))}
             </div>
             <div className="flex flex-col gap-2 items-start md:items-end">
-              <a className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--primary)] transition" href="mailto:info@webcraftlabz.com">
-                info@webcraftlabz.com
+              <a className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--primary)] transition" href={`mailto:${SITE.email}`}>
+                {SITE.email}
               </a>
-              <span className="text-[10px] sm:text-xs text-[var(--muted)]">Las Vegas / Remote</span>
+              <span className="text-[10px] sm:text-xs text-[var(--muted)]">{SITE.address.label}</span>
               <div className="flex gap-3 mt-2">
-                <a href="https://linkedin.com/company/webcraftlabz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[var(--primary)] hover:text-[var(--secondary)] transition">
+                <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[var(--primary)] hover:text-[var(--secondary)] transition">
                   <FaLinkedin size={20} />
                 </a>
-                <a href="https://twitter.com/webcraftlabz" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-[var(--primary)] hover:text-[var(--secondary)] transition">
+                <a href={SITE.social.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-[var(--primary)] hover:text-[var(--secondary)] transition">
                   <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M17.316 6.246c.008.176.008.352.008.528 0 5.376-4.09 11.576-11.576 11.576-2.304 0-4.448-.672-6.256-1.824.32.04.624.064.96.064 1.92 0 3.68-.656 5.088-1.76-1.792-.032-3.304-1.216-3.824-2.848.248.048.504.08.768.08.368 0 .728-.048 1.072-.144-1.872-.376-3.28-2.032-3.28-4.024v-.048c.552.304 1.184.488 1.856.512-1.104-.736-1.824-1.984-1.824-3.408 0-.752.208-1.456.576-2.064 2.096 2.576 5.232 4.264 8.768 4.44-.072-.304-.112-.624-.112-.952 0-2.304 1.872-4.176 4.176-4.176 1.2 0 2.288.504 3.048 1.32.952-.184 1.848-.536 2.656-1.016-.312.976-.976 1.792-1.84 2.312.848-.096 1.656-.328 2.408-.664-.56.84-1.264 1.584-2.08 2.176z"/></svg>
                 </a>
               </div>
@@ -189,7 +189,7 @@ export default function SiteShell({
           </div>
           <div className="mt-6 sm:mt-8 flex flex-col items-center gap-4">
             <div className="text-center text-[10px] sm:text-xs text-[var(--muted)]">
-              <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in Las Vegas / Remote. <span className="text-[var(--primary)]">Websites that mean business.</span></span>
+              <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in {SITE.address.label}. <span className="text-[var(--primary)]">Websites that mean business.</span></span>
             </div>
             {/* Example of PoweredBy badge - you can remove this from your own site and give to clients */}
             <PoweredBy variant="light" size="sm" />

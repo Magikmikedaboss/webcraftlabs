@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
-import { SITE } from "@/lib/site";
+import { getBaseUrl, SITE } from "@/lib/site";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
@@ -22,12 +22,20 @@ const geistMono = Geist_Mono({
   fallback: ['ui-monospace', 'monospace'],
 });
 
+const baseUrl = getBaseUrl();
+const googleSiteVerification =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+  "NwcP77o_prc_TT0gvnIokf52eBx9gJW7QXkVKC7MwfM";
+
 export const metadata: Metadata = {
   title: {
     default: SITE.name,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.tagline,
+  verification: {
+    google: googleSiteVerification,
+  },
   keywords: [
     "web development",
     "website design",
@@ -39,22 +47,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: SITE.name }],
   creator: SITE.name,
-  // Normalize SITE.url to ensure absolute and valid
-  metadataBase: (() => {
-    let url = SITE.url;
-    if (!/^https?:\/\//.test(url)) {
-      url = `https://${url.replace(/^\/*/, "")}`;
-    }
-    try {
-      return new URL(url);
-    } catch {
-      return undefined;
-    }
-  })(),
+  metadataBase: new URL(baseUrl),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: SITE.url,
+    url: baseUrl,
     siteName: SITE.name,
     title: SITE.name,
     description: SITE.tagline,
@@ -88,6 +85,37 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${baseUrl}#organization`,
+        name: SITE.name,
+        url: baseUrl,
+        logo: `${baseUrl}/images/branding/180.png`,
+        email: SITE.email,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: SITE.address.locality,
+          addressRegion: SITE.address.region,
+          addressCountry: SITE.address.country,
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${baseUrl}#website`,
+        url: baseUrl,
+        name: SITE.name,
+        description: SITE.tagline,
+        publisher: {
+          "@id": `${baseUrl}#organization`,
+        },
+      },
+    ],
+  };
+  const safeSiteJsonLd = JSON.stringify(siteJsonLd).replace(/</g, "\\u003c");
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -114,6 +142,10 @@ export default function RootLayout({
         <link rel="icon" href="/images/branding/180.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/branding/180.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeSiteJsonLd }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

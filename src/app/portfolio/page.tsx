@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PortfolioClient from "./PortfolioClient";
 import { PROJECTS } from "./projects";
+import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -26,6 +27,9 @@ export const metadata: Metadata = {
     description:
       "Showcase of projects built by WebCraft Labz, including client work, personal projects, and case studies.",
     images: ["/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg"],
+  },
+  alternates: {
+    canonical: new URL('/portfolio', SITE.url).toString(),
   },
 };
 

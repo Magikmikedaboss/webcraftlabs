@@ -25,6 +25,9 @@ export const metadata = {
     description: 'SEO-optimized website design, marketing funnels, and growth strategies. Custom web development, SaaS platforms, and digital solutions built for real business growth.',
     images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
   },
+  alternates: {
+    canonical: new URL('/services', SITE.url).toString(),
+  },
 };
 
 const SERVICES = [
@@ -33,48 +36,88 @@ const SERVICES = [
     text: "Full-stack web development built for performance, scalability, and your exact needs.",
     bullets: ["React/Next.js architecture", "Custom functionality + integrations", "Responsive, accessible design"],
     forWho: "Best for: businesses ready to scale with custom tech",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
+      </svg>
+    ),
   },
   {
     title: "Marketing Websites",
     text: "Premium websites engineered to rank, load fast, and convert visitors into calls.",
     bullets: ["Custom design system", "Local SEO-ready structure", "Speed + accessibility pass"],
     forWho: "Best for: service businesses, creators, local brands",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M12 3v18" />
+      </svg>
+    ),
   },
   {
     title: "SaaS Platform Development",
     text: "End-to-end SaaS solutions from MVP to production-ready platforms.",
     bullets: ["User auth + dashboards", "Subscription + payment integration", "Scalable cloud architecture"],
     forWho: "Best for: startups building digital products",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h10M4 17h16" />
+      </svg>
+    ),
   },
   {
     title: "Landing Pages + Funnels",
     text: "High-focus pages built for ads, offers, and lead capture with clean tracking.",
     bullets: ["Offer-first copy layout", "Form + CRM integration", "A/B-ready sections"],
     forWho: "Best for: promos, launches, paid traffic",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 4L4 10l6 2 2 6 8-14z" />
+      </svg>
+    ),
   },
   {
     title: "SEO + Technical Optimization",
     text: "Technical SEO foundation plus local setup that helps you show up when it matters.",
     bullets: ["Core Web Vitals optimization", "On-page SEO framework", "Google Business Profile guidance"],
     forWho: "Best for: local services + maps visibility",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
+      </svg>
+    ),
   },
   {
     title: "Website Maintenance + Support",
     text: "Proactive monitoring, updates, and improvements to keep your site running smooth.",
     bullets: ["Security patches + updates", "Performance monitoring", "Monthly improvement sprints"],
     forWho: "Best for: businesses that want peace of mind",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2M12 22a10 10 0 100-20 10 10 0 000 20z" />
+      </svg>
+    ),
   },
   {
     title: "E-Commerce Solutions",
     text: "Full-featured online stores built to handle real traffic and drive sales.",
     bullets: ["Shopify or custom builds", "Payment + inventory systems", "Conversion optimization"],
     forWho: "Best for: retail brands scaling online",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h15l-1.5 9h-12zM6 6L4 3M9 21a1 1 0 100-2 1 1 0 000 2zM18 21a1 1 0 100-2 1 1 0 000 2z" />
+      </svg>
+    ),
   },
   {
     title: "Analytics + Conversion Tracking",
     text: "Know what’s working. Clean GA4 tracking, events, and conversion visibility.",
     bullets: ["GA4 + GTM baseline", "Conversion events", "UTM structure + reporting hooks"],
     forWho: "Best for: teams running campaigns or content",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V8m5 8V4m5 12v-6" />
+      </svg>
+    ),
   },
 
 ];
@@ -110,9 +153,10 @@ export default function ServicesPage() {
         <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[var(--border)]">
           <div className="w-full h-80 relative">
             <Image
-              src="/images/beautiful-landscape-with-trees-and-mountains-marketing-agency-hero.jpg"
+              src="/images/beautiful-landscape-with-trees-and-mountains-marketing-agency-hero.webp"
               alt="Professional marketing services landscape"
               fill
+              sizes="100vw"
               className="object-cover object-center"
               priority
               fetchPriority="high"
@@ -142,7 +186,7 @@ export default function ServicesPage() {
       <section className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8 md:py-10">
         <div className="rounded-3xl border-2 border-[var(--primary)] bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] shadow-xl p-8 flex flex-col md:flex-row items-center gap-8">
           <Image
-            src="/images/advertising-beautiful-landscape-with-trees-and-mountains-small.jpg"
+            src="/images/advertising-beautiful-landscape-with-trees-and-mountains-small.webp"
             alt="Signature service visual"
             width={220}
             height={180}
@@ -167,21 +211,42 @@ export default function ServicesPage() {
         <div className="mb-8 text-center">
           <h2 className="text-2xl font-semibold">More ways we help you grow</h2>
           <p className="mt-2 max-w-2xl mx-auto text-sm text-[var(--muted)]">From high-converting funnels to ongoing growth, our services are designed to meet you where you are and take you further.</p>
+          <p className="mt-3 text-sm text-[var(--muted)]">
+            Serving local businesses in Nevada too — explore our <Link href="/las-vegas-web-design" className="font-semibold text-[var(--primary)] hover:opacity-80">Las Vegas web design page</Link>.
+          </p>
         </div>
         <div className="grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.slice(1).map((s, i) => (
+          {SERVICES.slice(1).map((s) => (
             <div
               key={s.title}
-              className={`rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col h-full shadow-md ${i % 2 === 0 ? 'bg-gradient-to-br from-[var(--surface)]/80 to-[var(--bg)]/60' : ''}`}
+              className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              <h3 className="text-lg font-bold mb-1">{s.title}</h3>
-              <p className="mb-2 text-sm text-[var(--muted)]">{s.text}</p>
-              <ul className="mb-2 space-y-1 text-sm">
+              <div className="absolute right-0 top-0 h-24 w-24 rounded-full bg-[var(--primary)]/8 blur-2xl" aria-hidden="true" />
+
+              <div className="relative mb-4 flex items-start justify-between gap-4">
+                <div>
+                  <div className="mb-2 inline-flex rounded-full border border-[var(--primary)]/15 bg-[var(--primary)]/5 px-2.5 py-1 text-[11px] font-medium text-[var(--primary)]">
+                    {s.forWho.replace("Best for: ", "")}
+                  </div>
+                  <h3 className="text-lg font-bold tracking-tight">{s.title}</h3>
+                </div>
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--primary)]/15 bg-white/70 shadow-sm">
+                  {s.icon}
+                </div>
+              </div>
+
+              <p className="relative mb-4 text-sm leading-6 text-[var(--muted)]">{s.text}</p>
+
+              <div className="relative mt-auto flex flex-wrap gap-2 pt-2">
                 {s.bullets.map((b) => (
-                  <li key={b}>• {b}</li>
+                  <span
+                    key={b}
+                    className="rounded-full border border-[var(--border)] bg-white/70 px-3 py-1 text-xs text-[var(--text)]/80"
+                  >
+                    {b}
+                  </span>
                 ))}
-              </ul>
-              <div className="text-xs opacity-70 mt-auto">{s.forWho}</div>
+              </div>
             </div>
           ))}
         </div>

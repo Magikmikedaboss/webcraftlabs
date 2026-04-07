@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BuildCalculatorClient from "./BuildCalculatorClient";
+import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Build Calculator",
@@ -22,6 +23,9 @@ export const metadata: Metadata = {
     title: "Website Cost Calculator | Get Instant Quote - WebCraft Labz",
     description: "Calculate your website project cost and timeline instantly. Use our interactive configurator to choose pages, design, and features for an accurate estimate.",
     images: ["/images/dynamic-website-speed-light-trails-with-long-exposure-.jpg"],
+  },
+  alternates: {
+    canonical: new URL('/build', SITE.url).toString(),
   },
 };
 export default function BuildPage() {

@@ -1,6 +1,7 @@
 import PostIndexClient from "@/components/content/PostIndexClient";
 import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";
+import { SITE } from "@/lib/site";
 
 export const metadata = {
   title: "Blog",
@@ -25,6 +26,9 @@ export const metadata = {
     title: "Tech & Development Blog | WebCraft LabZ",
     description: "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
     images: ["/images/structure-database-software-development.jpg"],
+  },
+  alternates: {
+    canonical: new URL('/blog', SITE.url).toString(),
   },
 };
 

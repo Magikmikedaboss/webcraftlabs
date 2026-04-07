@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const DEFAULT_FEATURED_IMAGE = "/images/bright-sky-reflects-on-tranquil-water-webcraft-website-design-image.jpg";
+const DEFAULT_FEATURED_IMAGE = "/images/bright-sky-reflects-on-tranquil-water-webcraft-website-design-image.webp";
 
 type FeedItem = {
   type: "blog" | "news";

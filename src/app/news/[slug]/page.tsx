@@ -1,13 +1,15 @@
 import { getAllNewsSlugs, getNewsBySlug, getAllNews } from "@/lib/mdx/news";
-import { SITE } from "@/lib/site";
+import { getBaseUrl, SITE } from "@/lib/site";
 import SiteShell from "@/components/SiteShell";
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import Callout from "@/components/mdx/Callout";
 import Checklist from "@/components/mdx/Checklist";
 import PullQuote from "@/components/mdx/PullQuote";
 import Stat from "@/components/mdx/Stat";
 import Takeaways from "@/components/mdx/Takeaways";
+import MdxImage from "@/components/mdx/MdxImage";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 
@@ -22,22 +24,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const { slug } = await params;
     const post = getNewsBySlug(slug as string);
-    const url = `${SITE.url}/news/${slug}`;
-    
+    const baseUrl = getBaseUrl();
+    const url = `${baseUrl}/news/${slug}`;
+    const socialImage = post.frontmatter.image
+      ? new URL(post.frontmatter.image, baseUrl).toString()
+      : `${baseUrl}/images/business-marketing-solutions-concept-art.jpg`;
+
     return {
       title: post.frontmatter.title,
       description: post.frontmatter.description,
+      alternates: {
+        canonical: url,
+      },
       openGraph: {
         title: post.frontmatter.title,
         description: post.frontmatter.description,
         type: "article",
-        url: url,
+        url,
         publishedTime: new Date(post.frontmatter.date).toISOString(),
-        authors: [SITE.name],
+        authors: [post.frontmatter.author || SITE.name],
         tags: post.frontmatter.tags || [],
         images: [
           {
-            url: "/images/business-marketing-solutions-concept-art.jpg",
+            url: socialImage,
             width: 1200,
             height: 630,
             alt: post.frontmatter.title,
@@ -48,7 +57,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         card: "summary_large_image",
         title: post.frontmatter.title,
         description: post.frontmatter.description,
-        images: ["/images/business-marketing-solutions-concept-art.jpg"],
+        images: [socialImage],
       },
     };
   } catch {
@@ -66,7 +75,33 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  const url = `${SITE.url}/news/${post.slug}`;
+  const baseUrl = getBaseUrl();
+  const url = `${baseUrl}/news/${post.slug}`;
+  const socialImage = post.frontmatter.image
+    ? new URL(post.frontmatter.image, baseUrl).toString()
+    : `${baseUrl}/images/business-marketing-solutions-concept-art.jpg`;
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: post.frontmatter.title,
+    description: post.frontmatter.description,
+    datePublished: post.frontmatter.date,
+    dateModified: post.frontmatter.date,
+    author: {
+      '@type': 'Organization',
+      name: post.frontmatter.author || SITE.name,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE.name,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/branding/180.png`,
+      },
+    },
+    mainEntityOfPage: url,
+    image: [socialImage],
+  };
 
   // Fetch all news posts (not cached)
   const staticNewsList = await getAllNews();
@@ -77,6 +112,9 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <SiteShell background="bg">
+      <Script id={`news-jsonld-${post.slug}`} type="application/ld+json">
+        {JSON.stringify(articleJsonLd)}
+      </Script>
       <main className="editorial mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[1fr,280px]">
           <article className="min-w-0">
@@ -113,6 +151,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
                   Checklist,
                   PullQuote,
                   Takeaways,
+                  img: MdxImage,
                 }}
               />
             </div>

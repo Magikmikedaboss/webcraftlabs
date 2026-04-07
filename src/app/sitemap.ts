@@ -1,6 +1,8 @@
 export const revalidate = 3600;
 import { MetadataRoute } from 'next';
 import { getBaseUrl } from '@/lib/site';
+import { getAllPosts } from '@/lib/mdx/blog';
+import { getAllNews } from '@/lib/mdx/news';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Use stable timestamp to avoid sitemap churn on every build
@@ -46,8 +48,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   
   // Get normalized base URL (validated and trailing slash removed)
   const baseUrl = getBaseUrl();
-  
-  return [
+
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified,
@@ -65,6 +67,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified,
       changeFrequency: 'monthly',
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/las-vegas-web-design`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/portfolio`,
@@ -91,4 +99,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
   ];
+
+  const blogRoutes: MetadataRoute.Sitemap = getAllPosts().map((post) => {
+    const parsedDate = post.frontmatter.date ? new Date(post.frontmatter.date) : undefined;
+    const isValidDate = parsedDate && Number.isFinite(parsedDate.getTime());
+
+    return {
+      url: `${baseUrl}/blog/${post.slug}`,
+      ...(isValidDate ? { lastModified: parsedDate } : {}),
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    };
+  });
+
+  const newsRoutes: MetadataRoute.Sitemap = getAllNews().map((post) => {
+    const parsedDate = post.frontmatter.date ? new Date(post.frontmatter.date) : undefined;
+    const isValidDate = parsedDate && Number.isFinite(parsedDate.getTime());
+
+    return {
+      url: `${baseUrl}/news/${post.slug}`,
+      ...(isValidDate ? { lastModified: parsedDate } : {}),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    };
+  });
+
+  return [...staticRoutes, ...blogRoutes, ...newsRoutes];
 }

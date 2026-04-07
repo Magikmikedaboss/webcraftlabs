@@ -28,6 +28,9 @@ export const metadata = {
     description: `Latest product launches, feature updates, and company announcements from ${SITE.name}.`,
     images: ["/images/business-marketing-solutions-concept-art.jpg"],
   },
+  alternates: {
+    canonical: new URL('/news', SITE.url).toString(),
+  },
 };
 
 
