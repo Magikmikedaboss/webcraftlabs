@@ -1,3 +1,5 @@
+/// <reference types="vitest/globals" />
+
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import SiteShell from '@/components/SiteShell';

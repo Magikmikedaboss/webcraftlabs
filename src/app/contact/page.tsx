@@ -39,16 +39,16 @@ export default function ContactPage() {
     '@type': 'Organization',
     name: SITE.name,
     url: SITE.url,
-    email: 'info@webcraftlabz.com',
+    email: SITE.email,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Las Vegas',
-      addressRegion: 'NV',
-      addressCountry: 'US',
+      addressLocality: SITE.address.locality,
+      addressRegion: SITE.address.region,
+      addressCountry: SITE.address.country,
     },
     contactPoint: [{
       '@type': 'ContactPoint',
-      email: 'info@webcraftlabz.com',
+      email: SITE.email,
       contactType: 'customer support',
     }],
   };
@@ -76,8 +76,8 @@ export default function ContactPage() {
               <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6">
                 <div className="text-sm font-semibold text-blue-900">WebCraft LabZ HQ</div>
                 <div className="mt-2 text-sm text-[var(--muted)]">
-                  Las Vegas, NV & Remote<br />
-                  <span className="font-semibold text-blue-900">info@webcraftlabz.com</span>
+                  {SITE.address.label}<br />
+                  <span className="font-semibold text-blue-900">{SITE.email}</span>
                 </div>
                 <div className="mt-6 text-sm">
                   <div className="font-semibold">Typical turnaround</div>

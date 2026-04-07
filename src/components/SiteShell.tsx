@@ -173,10 +173,10 @@ export default function SiteShell({
               ))}
             </div>
             <div className="flex flex-col gap-2 items-start md:items-end">
-              <a className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--primary)] transition" href="mailto:info@webcraftlabz.com">
-                info@webcraftlabz.com
+              <a className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--primary)] transition" href={`mailto:${SITE.email}`}>
+                {SITE.email}
               </a>
-              <span className="text-[10px] sm:text-xs text-[var(--muted)]">Las Vegas / Remote</span>
+              <span className="text-[10px] sm:text-xs text-[var(--muted)]">{SITE.address.label}</span>
               <div className="flex gap-3 mt-2">
                 <a href="https://linkedin.com/company/webcraftlabz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[var(--primary)] hover:text-[var(--secondary)] transition">
                   <FaLinkedin size={20} />
@@ -189,7 +189,7 @@ export default function SiteShell({
           </div>
           <div className="mt-6 sm:mt-8 flex flex-col items-center gap-4">
             <div className="text-center text-[10px] sm:text-xs text-[var(--muted)]">
-              <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in Las Vegas / Remote. <span className="text-[var(--primary)]">Websites that mean business.</span></span>
+              <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in {SITE.address.label}. <span className="text-[var(--primary)]">Websites that mean business.</span></span>
             </div>
             {/* Example of PoweredBy badge - you can remove this from your own site and give to clients */}
             <PoweredBy variant="light" size="sm" />

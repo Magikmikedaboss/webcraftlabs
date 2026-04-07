@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import Script from "next/script";
 
 import "@/app/blog/editorial.css";
 
@@ -14,8 +15,9 @@ import PullQuote from "@/components/mdx/PullQuote";
 import Takeaways from "@/components/mdx/Takeaways";
 import PrevNext from "@/components/content/PrevNext";
 import SiteShell from "@/components/SiteShell";
+import { getBaseUrl, SITE } from "@/lib/site";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+const SITE_URL = getBaseUrl();
 
 export function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }));
@@ -26,21 +28,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const post = getPostBySlug(slug);
     const url = `${SITE_URL}/blog/${slug}`;
-    
+    const socialImage = new URL(
+      post.frontmatter.image || "/images/structure-database-software-development.jpg",
+      SITE_URL,
+    ).toString();
+
     return {
       title: post.frontmatter.title,
       description: post.frontmatter.description,
+      alternates: {
+        canonical: url,
+      },
       openGraph: {
         title: post.frontmatter.title,
         description: post.frontmatter.description,
         type: "article",
-        url: url,
+        url,
         publishedTime: post.frontmatter.date,
-        authors: ["WebCraft LabZ"],
+        authors: [post.frontmatter.author || SITE.name],
         tags: post.frontmatter.tags || [],
         images: [
           {
-            url: "/images/structure-database-software-development.jpg",
+            url: socialImage,
             width: 1200,
             height: 630,
             alt: post.frontmatter.title,
@@ -51,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         card: "summary_large_image",
         title: post.frontmatter.title,
         description: post.frontmatter.description,
-        images: ["/images/structure-database-software-development.jpg"],
+        images: [socialImage],
       },
     };
   } catch {
@@ -69,6 +78,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   const url = `${SITE_URL}/blog/${post.slug}`;
+  const socialImage = new URL(
+    post.frontmatter.image || "/images/structure-database-software-development.jpg",
+    SITE_URL,
+  ).toString();
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.frontmatter.title,
+    description: post.frontmatter.description,
+    datePublished: post.frontmatter.date,
+    dateModified: post.frontmatter.date,
+    author: {
+      '@type': 'Organization',
+      name: post.frontmatter.author || SITE.name,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE.name,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/images/branding/180.png`,
+      },
+    },
+    mainEntityOfPage: url,
+    image: [socialImage],
+  };
 
   // prev/next
   const list = getAllPosts();
@@ -78,6 +113,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <SiteShell background="bg">
+      <Script id={`blog-jsonld-${post.slug}`} type="application/ld+json">
+        {JSON.stringify(articleJsonLd)}
+      </Script>
       <main className="editorial mx-auto max-w-6xl px-6 py-12">
       <div className="grid gap-10 lg:grid-cols-[1fr,280px]">
         <article className="min-w-0">

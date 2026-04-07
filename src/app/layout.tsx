@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 
 import "./globals.css";
-import { SITE } from "@/lib/site";
+import { getBaseUrl, SITE } from "@/lib/site";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
@@ -88,6 +89,37 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const baseUrl = getBaseUrl();
+  const siteJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${baseUrl}#organization`,
+        name: SITE.name,
+        url: baseUrl,
+        logo: `${baseUrl}/images/branding/180.png`,
+        email: SITE.email,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: SITE.address.locality,
+          addressRegion: SITE.address.region,
+          addressCountry: SITE.address.country,
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${baseUrl}#website`,
+        url: baseUrl,
+        name: SITE.name,
+        description: SITE.tagline,
+        publisher: {
+          "@id": `${baseUrl}#organization`,
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -118,6 +150,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script id="site-jsonld" type="application/ld+json">
+          {JSON.stringify(siteJsonLd)}
+        </Script>
         <GoogleAnalytics />
         <ThemeProvider>
           {children}

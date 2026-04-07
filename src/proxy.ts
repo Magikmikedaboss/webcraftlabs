@@ -24,11 +24,10 @@ export async function proxy(request: NextRequest) {
   const method = request.method;
   
   // For state-changing methods (POST/PUT/DELETE), require at least one header
-  const isStateChanging = ['POST', 'PUT', 'DELETE'].includes(method);
+  const isStateChanging = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
   if (isStateChanging && !origin && !referer) {
     return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
-  }
-  
+  }  
   // Check origin header if present
   if (origin) {
     try {
