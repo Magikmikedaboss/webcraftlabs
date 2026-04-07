@@ -23,7 +23,7 @@ export async function proxy(request: NextRequest) {
   const referer = request.headers.get('referer');
   const method = request.method;
   
-  // For state-changing methods (POST/PUT/DELETE), require at least one header
+  // For state-changing methods (POST/PUT/DELETE/PATCH), require at least one header
   const isStateChanging = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
   if (isStateChanging && !origin && !referer) {
     return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
@@ -59,5 +59,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/contact'],
+  matcher: ['/api/contact', '/api/contact/:path*'],
 };

@@ -13,11 +13,10 @@ import Stat from "@/components/mdx/Stat";
 import Checklist from "@/components/mdx/Checklist";
 import PullQuote from "@/components/mdx/PullQuote";
 import Takeaways from "@/components/mdx/Takeaways";
+import MdxImage from "@/components/mdx/MdxImage";
 import PrevNext from "@/components/content/PrevNext";
 import SiteShell from "@/components/SiteShell";
 import { getBaseUrl, SITE } from "@/lib/site";
-
-const SITE_URL = getBaseUrl();
 
 export function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }));
@@ -27,10 +26,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const { slug } = await params;
     const post = getPostBySlug(slug);
-    const url = `${SITE_URL}/blog/${slug}`;
+    const siteUrl = getBaseUrl();
+    const url = `${siteUrl}/blog/${slug}`;
     const socialImage = new URL(
       post.frontmatter.image || "/images/structure-database-software-development.jpg",
-      SITE_URL,
+      siteUrl,
     ).toString();
 
     return {
@@ -77,10 +77,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  const url = `${SITE_URL}/blog/${post.slug}`;
+  const siteUrl = getBaseUrl();
+  const url = `${siteUrl}/blog/${post.slug}`;
   const socialImage = new URL(
     post.frontmatter.image || "/images/structure-database-software-development.jpg",
-    SITE_URL,
+    siteUrl,
   ).toString();
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -98,7 +99,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       name: SITE.name,
       logo: {
         '@type': 'ImageObject',
-        url: `${SITE_URL}/images/branding/180.png`,
+        url: `${siteUrl}/images/branding/180.png`,
       },
     },
     mainEntityOfPage: url,
@@ -156,6 +157,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 Checklist,
                 PullQuote,
                 Takeaways,
+                img: MdxImage,
               }}
             />
           </div>

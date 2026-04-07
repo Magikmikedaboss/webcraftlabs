@@ -3,6 +3,10 @@ export const SITE = {
   tagline: "Websites built like products, not brochures.",
   cta: "Start Your Build",
   email: "info@webcraftlabz.com",
+  social: {
+    linkedin: "https://linkedin.com/company/webcraftlabz",
+    twitter: "https://twitter.com/webcraftlabz",
+  },
   address: {
     locality: "Las Vegas",
     region: "NV",

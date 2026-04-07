@@ -9,6 +9,7 @@ import Checklist from "@/components/mdx/Checklist";
 import PullQuote from "@/components/mdx/PullQuote";
 import Stat from "@/components/mdx/Stat";
 import Takeaways from "@/components/mdx/Takeaways";
+import MdxImage from "@/components/mdx/MdxImage";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 
@@ -150,6 +151,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
                   Checklist,
                   PullQuote,
                   Takeaways,
+                  img: MdxImage,
                 }}
               />
             </div>

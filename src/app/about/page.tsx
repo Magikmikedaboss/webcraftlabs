@@ -63,9 +63,10 @@ export default function AboutPage() {
         <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[var(--border)]">
           <div className="w-full h-96 relative">
             <Image
-              src="/images/web-development-lone-tree-in-the-middle-of-a-field-with-mountains.jpg"
+              src="/images/web-development-lone-tree-in-the-middle-of-a-field-with-mountains.webp"
               alt="Dedicated support and partnership"
               fill
+              sizes="100vw"
               className="object-cover object-center"
               priority
               fetchPriority="high"
@@ -187,9 +188,10 @@ export default function AboutPage() {
             </div>
             <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg">
               <Image
-                src="/images/business-marketing-solutions-concept-art.jpg"
+                src="/images/business-marketing-solutions-concept-art.webp"
                 alt="Business marketing solutions"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>
@@ -247,9 +249,10 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg order-2 md:order-1">
               <Image
-                src="/images/web-development-cross-platform-solutions-design-and-development.jpg"
+                src="/images/web-development-cross-platform-solutions-design-and-development.webp"
                 alt="Web development and cross-platform solutions"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>

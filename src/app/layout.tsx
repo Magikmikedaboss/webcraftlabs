@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 
 import "./globals.css";
 import { getBaseUrl, SITE } from "@/lib/site";
@@ -146,13 +145,14 @@ export default function RootLayout({
         <link rel="icon" href="/images/branding/180.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/branding/180.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Script id="site-jsonld" type="application/ld+json">
-          {JSON.stringify(siteJsonLd)}
-        </Script>
         <GoogleAnalytics />
         <ThemeProvider>
           {children}

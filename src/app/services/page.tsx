@@ -153,9 +153,10 @@ export default function ServicesPage() {
         <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[var(--border)]">
           <div className="w-full h-80 relative">
             <Image
-              src="/images/beautiful-landscape-with-trees-and-mountains-marketing-agency-hero.jpg"
+              src="/images/beautiful-landscape-with-trees-and-mountains-marketing-agency-hero.webp"
               alt="Professional marketing services landscape"
               fill
+              sizes="100vw"
               className="object-cover object-center"
               priority
               fetchPriority="high"
@@ -185,7 +186,7 @@ export default function ServicesPage() {
       <section className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8 md:py-10">
         <div className="rounded-3xl border-2 border-[var(--primary)] bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] shadow-xl p-8 flex flex-col md:flex-row items-center gap-8">
           <Image
-            src="/images/advertising-beautiful-landscape-with-trees-and-mountains-small.jpg"
+            src="/images/advertising-beautiful-landscape-with-trees-and-mountains-small.webp"
             alt="Signature service visual"
             width={220}
             height={180}

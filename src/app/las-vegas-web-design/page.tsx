@@ -7,6 +7,7 @@ import SiteShell from "@/components/SiteShell";
 import { getBaseUrl, SITE } from "@/lib/site";
 
 const baseUrl = getBaseUrl();
+const socialImage = `${baseUrl}/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg`;
 
 export const metadata: Metadata = {
   title: `Las Vegas Web Design | ${SITE.name}`,
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     url: `${baseUrl}/las-vegas-web-design`,
     images: [
       {
-        url: "/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg",
+        url: socialImage,
         width: 1200,
         height: 630,
         alt: "Las Vegas web design by WebCraft Labz",
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     title: `Las Vegas Web Design | ${SITE.name}`,
     description:
       "Fast, SEO-ready websites for Las Vegas service businesses and growing brands.",
-    images: ["/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg"],
+    images: [socialImage],
   },
 };
 
@@ -45,7 +46,7 @@ export default function LasVegasWebDesignPage() {
     "@type": "ProfessionalService",
     name: `${SITE.name} Las Vegas Web Design`,
     url: `${baseUrl}/las-vegas-web-design`,
-    image: `${baseUrl}/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg`,
+    image: socialImage,
     areaServed: ["Las Vegas", "Henderson", "Summerlin", "North Las Vegas"],
     serviceType: [
       "Web Design",
@@ -95,9 +96,10 @@ export default function LasVegasWebDesignPage() {
           <div className="relative overflow-hidden rounded-3xl border border-[var(--border)] shadow-2xl">
             <div className="relative h-80 w-full">
               <Image
-                src="/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg"
+                src="/images/modern-computer-display-on-an-office-desk-with-a-web-design.webp"
                 alt="Las Vegas web design services"
                 fill
+                sizes="100vw"
                 className="object-cover"
                 priority
               />

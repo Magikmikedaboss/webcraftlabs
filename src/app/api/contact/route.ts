@@ -29,7 +29,7 @@ const ContactSchema = z.object({
   website: z.string().optional(), // honeypot
 });
 
-// CSRF protection is handled by origin/referer validation in src/middleware.ts
+// CSRF protection is handled by the `proxy` function in `src/proxy.ts`, using `config.matcher: ['/api/contact']`.
 export async function POST(req: NextRequest) {
 
   // ⚠️ Rate limiting by IP (dev-only - see rateLimit.ts for production alternatives)
