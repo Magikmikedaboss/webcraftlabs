@@ -23,9 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 const baseUrl = getBaseUrl();
-const googleSiteVerification =
-  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
-  "NwcP77o_prc_TT0gvnIokf52eBx9gJW7QXkVKC7MwfM";
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 export const metadata: Metadata = {
   title: {
@@ -52,9 +50,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: baseUrl,
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: baseUrl,
     siteName: SITE.name,
     title: SITE.name,
     description: SITE.tagline,
+  },    description: SITE.tagline,
   },
   twitter: {
     card: "summary_large_image",

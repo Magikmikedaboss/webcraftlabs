@@ -28,14 +28,15 @@ export default function MdxImage({ src, alt = "", width, height, className }: Md
 
   if (isRemote) {
     return (
-      <img
+      <Image
         src={src}
         alt={alt}
         width={resolvedWidth}
         height={resolvedHeight}
+        className={imageClassName}
         loading="lazy"
         decoding="async"
-        className={imageClassName}
+        unoptimized
       />
     );
   }
