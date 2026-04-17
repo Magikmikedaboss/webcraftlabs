@@ -17,8 +17,11 @@ function toNumber(value?: number | `${number}`) {
   return undefined;
 }
 
-export default function MdxImage({ src, alt = "", width, height, className }: MdxImageProps) {
+export default function MdxImage({ src, alt, width, height, className }: MdxImageProps) {
   if (!src) return null;
+  if (!alt || alt.trim() === "") {
+    throw new Error("All images must have a meaningful alt text. Please provide a descriptive alt prop.");
+  }
 
   const resolvedWidth = toNumber(width) ?? 1200;
   const resolvedHeight = toNumber(height) ?? 675;
@@ -38,6 +41,7 @@ export default function MdxImage({ src, alt = "", width, height, className }: Md
     return (
       <Image
         {...commonProps}
+        alt={alt}
         loading="lazy"
         decoding="async"
         unoptimized
@@ -48,6 +52,7 @@ export default function MdxImage({ src, alt = "", width, height, className }: Md
   return (
     <Image
       {...commonProps}
+      alt={alt}
       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
       unoptimized={isSvg}
     />

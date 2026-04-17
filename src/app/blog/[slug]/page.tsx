@@ -7,6 +7,9 @@ import "@/app/blog/editorial.css";
 
 import { getAllPostSlugs, getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
 
+
+import Link from "next/link";
+import Image from "next/image";
 import ShareBar from "@/components/mdx/ShareBar";
 import Callout from "@/components/mdx/Callout";
 import Stat from "@/components/mdx/Stat";
@@ -158,6 +161,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 PullQuote,
                 Takeaways,
                 img: MdxImage,
+                Link,
+                Image,
               }}
             />
           </div>
