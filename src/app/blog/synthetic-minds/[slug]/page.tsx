@@ -9,8 +9,9 @@ const episodes: Record<string, FC> = {
   "episode-2-alien-ideas": Episode2,
 };
 
-export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+
+export default function EpisodePage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const Component = episodes[slug];
 
   if (!Component) return notFound();

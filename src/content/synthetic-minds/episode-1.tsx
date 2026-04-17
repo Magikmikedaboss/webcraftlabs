@@ -7,11 +7,11 @@ export default function Episode1() {
       <p className="dek">When AI Stops Imitating and Starts Inventing</p>
 
       <p className="dropcap">
-        There's a moment you don't notice at first.
+        There&apos;s a moment you don&apos;t notice at first.
       </p>
 
       <p>
-        It doesn't announce itself. No alert. No headline.
+        It doesn&apos;t announce itself. No alert. No headline.
       </p>
 
       <p>
@@ -23,7 +23,7 @@ export default function Episode1() {
       </div>
 
       <p>
-        You're just working. Prompting, refining, iterating. And then you look at
+        You&apos;re just working. Prompting, refining, iterating. And then you look at
         what came back, and something feels… different.
       </p>
 
@@ -32,7 +32,7 @@ export default function Episode1() {
       </p>
 
       <p>
-        Just new — in a way that's hard to explain.
+        Just new — in a way that&apos;s hard to explain.
       </p>
 
       <div className="section-rule" />
@@ -50,7 +50,7 @@ export default function Episode1() {
       </p>
 
       <p>
-        This wasn’t a flaw. It was remarkable. Recombination at that scale
+        This wasn&rsquo;t a flaw. It was remarkable. Recombination at that scale
         produced things that felt new.
       </p>
 
@@ -171,7 +171,7 @@ export default function Episode1() {
       </p>
 
       <p>
-        That’s the glitch.
+        That&rsquo;s the glitch.
       </p>
 
       <blockquote>

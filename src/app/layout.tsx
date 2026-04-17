@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.tagline,
-  verification: {
-    google: googleSiteVerification,
-  },
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
   keywords: [
     "web development",
     "website design",
@@ -50,14 +50,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: baseUrl,
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: baseUrl,
     siteName: SITE.name,
     title: SITE.name,
     description: SITE.tagline,
-  },    description: SITE.tagline,
   },
   twitter: {
     card: "summary_large_image",
