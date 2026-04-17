@@ -1,20 +1,19 @@
 import "@/app/blog/editorial.css";
 import { notFound } from "next/navigation";
-import Episode1 from "@/content/synthetic-minds/episode-1";
-import Episode2 from "@/content/synthetic-minds/episode-2";
-import SeriesNav from "@/components/SeriesNav";
-import type { FC } from "react";
+import { EPISODE_MAP, EPISODES } from "@/content/synthetic-minds/episodes";
 
-const episodes: Record<string, FC> = {
-  "episode-1-first-spark": Episode1,
-  "episode-2-alien-ideas": Episode2,
-};
+export function generateStaticParams() {
+  return EPISODES.map((ep) => ({ slug: ep.slug }));
+}
+import SeriesNav from "@/components/SeriesNav";
+
 
 
 
 export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const Component = episodes[slug];
+  const meta = EPISODE_MAP[slug];
+  const Component = meta?.component;
 
   if (!Component) return notFound();
 
@@ -22,7 +21,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
     <main className="editorial min-h-screen px-6 py-16">
       <div className="mx-auto max-w-3xl">
         <SeriesNav />
-        <div className="prose prose-invert">
+        <div className="prose prose-custom max-w-none">
           <Component />
         </div>
       </div>

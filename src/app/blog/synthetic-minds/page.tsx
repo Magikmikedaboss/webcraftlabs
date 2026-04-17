@@ -1,4 +1,6 @@
+
 import Link from "next/link";
+import { EPISODES } from "@/content/synthetic-minds/episodes";
 
 export default function Page() {
   return (
@@ -11,19 +13,15 @@ export default function Page() {
         </p>
 
         <div className="space-y-6">
-          <Link
-            href="/blog/synthetic-minds/episode-1-first-spark"
-            className="block p-6 rounded-xl border border-white/10 hover:bg-white/5"
-          >
-            ⚡ Episode 1 — The First Spark
-          </Link>
-
-          <Link
-            href="/blog/synthetic-minds/episode-2-alien-ideas"
-            className="block p-6 rounded-xl border border-white/10 hover:bg-white/5"
-          >
-            ⚡ Episode 2 — Alien Ideas
-          </Link>
+          {EPISODES.map((ep) => (
+            <Link
+              key={ep.slug}
+              href={`/blog/synthetic-minds/${ep.slug}`}
+              className="block p-6 rounded-xl border border-white/10 hover:bg-white/5"
+            >
+              {ep.title}
+            </Link>
+          ))}
         </div>
       </div>
     </main>

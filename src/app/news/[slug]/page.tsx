@@ -1,3 +1,4 @@
+import "@/app/blog/editorial.css";
 import { getAllNewsSlugs, getNewsBySlug, getAllNews } from "@/lib/mdx/news";
 import { getBaseUrl, SITE } from "@/lib/site";
 import SiteShell from "@/components/SiteShell";
