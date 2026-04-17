@@ -41,7 +41,6 @@ export default function MdxImage({ src, alt, width, height, className }: MdxImag
     return (
       <Image
         {...commonProps}
-        alt={alt}
         loading="lazy"
         decoding="async"
         unoptimized
@@ -52,7 +51,6 @@ export default function MdxImage({ src, alt, width, height, className }: MdxImag
   return (
     <Image
       {...commonProps}
-      alt={alt}
       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
       unoptimized={isSvg}
     />

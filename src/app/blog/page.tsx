@@ -1,3 +1,5 @@
+// Slug for the Synthetic Minds intro post
+const INTRO_POST_SLUG = "what-is-synthetic-minds";
 
 import BlogGridClient from "./BlogGridClient";
 import { getAllPosts } from "@/lib/mdx/blog";
@@ -23,7 +25,7 @@ export default function BlogIndexPage() {
     kind: "blog" as const,
   }));
 
-  const postsWithoutIntro = posts.filter(p => p.slug !== "what-is-synthetic-minds");
+  const postsWithoutIntro = posts.filter(p => p.slug !== INTRO_POST_SLUG);
 
   return (
     <SiteShell background="surface">
@@ -32,14 +34,14 @@ export default function BlogIndexPage() {
         {/* =========================
             HERO (UPGRADED)
         ========================= */}
-        <header className="relative mb-16 overflow-hidden rounded-3xl p-10 md:p-14 shadow-xl bg-[#0a0f1c]">
+        <header className="relative mb-16 overflow-hidden rounded-3xl p-10 md:p-14 shadow-xl bg-[var(--page-bg,theme(colors.slate.950))] dark:bg-[var(--page-bg-dark,#0a0f1c)]">
 
           {/* Gradient Layer */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/70 via-indigo-700/60 to-cyan-500/60" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--hero-from,theme(colors.cyan.600)/70)] via-[var(--hero-via,theme(colors.indigo.700)/60)] to-[var(--hero-to,theme(colors.cyan.500)/60)]" />
 
           {/* Glow Effects */}
-          <div className="absolute -top-20 -right-20 w-[400px] h-[400px] bg-cyan-400/30 blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/20 blur-[140px]" />
+          <div className="absolute -top-20 -right-20 w-[400px] h-[400px] bg-[var(--hero-glow1,theme(colors.cyan.400)/30)] blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[var(--hero-glow2,theme(colors.blue.500)/20)] blur-[140px]" />
 
           {/* Content */}
           <div className="relative z-10">

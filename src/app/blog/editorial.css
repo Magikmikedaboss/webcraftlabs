@@ -1,3 +1,7 @@
+/* Set the stagger delay variable on .editorial or .editorial .prose */
+.editorial .prose {
+  --stagger-delay: 60ms;
+}
 /* ===============================
    CINEMATIC EDITORIAL SKIN (UPGRADED)
    =============================== */
@@ -207,15 +211,19 @@
 
 /* 🎞 Subtle fade-in animation */
 
+
 .editorial .prose > * {
   animation: fade-in-up 0.5s ease both;
+
+  --i: 0;
+  animation-delay: calc(var(--i) * var(--stagger-delay));
 }
-.editorial .prose > *:nth-child(1)  { animation-delay: 0ms; }
-.editorial .prose > *:nth-child(2)  { animation-delay: 60ms; }
-.editorial .prose > *:nth-child(3)  { animation-delay: 120ms; }
-.editorial .prose > *:nth-child(4)  { animation-delay: 180ms; }
-.editorial .prose > *:nth-child(5)  { animation-delay: 240ms; }
-.editorial .prose > *:nth-child(n+6){ animation-delay: 300ms; }
+.editorial .prose > *:nth-child(1)  { --i: 0; }
+.editorial .prose > *:nth-child(2)  { --i: 1; }
+.editorial .prose > *:nth-child(3)  { --i: 2; }
+.editorial .prose > *:nth-child(4)  { --i: 3; }
+.editorial .prose > *:nth-child(5)  { --i: 4; }
+.editorial .prose > *:nth-child(n+6) { --i: 5; }
 
 @keyframes fade-in-up {
   from {

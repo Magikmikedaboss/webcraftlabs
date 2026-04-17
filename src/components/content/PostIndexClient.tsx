@@ -1,6 +1,7 @@
+
 "use client";
 
-// Track refs for dropdown options will be declared inside the component
+
 import Link from "next/link";
 import { useState, useMemo, useRef, useEffect } from "react";
 
@@ -147,12 +148,6 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
     }
   }, [dropdownOpen, tagSearch, filteredTags.length]);
 
-  // Scroll highlighted option into view when highlightedIndex changes
-  useEffect(() => {
-    if (highlightedIndex >= 0 && optionRefs.current[highlightedIndex]) {
-      optionRefs.current[highlightedIndex]?.scrollIntoView({ block: "nearest" });
-    }
-  }, [highlightedIndex, filteredTags]);
 
   if (posts.length === 0) {
     return (
@@ -183,6 +178,16 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
           }}
           onFocus={() => setDropdownOpen(true)}
           onKeyDown={handleInputKeyDown}
+          role="combobox"
+          aria-controls="tag-combobox-listbox"
+          aria-expanded={dropdownOpen}
+          aria-autocomplete="list"
+          aria-haspopup="listbox"
+          aria-activedescendant={
+            highlightedIndex >= 0 && dropdownOpen && filteredTags[highlightedIndex]
+              ? `tag-option-${highlightedIndex}`
+              : undefined
+          }
           className={`w-full px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-sm focus:outline-none focus:ring-2 ${kindTheme.focusRing} transition-all`}
         />
 
@@ -191,7 +196,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             ref={dropdownRef}
             id="tag-combobox-listbox"
             role="listbox"
-            className="absolute z-10 mt-2 w-full bg-[#0d1420]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] max-h-60 overflow-auto"
+            className="absolute z-10 mt-2 w-full bg-[var(--surface,theme(colors.slate.900))]/95 dark:bg-[var(--surface-dark,#0d1420)]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] max-h-60 overflow-auto"
           >
             {filteredTags.map((tag, idx) => (
               <button
