@@ -26,14 +26,18 @@ export default function MdxImage({ src, alt = "", width, height, className }: Md
   const isSvg = src.toLowerCase().endsWith(".svg");
   const imageClassName = className ? `h-auto w-full rounded-2xl ${className}` : "h-auto w-full rounded-2xl";
 
+  const commonProps = {
+    src,
+    alt,
+    width: resolvedWidth,
+    height: resolvedHeight,
+    className: imageClassName,
+  };
+
   if (isRemote) {
     return (
       <Image
-        src={src}
-        alt={alt}
-        width={resolvedWidth}
-        height={resolvedHeight}
-        className={imageClassName}
+        {...commonProps}
         loading="lazy"
         decoding="async"
         unoptimized
@@ -43,12 +47,8 @@ export default function MdxImage({ src, alt = "", width, height, className }: Md
 
   return (
     <Image
-      src={src}
-      alt={alt}
-      width={resolvedWidth}
-      height={resolvedHeight}
+      {...commonProps}
       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
-      className={imageClassName}
       unoptimized={isSvg}
     />
   );

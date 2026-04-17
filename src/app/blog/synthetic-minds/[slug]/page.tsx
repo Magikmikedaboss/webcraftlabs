@@ -1,3 +1,4 @@
+import "@/app/blog/editorial.css";
 import { notFound } from "next/navigation";
 import Episode1 from "@/content/synthetic-minds/episode-1";
 import Episode2 from "@/content/synthetic-minds/episode-2";
@@ -10,8 +11,9 @@ const episodes: Record<string, FC> = {
 };
 
 
-export default function EpisodePage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+
+export default async function EpisodePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const Component = episodes[slug];
 
   if (!Component) return notFound();
@@ -20,9 +22,9 @@ export default function EpisodePage({ params }: { params: { slug: string } }) {
     <main className="editorial min-h-screen px-6 py-16">
       <div className="mx-auto max-w-3xl">
         <SeriesNav />
-        <article className="prose">
+        <div className="prose prose-invert">
           <Component />
-        </article>
+        </div>
       </div>
     </main>
   );
