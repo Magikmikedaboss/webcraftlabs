@@ -29,7 +29,18 @@ export default function BlogIndexPage() {
 
   return (
     <SiteShell background="surface">
-      <main className="mx-auto max-w-6xl px-6 py-12">
+      <div className="relative min-h-screen w-full overflow-hidden">
+        {/* Full-page background image */}
+        <img
+          src="/images/ai-generated-view-into-interior-view-of-beautiful-sunrise-web-development-technology.jpg"
+          alt="AI generated sunrise web development technology"
+          className="fixed inset-0 w-full h-full object-cover object-center z-0 opacity-60 pointer-events-none select-none"
+          loading="lazy"
+          decoding="async"
+        />
+        {/* Overlay for readability */}
+        <div className="fixed inset-0 z-0 bg-black/50 pointer-events-none select-none" />
+        <main className="relative mx-auto max-w-6xl px-6 py-12 z-10">
 
         {/* =========================
             HERO (UPGRADED)
@@ -58,7 +69,7 @@ export default function BlogIndexPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg text-blue-100">
-              Deep dives into AI, development, and emerging tech — built for developers who want to stay ahead.
+              Exploring the future of technology, creativity, and digital culture—insights for everyone curious about what's next.
             </p>
 
           </div>
@@ -108,6 +119,7 @@ export default function BlogIndexPage() {
         </div>
 
       </main>
+    </div>
     </SiteShell>
   );
 }
