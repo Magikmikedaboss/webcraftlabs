@@ -23,9 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 const baseUrl = getBaseUrl();
-const googleSiteVerification =
-  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
-  "NwcP77o_prc_TT0gvnIokf52eBx9gJW7QXkVKC7MwfM";
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 export const metadata: Metadata = {
   title: {
@@ -33,9 +31,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.tagline,
-  verification: {
-    google: googleSiteVerification,
-  },
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
   keywords: [
     "web development",
     "website design",

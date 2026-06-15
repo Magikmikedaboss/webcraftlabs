@@ -1,0 +1,10 @@
+{
+  "feeds": [
+    {
+      "name": "Example Feed",
+      "url": "https://example.com/rss.xml",
+      "domain": "methods_tooling",
+      "enabled": true
+    }
+  ]
+}

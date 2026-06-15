@@ -1,236 +1,245 @@
-/* Editorial skin for MDX pages - uses theme variables */
+/* Set the stagger delay variable on .editorial or .editorial .prose */
+.editorial .prose {
+  --stagger-delay: 60ms;
+}
+/* ===============================
+   CINEMATIC EDITORIAL SKIN (UPGRADED)
+   =============================== */
+
 .editorial {
-  /* These are now inherited from the theme */
+  position: relative;
+  isolation: isolate;
 }
 
+/* 🌌 Background Glow Layer */
+
+/* Theme-aware background glow */
+.editorial::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--primary) 10%, transparent), transparent 40%),
+    radial-gradient(circle at 80% 60%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 50%);
+  z-index: -1;
+}
+
+.dark .editorial::before {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(0,150,255,0.08), transparent 50%);
+}
+
+/* ✨ Prose container */
 .editorial .prose {
   max-width: 68ch;
+  font-size: 1.1rem;
+  line-height: 1.85;
 }
 
+/* ⚡ Kicker */
 .editorial .kicker {
-  letter-spacing: .12em;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  font-size: .72rem;
-  font-weight: 700;
+  font-size: .7rem;
+  font-weight: 800;
   color: var(--muted);
+  opacity: 0.8;
 }
 
+/* 🎬 Hero Title Glow */
+.editorial h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 20px rgba(255,255,255,0.08);
+}
+
+/* 🌫️ Subhead */
 .editorial .dek {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   line-height: 1.7;
   color: var(--muted);
-  font-weight: 400;
+  opacity: 0.9;
 }
 
+/* ⚡ Cinematic Divider */
 .editorial .section-rule {
   height: 1px;
-  background: var(--border);
-  margin: 3rem 0;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 3.5rem 0;
 }
 
-/* Drop cap hook: wrap first paragraph in <p className="dropcap"> ... */
+/* 🧬 Dropcap */
 .editorial .dropcap:first-letter {
   float: left;
-  font-size: 3.25rem;
+  font-size: 3.5rem;
   line-height: 1;
-  padding-right: .5rem;
-  padding-top: .25rem;
+  padding-right: .6rem;
+  padding-top: .2rem;
   font-weight: 900;
-  color: var(--text);
+  background: linear-gradient(135deg, var(--text), var(--muted));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
-/* Pullquote */
+/* 💬 Pullquote (now glowing) */
 .editorial .pullquote {
-  margin: 2.5rem 0;
-  padding: 1.5rem 1.75rem;
-  border-left: 4px solid var(--primary);
-  background: var(--surface);
-  font-size: 1.25rem;
+  margin: 3rem 0;
+  padding: 1.75rem;
+  border-left: 3px solid var(--primary);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  font-size: 1.3rem;
   line-height: 1.6;
   font-weight: 600;
   border-radius: 0.75rem;
   font-style: italic;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 30px rgba(0,0,0,0.2);
 }
 
-/* Takeaways */
+/* 🧠 Takeaways Panel */
 .editorial .takeaways {
-  margin: 2.5rem 0;
-  padding: 1.5rem 1.75rem;
+  margin: 3rem 0;
+  padding: 1.75rem;
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  background: var(--surface);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
-.editorial .takeaways h3 {
-  margin: 0 0 1rem 0;
-  font-size: .9rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  font-weight: 800;
-  color: var(--text);
-}
-
-.editorial .takeaways ul {
-  margin: 0;
-  padding-left: 1.5rem;
-  list-style-type: disc;
-}
-
-.editorial .takeaways li {
-  margin-bottom: 0.5rem;
-  line-height: 1.7;
-}
-
-/* Enhanced prose styling for better readability */
-.editorial .prose {
-  font-size: 1.0625rem;
-  line-height: 1.8;
-}
-
-/* Headings with better hierarchy */
-.editorial .prose :where(h2) { 
-  margin-top: 3rem;
+/* ⚡ Headings */
+.editorial .prose :where(h2) {
+  margin-top: 3.5rem;
   margin-bottom: 1.25rem;
-  font-size: 1.875rem;
+  font-size: 2rem;
   font-weight: 700;
-  line-height: 1.3;
   letter-spacing: -0.02em;
+  position: relative;
 }
 
-.editorial .prose :where(h3) { 
-  margin-top: 2.5rem;
+/* subtle glow underline */
+.editorial .prose :where(h2)::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+.editorial .prose :where(h3) {
+  margin-top: 2.75rem;
   margin-bottom: 1rem;
   font-size: 1.5rem;
   font-weight: 600;
-  line-height: 1.4;
 }
 
-.editorial .prose :where(h4) { 
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.5;
+/* 📖 Paragraph rhythm */
+.editorial .prose :where(p) {
+  margin: 1.6rem 0;
 }
 
-/* Paragraphs with better spacing */
-.editorial .prose :where(p) { 
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.8;
-}
-
-/* First paragraph after heading - reduce top margin */
-.editorial .prose :where(h2 + p, h3 + p, h4 + p) {
-  margin-top: 0.75rem;
-}
-
-/* Links with subtle styling */
-.editorial .prose :where(a) { 
+/* ✨ Links */
+.editorial .prose :where(a) {
   color: var(--primary);
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  transition: all 0.2s ease;
+  text-decoration: none;
+  position: relative;
 }
 
-.editorial .prose :where(a:hover) { 
-  color: var(--secondary);
-  text-decoration-thickness: 2px;
+.editorial .prose :where(a)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: var(--primary);
+  opacity: 0.6;
+  transition: all 0.25s ease;
 }
 
-/* Lists with better spacing */
-.editorial .prose :where(ul, ol) {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  padding-left: 1.75rem;
+.editorial .prose :where(a:hover)::after {
+  height: 2px;
+  opacity: 1;
 }
 
-.editorial .prose :where(li) {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  line-height: 1.75;
-}
-
-.editorial .prose :where(li > p) {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-/* Nested lists */
-.editorial .prose :where(ul ul, ul ol, ol ul, ol ol) {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-/* Blockquotes with emphasis */
+/* 📜 Blockquote */
 .editorial .prose :where(blockquote) {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  padding: 1.25rem 1.5rem;
-  border-left: 4px solid var(--primary);
-  background: var(--surface);
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  border-left: 3px solid var(--primary);
+  background: rgba(255,255,255,0.03);
   border-radius: 0.5rem;
   font-style: italic;
-  font-size: 1.125rem;
 }
 
-.editorial .prose :where(blockquote p) {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-/* Code blocks with better styling */
+/* 💻 Code blocks */
 .editorial .prose :where(pre) {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
   padding: 1.25rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
+  border-radius: 0.75rem;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--border);
 }
 
-.editorial .prose :where(code) {
-  font-size: 0.9em;
-}
-
-/* Inline code */
-.editorial .prose :where(:not(pre) > code) {
-  padding: 0.2em 0.4em;
-  border-radius: 0.25rem;
-  font-weight: 500;
-}
-
-/* Images with captions */
+/* 🖼 Images */
 .editorial .prose :where(img) {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  border-radius: 0.5rem;
+  margin: 2.5rem 0;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
-/* Horizontal rules */
+/* ⚡ Horizontal rule */
 .editorial .prose :where(hr) {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  border-color: var(--border);
+  margin: 3.5rem 0;
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
 }
 
-/* Tables */
-.editorial .prose :where(table) {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  font-size: 0.9375rem;
-}
-
-/* Strong emphasis */
+/* 🧠 Strong text */
 .editorial .prose :where(strong) {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text);
 }
 
-/* Emphasis */
-.editorial .prose :where(em) {
-  font-style: italic;
+/* 🎞 Subtle fade-in animation */
+
+
+.editorial .prose > * {
+  animation: fade-in-up 0.5s ease both;
+
+  --i: 0;
+  animation-delay: calc(var(--i) * var(--stagger-delay));
+}
+.editorial .prose > *:nth-child(1)  { --i: 0; }
+.editorial .prose > *:nth-child(2)  { --i: 1; }
+.editorial .prose > *:nth-child(3)  { --i: 2; }
+.editorial .prose > *:nth-child(4)  { --i: 3; }
+.editorial .prose > *:nth-child(5)  { --i: 4; }
+.editorial .prose > *:nth-child(n+6) { --i: 5; }
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial .prose > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

@@ -192,6 +192,21 @@ export default function LasVegasWebDesignPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-6 pb-16">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <h2 className="text-2xl font-bold">Local specialized service pages</h2>
+            <p className="mt-3 text-sm text-[var(--muted)]">
+              Need a more specific service path? Use these local pages to jump straight to the right offer.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3 text-sm">
+              <Link href="/services/las-vegas-custom-website-development" className="text-[var(--primary)] hover:underline">Las Vegas Custom Website Development</Link>
+              <Link href="/services/las-vegas-landing-pages-funnels" className="text-[var(--primary)] hover:underline">Las Vegas Landing Pages + Funnels</Link>
+              <Link href="/services/las-vegas-seo-technical-optimization" className="text-[var(--primary)] hover:underline">Las Vegas SEO + Technical Optimization</Link>
+              <Link href="/services/las-vegas-saas-platform-development" className="text-[var(--primary)] hover:underline">Las Vegas SaaS Platform Development</Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 pb-16">
           <div className="rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-600 p-8 text-center shadow-2xl md:p-12">
             <h2 className="text-3xl font-bold text-white">Need Las Vegas web design that actually works?</h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-white/90">

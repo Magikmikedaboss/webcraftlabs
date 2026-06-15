@@ -34,6 +34,7 @@ const SERVICES = [
   {
     title: "Custom Website Development",
     text: "Full-stack web development built for performance, scalability, and your exact needs.",
+    href: "/services/custom-website-development",
     bullets: ["React/Next.js architecture", "Custom functionality + integrations", "Responsive, accessible design"],
     forWho: "Best for: businesses ready to scale with custom tech",
     icon: (
@@ -45,6 +46,7 @@ const SERVICES = [
   {
     title: "Marketing Websites",
     text: "Premium websites engineered to rank, load fast, and convert visitors into calls.",
+    href: "/las-vegas-web-design",
     bullets: ["Custom design system", "Local SEO-ready structure", "Speed + accessibility pass"],
     forWho: "Best for: service businesses, creators, local brands",
     icon: (
@@ -56,6 +58,7 @@ const SERVICES = [
   {
     title: "SaaS Platform Development",
     text: "End-to-end SaaS solutions from MVP to production-ready platforms.",
+    href: "/services/saas-platform-development",
     bullets: ["User auth + dashboards", "Subscription + payment integration", "Scalable cloud architecture"],
     forWho: "Best for: startups building digital products",
     icon: (
@@ -67,6 +70,7 @@ const SERVICES = [
   {
     title: "Landing Pages + Funnels",
     text: "High-focus pages built for ads, offers, and lead capture with clean tracking.",
+    href: "/services/landing-pages-funnels",
     bullets: ["Offer-first copy layout", "Form + CRM integration", "A/B-ready sections"],
     forWho: "Best for: promos, launches, paid traffic",
     icon: (
@@ -78,6 +82,7 @@ const SERVICES = [
   {
     title: "SEO + Technical Optimization",
     text: "Technical SEO foundation plus local setup that helps you show up when it matters.",
+    href: "/services/seo-technical-optimization",
     bullets: ["Core Web Vitals optimization", "On-page SEO framework", "Google Business Profile guidance"],
     forWho: "Best for: local services + maps visibility",
     icon: (
@@ -174,6 +179,9 @@ export default function ServicesPage() {
               <Link href="/build" className="inline-flex items-center justify-center rounded-xl bg-white px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold text-blue-900 shadow-lg hover:bg-blue-50 transition">
                 Start your build
               </Link>
+              <Link href="/services#specialized-services" className="inline-flex items-center justify-center rounded-xl border-2 border-white bg-white/10 backdrop-blur-sm px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold text-white hover:bg-white/20 transition">
+                Explore specialized pages
+              </Link>
               <Link href="/contact" className="inline-flex items-center justify-center rounded-xl border-2 border-white bg-white/10 backdrop-blur-sm px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold text-white hover:bg-white/20 transition">
                 Book intro call
               </Link>
@@ -207,7 +215,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Other Services - visually broken up */}
-      <section className="mx-auto max-w-7xl px-6 py-14">
+      <section id="specialized-services" className="mx-auto max-w-7xl px-6 py-14">
         <div className="mb-8 text-center">
           <h2 className="text-2xl font-semibold">More ways we help you grow</h2>
           <p className="mt-2 max-w-2xl mx-auto text-sm text-[var(--muted)]">From high-converting funnels to ongoing growth, our services are designed to meet you where you are and take you further.</p>
@@ -246,6 +254,15 @@ export default function ServicesPage() {
                     {b}
                   </span>
                 ))}
+              </div>
+
+              <div className="relative mt-4">
+                <Link
+                  href={s.href || "/contact"}
+                  className="inline-flex items-center rounded-lg border border-[var(--primary)]/25 bg-[var(--primary)]/5 px-3 py-1.5 text-xs font-semibold text-[var(--primary)] hover:opacity-80"
+                >
+                  Learn more →
+                </Link>
               </div>
             </div>
           ))}
@@ -298,6 +315,22 @@ export default function ServicesPage() {
             >
               Book a quick consult →
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-16">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
+          <h3 className="text-lg font-semibold">Local Nevada service pages</h3>
+          <p className="mt-2 text-sm text-[var(--muted)]">
+            Looking for location-specific service coverage? Explore our local pages built for Las Vegas and nearby markets.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3 text-sm">
+            <Link href="/las-vegas-web-design" className="text-[var(--primary)] hover:underline">Las Vegas Web Design</Link>
+            <Link href="/services/las-vegas-custom-website-development" className="text-[var(--primary)] hover:underline">Las Vegas Custom Website Development</Link>
+            <Link href="/services/las-vegas-landing-pages-funnels" className="text-[var(--primary)] hover:underline">Las Vegas Landing Pages + Funnels</Link>
+            <Link href="/services/las-vegas-seo-technical-optimization" className="text-[var(--primary)] hover:underline">Las Vegas SEO + Technical Optimization</Link>
+            <Link href="/services/las-vegas-saas-platform-development" className="text-[var(--primary)] hover:underline">Las Vegas SaaS Platform Development</Link>
           </div>
         </div>
       </section>
