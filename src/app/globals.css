@@ -1,12 +1,3 @@
-/* Visually hidden utility for accessibility */
-.visually-hidden {
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
-  white-space: nowrap;
-}
 @config "../../tailwind.config.js";
 @import "tailwindcss";
 
@@ -205,4 +196,14 @@ body {
 
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Visually hidden utility for accessibility */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
 }

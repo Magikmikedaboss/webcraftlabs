@@ -27,7 +27,7 @@ jobs:
             exit 0
           fi
 
-          curl --fail --show-error --silent \
+          curl --fail --show-error --silent --max-time 30 \
             -X POST "$INDEXNOW_ENDPOINT" \
             -H "Content-Type: application/json" \
             -H "x-indexnow-token: $INDEXNOW_SUBMIT_TOKEN" \

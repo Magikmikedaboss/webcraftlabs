@@ -83,13 +83,31 @@ export async function POST(req: NextRequest) {
     urlList: uniqueUrls,
   };
 
-  const response = await fetch(INDEXNOW_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-    cache: "no-store",
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
+  let response: Response;
+  try {
+    response = await fetch(INDEXNOW_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+      signal: controller.signal,
+    });
+  } catch (err) {
+    clearTimeout(timeoutId);
+    return NextResponse.json(
+      {
+        error: "Failed to reach IndexNow service.",
+        details: err instanceof Error ? err.message : String(err),
+      },
+      { status: 502 },
+    );
+  }
+  clearTimeout(timeoutId);
+
+  const text = await response.text();
   const text = await response.text();
   if (!response.ok) {
     return NextResponse.json(
