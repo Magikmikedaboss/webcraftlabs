@@ -104,6 +104,31 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
     image: [socialImage],
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: baseUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'News',
+        item: `${baseUrl}/news`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.frontmatter.title,
+        item: url,
+      },
+    ],
+  };
+
   // Fetch all news posts (not cached)
   const staticNewsList = await getAllNews();
   const idx = staticNewsList.findIndex((p: { slug: string }) => p.slug === post.slug);
@@ -115,6 +140,9 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
     <SiteShell background="bg">
       <Script id={`news-jsonld-${post.slug}`} type="application/ld+json">
         {JSON.stringify(articleJsonLd)}
+      </Script>
+      <Script id={`news-breadcrumb-jsonld-${post.slug}`} type="application/ld+json">
+        {JSON.stringify(breadcrumbJsonLd)}
       </Script>
       <main className="editorial mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[1fr,280px]">

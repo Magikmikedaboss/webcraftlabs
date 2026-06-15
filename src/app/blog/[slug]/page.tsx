@@ -109,6 +109,31 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     image: [socialImage],
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: `${siteUrl}/blog`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.frontmatter.title,
+        item: url,
+      },
+    ],
+  };
+
   // prev/next
   const list = getAllPosts();
   const idx = list.findIndex((p) => p.slug === post.slug);
@@ -119,6 +144,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     <SiteShell background="bg">
       <Script id={`blog-jsonld-${post.slug}`} type="application/ld+json">
         {JSON.stringify(articleJsonLd)}
+      </Script>
+      <Script id={`blog-breadcrumb-jsonld-${post.slug}`} type="application/ld+json">
+        {JSON.stringify(breadcrumbJsonLd)}
       </Script>
       <main className="editorial mx-auto max-w-6xl px-6 py-12">
       <div className="grid gap-10 lg:grid-cols-[1fr,280px]">

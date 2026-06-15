@@ -12,6 +12,20 @@ const withMDXConfig = withMDX({
 const nextConfig = withMDXConfig({
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   reactCompiler: true,
+  async redirects() {
+    return [
+      {
+        source: '/news/enterprise-ai-agents-are-replacing-traditional-workflows',
+        destination: '/news/enterprise-ai-human-bottleneck',
+        permanent: true,
+      },
+      {
+        source: '/news/human-bottleneck-enterprise-ai',
+        destination: '/news/enterprise-ai-human-bottleneck',
+        permanent: true,
+      },
+    ];
+  },
   experimental: {
     optimizeCss: true, // Enable CSS optimization to reduce render-blocking
     optimizePackageImports: ['react-icons'], // Tree-shake icon imports
