@@ -84,7 +84,7 @@ export default function ContactForm() {
 
   return (
     <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-      <label htmlFor="contact-name" className="visually-hidden">Name</label>
+      <label htmlFor="contact-name" className="sr-only">Name</label>
       <input
         id="contact-name"
         name="name"
@@ -96,7 +96,7 @@ export default function ContactForm() {
         minLength={2}
         required
       />
-      <label htmlFor="contact-email" className="visually-hidden">Email</label>
+      <label htmlFor="contact-email" className="sr-only">Email</label>
       <input
         id="contact-email"
         name="email"
@@ -109,7 +109,7 @@ export default function ContactForm() {
         inputMode="email"
         required
       />
-      <label htmlFor="contact-project" className="visually-hidden">Project details / configuration</label>
+      <label htmlFor="contact-project" className="sr-only">Project details / configuration</label>
       <textarea
         id="contact-project"
         name="project"

@@ -107,9 +107,7 @@ export async function POST(req: NextRequest) {
   }
   clearTimeout(timeoutId);
 
-  const text = await response.text();
-  const text = await response.text();
-  if (!response.ok) {
+  const text = await response.text();  if (!response.ok) {
     return NextResponse.json(
       {
         error: "IndexNow submission failed.",
