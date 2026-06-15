@@ -1,10 +1,11 @@
-// Slug for the Synthetic Minds intro post
-const INTRO_POST_SLUG = "what-is-synthetic-minds";
-
+import Image from "next/image";
 import BlogGridClient from "./BlogGridClient";
 import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";
 import { SITE } from "@/lib/site";
+
+// Slug for the Synthetic Minds intro post
+const INTRO_POST_SLUG = "what-is-synthetic-minds";
 
 export const metadata = {
   title: "Blog",
@@ -31,12 +32,12 @@ export default function BlogIndexPage() {
     <SiteShell background="surface">
       <div className="relative min-h-screen w-full overflow-hidden">
         {/* Full-page background image */}
-        <img
-          src="/images/ai-generated-view-into-interior-view-of-beautiful-sunrise-web-development-technology.jpg"
+        <Image
+          src="/images/breathtaking-sunrise-over-mountain-landscape-showcasing-marketing-advertising.jpg"
           alt="AI generated sunrise web development technology"
-          className="fixed inset-0 w-full h-full object-cover object-center z-0 opacity-60 pointer-events-none select-none"
-          loading="lazy"
-          decoding="async"
+          fill
+          sizes="100vw"
+          className="absolute inset-0 w-full h-full object-cover object-center z-0 opacity-60 pointer-events-none select-none"
         />
         {/* Overlay for readability */}
         <div className="fixed inset-0 z-0 bg-black/50 pointer-events-none select-none" />
@@ -69,7 +70,7 @@ export default function BlogIndexPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg text-blue-100">
-              Exploring the future of technology, creativity, and digital culture—insights for everyone curious about what's next.
+              Exploring the future of technology, creativity, and digital culture—insights for everyone curious about what&apos;s next.
             </p>
 
           </div>

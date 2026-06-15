@@ -22,6 +22,7 @@ export default function MdxImage({ src, alt, width, height, className }: MdxImag
   if (!alt || alt.trim() === "") {
     throw new Error("All images must have a meaningful alt text. Please provide a descriptive alt prop.");
   }
+  const safeAlt = alt.trim();
 
   const resolvedWidth = toNumber(width) ?? 1200;
   const resolvedHeight = toNumber(height) ?? 675;
@@ -29,18 +30,14 @@ export default function MdxImage({ src, alt, width, height, className }: MdxImag
   const isSvg = src.toLowerCase().endsWith(".svg");
   const imageClassName = className ? `h-auto w-full rounded-2xl ${className}` : "h-auto w-full rounded-2xl";
 
-  const commonProps = {
-    src,
-    alt,
-    width: resolvedWidth,
-    height: resolvedHeight,
-    className: imageClassName,
-  };
-
   if (isRemote) {
     return (
       <Image
-        {...commonProps}
+        src={src}
+        alt={safeAlt}
+        width={resolvedWidth}
+        height={resolvedHeight}
+        className={imageClassName}
         loading="lazy"
         decoding="async"
         unoptimized
@@ -50,7 +47,11 @@ export default function MdxImage({ src, alt, width, height, className }: MdxImag
 
   return (
     <Image
-      {...commonProps}
+      src={src}
+      alt={safeAlt}
+      width={resolvedWidth}
+      height={resolvedHeight}
+      className={imageClassName}
       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
       unoptimized={isSvg}
     />

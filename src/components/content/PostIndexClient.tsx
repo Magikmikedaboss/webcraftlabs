@@ -50,6 +50,12 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
     );
   }, [allTags, tagSearch]);
 
+  const activeHighlightedIndex = dropdownOpen
+    ? filteredTags.length === 0
+      ? -1
+      : Math.min(Math.max(highlightedIndex, 0), filteredTags.length - 1)
+    : -1;
+
   const filteredPosts = selectedTag
     ? posts.filter(p => p.tags.includes(selectedTag))
     : posts;
@@ -101,6 +107,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!dropdownOpen && ["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
       setDropdownOpen(true);
+      if (filteredTags.length > 0) setHighlightedIndex(0);
       return;
     }
     if (!dropdownOpen) return;
@@ -125,8 +132,8 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
         return prev;
       });
     } else if (e.key === "Enter") {
-      if (highlightedIndex >= 0) {
-        const tag = filteredTags[highlightedIndex];
+      if (activeHighlightedIndex >= 0) {
+        const tag = filteredTags[activeHighlightedIndex];
         setSelectedTag(tag);
         setDropdownOpen(false);
         setTagSearch("");
@@ -137,16 +144,6 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
       setHighlightedIndex(-1);
     }
   };
-
-
-  // Reset highlight when dropdown opens or tags change
-  useEffect(() => {
-    if (dropdownOpen && filteredTags.length > 0) {
-      setHighlightedIndex(0);
-    } else {
-      setHighlightedIndex(-1);
-    }
-  }, [dropdownOpen, tagSearch, filteredTags.length]);
 
 
   if (posts.length === 0) {
@@ -175,8 +172,12 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
           onChange={e => {
             setTagSearch(e.target.value);
             setDropdownOpen(true);
+            setHighlightedIndex(0);
           }}
-          onFocus={() => setDropdownOpen(true)}
+          onFocus={() => {
+            setDropdownOpen(true);
+            setHighlightedIndex(0);
+          }}
           onKeyDown={handleInputKeyDown}
           role="combobox"
           aria-controls="tag-combobox-listbox"
@@ -184,8 +185,8 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
           aria-autocomplete="list"
           aria-haspopup="listbox"
           aria-activedescendant={
-            highlightedIndex >= 0 && dropdownOpen && filteredTags[highlightedIndex]
-              ? `tag-option-${highlightedIndex}`
+            activeHighlightedIndex >= 0 && filteredTags[activeHighlightedIndex]
+              ? `tag-option-${activeHighlightedIndex}`
               : undefined
           }
           className={`w-full px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-sm focus:outline-none focus:ring-2 ${kindTheme.focusRing} transition-all`}
@@ -206,7 +207,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
                 }}
                 id={`tag-option-${idx}`}
                 role="option"
-                aria-selected={highlightedIndex === idx}
+                aria-selected={activeHighlightedIndex === idx}
                 onMouseEnter={() => setHighlightedIndex(idx)}
                 onClick={() => {
                   setSelectedTag(tag);
@@ -215,7 +216,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
                   setHighlightedIndex(-1);
                 }}
                 className={`w-full text-left px-4 py-2 text-sm transition ${
-                  highlightedIndex === idx
+                  activeHighlightedIndex === idx
                     ? kindTheme.btnActive
                     : "hover:bg-white/10"
                 }`}
@@ -293,7 +294,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
         <div className="text-center py-16">
           <div className="text-4xl mb-4">🔍</div>
           <h3 className="text-xl font-bold text-[var(--text)] mb-2">
-            No posts found for "{selectedTag}"
+            No posts found for &quot;{selectedTag}&quot;
           </h3>
           <button
             onClick={() => setSelectedTag(null)}

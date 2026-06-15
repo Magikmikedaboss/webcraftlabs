@@ -167,14 +167,6 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
           </article>
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-4">
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
-                <div className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                  Share this update
-                </div>
-                <div className="mt-3">
-                  <ShareBar title={post.frontmatter.title} url={url} />
-                </div>
-              </div>
               <div className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--bg)] to-[var(--surface)] p-5 shadow-sm">
                 <div className="text-sm font-extrabold text-[var(--text)]">
                   Need a site refresh?
