@@ -93,6 +93,7 @@ export default function RootLayout({
         url: baseUrl,
         logo: `${baseUrl}/images/branding/180.png`,
         email: SITE.email,
+        sameAs: [SITE.social.linkedin, SITE.social.twitter],
         address: {
           "@type": "PostalAddress",
           addressLocality: SITE.address.locality,
@@ -106,6 +107,11 @@ export default function RootLayout({
         url: baseUrl,
         name: SITE.name,
         description: SITE.tagline,
+        potentialAction: {
+          "@type": "SearchAction",
+          target: `${baseUrl}/blog?search={search_term_string}`,
+          "query-input": "required name=search_term_string",
+        },
         publisher: {
           "@id": `${baseUrl}#organization`,
         },
@@ -140,6 +146,9 @@ export default function RootLayout({
         <link rel="icon" href="/images/branding/180.png" type="image/png" />
         <link rel="apple-touch-icon" href="/images/branding/180.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="alternate" type="application/rss+xml" title={`${SITE.name} Updates Feed`} href="/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title={`${SITE.name} Blog Feed`} href="/blog/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title={`${SITE.name} News Feed`} href="/news/feed.xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeSiteJsonLd }}

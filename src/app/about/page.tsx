@@ -3,26 +3,29 @@ import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
 
+const ABOUT_DESCRIPTION =
+  "Learn how WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows for modern business.";
+
 export const metadata = {
   title: "About",
-  description: 'Learn about WebCraft Labz - a web development company building powerful marketing websites, SaaS platforms, and web tools for real-world business needs.',
+  description: ABOUT_DESCRIPTION,
   openGraph: {
     title: `About | ${SITE.name}`,
-    description: 'Learn about WebCraft Labz - a web development company building powerful marketing websites, SaaS platforms, and web tools for real-world business needs.',
+    description: ABOUT_DESCRIPTION,
     type: "website",
     images: [
       {
         url: "/images/web-development-cross-platform-solutions-design-and-development.jpg",
         width: 1200,
         height: 630,
-        alt: "About WebCraft Labz - Web Development Company",
+        alt: "About WebCraft Labz - Intelligence Layer for Modern Business",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: `About | ${SITE.name}`,
-    description: 'Learn about WebCraft Labz - a web development company building powerful marketing websites, SaaS platforms, and web tools for real-world business needs.',
+    description: ABOUT_DESCRIPTION,
     images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
   },
   alternates: {
@@ -39,21 +42,22 @@ export default function AboutPage() {
             About WebCraft Labz
           </span>
           <span className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-            A More Thoughtful<br />
-            <span className="text-[var(--primary)]">Web Partner.</span>
+            Building the<br />
+            <span className="text-[var(--primary)]">Intelligence Layer</span><br />
+            Behind Modern Business
           </span>
         </span>
       }
       intro={
         <div className="max-w-3xl space-y-4">
           <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-            WebCraft Labz was built for businesses that want more than a generic website. We create high-performance websites, web applications, and digital systems that feel sharp, clear, and built to last.
+            WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows designed for the next generation of business.
           </p>
           <p className="text-base text-[var(--muted)]">
-            Our work blends custom development, SEO-aware structure, conversion thinking, and calm design so local service businesses, startups, and growing brands can show up with more confidence online.
+            We believe the future belongs to organizations that can transform information into intelligence and intelligence into action. Our work sits at the intersection of web development, artificial intelligence, enterprise systems, and human-centered design.
           </p>
           <p className="text-base text-[var(--muted)]">
-            In short: we build digital experiences that earn trust quickly and keep working long after launch.
+            Websites are only the beginning. Our mission is to help businesses build the digital infrastructure needed to thrive in an increasingly intelligent world.
           </p>
         </div>
       }
@@ -64,7 +68,7 @@ export default function AboutPage() {
           <div className="w-full h-96 relative">
             <Image
               src="/images/web-development-lone-tree-in-the-middle-of-a-field-with-mountains.webp"
-              alt="Dedicated support and partnership"
+              alt="A lone tree in a field with mountains in the background"
               fill
               sizes="100vw"
               className="object-cover object-center"
@@ -75,10 +79,10 @@ export default function AboutPage() {
           </div>
           <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-12">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 drop-shadow-lg">
-              Built with care. Backed by strategy.
+              The Future Won&apos;t Be Built By Bigger Teams.
             </h2>
             <p className="max-w-2xl text-sm sm:text-base md:text-lg text-white/95 drop-shadow-md mb-4">
-              We take a more deliberate approach to digital work—less noise, more clarity, better execution. The result is a website that feels premium and performs like it matters.
+              It will be built by organizations that learn faster, adapt faster, and leverage intelligent systems more effectively. We help businesses build the technology foundation for that future.
             </p>
           </div>
         </div>
@@ -89,56 +93,56 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">What We Build Around</h2>
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-[var(--muted)]">
-            Our work is guided by a few non-negotiables: clarity in communication, care in execution, and outcomes that genuinely move the business forward.
+            Our work is guided by three principles that help businesses move from information overload to clear action.
           </p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
-          {/* Clarity */}
+          {/* Intelligence */}
           <div className="rounded-2xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] p-8 shadow-lg hover:shadow-xl transition-shadow">
             <div className="w-16 h-16 rounded-full bg-[var(--primary)]/10 flex items-center justify-center mb-6">
               <svg className="w-8 h-8 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Clarity</h3>
+            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Intelligence</h3>
             <p className="text-base text-[var(--text)] mb-4">
-              Straight answers. Clean decisions.
+              Turn information into action.
             </p>
             <p className="text-sm text-[var(--muted)]">
-              No agency theater, no vague process, and no unnecessary complexity. We keep the work understandable so you can move with confidence.
+              Modern businesses generate enormous amounts of data and knowledge. We build systems that help organizations extract meaning, surface insights, and make better decisions.
             </p>
           </div>
 
-          {/* Craft */}
+          {/* Leverage */}
           <div className="rounded-2xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] p-8 shadow-lg hover:shadow-xl transition-shadow">
             <div className="w-16 h-16 rounded-full bg-[var(--primary)]/10 flex items-center justify-center mb-6">
               <svg className="w-8 h-8 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Craft</h3>
+            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Leverage</h3>
             <p className="text-base text-[var(--text)] mb-4">
-              Thoughtful design. Precise execution.
+              Multiply human capability.
             </p>
             <p className="text-sm text-[var(--muted)]">
-              We obsess over the details that make premium work feel premium—layout, speed, rhythm, typography, and the invisible polish users remember.
+              Technology should remove friction, not create it. Our goal is to help people accomplish more with fewer constraints through automation, intelligent workflows, and thoughtful system design.
             </p>
           </div>
 
-          {/* Momentum */}
+          {/* Adaptability */}
           <div className="rounded-2xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] p-8 shadow-lg hover:shadow-xl transition-shadow">
             <div className="w-16 h-16 rounded-full bg-[var(--primary)]/10 flex items-center justify-center mb-6">
               <svg className="w-8 h-8 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Momentum</h3>
+            <h3 className="text-2xl font-bold mb-3 text-[var(--primary)]">Adaptability</h3>
             <p className="text-base text-[var(--text)] mb-4">
-              Built to create traction, not just attention.
+              Built for a changing world.
             </p>
             <p className="text-sm text-[var(--muted)]">
-              The goal is never just to launch something nice. It&apos;s to help your business get found, build trust fast, and keep growing with less friction.
+              The pace of change is accelerating. We create platforms, websites, and digital systems designed to evolve alongside the businesses that depend on them.
             </p>
           </div>
         </div>
@@ -194,6 +198,51 @@ export default function AboutPage() {
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Looking Ahead */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-3xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-blue-50/60 to-cyan-50/40 p-8 md:p-12 shadow-xl">
+          <div className="max-w-4xl mb-10">
+            <span className="inline-block px-3 py-1 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 text-xs font-semibold uppercase tracking-wide text-[var(--primary)] mb-4">
+              Looking Ahead
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">The Future We&apos;re Building Toward</h2>
+            <p className="text-base sm:text-lg text-[var(--muted)] mb-4">
+              The internet connected people. The cloud connected systems. Artificial intelligence is connecting knowledge.
+            </p>
+            <p className="text-base sm:text-lg text-[var(--muted)]">
+              We believe the next generation of businesses will operate on intelligence layers capable of understanding information, surfacing insights, automating routine work, and helping humans make better decisions.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-[var(--border)] bg-white/70 p-6">
+              <h3 className="text-xl font-semibold mb-2">AI-Powered Research Systems</h3>
+              <p className="text-sm text-[var(--muted)]">
+                Turning information overload into actionable knowledge.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-[var(--border)] bg-white/70 p-6">
+              <h3 className="text-xl font-semibold mb-2">Enterprise Intelligence Platforms</h3>
+              <p className="text-sm text-[var(--muted)]">
+                Helping organizations see patterns, opportunities, and risks faster.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-[var(--border)] bg-white/70 p-6">
+              <h3 className="text-xl font-semibold mb-2">Autonomous Workflows</h3>
+              <p className="text-sm text-[var(--muted)]">
+                Reducing operational complexity through intelligent automation.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-[var(--border)] bg-white/70 p-6">
+              <h3 className="text-xl font-semibold mb-2">Human-AI Collaboration</h3>
+              <p className="text-sm text-[var(--muted)]">
+                Designing systems that amplify people rather than replace them.
+              </p>
             </div>
           </div>
         </div>
@@ -320,6 +369,24 @@ export default function AboutPage() {
                 Let&apos;s Talk About Your Project →
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Axon Section */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 md:p-12 shadow-xl">
+          <div className="max-w-4xl">
+            <span className="inline-block px-3 py-1 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 text-xs font-semibold uppercase tracking-wide text-[var(--primary)] mb-4">
+              Internal Research Initiative
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Meet Axon</h2>
+            <p className="text-base sm:text-lg text-[var(--muted)] mb-4">
+              Axon is our research and intelligence platform exploring how AI, enterprise systems, and human decision-making intersect.
+            </p>
+            <p className="text-base sm:text-lg text-[var(--muted)]">
+              What began as an experiment in knowledge systems has evolved into a broader effort to understand how organizations can transform information into intelligence and intelligence into action.
+            </p>
           </div>
         </div>
       </section>
