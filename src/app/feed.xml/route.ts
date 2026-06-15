@@ -23,7 +23,10 @@ export async function GET() {
   }));
 
   const items = [...newsItems, ...blogItems]
-    .sort((a, b) => (a.date < b.date ? 1 : -1))
+    .sort((a, b) => {
+      if (a.date === b.date) return 0;
+      return a.date > b.date ? -1 : 1;
+    })
     .slice(0, 100);
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
