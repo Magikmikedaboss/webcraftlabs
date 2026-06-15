@@ -238,7 +238,7 @@ export default function ServicesPage() {
                   </div>
                   <h3 className="text-lg font-bold tracking-tight">{s.title}</h3>
                 </div>
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--primary)]/15 bg-white/70 shadow-sm">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--primary)]/15 bg-[var(--surface)] shadow-sm">
                   {s.icon}
                 </div>
               </div>
@@ -249,7 +249,7 @@ export default function ServicesPage() {
                 {s.bullets.map((b) => (
                   <span
                     key={b}
-                    className="rounded-full border border-[var(--border)] bg-white/70 px-3 py-1 text-xs text-[var(--text)]/80"
+                    className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs text-[var(--text)]"
                   >
                     {b}
                   </span>
@@ -279,7 +279,7 @@ export default function ServicesPage() {
 
       {/* Process Section */}
       <section className="mx-auto max-w-7xl px-6 pb-16">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
           <div className="text-xs uppercase tracking-wider opacity-70">How it works</div>
           <h3 className="mt-2 text-xl font-semibold">A simple process that stays sharp.</h3>
           <p className="mt-2 max-w-3xl text-sm opacity-80">
@@ -287,19 +287,19 @@ export default function ServicesPage() {
           </p>
 
           <div className="mt-6 grid gap-4 md:grid-cols-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
               <div className="text-sm font-semibold">1) Strategy</div>
               <div className="mt-1 text-sm opacity-80">Goals, offers, pages, and conversion plan.</div>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
               <div className="text-sm font-semibold">2) Design</div>
               <div className="mt-1 text-sm opacity-80">Premium UI, brand feel, and layout system.</div>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
               <div className="text-sm font-semibold">3) Build</div>
               <div className="mt-1 text-sm opacity-80">Responsive, fast, SEO-ready development.</div>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
               <div className="text-sm font-semibold">4) Launch + Improve</div>
               <div className="mt-1 text-sm opacity-80">Tracking, iteration, and growth sprints.</div>
             </div>
@@ -311,7 +311,7 @@ export default function ServicesPage() {
             </div>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-semibold hover:bg-white/15"
+              className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold hover:bg-[var(--hoverSurface)]"
             >
               Book a quick consult →
             </Link>

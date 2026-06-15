@@ -168,7 +168,7 @@ export default function LandingPagesFunnelsPage() {
 
               <Link
                 href="/contact"
-                className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold hover:bg-white/10"
+                className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold hover:bg-[var(--hoverSurface)]"
               >
                 Book a consult
               </Link>
@@ -188,7 +188,7 @@ export default function LandingPagesFunnelsPage() {
             {deliverables.map((item) => (
               <div
                 key={item}
-                className="rounded-xl border border-[var(--border)] bg-black/5 p-4 text-sm text-[var(--muted)]"
+                className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--muted)]"
               >
                 {item}
               </div>
@@ -239,7 +239,7 @@ export default function LandingPagesFunnelsPage() {
             {funnelTypes.map((type) => (
               <div
                 key={type}
-                className="rounded-xl border border-[var(--border)] bg-black/5 p-4 text-sm font-medium"
+                className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm font-medium"
               >
                 {type}
               </div>
@@ -254,7 +254,7 @@ export default function LandingPagesFunnelsPage() {
             {processSteps.map((step, index) => (
               <div
                 key={step.title}
-                className="rounded-xl border border-[var(--border)] bg-black/5 p-5"
+                className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5"
               >
                 <p className="text-sm font-semibold text-[var(--primary)]">
                   Step {index + 1}

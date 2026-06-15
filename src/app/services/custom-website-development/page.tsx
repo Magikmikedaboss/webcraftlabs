@@ -166,7 +166,7 @@ export default function CustomWebsiteDevelopmentPage() {
 
               <Link
                 href="/contact"
-                className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold hover:bg-white/10"
+                className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold hover:bg-[var(--hoverSurface)]"
               >
                 Book a consult
               </Link>
@@ -187,7 +187,7 @@ export default function CustomWebsiteDevelopmentPage() {
             {includedFeatures.map((feature) => (
               <div
                 key={feature}
-                className="rounded-xl border border-[var(--border)] bg-black/5 p-4 text-sm text-[var(--muted)]"
+                className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--muted)]"
               >
                 {feature}
               </div>
@@ -232,7 +232,7 @@ export default function CustomWebsiteDevelopmentPage() {
             {processSteps.map((step, index) => (
               <div
                 key={step.title}
-                className="rounded-xl border border-[var(--border)] bg-black/5 p-5"
+                className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5"
               >
                 <p className="text-sm font-semibold text-[var(--primary)]">
                   Step {index + 1}
