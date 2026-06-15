@@ -3,12 +3,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
 
+const ABOUT_DESCRIPTION =
+  "Learn how WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows for modern business.";
+
 export const metadata = {
   title: "About",
-  description: "Learn how WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows for modern business.",
+  description: ABOUT_DESCRIPTION,
   openGraph: {
     title: `About | ${SITE.name}`,
-    description: "Learn how WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows for modern business.",
+    description: ABOUT_DESCRIPTION,
     type: "website",
     images: [
       {
@@ -22,7 +25,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: `About | ${SITE.name}`,
-    description: "Learn how WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows for modern business.",
+    description: ABOUT_DESCRIPTION,
     images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
   },
   alternates: {
@@ -65,7 +68,7 @@ export default function AboutPage() {
           <div className="w-full h-96 relative">
             <Image
               src="/images/web-development-lone-tree-in-the-middle-of-a-field-with-mountains.webp"
-              alt="Dedicated support and partnership"
+              alt="A lone tree in a field with mountains in the background"
               fill
               sizes="100vw"
               className="object-cover object-center"
