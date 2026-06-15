@@ -53,19 +53,31 @@ export async function POST(req: NextRequest) {
   const baseUrl = getBaseUrl();
   const siteHost = new URL(baseUrl).host;
 
-  let requestedUrls: unknown;
+  let body: unknown;
   try {
-    const body = await req.json();
-    requestedUrls = body?.urls;
+    body = await req.json();
   } catch {
-    requestedUrls = undefined;
+    body = undefined;
   }
 
-  const urls = Array.isArray(requestedUrls)
-    ? requestedUrls
-      .filter((item): item is string => typeof item === "string")
-      .map((url) => normalizeCandidateUrl(url, siteHost))
-      .filter((url): url is string => Boolean(url))
+  const hasUrlsProperty =
+    body !== null &&
+    typeof body === "object" &&
+    Object.prototype.hasOwnProperty.call(body, "urls");
+  const requestedUrls = hasUrlsProperty ? (body as { urls?: unknown }).urls : undefined;
+
+  if (hasUrlsProperty && !Array.isArray(requestedUrls)) {
+    return NextResponse.json(
+      { error: "Invalid urls payload. Expected an array of URLs." },
+      { status: 400 },
+    );
+  }
+
+  const urls = hasUrlsProperty
+    ? (requestedUrls as unknown[])
+        .filter((item): item is string => typeof item === "string")
+        .map((url: string) => normalizeCandidateUrl(url, siteHost))
+        .filter((url: string | null): url is string => Boolean(url))
     : await getSitemapUrls(siteHost);
 
   const uniqueUrls = [...new Set(urls)].slice(0, 10000);

@@ -248,6 +248,55 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Knowledge Hub Teaser */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.12),_transparent_35%),linear-gradient(135deg,_rgba(255,255,255,0.96),_rgba(240,249,255,0.72))] p-8 md:p-12 shadow-xl">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <span className="inline-flex items-center rounded-full border border-[var(--primary)]/20 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">
+                Explore our thinking
+              </span>
+              <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text)]">
+                The WebCraft Knowledge Hub
+              </h2>
+              <p className="mt-4 max-w-3xl text-base sm:text-lg leading-relaxed text-[var(--muted)]">
+                Our ideas connect across Synthetic Minds, Axon, enterprise AI, future work, and human plus AI creativity. The knowledge hub is where those threads become a map you can actually explore.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <span className="rounded-full border border-[var(--border)] bg-white/80 px-4 py-2 text-sm font-medium text-[var(--text)]">Synthetic Minds</span>
+                <span className="rounded-full border border-[var(--border)] bg-white/80 px-4 py-2 text-sm font-medium text-[var(--text)]">Axon Research Intelligence</span>
+                <span className="rounded-full border border-[var(--border)] bg-white/80 px-4 py-2 text-sm font-medium text-[var(--text)]">Enterprise AI</span>
+              </div>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/knowledge"
+                  className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-[1.02] hover:opacity-95"
+                >
+                  Explore the Knowledge Hub →
+                </Link>
+                <Link
+                  href="/blog/synthetic-minds"
+                  className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-white/80 px-6 py-3 text-sm font-semibold text-[var(--text)] transition-all hover:border-[var(--primary)] hover:text-[var(--primary)]"
+                >
+                  Start with Synthetic Minds
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              <div className="rounded-2xl border border-[var(--border)] bg-white/85 p-5 shadow-sm">
+                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">Full map</div>
+                <div className="mt-2 text-lg font-semibold text-[var(--text)]">Clickable topic cards, learning paths, and featured articles.</div>
+              </div>
+              <div className="rounded-2xl border border-[var(--border)] bg-white/85 p-5 shadow-sm">
+                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">Why it exists</div>
+                <div className="mt-2 text-lg font-semibold text-[var(--text)]">A cleaner way to connect research, products, and future-facing ideas.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Our Approach */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="text-center mb-12">

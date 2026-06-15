@@ -18,12 +18,16 @@ export default function ContactForm() {
     if (match) setCsrfToken(decodeURIComponent(match[1]));
 
     // Pre-fill from localStorage
-    const storedName = window.localStorage.getItem('quoteName');
-    const storedEmail = window.localStorage.getItem('quoteEmail');
-    const storedBuildSheet = window.localStorage.getItem('buildSheet');
-    if (storedName) setName(storedName);
-    if (storedEmail) setEmail(storedEmail);
-    if (storedBuildSheet) setProject(storedBuildSheet);
+    try {
+      const storedName = window.localStorage.getItem('quoteName');
+      const storedEmail = window.localStorage.getItem('quoteEmail');
+      const storedBuildSheet = window.localStorage.getItem('buildSheet');
+      if (storedName) setName(storedName);
+      if (storedEmail) setEmail(storedEmail);
+      if (storedBuildSheet) setProject(storedBuildSheet);
+    } catch {
+      // Ignore storage access failures in restricted browsing modes.
+    }
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -67,9 +71,13 @@ export default function ContactForm() {
       setSuccess("Your request was sent! We'll reply soon.");
       // Clear localStorage and reset form
       if (typeof window !== "undefined") {
-        window.localStorage.removeItem('quoteName');
-        window.localStorage.removeItem('quoteEmail');
-        window.localStorage.removeItem('buildSheet');
+        try {
+          window.localStorage.removeItem('quoteName');
+          window.localStorage.removeItem('quoteEmail');
+          window.localStorage.removeItem('buildSheet');
+        } catch {
+          // Ignore storage cleanup failures after a successful submission.
+        }
       }
       setName("");
       setEmail("");

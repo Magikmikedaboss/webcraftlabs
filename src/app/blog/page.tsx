@@ -38,11 +38,11 @@ export default function BlogIndexPage() {
           fill
           sizes="100vw"
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-contain z-0 opacity-85 pointer-events-none select-none"
+          className="object-cover z-0 opacity-85 pointer-events-none select-none"
           style={{ objectPosition: "center 22%" }}
         />
         {/* Soft blur layer so the background stays airy without fetching the image twice */}
-        <div className="absolute inset-0 z-0 bg-black/5 backdrop-blur-2xl pointer-events-none select-none" />
+        <div className="absolute inset-0 z-0 bg-black/5 backdrop-blur-sm pointer-events-none select-none" />
         {/* Overlay for readability */}
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/25 via-black/20 to-black/40 pointer-events-none select-none" />
         <main className="relative mx-auto max-w-6xl px-6 py-12 z-10">
