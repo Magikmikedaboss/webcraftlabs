@@ -275,7 +275,7 @@ export default function AboutPage() {
                   Explore the Knowledge Hub →
                 </Link>
                 <Link
-                  href="/blog/synthetic-minds"
+                  href="/blog/synthetic-minds-series"
                   className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-white/80 px-6 py-3 text-sm font-semibold text-[var(--text)] transition-all hover:border-[var(--primary)] hover:text-[var(--primary)]"
                 >
                   Start with Synthetic Minds

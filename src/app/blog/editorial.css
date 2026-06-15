@@ -114,6 +114,10 @@
 }
 
 /* ⚡ Headings */
+.editorial .prose > h1:first-of-type {
+  display: none;
+}
+
 .editorial .prose :where(h2) {
   margin-top: 3.5rem;
   margin-bottom: 1.25rem;
