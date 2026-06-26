@@ -17,14 +17,12 @@ import Takeaways from "@/components/mdx/Takeaways";
 import MdxImage from "@/components/mdx/MdxImage";
 import ArticleImage from "@/components/mdx/ArticleImage";
 import SiteShell from "@/components/SiteShell";
-import EditorialTemplateV2, {
-  BigQuote,
-  Insight,
-  StatBlock,
-  SplitCompare,
-  PostTimeline,
-  Chapter,
-} from "@/components/blog/EditorialTemplateV2";
+import BigQuote from "@/components/mdx/BigQuote";
+import Chapter from "@/components/mdx/Chapter";
+import Insight from "@/components/mdx/Insight";
+import StatBlock from "@/components/mdx/StatBlock";
+import SplitCompare from "@/components/mdx/SplitCompare";
+import EditorialTemplateV2, { PostTimeline } from "@/components/blog/EditorialTemplateV2";
 import { getBaseUrl, SITE } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -165,8 +163,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <Script id={`blog-breadcrumb-jsonld-${post.slug}`} type="application/ld+json">
         {JSON.stringify(breadcrumbJsonLd)}
       </Script>
-      <div className="mx-auto max-w-6xl px-6 py-12">
-        <EditorialTemplateV2
+      <EditorialTemplateV2
           post={{
             title: post.frontmatter.title as string,
             description: post.frontmatter.description as string | undefined,
@@ -205,7 +202,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             }}
           />
         </EditorialTemplateV2>
-      </div>
     </SiteShell>
   );
 }
