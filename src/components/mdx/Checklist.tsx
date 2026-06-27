@@ -1,6 +1,6 @@
 export default function Checklist({ items = [] }: { items?: string[] }) {
   if (!Array.isArray(items)) {
-    throw new Error("Checklist: items must be an array of strings.");
+    return null;
   }
   if (items.length === 0) {
     return null;
