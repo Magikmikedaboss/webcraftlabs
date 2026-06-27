@@ -96,13 +96,13 @@ function ItemsGrid({ cfg }: { cfg: ItemsGridConfig }) {
       : "rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--muted)]";
 
   return (
-    <div className={gridClass}>
+    <ul className={`${gridClass} list-none p-0`}>
       {cfg.items.map((item) => (
-        <div key={item} className={itemClass}>
+        <li key={item} className={itemClass}>
           {item}
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 

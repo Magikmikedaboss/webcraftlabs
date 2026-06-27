@@ -180,7 +180,11 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             setHighlightedIndex(0);
           }}
           onKeyDown={handleInputKeyDown}
-          onBlur={() => { setDropdownOpen(false); setHighlightedIndex(-1); }}
+          onBlur={(e) => {
+            if (dropdownRef.current?.contains(e.relatedTarget as Node)) return;
+            setDropdownOpen(false);
+            setHighlightedIndex(-1);
+          }}
           role="combobox"
           aria-controls="tag-combobox-listbox"
           aria-expanded={dropdownOpen}
@@ -198,6 +202,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             ref={dropdownRef}
             id="tag-combobox-listbox"
             role="listbox"
+            onMouseDown={e => e.preventDefault()}
             className="absolute z-10 mt-2 w-full bg-[var(--surface,theme(colors.slate.900))]/95 dark:bg-[var(--surface-dark,#0d1420)]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] max-h-60 overflow-auto"
           >
             {filteredTags.map((tag, idx) => (

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS sources (
 CREATE TABLE IF NOT EXISTS documents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     source_id TEXT NOT NULL REFERENCES sources(id),
-    path TEXT,
+    path TEXT NOT NULL,
     file_hash TEXT,
     UNIQUE(source_id, path)
 );
