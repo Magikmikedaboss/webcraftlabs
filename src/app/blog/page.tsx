@@ -46,7 +46,7 @@ export default function BlogIndexPage() {
         <div className="absolute inset-0 z-0 bg-black/5 backdrop-blur-sm pointer-events-none select-none" />
         {/* Overlay for readability */}
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/25 via-black/20 to-black/40 pointer-events-none select-none" />
-        <main className="relative mx-auto max-w-6xl px-6 py-12 z-10">
+        <div className="relative mx-auto max-w-6xl px-6 py-12 z-10">
 
         {/* =========================
             HERO (UPGRADED)
@@ -107,7 +107,7 @@ export default function BlogIndexPage() {
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/build"
+                href="/services"
                 className="inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-105 transition shadow-lg"
               >
                 Explore Services
@@ -122,7 +122,7 @@ export default function BlogIndexPage() {
           </div>
         </div>
 
-      </main>
+      </div>
     </div>
     </SiteShell>
   );

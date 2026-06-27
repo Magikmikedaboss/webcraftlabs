@@ -23,6 +23,9 @@ function normalizeCandidateUrl(candidate: string, siteHost: string): string | nu
     if ((parsed.protocol !== "https:" && parsed.protocol !== "http:") || parsed.host !== siteHost) {
       return null;
     }
+    if (parsed.username || parsed.password) {
+      return null;
+    }
     return parsed.toString();
   } catch {
     return null;

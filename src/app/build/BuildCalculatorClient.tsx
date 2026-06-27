@@ -106,7 +106,7 @@ export default function BuildCalculatorClient() {
       title="Website Cost Calculator"
       intro="Get an instant, accurate quote for your website project. Select your pages, design level, and features below. When ready, send your personalized quote request to start building."
     >
-      <main className="mx-auto max-w-7xl px-6 py-10">
+      <div className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid gap-6 lg:grid-cols-[1fr,384px]">
           {/* Left: Inputs */}
           <section className="space-y-6 min-w-0">
@@ -365,7 +365,7 @@ export default function BuildCalculatorClient() {
             </div>
           </aside>
         </div>
-      </main>
+      </div>
     </SiteShell>
   );
 }
@@ -394,7 +394,7 @@ function buildSheetText(args: {
   weeksHigh: number;
 }) {
   const lines = [
-    `WebCraft Labs - Build Sheet`,
+    `WebCraft Labz - Build Sheet`,
     ``,
     `Estimate: ${formatPrice(args.priceLow)} - ${formatPrice(args.priceHigh)}`,
     `Timeline: ${args.weeksLow}-${args.weeksHigh} weeks`,

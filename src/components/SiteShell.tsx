@@ -107,26 +107,25 @@ export default function SiteShell({
             <span>{SITE.name}</span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation — driven by SITE.nav (first=About, last=Contact CTA, middle=Explore dropdown) */}
           <nav className="hidden items-center gap-1 md:flex">
-            <NavLink href="/about" label="About" />
-            <DropdownNav
-              label="Explore"
-              items={[
-                { href: "/services", label: "Services" },
-                { href: "/portfolio", label: "Portfolio" },
-                { href: "/knowledge", label: "Knowledge" },
-                { href: "/build", label: "Build" },
-                { href: "/blog", label: "Blog" },
-                { href: "/news", label: "News" },
-              ]}
-            />
-            <Link
-              href="/contact"
-              className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-white shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
-            >
-              Contact
-            </Link>
+            {SITE.nav.length > 0 && (
+              <NavLink href={SITE.nav[0].href} label={SITE.nav[0].label} />
+            )}
+            {SITE.nav.length > 2 && (
+              <DropdownNav
+                label="Explore"
+                items={SITE.nav.slice(1, -1) as { href: string; label: string }[]}
+              />
+            )}
+            {SITE.nav.length >= 2 && (
+              <Link
+                href={SITE.nav[SITE.nav.length - 1].href}
+                className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-white shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
+              >
+                {SITE.nav[SITE.nav.length - 1].label}
+              </Link>
+            )}
             <ThemeToggle />
           </nav>
 
@@ -142,16 +141,18 @@ export default function SiteShell({
         </div>
       </header>
 
-      {(title || intro) && (
-        <section className="border-b border-[var(--border)]">
-          <div className="mx-auto max-w-7xl px-6 py-8">
-            {title && <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">{title}</h1>}
-            {intro && <div className="mt-2 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">{intro}</div>}
-          </div>
-        </section>
-      )}
+      <main>
+        {(title || intro) && (
+          <section className="border-b border-[var(--border)]">
+            <div className="mx-auto max-w-7xl px-6 py-8">
+              {title && <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">{title}</h1>}
+              {intro && <div className="mt-2 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">{intro}</div>}
+            </div>
+          </section>
+        )}
 
-      {children}
+        {children}
+      </main>
 
       <footer className="border-t border-[var(--border)]">
         <div className="mx-auto max-w-7xl px-6 py-12">

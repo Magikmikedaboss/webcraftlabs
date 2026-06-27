@@ -107,11 +107,6 @@ export default function RootLayout({
         url: baseUrl,
         name: SITE.name,
         description: SITE.tagline,
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${baseUrl}/blog?search={search_term_string}`,
-          "query-input": "required name=search_term_string",
-        },
         publisher: {
           "@id": `${baseUrl}#organization`,
         },

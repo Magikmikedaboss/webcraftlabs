@@ -3,7 +3,7 @@ import SiteShell from "@/components/SiteShell";
 import { Suspense } from "react";
 import HomeMagazineFeedServer from "@/components/home/HomeMagazineFeedServer";
 import { Metadata } from "next";
-import { SITE } from "@/lib/site";
+import { getBaseUrl, SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     images: ["/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg"],
   },
   alternates: {
-    canonical: new URL("/", SITE.url).toString(),
+    canonical: getBaseUrl(),
   },
 };
 

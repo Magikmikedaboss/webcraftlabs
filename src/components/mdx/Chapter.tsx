@@ -4,24 +4,31 @@ export default function Chapter({
   number,
   eyebrow,
   title,
+  label = "Chapter",
   children,
 }: {
   number?: number;
   eyebrow?: string;
   title: string;
+  /** Override the "Chapter" prefix. E.g. label="FILE" renders "FILE 01 · Year Zero" */
+  label?: string;
   children: ReactNode;
 }) {
+  const prefix = number !== undefined
+    ? `${label} ${String(number).padStart(2, "0")}`
+    : null;
+
   return (
     <section className="my-10">
       <div className="mb-6 border-b pb-4" style={{ borderColor: "var(--border)" }}>
-        {(number !== undefined || eyebrow) && (
+        {(prefix || eyebrow) && (
           <div
             className="text-xs font-bold uppercase tracking-widest mb-2"
             style={{ color: "var(--muted)" }}
           >
-            {number !== undefined && (
+            {prefix && (
               <span style={{ color: "var(--primary)" }}>
-                Chapter {number}
+                {prefix}
                 {eyebrow && " · "}
               </span>
             )}

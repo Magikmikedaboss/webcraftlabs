@@ -20,22 +20,25 @@ function toNumber(value?: number | `${number}`) {
 }
 
 export default function MdxImage({ src, alt, width, height, className }: MdxImageProps) {
-  if (!src) return null;
+  if (!src || src.trim() === "") {
+    throw new Error("MdxImage: src must be a non-empty string. Provide a valid image path.");
+  }
   if (!alt || alt.trim() === "") {
     throw new Error("All images must have a meaningful alt text. Please provide a descriptive alt prop.");
   }
+  const safeSrc = src.trim();
   const safeAlt = alt.trim();
 
   const resolvedWidth = toNumber(width) ?? 1200;
   const resolvedHeight = toNumber(height) ?? 675;
-  const isRemote = /^https?:\/\//i.test(src);
-  const isSvg = src.toLowerCase().endsWith(".svg");
+  const isRemote = /^https?:\/\//i.test(safeSrc);
+  const isSvg = safeSrc.toLowerCase().endsWith(".svg");
   const imageClassName = className ? `h-auto w-full rounded-2xl ${className}` : "h-auto w-full rounded-2xl";
 
   if (isRemote) {
     return (
       <Image
-        src={src}
+        src={safeSrc}
         alt={safeAlt}
         width={resolvedWidth}
         height={resolvedHeight}
@@ -49,7 +52,7 @@ export default function MdxImage({ src, alt, width, height, className }: MdxImag
 
   return (
     <Image
-      src={src}
+      src={safeSrc}
       alt={safeAlt}
       width={resolvedWidth}
       height={resolvedHeight}

@@ -1,7 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import Script from "next/script";
 
 import "@/app/blog/editorial.css";
 
@@ -46,6 +45,9 @@ import {
   FrameworkAccordion,
   FAQ,
   NextSteps,
+  ClassifiedHeader,
+  RecoveredLog,
+  SystemOutput,
 } from "@/components/blog/lab-notebook";
 import { getBaseUrl, SITE } from "@/lib/site";
 
@@ -176,7 +178,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       tags: p!.frontmatter.tags as string[] | undefined,
     }));
 
-  // Strip MDX import statements (no-ops with next-mdx-remote, but pollute word count)
+  // Strip import/declaration lines — used for word count only, not for rendering
   const cleanContent = post.content.replace(/^import\s+.+\s+from\s+['"].+['"]\s*;?\s*$/gm, '').trim();
   // Strip JSX/HTML tags and markdown syntax for an accurate word count
   const wordCount = cleanContent
@@ -220,6 +222,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     FrameworkAccordion,
     FAQ,
     NextSteps,
+    ClassifiedHeader,
+    RecoveredLog,
+    SystemOutput,
     img: MdxImage,
     Link,
     Image,
@@ -227,12 +232,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <SiteShell background="bg">
-      <Script id={`blog-jsonld-${post.slug}`} type="application/ld+json">
-        {JSON.stringify(articleJsonLd)}
-      </Script>
-      <Script id={`blog-breadcrumb-jsonld-${post.slug}`} type="application/ld+json">
-        {JSON.stringify(breadcrumbJsonLd)}
-      </Script>
+      <script id={`blog-jsonld-${post.slug}`} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, '\\u003c') }} />
+      <script id={`blog-breadcrumb-jsonld-${post.slug}`} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c') }} />
       {isLab ? (
         <LabNotebookTemplate
           post={{
@@ -246,7 +247,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           pageUrl={url}
         >
           <MDXRemote
-            source={cleanContent}
+            source={post.content}
             components={mdxComponents}
           />
         </LabNotebookTemplate>
@@ -270,7 +271,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           related={related}
         >
           <MDXRemote
-            source={cleanContent}
+            source={post.content}
             components={mdxComponents}
           />
         </EditorialTemplateV2>

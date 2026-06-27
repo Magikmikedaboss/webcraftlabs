@@ -118,7 +118,7 @@ export function estimate(spec: BuildSpec, quote?: QuoteDetails): Estimate {
 
   // Build sheet
   const lines: string[] = [];
-  lines.push("WEBCRAFT LABS — BUILD SHEET");
+  lines.push("WEBCRAFT LABZ — BUILD SHEET");
   lines.push("====================================");
   lines.push(`Business type: ${spec.projectType}`);
   lines.push(`Goal: ${spec.goal}`);

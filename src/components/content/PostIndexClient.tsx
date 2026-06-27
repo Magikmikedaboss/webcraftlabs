@@ -20,7 +20,7 @@ interface PostIndexClientProps {
 }
 
 export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
-  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const optionRefs = useRef<(HTMLElement | null)[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [tagSearch, setTagSearch] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -180,6 +180,11 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             setHighlightedIndex(0);
           }}
           onKeyDown={handleInputKeyDown}
+          onBlur={(e) => {
+            if (dropdownRef.current?.contains(e.relatedTarget as Node)) return;
+            setDropdownOpen(false);
+            setHighlightedIndex(-1);
+          }}
           role="combobox"
           aria-controls="tag-combobox-listbox"
           aria-expanded={dropdownOpen}
@@ -197,17 +202,20 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             ref={dropdownRef}
             id="tag-combobox-listbox"
             role="listbox"
+            onMouseDown={e => e.preventDefault()}
             className="absolute z-10 mt-2 w-full bg-[var(--surface,theme(colors.slate.900))]/95 dark:bg-[var(--surface-dark,#0d1420)]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] max-h-60 overflow-auto"
           >
             {filteredTags.map((tag, idx) => (
-              <button
+              <div
                 key={tag}
                 ref={el => {
                   optionRefs.current[idx] = el ?? null;
                 }}
                 id={`tag-option-${idx}`}
                 role="option"
+                tabIndex={-1}
                 aria-selected={activeHighlightedIndex === idx}
+                onMouseDown={e => e.preventDefault()}
                 onMouseEnter={() => setHighlightedIndex(idx)}
                 onClick={() => {
                   setSelectedTag(tag);
@@ -215,14 +223,14 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
                   setTagSearch("");
                   setHighlightedIndex(-1);
                 }}
-                className={`w-full text-left px-4 py-2 text-sm transition ${
+                className={`w-full text-left px-4 py-2 text-sm cursor-default transition ${
                   activeHighlightedIndex === idx
                     ? kindTheme.btnActive
                     : "hover:bg-white/10"
                 }`}
               >
                 {tag} <span className="opacity-60">({tagCounts[tag]})</span>
-              </button>
+              </div>
             ))}
           </div>
         )}
@@ -279,9 +287,17 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             <div className="flex items-center justify-between text-xs text-[var(--muted)]">
               <span>
                 {(() => {
-                  const [y, m, d] = (post.date || '').split('-').map(Number);
-                  const dt = new Date(y, (m || 1) - 1, d || 1);
-                  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(dt);
+                  const parts = (post.date || '').split('-').map(Number);
+                  const [y, m, d] = parts;
+                  if (!y || !m || !d || !Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) return null;
+                  const dt = new Date(y, m - 1, d);
+                  if (
+                    dt.getFullYear() !== y ||
+                    dt.getMonth() !== m - 1 ||
+                    dt.getDate() !== d
+                  ) {
+                    return null;
+                  }                  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(dt);
                 })()}
               </span>
 

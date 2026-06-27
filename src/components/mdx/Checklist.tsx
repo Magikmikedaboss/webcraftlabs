@@ -1,5 +1,8 @@
 export default function Checklist({ items = [] }: { items?: string[] }) {
-  if (!Array.isArray(items) || items.length === 0) {
+  if (!Array.isArray(items)) {
+    return null;
+  }
+  if (items.length === 0) {
     return null;
   }
 

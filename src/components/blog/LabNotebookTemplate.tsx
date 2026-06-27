@@ -24,7 +24,7 @@ export default function LabNotebookTemplate({
   children: React.ReactNode;
 }) {
   return (
-    <main className="min-h-screen bg-black px-3 py-4 text-slate-950 sm:px-6 lg:px-10 xl:px-16">
+    <div className="min-h-screen bg-black px-3 py-4 text-slate-950 sm:px-6 lg:px-10 xl:px-16">
       <article className="mx-auto w-full max-w-md sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl overflow-hidden rounded-[1.75rem] lg:rounded-[2.5rem] border border-white/10 bg-[#f8f3e8] shadow-2xl">
         <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-black px-4 sm:px-6 lg:px-10 py-3 lg:py-4 text-white">
           <Link href="/" className="flex items-center gap-2 font-bold">
@@ -50,6 +50,6 @@ export default function LabNotebookTemplate({
           </footer>
         </div>
       </article>
-    </main>
+    </div>
   );
 }

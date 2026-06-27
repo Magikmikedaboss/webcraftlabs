@@ -1,4 +1,4 @@
-# WebCraft Labs Lab Components Cheat Sheet
+# WebCraft Labz Lab Components Cheat Sheet
 
 ## LabHero
 
@@ -237,6 +237,63 @@ Final conclusion block.
 <LabVerdict title="The Verdict">
   There is no perfect framework. There is only the framework that best fits the project in front of you.
 </LabVerdict>
+```
+
+## LabCard
+
+Generic card container for grouped content or callouts.
+
+```mdx
+<LabCard>
+  Any content here — text, lists, or nested components.
+</LabCard>
+```
+
+## HandSketch
+
+Monospace diagram frame for ASCII diagrams or annotated sketches.
+
+```mdx
+<HandSketch title="System Overview">
+  Client → Gateway → API → DB
+               ↓
+            Cache
+</HandSketch>
+```
+
+## ClassifiedHeader
+
+Classified-document header block. Used in sci-fi and speculative fiction posts.
+
+```mdx
+<ClassifiedHeader
+  lab="WEBCRAFT LABZ"
+  archive="ARCHIVE FILE"
+  classification="SPECULATIVE FICTION"
+  accessLevel="04"
+/>
+```
+
+## RecoveredLog
+
+Dark terminal-style recovered log panel. Supports optional `title` and `timestamp`.
+
+```mdx
+<RecoveredLog title="Recovered System Log" timestamp="2247-11-03 01:12">
+  > Boot sequence completed.
+  > Memory banks: nominal.
+</RecoveredLog>
+```
+
+## SystemOutput
+
+Compact green-on-dark terminal output block. Supports optional `title`.
+
+```mdx
+<SystemOutput title="stdout">
+  > Process started.
+  > Status: OK
+</SystemOutput>
 ```
 
 ---

@@ -2,7 +2,7 @@
 import PostIndexClient from "@/components/content/PostIndexClient";
 import { getAllNews } from "@/lib/mdx/news";
 import SiteShell from "@/components/SiteShell";
-import { SITE } from "@/lib/site";
+import { getBaseUrl, SITE } from "@/lib/site";
 import Link from "next/link";
 
 export const metadata = {
@@ -29,7 +29,7 @@ export const metadata = {
     images: ["/images/business-marketing-solutions-concept-art.jpg"],
   },
   alternates: {
-    canonical: new URL('/news', SITE.url).toString(),
+    canonical: `${getBaseUrl()}/news`,
   },
 };
 
@@ -46,7 +46,7 @@ export default async function NewsIndexPage() {
 
   return (
     <SiteShell background="surface">
-      <main className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Hero Section with Brand Colors */}
         <header className="mb-12 relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-600 via-blue-700 to-blue-600 p-8 md:p-12 shadow-xl">
           <div className="relative z-10">
@@ -135,7 +135,7 @@ export default async function NewsIndexPage() {
             </Link>
           </div>
         </div>
-      </main>
+      </div>
     </SiteShell>
   );
 }

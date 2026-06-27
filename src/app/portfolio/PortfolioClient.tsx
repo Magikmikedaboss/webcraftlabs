@@ -281,7 +281,7 @@ export default function PortfolioClient(props: { projects: Project[] }) {
 
   return (
     <SiteShell background="surface">
-      <main className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Hero */}
         <header className="mb-12 relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 p-8 md:p-12 shadow-xl">
           <div className="relative z-10">
@@ -457,7 +457,7 @@ export default function PortfolioClient(props: { projects: Project[] }) {
         </div>
 
         <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} project={activeProject} />
-      </main>
+      </div>
     </SiteShell>
   );
 }

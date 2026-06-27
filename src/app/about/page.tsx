@@ -1,7 +1,7 @@
 import SiteShell from "@/components/SiteShell";
 import Link from "next/link";
 import Image from "next/image";
-import { SITE } from "@/lib/site";
+import { getBaseUrl, SITE } from "@/lib/site";
 
 const ABOUT_DESCRIPTION =
   "Learn how WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows for modern business.";
@@ -29,7 +29,7 @@ export const metadata = {
     images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
   },
   alternates: {
-    canonical: new URL('/about', SITE.url).toString(),
+    canonical: `${getBaseUrl()}/about`,
   },
 };
 

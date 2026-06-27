@@ -7,7 +7,7 @@ import SiteShell from "@/components/SiteShell";
 import { getBaseUrl, SITE } from "@/lib/site";
 
 const baseUrl = getBaseUrl();
-const socialImage = `${baseUrl}/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg`;
+const socialImage = `${baseUrl}/images/modern-computer-display-on-an-office-desk-with-a-web-design.webp`;
 
 export const metadata: Metadata = {
   title: `Las Vegas Web Design | ${SITE.name}`,

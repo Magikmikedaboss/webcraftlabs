@@ -182,7 +182,7 @@ export const metadata = {
 export default function KnowledgePage() {
   return (
     <SiteShell background="bg">
-      <main className="relative overflow-hidden bg-[linear-gradient(180deg,#050b16_0%,#081122_26%,#f7fbff_26%,#f7fbff_100%)] text-[var(--text)]">
+      <div className="relative overflow-hidden bg-[linear-gradient(180deg,#050b16_0%,#081122_26%,#f7fbff_26%,#f7fbff_100%)] text-[var(--text)]">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] bg-[radial-gradient(circle_at_18%_18%,rgba(34,211,238,0.26),transparent_28%),radial-gradient(circle_at_82%_14%,rgba(99,102,241,0.24),transparent_26%),radial-gradient(circle_at_50%_72%,rgba(59,130,246,0.16),transparent_34%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:56px_56px] opacity-20 [mask-image:linear-gradient(180deg,black_0%,transparent_82%)]" />
 
@@ -462,7 +462,7 @@ export default function KnowledgePage() {
             </div>
           </div>
         </section>
-      </main>
+      </div>
     </SiteShell>
   );
 }

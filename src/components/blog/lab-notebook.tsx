@@ -339,7 +339,14 @@ type FAQItem = {
 export function ScoreBar({ value }: { value: number }) {
   const safe = Math.max(0, Math.min(10, value));
   return (
-    <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+    <div
+      className="h-2 overflow-hidden rounded-full bg-slate-200"
+      role="meter"
+      aria-valuenow={safe}
+      aria-valuemin={0}
+      aria-valuemax={10}
+      aria-label={`Score: ${safe} out of 10`}
+    >
       <div
         className="h-full rounded-full bg-blue-600"
         style={{ width: `${safe * 10}%` }}
@@ -509,9 +516,22 @@ export function HandSketch({
   );
 }
 
-export function LabStamp({ children }: { children: React.ReactNode }) {
+export function LabStamp({
+  children,
+  variant = "default",
+}: {
+  children: React.ReactNode;
+  variant?: "default" | "danger" | "ghost";
+}) {
+  const colors: Record<string, string> = {
+    default: "border-blue-600 text-blue-700",
+    danger: "border-red-600 text-red-700",
+    ghost: "border-slate-500 text-slate-500",
+  };
   return (
-    <div className="my-6 inline-flex rotate-[-5deg] rounded-full border-2 border-blue-600 px-5 py-2 font-mono text-xs font-black uppercase tracking-[0.25em] text-blue-700">
+    <div
+      className={`my-6 inline-flex rotate-[-5deg] rounded-full border-2 px-5 py-2 font-mono text-xs font-black uppercase tracking-[0.25em] ${colors[variant]}`}
+    >
       {children}
     </div>
   );
@@ -573,5 +593,86 @@ export function NextSteps({ steps = [] }: { steps: string[] }) {
         ))}
       </ul>
     </section>
+  );
+}
+
+// ─── Classified Document Components ──────────────────────────────────────────
+
+export function ClassifiedHeader({
+  lab = "WEBCRAFT LABZ",
+  archive = "ARCHIVE FILE",
+  classification = "SPECULATIVE FICTION",
+  accessLevel = "04",
+}: {
+  lab?: string;
+  archive?: string;
+  classification?: string;
+  accessLevel?: string;
+}) {
+  const bar = "████████████████████████████████████████████████████";
+  return (
+    <div className="my-10 rounded-xl border border-slate-700 bg-slate-950 p-6 font-mono text-xs text-slate-100 shadow-2xl">
+      <div aria-hidden="true" className="mb-5 overflow-hidden whitespace-nowrap tracking-widest text-slate-600">
+        {bar}
+      </div>
+      <div className="space-y-1 text-center">
+        <div className="text-base font-black tracking-[0.3em] text-white uppercase">{lab}</div>
+        <div className="tracking-[0.2em] text-slate-400 uppercase text-[10px]">{archive}</div>
+        <div className="mt-5 flex justify-center gap-10">
+          <div className="text-left">
+            <div className="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-1">Classification</div>
+            <div className="text-slate-200 font-bold tracking-widest uppercase">{classification}</div>
+          </div>
+          <div className="text-left">
+            <div className="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-1">Access Level</div>
+            <div className="text-slate-200 font-bold tracking-widest">{accessLevel}</div>
+          </div>
+        </div>
+      </div>
+      <div aria-hidden="true" className="mt-5 overflow-hidden whitespace-nowrap tracking-widest text-slate-600">
+        {bar}
+      </div>
+    </div>
+  );
+}
+
+export function RecoveredLog({
+  title = "Recovered System Log",
+  timestamp,
+  children,
+}: {
+  title?: string;
+  timestamp?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="my-8 rounded-xl border border-slate-700 bg-slate-950 px-5 py-4 font-mono text-xs text-slate-300 shadow-lg">
+      <div className="mb-3 flex items-center justify-between border-b border-slate-700 pb-3">
+        <span className="text-[10px] uppercase tracking-[0.25em] text-slate-500">
+          ▸ {title}
+        </span>
+        {timestamp && <span className="text-slate-600">{timestamp}</span>}
+      </div>
+      <div className="space-y-1 leading-6">{children}</div>
+    </div>
+  );
+}
+
+export function SystemOutput({
+  title,
+  children,
+}: {
+  title?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="my-6 rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 font-mono text-xs text-green-400 shadow">
+      {title && (
+        <div className="mb-2 text-[10px] uppercase tracking-[0.2em] text-slate-500">
+          {title}
+        </div>
+      )}
+      <div className="space-y-1 leading-6">{children}</div>
+    </div>
   );
 }
