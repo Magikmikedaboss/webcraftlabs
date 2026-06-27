@@ -25,6 +25,28 @@ import EditorialTemplateV2, {
   PostTimeline,
   Chapter,
 } from "@/components/blog/EditorialTemplateV2";
+import LabNotebookTemplate from "@/components/blog/LabNotebookTemplate";
+import {
+  LabHero,
+  LabSection,
+  LabNote,
+  LabCard,
+  FrameworkScorecard,
+  LabStackDiagram,
+  DecisionFlow,
+  LabVerdict,
+  ScoreBar,
+  LabContents,
+  QuickPicks,
+  FrameworkTable,
+  LabObservation,
+  ExperimentResult,
+  HandSketch,
+  LabStamp,
+  FrameworkAccordion,
+  FAQ,
+  NextSteps,
+} from "@/components/blog/lab-notebook";
 import { getBaseUrl, SITE } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -156,6 +178,45 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const wordCount = post.content.split(/\s+/).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 200));
+  const isLab = post.frontmatter.template === "lab";
+
+  const mdxComponents = {
+    Callout,
+    Stat,
+    Checklist,
+    PullQuote,
+    Takeaways,
+    BigQuote,
+    Insight,
+    StatBlock,
+    SplitCompare,
+    PostTimeline,
+    Chapter,
+    ArticleImage,
+    // Lab Notebook components
+    LabHero,
+    LabSection,
+    LabNote,
+    LabCard,
+    FrameworkScorecard,
+    LabStackDiagram,
+    DecisionFlow,
+    LabVerdict,
+    ScoreBar,
+    LabContents,
+    QuickPicks,
+    FrameworkTable,
+    LabObservation,
+    ExperimentResult,
+    HandSketch,
+    LabStamp,
+    FrameworkAccordion,
+    FAQ,
+    NextSteps,
+    img: MdxImage,
+    Link,
+    Image,
+  };
 
   return (
     <SiteShell background="bg">
@@ -165,12 +226,31 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <Script id={`blog-breadcrumb-jsonld-${post.slug}`} type="application/ld+json">
         {JSON.stringify(breadcrumbJsonLd)}
       </Script>
-      <EditorialTemplateV2
+      {isLab ? (
+        <LabNotebookTemplate
           post={{
             title: post.frontmatter.title as string,
             description: post.frontmatter.description as string | undefined,
             summary: post.frontmatter.description as string | undefined,
-            published: post.frontmatter.date as string | undefined,
+            published: (post.frontmatter.published || post.frontmatter.date) as string | undefined,
+            author: post.frontmatter.author as string | undefined,
+          }}
+          readMins={readMins}
+          pageUrl={url}
+        >
+          <MDXRemote
+            source={post.content}
+            options={{ blockJS: false, blockDangerousJS: true }}
+            components={mdxComponents}
+          />
+        </LabNotebookTemplate>
+      ) : (
+        <EditorialTemplateV2
+          post={{
+            title: post.frontmatter.title as string,
+            description: post.frontmatter.description as string | undefined,
+            summary: post.frontmatter.description as string | undefined,
+            published: (post.frontmatter.published || post.frontmatter.date) as string | undefined,
             author: post.frontmatter.author as string | undefined,
             image: post.frontmatter.image as string | undefined,
             badge: (post.frontmatter.tags as string[] | undefined)?.[0],
@@ -185,25 +265,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <MDXRemote
             source={post.content}
             options={{ blockJS: false, blockDangerousJS: true }}
-            components={{
-              Callout,
-              Stat,
-              Checklist,
-              PullQuote,
-              Takeaways,
-              BigQuote,
-              Insight,
-              StatBlock,
-              SplitCompare,
-              PostTimeline,
-              Chapter,
-              ArticleImage,
-              img: MdxImage,
-              Link,
-              Image,
-            }}
+            components={mdxComponents}
           />
         </EditorialTemplateV2>
+      )}
     </SiteShell>
   );
 }
