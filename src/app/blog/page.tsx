@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import BlogGridClient from "./BlogGridClient";
 import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";

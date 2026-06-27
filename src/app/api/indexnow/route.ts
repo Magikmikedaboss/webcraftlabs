@@ -53,12 +53,6 @@ export async function POST(req: NextRequest) {
   const baseUrl = getBaseUrl();
   const siteHost = new URL(baseUrl).host;
 
-  let body: unknown;
-  const contentType = req.headers.get("content-type");
-  const contentLength = req.headers.get("content-length");
-  const hasExplicitBody = contentType != null || (contentLength != null && contentLength !== "0");
-
-  if (hasExplicitBody) {
   let body: unknown = {};
   const rawBody = await req.text();
   if (rawBody.trim()) {

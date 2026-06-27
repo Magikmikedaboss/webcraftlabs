@@ -15,7 +15,6 @@ function toNumber(value?: number | `${number}`) {
     return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
   }
   return undefined;
-}  return undefined;
 }
 
 export default function MdxImage({ src, alt, width, height, className }: MdxImageProps) {
