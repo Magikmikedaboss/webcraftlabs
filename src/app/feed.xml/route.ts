@@ -37,8 +37,7 @@ export async function GET() {
     <link>${baseUrl}</link>
     <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml" />
     <language>en-us</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    ${items
+    <lastBuildDate>${new Date(items[0]?.date ?? Date.now()).toUTCString()}</lastBuildDate>    ${items
       .map(
         (item) => `<item>
       <title>${escapeXml(item.title)}</title>

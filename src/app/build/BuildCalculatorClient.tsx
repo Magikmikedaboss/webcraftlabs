@@ -111,9 +111,9 @@ export default function BuildCalculatorClient() {
           {/* Left: Inputs */}
           <section className="space-y-6 min-w-0">
             {/* Core Settings */}
-            <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-md">
+            <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-md">
               <div className="mb-6">
-                <h2 className="text-xl font-bold text-blue-900 mb-2">Your Build</h2>
+                <h2 className="text-xl font-bold text-[var(--text)] mb-2">Your Build</h2>
                 <p className="text-sm text-[var(--muted)]">Dial in scope and style. The estimate updates live.</p>
               </div>
 
@@ -131,7 +131,7 @@ export default function BuildCalculatorClient() {
                     }}
                     aria-label="Pages"
                   />
-                  <div className="mt-2 flex justify-between text-xs text-gray-500">
+                  <div className="mt-2 flex justify-between text-xs text-[var(--muted)]">
                     <span>1</span>
                     <span>10</span>
                   </div>
@@ -182,10 +182,10 @@ export default function BuildCalculatorClient() {
             </div>
 
             {/* Features Group */}
-            <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-white/90 p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-md">
+            <div className="rounded-2xl shadow-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-6 md:p-8 lg:p-10 backdrop-blur-md">
               <div className="mb-6">
-                <h2 className="text-xl font-bold text-blue-900 mb-2">
-                  Features <span className="font-normal text-gray-500 text-base">(optional)</span>
+                <h2 className="text-xl font-bold text-[var(--text)] mb-2">
+                  Features <span className="font-normal text-[var(--muted)] text-base">(optional)</span>
                 </h2>
                 <p className="text-sm text-[var(--muted)]">Add functionality to your estimate.</p>
               </div>
@@ -194,17 +194,17 @@ export default function BuildCalculatorClient() {
                 {ADDONS.map((a) => (
                   <label
                     key={a.id}
-                    className="flex items-start gap-3 rounded-lg border border-[var(--border)] bg-white p-3 cursor-pointer shadow-sm hover:border-blue-300 transition"
+                    className="flex items-start gap-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 cursor-pointer shadow-sm hover:border-[var(--primary)]/40 transition"
                   >
                     <input
                       type="checkbox"
                       checked={features.includes(a.id)}
                       onChange={() => toggleFeature(a.id)}
-                      className="min-w-[24px] min-h-[24px] w-6 h-6 rounded-md border-2 border-gray-300 text-blue-500 focus:ring-4 focus:ring-blue-100 focus:ring-offset-0 transition-all duration-200 cursor-pointer checked:bg-blue-500 checked:border-blue-500 hover:border-blue-400"
+                      className="min-w-[24px] min-h-[24px] w-6 h-6 rounded-md border-2 border-[var(--border)] text-[var(--primary)] focus:ring-4 focus:ring-[var(--focusSurface)] focus:ring-offset-0 transition-all duration-200 cursor-pointer checked:bg-[var(--primary)] checked:border-[var(--primary)] hover:border-[var(--primary)]"
                     />
                     <span>
-                      <span className="block font-medium text-gray-900">{a.label}</span>
-                      <span className="block text-xs text-gray-500">
+                      <span className="block font-medium text-[var(--text)]">{a.label}</span>
+                      <span className="block text-xs text-[var(--muted)]">
                         +${a.price} · +{a.hours} hrs
                       </span>
                     </span>
@@ -218,52 +218,53 @@ export default function BuildCalculatorClient() {
 
           {/* Right: Output */}
           <aside className="lg:w-96">
-            <div className="sticky top-4 rounded-2xl shadow-2xl border-2 border-yellow-300 bg-gradient-to-br from-yellow-50 to-white p-4 sm:p-6 md:p-8">
+            <div className="sticky top-4 rounded-2xl shadow-2xl border-2 border-[var(--card-border)] bg-gradient-to-br from-[var(--card-bg-start)] to-[var(--card-bg-end)] p-4 sm:p-6 md:p-8">
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-2xl font-bold text-yellow-900">Your Estimate</h2>
-                  <span className="text-xs font-semibold text-yellow-700 bg-yellow-100 rounded-full px-3 py-1">
+                  <h2 className="text-2xl font-bold text-[var(--card-foreground)]">Your Estimate</h2>
+                  <span className="text-xs font-semibold text-[var(--card-foreground)] bg-[var(--surface)] rounded-full px-3 py-1">
                     Estimated range
                   </span>
                 </div>
 
-                <div className="text-4xl font-bold text-yellow-900 mb-1">
+                <div className="text-4xl font-bold text-[var(--card-foreground)] mb-1">
                   {formatPrice(est.priceLow)}–{formatPrice(est.priceHigh)}
                 </div>
-                <div className="text-sm text-yellow-700">
+                <div className="text-sm text-[var(--muted)]">
                   {est.hours.toFixed(1)} hours · {est.weeksLow}–{est.weeksHigh} weeks
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="flex flex-col items-start">
-                  <span className="font-bold text-gray-700">Tier</span>
-                  <span className="text-gray-900">{est.tier.label}</span>
+                  <span className="font-bold text-[var(--muted)]">Tier</span>
+                  <span className="text-[var(--text)]">{est.tier.label}</span>
                 </div>
                 <div className="flex flex-col items-start">
-                  <span className="font-bold text-gray-700">Pages</span>
-                  <span className="text-gray-900">{est.normalizedPages}</span>
+                  <span className="font-bold text-[var(--muted)]">Pages</span>
+                  <span className="text-[var(--text)]">{est.normalizedPages}</span>
                 </div>
                 <div className="flex flex-col items-start">
-                  <span className="font-bold text-gray-700">Timeline</span>
-                  <span className="text-gray-900">
+                  <span className="font-bold text-[var(--muted)]">Timeline</span>
+                  <span className="text-[var(--text)]">
                     {est.weeksLow}–{est.weeksHigh} weeks
                   </span>
                 </div>
                 <div className="flex flex-col items-start">
-                  <span className="font-bold text-gray-700">Maintenance</span>
-                  <span className="text-gray-900">
+                  <span className="font-bold text-[var(--muted)]">Maintenance</span>
+                  <span className="text-[var(--text)]">
                     {maintenance.monthly ? `$${maintenance.monthly}/mo` : "Optional (none selected)"}
                   </span>
                 </div>
               </div>
 
               <div className="mt-6">
-                <div className="text-sm font-semibold text-gray-700 mb-1">Build sheet</div>
+                <label htmlFor="build-sheet-textarea" className="text-sm font-semibold text-[var(--text)] mb-1 block">Build sheet</label>
                 <textarea
+                  id="build-sheet-textarea"
                   readOnly
                   value={est.buildSheetText}
-                  className="min-h-[120px] mt-2 h-64 w-full rounded-2xl border-2 border-yellow-200 bg-gradient-to-br from-white/90 to-yellow-50/40 p-4 text-xs text-gray-800 shadow-inner transition-all duration-200"
+                  className="min-h-[120px] mt-2 h-64 w-full rounded-2xl border-2 border-[var(--border)] bg-[var(--surface)] p-4 text-xs text-[var(--text)] shadow-inner transition-all duration-200"
                 />
 
                 <form
@@ -280,14 +281,14 @@ export default function BuildCalculatorClient() {
                   }}
                   className="mt-6"
                 >
-                  <div className="text-sm font-semibold text-gray-700 mb-2">Your Details</div>
+                  <div className="text-sm font-semibold text-[var(--text)] mb-2">Your Details</div>
                   <div className="space-y-3">
                     <label htmlFor="quote-name" className="sr-only">Name</label>
                     <input
                       id="quote-name"
                       value={q.name}
                       onChange={(e) => setQField("name", e.target.value)}
-                      className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                      className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] p-2 text-sm shadow-sm focus:ring-2 focus:ring-[var(--focusSurface)]"
                       placeholder="Your name"
                       aria-label="Your name"
                     />
@@ -298,7 +299,7 @@ export default function BuildCalculatorClient() {
                       autoComplete="email"
                       value={q.email}
                       onChange={(e) => setQField("email", e.target.value)}
-                      className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                      className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] p-2 text-sm shadow-sm focus:ring-2 focus:ring-[var(--focusSurface)]"
                       placeholder="you@company.com"
                       aria-label="Your email address"
                     />
@@ -307,7 +308,7 @@ export default function BuildCalculatorClient() {
                       id="quote-business"
                       value={q.business}
                       onChange={(e) => setQField("business", e.target.value)}
-                      className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                      className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] p-2 text-sm shadow-sm focus:ring-2 focus:ring-[var(--focusSurface)]"
                       placeholder="Business / brand"
                       aria-label="Business or brand"
                     />
@@ -318,7 +319,7 @@ export default function BuildCalculatorClient() {
                       autoComplete="url"
                       value={q.website}
                       onChange={(e) => setQField("website", e.target.value)}
-                      className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                      className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] p-2 text-sm shadow-sm focus:ring-2 focus:ring-[var(--focusSurface)]"
                       placeholder="https://"
                       aria-label="Website URL"
                     />
@@ -345,7 +346,7 @@ export default function BuildCalculatorClient() {
                           id="quote-framework-other"
                           value={q.frameworkOther}
                           onChange={(e) => setQField("frameworkOther", e.target.value)}
-                          className="w-full rounded-lg border border-yellow-200 bg-white p-2 text-sm shadow-sm focus:ring-2 focus:ring-yellow-300"
+                          className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] p-2 text-sm shadow-sm focus:ring-2 focus:ring-[var(--focusSurface)]"
                           placeholder="Please specify framework"
                           aria-label="Other framework details"
                         />
@@ -355,7 +356,7 @@ export default function BuildCalculatorClient() {
 
                   <button
                     type="submit"
-                    className="min-h-[48px] mt-4 w-full sm:w-auto rounded-2xl border-2 border-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 px-5 py-3 font-semibold text-yellow-900 hover:from-yellow-200 hover:to-yellow-100 hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"
+                    className="min-h-[48px] mt-4 w-full sm:w-auto rounded-2xl border-2 border-[var(--primary)]/25 bg-gradient-to-r from-[var(--card-bg-start)] to-[var(--card-bg-end)] px-5 py-3 font-semibold text-[var(--card-foreground)] hover:from-[var(--card-bg-end)] hover:to-[var(--card-bg-start)] hover:shadow-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center"
                   >
                     Send Quote Request
                   </button>
@@ -372,7 +373,7 @@ export default function BuildCalculatorClient() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-gray-600 tracking-wide uppercase">{label}</span>
+      <span className="text-xs font-semibold text-[var(--muted)] tracking-wide uppercase">{label}</span>
       <div className="mt-2">{children}</div>
     </label>
   );

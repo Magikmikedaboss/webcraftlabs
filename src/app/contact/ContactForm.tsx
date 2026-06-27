@@ -18,12 +18,16 @@ export default function ContactForm() {
     if (match) setCsrfToken(decodeURIComponent(match[1]));
 
     // Pre-fill from localStorage
-    const storedName = window.localStorage.getItem('quoteName');
-    const storedEmail = window.localStorage.getItem('quoteEmail');
-    const storedBuildSheet = window.localStorage.getItem('buildSheet');
-    if (storedName) setName(storedName);
-    if (storedEmail) setEmail(storedEmail);
-    if (storedBuildSheet) setProject(storedBuildSheet);
+    try {
+      const storedName = window.localStorage.getItem('quoteName');
+      const storedEmail = window.localStorage.getItem('quoteEmail');
+      const storedBuildSheet = window.localStorage.getItem('buildSheet');
+      if (storedName) setName(storedName);
+      if (storedEmail) setEmail(storedEmail);
+      if (storedBuildSheet) setProject(storedBuildSheet);
+    } catch {
+      // Ignore storage access failures in restricted browsing modes.
+    }
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -67,9 +71,13 @@ export default function ContactForm() {
       setSuccess("Your request was sent! We'll reply soon.");
       // Clear localStorage and reset form
       if (typeof window !== "undefined") {
-        window.localStorage.removeItem('quoteName');
-        window.localStorage.removeItem('quoteEmail');
-        window.localStorage.removeItem('buildSheet');
+        try {
+          window.localStorage.removeItem('quoteName');
+          window.localStorage.removeItem('quoteEmail');
+          window.localStorage.removeItem('buildSheet');
+        } catch {
+          // Ignore storage cleanup failures after a successful submission.
+        }
       }
       setName("");
       setEmail("");
@@ -84,7 +92,7 @@ export default function ContactForm() {
 
   return (
     <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-      <label htmlFor="contact-name" className="visually-hidden">Name</label>
+      <label htmlFor="contact-name" className="sr-only">Name</label>
       <input
         id="contact-name"
         name="name"
@@ -96,7 +104,7 @@ export default function ContactForm() {
         minLength={2}
         required
       />
-      <label htmlFor="contact-email" className="visually-hidden">Email</label>
+      <label htmlFor="contact-email" className="sr-only">Email</label>
       <input
         id="contact-email"
         name="email"
@@ -109,7 +117,7 @@ export default function ContactForm() {
         inputMode="email"
         required
       />
-      <label htmlFor="contact-project" className="visually-hidden">Project details / configuration</label>
+      <label htmlFor="contact-project" className="sr-only">Project details / configuration</label>
       <textarea
         id="contact-project"
         name="project"

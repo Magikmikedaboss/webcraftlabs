@@ -166,6 +166,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
       <div className="mb-10 relative max-w-xs w-full">
         <input
           ref={inputRef}
+          aria-label={`Filter ${kindLabel.toLowerCase()} posts by tag`}
           type="text"
           placeholder="Filter by tag..."
           value={tagSearch}
@@ -191,7 +192,6 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
           }
           className={`w-full px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-sm focus:outline-none focus:ring-2 ${kindTheme.focusRing} transition-all`}
         />
-
         {dropdownOpen && (
           <div
             ref={dropdownRef}
@@ -278,7 +278,11 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             {/* Footer */}
             <div className="flex items-center justify-between text-xs text-[var(--muted)]">
               <span>
-                {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(post.date))}
+                {(() => {
+                  const [y, m, d] = (post.date || '').split('-').map(Number);
+                  const dt = new Date(y, (m || 1) - 1, d || 1);
+                  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(dt);
+                })()}
               </span>
 
               <span className={`flex items-center gap-1 font-semibold ${kindTheme.link} ${kindTheme.linkHover} transition`}>

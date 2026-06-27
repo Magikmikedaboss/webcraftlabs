@@ -83,10 +83,9 @@ export default function LasVegasWebDesignPage() {
         }
         intro={
           <div className="max-w-3xl space-y-4">
-            <p className="text-lg leading-relaxed text-gray-700 sm:text-xl">
+            <p className="text-lg leading-relaxed text-[var(--text)] sm:text-xl">
               We design and build fast, SEO-ready websites for Las Vegas service businesses, local brands, and teams that want more than a generic online brochure.
-            </p>
-            <p className="text-base text-[var(--muted)]">
+            </p>            <p className="text-base text-[var(--muted)]">
               If your current site feels outdated, slow, or unclear, WebCraft Labz can help you replace it with something that looks better, loads faster, and turns more visitors into calls, quote requests, and booked work.
             </p>
           </div>

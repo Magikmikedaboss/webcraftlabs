@@ -20,6 +20,12 @@ export const BlogFrontmatterSchema = z.object({
     }, { message: 'Date must be a valid calendar date in YYYY-MM-DD format' }),
   tags: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
+  template: z.enum(["lab", "editorial"]).optional(),
+  badge: z.string().trim().optional(),
+  pullQuote: z.string().trim().optional(),
+  published: z.string().trim().optional(),
+  slug: z.string().trim().optional(),
+  series: z.string().trim().optional(),
 });
 
 export type BlogFrontmatter = z.infer<typeof BlogFrontmatterSchema>;

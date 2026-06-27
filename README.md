@@ -34,3 +34,43 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## IndexNow Setup
+
+This project includes an IndexNow integration to submit URLs quickly after content updates.
+
+1. Set environment variables:
+	- `INDEXNOW_KEY`: Your IndexNow key value.
+	- `INDEXNOW_SUBMIT_TOKEN`: A secret token used to authorize submissions.
+	- `NEXT_PUBLIC_SITE_URL`: Your canonical site URL (already used by the app).
+
+2. Key verification endpoint:
+	- `GET /api/indexnow/key`
+	- Returns your `INDEXNOW_KEY` in plain text.
+
+3. Submit URLs endpoint:
+	- `POST /api/indexnow`
+	- Header: `x-indexnow-token: <INDEXNOW_SUBMIT_TOKEN>`
+	- Optional JSON body:
+
+```json
+{
+  "urls": [
+	 "https://webcraftlabz.com/blog/example-post",
+	 "https://webcraftlabz.com/news/example-update"
+  ]
+}
+```
+
+If no `urls` list is provided, the endpoint submits URLs from the generated sitemap.
+
+### Optional: Automatic Trigger on Content Updates
+
+This repo includes [.github/workflows/indexnow-submit.yml](.github/workflows/indexnow-submit.yml), which triggers on pushes to `main` when blog/news content changes.
+
+Add these GitHub repository secrets to enable it:
+
+- `INDEXNOW_ENDPOINT` (example: `https://webcraftlabz.com/api/indexnow`)
+- `INDEXNOW_SUBMIT_TOKEN` (must match your app environment value)
+
+If either secret is missing, the workflow exits safely without failing your deployment.

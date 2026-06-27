@@ -28,7 +28,7 @@ export default function LasVegasSeoTechnicalOptimizationPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/build" className="rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90">Start your build</Link>
-            <Link href="/contact" className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold hover:bg-white/10">Book a local consult</Link>
+            <Link href="/contact" className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold hover:bg-[var(--hoverSurface)]">Book a local consult</Link>
           </div>
         </div>
 

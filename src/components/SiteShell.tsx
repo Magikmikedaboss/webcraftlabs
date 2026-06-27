@@ -115,6 +115,7 @@ export default function SiteShell({
               items={[
                 { href: "/services", label: "Services" },
                 { href: "/portfolio", label: "Portfolio" },
+                { href: "/knowledge", label: "Knowledge" },
                 { href: "/build", label: "Build" },
                 { href: "/blog", label: "Blog" },
                 { href: "/news", label: "News" },

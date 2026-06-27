@@ -36,7 +36,7 @@ const SERVICES = [
     text: "Full-stack web development built for performance, scalability, and your exact needs.",
     href: "/services/custom-website-development",
     bullets: ["React/Next.js architecture", "Custom functionality + integrations", "Responsive, accessible design"],
-    forWho: "Best for: businesses ready to scale with custom tech",
+    audience: "businesses ready to scale with custom tech",
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
@@ -48,7 +48,7 @@ const SERVICES = [
     text: "Premium websites engineered to rank, load fast, and convert visitors into calls.",
     href: "/las-vegas-web-design",
     bullets: ["Custom design system", "Local SEO-ready structure", "Speed + accessibility pass"],
-    forWho: "Best for: service businesses, creators, local brands",
+    audience: "service businesses, creators, local brands",
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M12 3v18" />
@@ -60,7 +60,7 @@ const SERVICES = [
     text: "End-to-end SaaS solutions from MVP to production-ready platforms.",
     href: "/services/saas-platform-development",
     bullets: ["User auth + dashboards", "Subscription + payment integration", "Scalable cloud architecture"],
-    forWho: "Best for: startups building digital products",
+    audience: "startups building digital products",
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h10M4 17h16" />
@@ -72,7 +72,7 @@ const SERVICES = [
     text: "High-focus pages built for ads, offers, and lead capture with clean tracking.",
     href: "/services/landing-pages-funnels",
     bullets: ["Offer-first copy layout", "Form + CRM integration", "A/B-ready sections"],
-    forWho: "Best for: promos, launches, paid traffic",
+    audience: "promos, launches, paid traffic",
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M20 4L4 10l6 2 2 6 8-14z" />
@@ -84,7 +84,7 @@ const SERVICES = [
     text: "Technical SEO foundation plus local setup that helps you show up when it matters.",
     href: "/services/seo-technical-optimization",
     bullets: ["Core Web Vitals optimization", "On-page SEO framework", "Google Business Profile guidance"],
-    forWho: "Best for: local services + maps visibility",
+    audience: "local services + maps visibility",
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
@@ -95,7 +95,7 @@ const SERVICES = [
     title: "Website Maintenance + Support",
     text: "Proactive monitoring, updates, and improvements to keep your site running smooth.",
     bullets: ["Security patches + updates", "Performance monitoring", "Monthly improvement sprints"],
-    forWho: "Best for: businesses that want peace of mind",
+    audience: "businesses that want peace of mind",
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2M12 22a10 10 0 100-20 10 10 0 000 20z" />
@@ -106,7 +106,7 @@ const SERVICES = [
     title: "E-Commerce Solutions",
     text: "Full-featured online stores built to handle real traffic and drive sales.",
     bullets: ["Shopify or custom builds", "Payment + inventory systems", "Conversion optimization"],
-    forWho: "Best for: retail brands scaling online",
+    audience: "retail brands scaling online",
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h15l-1.5 9h-12zM6 6L4 3M9 21a1 1 0 100-2 1 1 0 000 2zM18 21a1 1 0 100-2 1 1 0 000 2z" />
@@ -117,7 +117,7 @@ const SERVICES = [
     title: "Analytics + Conversion Tracking",
     text: "Know what’s working. Clean GA4 tracking, events, and conversion visibility.",
     bullets: ["GA4 + GTM baseline", "Conversion events", "UTM structure + reporting hooks"],
-    forWho: "Best for: teams running campaigns or content",
+    audience: "teams running campaigns or content",
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V8m5 8V4m5 12v-6" />
@@ -161,8 +161,7 @@ export default function ServicesPage() {
               src="/images/beautiful-landscape-with-trees-and-mountains-marketing-agency-hero.webp"
               alt="Professional marketing services landscape"
               fill
-              sizes="100vw"
-              className="object-cover object-center"
+              sizes="(max-width: 1280px) calc(100vw - 3rem), 1104px"              className="object-cover object-center"
               priority
               fetchPriority="high"
             />
@@ -234,11 +233,11 @@ export default function ServicesPage() {
               <div className="relative mb-4 flex items-start justify-between gap-4">
                 <div>
                   <div className="mb-2 inline-flex rounded-full border border-[var(--primary)]/15 bg-[var(--primary)]/5 px-2.5 py-1 text-[11px] font-medium text-[var(--primary)]">
-                    {s.forWho.replace("Best for: ", "")}
+                    {s.audience}
                   </div>
                   <h3 className="text-lg font-bold tracking-tight">{s.title}</h3>
                 </div>
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--primary)]/15 bg-white/70 shadow-sm">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--primary)]/15 bg-[var(--surface)] shadow-sm">
                   {s.icon}
                 </div>
               </div>
@@ -249,7 +248,7 @@ export default function ServicesPage() {
                 {s.bullets.map((b) => (
                   <span
                     key={b}
-                    className="rounded-full border border-[var(--border)] bg-white/70 px-3 py-1 text-xs text-[var(--text)]/80"
+                    className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs text-[var(--text)]"
                   >
                     {b}
                   </span>
@@ -261,7 +260,7 @@ export default function ServicesPage() {
                   href={s.href || "/contact"}
                   className="inline-flex items-center rounded-lg border border-[var(--primary)]/25 bg-[var(--primary)]/5 px-3 py-1.5 text-xs font-semibold text-[var(--primary)] hover:opacity-80"
                 >
-                  Learn more →
+                  {s.href ? 'Learn more →' : 'Get in touch →'}
                 </Link>
               </div>
             </div>
@@ -279,7 +278,7 @@ export default function ServicesPage() {
 
       {/* Process Section */}
       <section className="mx-auto max-w-7xl px-6 pb-16">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
           <div className="text-xs uppercase tracking-wider opacity-70">How it works</div>
           <h3 className="mt-2 text-xl font-semibold">A simple process that stays sharp.</h3>
           <p className="mt-2 max-w-3xl text-sm opacity-80">
@@ -287,19 +286,19 @@ export default function ServicesPage() {
           </p>
 
           <div className="mt-6 grid gap-4 md:grid-cols-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
               <div className="text-sm font-semibold">1) Strategy</div>
               <div className="mt-1 text-sm opacity-80">Goals, offers, pages, and conversion plan.</div>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
               <div className="text-sm font-semibold">2) Design</div>
               <div className="mt-1 text-sm opacity-80">Premium UI, brand feel, and layout system.</div>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
               <div className="text-sm font-semibold">3) Build</div>
               <div className="mt-1 text-sm opacity-80">Responsive, fast, SEO-ready development.</div>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
               <div className="text-sm font-semibold">4) Launch + Improve</div>
               <div className="mt-1 text-sm opacity-80">Tracking, iteration, and growth sprints.</div>
             </div>
@@ -311,7 +310,7 @@ export default function ServicesPage() {
             </div>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-semibold hover:bg-white/15"
+              className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold hover:bg-[var(--hoverSurface)]"
             >
               Book a quick consult →
             </Link>

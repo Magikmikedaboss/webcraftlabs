@@ -1,23 +1,9 @@
-/* Visually hidden utility for accessibility */
-.visually-hidden {
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
-  white-space: nowrap;
-}
-@config "../../tailwind.config.js";
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@config "../../tailwind.config.js";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   
@@ -60,7 +46,7 @@ body {
   --card-foreground: #1e40af;
 }
 
- [data-theme="dark"] {
+[data-theme="dark"] {
   --bg: #070b12;
   --surface: #0d1420;
   --text: #e5edf5;
@@ -206,3 +192,4 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-in-out;
 }
+

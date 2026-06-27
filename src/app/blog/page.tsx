@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import BlogGridClient from "./BlogGridClient";
 import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";
@@ -26,21 +27,25 @@ export default function BlogIndexPage() {
     kind: "blog" as const,
   }));
 
-  const postsWithoutIntro = posts.filter(p => p.slug !== INTRO_POST_SLUG);
+  const postsWithoutIntro = posts;
 
   return (
     <SiteShell background="surface">
-      <div className="relative min-h-screen w-full overflow-hidden">
-        {/* Full-page background image */}
+      <div className="relative min-h-screen w-full overflow-hidden bg-[#05080f]">
+        {/* Main background image */}
         <Image
-          src="/images/breathtaking-sunrise-over-mountain-landscape-showcasing-marketing-advertising.jpg"
-          alt="AI generated sunrise web development technology"
+          src="/images/web-development-wide-angle-view-of-a-modern-skyscraper-with-reflective-glass.jpg"
+          alt=""
           fill
           sizes="100vw"
-          className="absolute inset-0 w-full h-full object-cover object-center z-0 opacity-60 pointer-events-none select-none"
+          aria-hidden="true"
+          className="object-cover z-0 opacity-85 pointer-events-none select-none"
+          style={{ objectPosition: "center 22%" }}
         />
+        {/* Soft blur layer so the background stays airy without fetching the image twice */}
+        <div className="absolute inset-0 z-0 bg-black/5 backdrop-blur-sm pointer-events-none select-none" />
         {/* Overlay for readability */}
-        <div className="fixed inset-0 z-0 bg-black/50 pointer-events-none select-none" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/25 via-black/20 to-black/40 pointer-events-none select-none" />
         <main className="relative mx-auto max-w-6xl px-6 py-12 z-10">
 
         {/* =========================
@@ -63,8 +68,7 @@ export default function BlogIndexPage() {
             </div>
 
             <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
-              WebCraft LabZ
-              <span className="block mt-3 bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-400 bg-clip-text text-transparent">
+              {SITE.name}              <span className="block mt-3 bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-400 bg-clip-text text-transparent">
                 Tech & Development Blog
               </span>
             </h1>
@@ -102,20 +106,19 @@ export default function BlogIndexPage() {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <Link
                 href="/build"
                 className="inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-105 transition shadow-lg"
               >
                 Explore Services
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/contact"
                 className="inline-flex items-center justify-center rounded-xl border border-white/20 px-6 py-3 font-semibold text-white hover:bg-white/10 transition"
               >
                 Let’s Talk
-              </a>
-            </div>
+              </Link>            </div>
           </div>
         </div>
 
