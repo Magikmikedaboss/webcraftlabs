@@ -17,12 +17,14 @@ import Takeaways from "@/components/mdx/Takeaways";
 import MdxImage from "@/components/mdx/MdxImage";
 import ArticleImage from "@/components/mdx/ArticleImage";
 import SiteShell from "@/components/SiteShell";
-import BigQuote from "@/components/mdx/BigQuote";
-import Chapter from "@/components/mdx/Chapter";
-import Insight from "@/components/mdx/Insight";
-import StatBlock from "@/components/mdx/StatBlock";
-import SplitCompare from "@/components/mdx/SplitCompare";
-import EditorialTemplateV2, { PostTimeline } from "@/components/blog/EditorialTemplateV2";
+import EditorialTemplateV2, {
+  BigQuote,
+  Insight,
+  StatBlock,
+  SplitCompare,
+  PostTimeline,
+  Chapter,
+} from "@/components/blog/EditorialTemplateV2";
 import { getBaseUrl, SITE } from "@/lib/site";
 
 export function generateStaticParams() {
