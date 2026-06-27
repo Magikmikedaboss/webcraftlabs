@@ -140,7 +140,7 @@ export function FrameworkScorecard({
           {icon || name.charAt(0)}
         </div>
         <div>
-          <h3 className="text-2xl font-black tracking-tight">{name}</h3>
+          <p className="text-2xl font-black tracking-tight">{name}</p>
           {byline && <p className="text-sm text-slate-500">{byline}</p>}
           {badge && (
             <span className="mt-2 inline-flex rounded-full bg-blue-100 px-3 py-1 font-mono text-[10px] uppercase tracking-wide text-blue-700">
@@ -385,9 +385,9 @@ export function QuickPicks({ picks = [] }: { picks: QuickPick[] }) {
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-blue-700">
               {pick.title}
             </p>
-            <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">
+            <p className="mt-2 text-2xl font-black tracking-tight text-slate-950">
               {pick.framework || pick.name}
-            </h3>
+            </p>
             <p className="mt-3 text-sm leading-7 text-slate-700">{pick.reason}</p>
           </div>
         ))}
@@ -415,9 +415,9 @@ export function FrameworkTable({ rows = [] }: { rows: FrameworkTableRow[] }) {
             {rows.map((row) => (
               <tr key={row.name} className="border-t border-black/10">
                 <td className="px-4 py-4 font-black">{row.name}</td>
-                <td className="px-4 py-4">{row.performance ?? "—"}/10</td>
-                <td className="px-4 py-4">{row.seo ?? "—"}/10</td>
-                <td className="px-4 py-4">{row.learning ?? "—"}/10</td>
+                <td className="px-4 py-4">{row.performance != null ? `${row.performance}/10` : "—"}</td>
+                <td className="px-4 py-4">{row.seo != null ? `${row.seo}/10` : "—"}</td>
+                <td className="px-4 py-4">{row.learning != null ? `${row.learning}/10` : "—"}</td>
                 <td className="px-4 py-4">{row.best || "—"}</td>
               </tr>
             ))}
@@ -463,7 +463,7 @@ export function ExperimentResult({
       <p className="font-mono text-xs uppercase tracking-[0.25em] text-blue-200">
         Experiment Result
       </p>
-      <h3 className="mt-4 text-3xl lg:text-4xl font-black tracking-tight">{title}</h3>
+      <p className="mt-4 text-3xl lg:text-4xl font-black tracking-tight">{title}</p>
       {subtitle && (
         <p className="mt-2 text-sm leading-7 text-slate-300">{subtitle}</p>
       )}

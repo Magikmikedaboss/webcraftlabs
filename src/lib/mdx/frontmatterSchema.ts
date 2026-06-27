@@ -20,7 +20,7 @@ export const BlogFrontmatterSchema = z.object({
     }, { message: 'Date must be a valid calendar date in YYYY-MM-DD format' }),
   tags: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
-  template: z.string().trim().optional(),
+  template: z.enum(["lab", "editorial"]).optional(),
   badge: z.string().trim().optional(),
   pullQuote: z.string().trim().optional(),
   published: z.string().trim().optional(),

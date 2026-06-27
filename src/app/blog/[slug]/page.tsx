@@ -249,11 +249,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           post={{
             title: post.frontmatter.title as string,
             description: post.frontmatter.description as string | undefined,
-            summary: post.frontmatter.description as string | undefined,
+            summary: post.frontmatter.summary as string | undefined,
             published: (post.frontmatter.published || post.frontmatter.date) as string | undefined,
             author: post.frontmatter.author as string | undefined,
             image: post.frontmatter.image as string | undefined,
-            badge: (post.frontmatter.tags as string[] | undefined)?.[0],
+            badge: post.frontmatter.badge as string | undefined,
+            pullQuote: post.frontmatter.pullQuote as string | undefined,
             tags: post.frontmatter.tags as string[] | undefined,
           }}
           readMins={readMins}

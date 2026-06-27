@@ -32,8 +32,8 @@ export default function LabNotebookTemplate({
             </span>
             WebCraft Labs
           </Link>
-          <Link href="/blog" className="text-lg">
-            ☰
+          <Link href="/blog" className="text-lg" aria-label="Blog">
+            <span aria-hidden="true">☰</span>
           </Link>
         </header>
         <div className="bg-[linear-gradient(#00000008_1px,transparent_1px),linear-gradient(90deg,#00000008_1px,transparent_1px)] bg-[size:24px_24px]">

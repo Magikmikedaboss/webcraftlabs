@@ -20,10 +20,14 @@ template: "lab"
 <LabContents
   items={[
     "The Beginner Problem",
-    "Your Core Tools",
-    "The Developer Starter Kit",
-    "Tools You Can Ignore",
-    "My Recommended Setup",
+    "Your Code Editor",
+    "The Browser as a Dev Tool",
+    "The Terminal",
+    "Version Control with GitHub",
+    "Using AI Effectively",
+    "The Starter Kit",
+    "Tools to Ignore for Now",
+    "Your First Real Project",
     "Final Verdict",
   ]}
 />
@@ -54,15 +58,23 @@ template: "lab"
   title="Beginners don't need more tools. They need a workbench."
 >
 
-Learning to code can feel like walking into a hardware store during an earthquake.
+I remember the first time I tried to learn to code.
 
-Everyone is yelling about different tools.
+I had twelve tabs open.  
+Three tutorials were contradicting each other.  
+My terminal looked like it wanted to fight me.  
+And I still didn't know which file I was supposed to edit.
 
-One person says you need React. Another says Python. Another says Docker. Someone else is whispering about Kubernetes from a dark hallway.
+That is not learning.  
+That is tool fog.
 
-Before long, you have forty browser tabs open, six apps installed, three tutorials half-finished, and no actual project built.
+Everyone online is yelling about different tools.
 
-That is not learning. That is tool fog.
+One person says React.  
+Another says Python.  
+Someone whispers "Kubernetes" from a dark hallway like it's a forbidden spell.
+
+Before long, you've installed six things you don't understand and built nothing.
 
 <LabNote title="Notebook Entry">
 A beginner developer does not need the perfect setup.
@@ -71,9 +83,10 @@ They need a simple setup that helps them start building.
 
 Think of coding like building a workshop.
 
-You do not start with every machine in the building. You start with a clean bench, a few reliable tools, and enough space to make your first mess.
+You don't start with every machine in the building.  
+You start with a clean bench, a few reliable tools, and enough space to make your first mess.
 
-That is what we are building here.
+That's what we're building here.
 
 </LabSection>
 
@@ -83,30 +96,35 @@ That is what we are building here.
   title="Start with a code editor."
 >
 
-Your code editor is where most of the work happens.
+Your code editor is your workshop.
 
-It is your desk. Your notebook. Your command center.
+It's your desk.  
+Your notebook.  
+Your command center.
 
-For beginners, the easiest recommendation is simple: **Use VS Code.**
+For beginners, the easiest recommendation is simple:
 
-It is free, widely used, and works for almost every kind of beginner project.
+**Use VS Code.**
+
+It's free, friendly, and works for almost everything you'll build early on.
 
 <LabObservation title="Observation">
 Do not spend your first week customizing your editor.
 Write code first. Make it pretty later.
 </LabObservation>
 
-A good beginner setup only needs a few things:
+A good beginner setup only needs:
 
-- A clean theme
-- Auto-formatting
-- JavaScript and TypeScript support
-- A built-in terminal
-- Git integration
+- A clean theme  
+- Auto-formatting  
+- JavaScript + TypeScript support  
+- A built-in terminal  
+- Git integration  
 
-That is enough.
+That's enough.
 
-You are not trying to build a spaceship yet. You are trying to get the engine to turn over.
+You're not building a spaceship yet.  
+You're just trying to get the engine to turn over.
 
 </LabSection>
 
@@ -116,13 +134,14 @@ You are not trying to build a spaceship yet. You are trying to get the engine to
   title="Your browser is also a developer tool."
 >
 
-Most beginners think the browser is only where websites appear.
+Most beginners think the browser is where websites appear.
 
-Developers know the browser is also where websites confess their secrets.
+Developers know the browser is where websites confess their secrets.
 
-Open Developer Tools and suddenly you can inspect HTML, test CSS, watch network requests, debug JavaScript, and see why your layout decided to fall down the stairs.
+Open Developer Tools and suddenly you can inspect HTML, test CSS, watch network requests, debug JavaScript, and see exactly why your layout fell down the stairs.
 
-Use Chrome, Firefox, Edge, or Arc. Any modern browser works.
+Use Chrome, Firefox, Edge, or Arc.  
+Any modern browser works.
 
 The important part is learning the developer tools.
 
@@ -139,11 +158,14 @@ The browser usually knows where the body is buried.
   title="The terminal is not scary."
 >
 
-The terminal looks intimidating because it has no buttons. Just a blinking cursor. Very dramatic.
+The terminal looks intimidating because it has no buttons.  
+Just a blinking cursor.  
+Very dramatic.
 
-But the terminal is really just another way to talk to your computer. Instead of clicking buttons, you type instructions.
+But the terminal is just another way to talk to your computer.  
+Instead of clicking, you type instructions.
 
-You will use it for things like creating projects, installing packages, running a development server, starting builds, and checking Git status.
+You'll use it to create projects, install packages, run servers, build apps, and check Git status.
 
 At first, you only need a few commands:
 
@@ -155,11 +177,11 @@ git add .
 git commit -m "first commit"
 ```
 
-That is plenty.
+That's plenty for now.
 
 <LabObservation title="Observation">
 The terminal feels weird until it feels normal.
-Then one day you will open it without thinking, and that is when the wizard robe appears.
+Then one day you'll open it without thinking — and that's when the wizard robe appears.
 </LabObservation>
 
 </LabSection>
@@ -172,15 +194,17 @@ Then one day you will open it without thinking, and that is when the wizard robe
 
 Every beginner should learn Git and GitHub early.
 
-Not because it is glamorous. It is not.
+Not because it's glamorous. It isn't.
 
 Git is a time machine with a user interface designed by a sleepy octopus.
 
 But it matters.
 
-Git lets you save versions of your work. GitHub gives those versions a place to live online.
+Git saves versions of your work.  
+GitHub gives those versions a place to live online.
 
-Think of commits as checkpoints in a video game. When things break — and they will — you can go back.
+Think of commits as checkpoints in a video game.  
+When things break — and they will — you can go back.
 
 <HandSketch title="Git, Explained Poorly but Usefully">
 Your Code
@@ -192,7 +216,7 @@ Push to GitHub
 Project Has a Home
 </HandSketch>
 
-You do not need to master Git on day one. Start with:
+You don't need to master Git on day one. Start with:
 
 ```bash
 git add .
@@ -200,7 +224,7 @@ git commit -m "initial project setup"
 git push
 ```
 
-That is the beginner doorway. Walk through it.
+That's the beginner doorway. Walk through it.
 
 </LabSection>
 
@@ -212,18 +236,30 @@ That is the beginner doorway. Walk through it.
 
 AI can be an incredible learning tool.
 
-Use ChatGPT, Claude, Cursor, Copilot, or whatever tool fits your workflow.
+Use ChatGPT, Claude, Cursor, Copilot — whatever fits your workflow.
 
-But use AI like a pair programmer, not a vending machine.
+But use it like a pair programmer, not a vending machine.
 
-**Bad use:** "Build my entire app and I will paste whatever you give me."
+**Bad use:** "Build my entire app and I'll paste whatever you give me."
 
-**Better use:** Explain this error. Review this component. Why is this code not working? Show me a simpler version. Teach me what this function does.
+**Better use:**  
+Explain this error.  
+Review this component.  
+Why is this code not working?  
+Show me a simpler version.  
+Teach me what this function does.
+
+The quality of your output is directly tied to the quality of your prompt.
+
+A vague question gets a vague answer.  
+A specific, well-framed question gets something you can actually use.
+
+Learning to prompt well is a real skill — and it transfers to every AI tool you'll ever use.
 
 <LabNote title="Important">
 AI can help you move faster.
-But if you never understand what it gives you, you are not learning to code.
-You are just renting a brain with spotty Wi-Fi.
+But if you never understand what it gives you, you're not learning to code.
+You're just renting a brain with spotty Wi-Fi.
 </LabNote>
 
 </LabSection>
@@ -275,11 +311,14 @@ You are just renting a brain with spotty Wi-Fi.
   ]}
 />
 
-This is enough to build real projects. Not fake tutorial dust. Real things.
+This is enough to build real things.
 
-A portfolio. A blog. A landing page. A small app. A business website. A weird little internet machine that only makes sense to you.
+Not fake tutorial dust. Real things.
 
-That is where learning becomes real.
+A portfolio. A blog. A landing page. A small app.  
+A weird little internet machine that only makes sense to you.
+
+That's where learning becomes real.
 
 </LabSection>
 
@@ -289,31 +328,32 @@ That is where learning becomes real.
   title="Tools you can ignore for now."
 >
 
-This might be the most important section.
+This might be the most important section in this whole guide.
 
-Beginners waste a lot of time learning tools they do not need yet.
+Beginners waste enormous amounts of time learning tools they don't need yet.
 
-You can safely ignore these at the beginning:
+You can safely ignore these at the start:
 
-- Kubernetes
-- Microservices
-- Complex Docker setups
-- Advanced AWS architecture
-- Redis
-- Message queues
-- Monorepos
-- GraphQL
-- Design systems
-- Performance budgets
-- CI/CD pipelines
+- Kubernetes  
+- Microservices  
+- Complex Docker setups  
+- Advanced AWS architecture  
+- Redis  
+- Message queues  
+- Monorepos  
+- GraphQL  
+- Design systems  
+- Performance budgets  
+- CI/CD pipelines  
 
-Those tools matter later. But not before you can build and ship a simple project.
+Those tools matter eventually.  
+But not before you can build and ship one simple project.
 
 <LabStamp>Not Yet</LabStamp>
 
 <LabObservation title="Observation">
 The best beginner stack is not the most powerful stack.
-It is the stack that removes friction.
+It's the stack that gets out of your way.
 Less friction means more building. More building means more learning.
 </LabObservation>
 
@@ -325,7 +365,7 @@ Less friction means more building. More building means more learning.
   title="Build your first real project."
 >
 
-Here is the path I would follow:
+Here's the path I'd follow:
 
 <NextSteps
   steps={[
@@ -340,9 +380,11 @@ Here is the path I would follow:
   ]}
 />
 
-Do not wait until you feel ready. You will not feel ready.
+Don't wait until you feel ready.  
+You won't feel ready.
 
-Start anyway. The confidence comes after the first few tiny disasters.
+Start anyway.  
+The confidence comes after the first few tiny disasters.
 
 </LabSection>
 
@@ -350,37 +392,41 @@ Start anyway. The confidence comes after the first few tiny disasters.
   items={[
     {
       question: "What programming language should beginners start with?",
-      answer: "For web development, JavaScript is a practical first choice because it runs in the browser and powers many modern tools."
+      answer: "For web development, JavaScript is a practical first choice because it runs in the browser and powers most modern tools."
     },
     {
       question: "Do I need an expensive computer to learn coding?",
-      answer: "No. Most beginner web development can be done on a basic laptop as long as it can run a browser, code editor, and terminal."
+      answer: "No. Most beginner web development runs fine on a basic laptop as long as it can open a browser, a code editor, and a terminal."
     },
     {
       question: "Should I learn HTML and CSS before React or Next.js?",
-      answer: "Yes. HTML and CSS are the foundation of the web. Frameworks make more sense when you understand what they are building on top of."
+      answer: "Yes. HTML and CSS are the foundation of the web. Frameworks make a lot more sense once you understand what they're building on top of."
     },
     {
       question: "Is AI bad for beginners?",
-      answer: "No, but it can become a crutch. Use AI to explain, debug, and review code, not to avoid understanding it."
+      answer: "No, but it can become a crutch. Use it to explain, debug, and review code — not to avoid understanding it."
     }
   ]}
 />
 
 <LabVerdict title="The Lab's Recommendation">
 
-Your first developer setup does not need to be perfect. It needs to be usable.
+Your first developer setup doesn't need to be perfect.  
+It needs to be usable.
 
 Start with: **VS Code. Node.js. GitHub. A browser. Vercel. An AI assistant.**
 
-That is enough.
+That's enough.
 
-Do not collect tools like digital souvenirs.
+Don't collect tools like digital souvenirs.
 
-Build something. Break it. Fix it. Ship it.
+Build something.  
+Break it.  
+Fix it.  
+Ship it.
 
 Then do it again.
 
-That is how a beginner becomes a developer.
+That's how a beginner becomes a developer.
 
 </LabVerdict>
