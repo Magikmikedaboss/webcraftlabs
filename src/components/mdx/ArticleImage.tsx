@@ -9,6 +9,9 @@ export default function ArticleImage({
   alt: string;
   caption?: string;
 }) {
+  if (!alt || alt.trim() === "") {
+    throw new Error("ArticleImage: alt text must be a non-empty string. Provide a meaningful image description.");
+  }
   return (
     <figure className="my-10">
       <div className="relative w-full overflow-hidden rounded-2xl" style={{ aspectRatio: "16/9" }}>

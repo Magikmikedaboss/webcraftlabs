@@ -107,7 +107,7 @@ export default function BlogIndexPage() {
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/build"
+                href="/services"
                 className="inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-105 transition shadow-lg"
               >
                 Explore Services

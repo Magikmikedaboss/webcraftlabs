@@ -57,6 +57,7 @@ export function Chapter({
   number = 1,
   title,
   eyebrow,
+  label,
   image,
   imageAlt,
   children,
@@ -64,19 +65,24 @@ export function Chapter({
   number?: number;
   title: string;
   eyebrow?: string;
+  /** Replaces the "Chapter" prefix in the kicker. E.g. label="FILE" renders "FILE 01" */
+  label?: string;
   image?: string;
   imageAlt?: string;
   children?: React.ReactNode;
 }) {
+  const kicker = label
+    ? `${label} ${String(number).padStart(2, "0")}${eyebrow ? ` · ${eyebrow}` : ""}`
+    : eyebrow ?? null;
   return (
     <section className="mx-auto my-16 max-w-3xl sm:my-20 lg:my-24">
       <div className="relative border-t border-slate-200 pt-10 sm:pt-14">
         <div className="mb-4 text-7xl font-black leading-none tracking-tighter text-slate-200/80 sm:absolute sm:-top-6 sm:right-0 sm:mb-0 sm:text-9xl">
           {String(number).padStart(2, "0")}
         </div>
-        {eyebrow && (
+        {kicker && (
           <p className="text-xs font-black uppercase tracking-[0.24em] text-indigo-700">
-            {eyebrow}
+            {kicker}
           </p>
         )}
         <h2 className="mt-4 max-w-2xl text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
@@ -279,7 +285,7 @@ export default function EditorialTemplateV2({
 
   return (
     <div
-      className="min-h-screen bg-[#fafaf7] px-3 py-4 text-slate-950 sm:px-6 sm:py-6 lg:px-8"
+      className="editorial min-h-screen bg-[#fafaf7] px-3 py-4 text-slate-950 sm:px-6 sm:py-6 lg:px-8"
       aria-labelledby="post-title"
     >
       <div className="mx-auto mb-4 flex max-w-7xl items-center justify-between px-1 text-xs sm:mb-6 sm:text-sm">

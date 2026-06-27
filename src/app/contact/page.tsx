@@ -66,7 +66,7 @@ export default function ContactPage() {
             </div>
             <div className="md:col-span-5">
               <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6">
-                <div className="text-sm font-semibold text-[var(--primary)]">WebCraft LabZ HQ</div>
+                <div className="text-sm font-semibold text-[var(--primary)]">{SITE.name} HQ</div>
                 <div className="mt-2 text-sm text-[var(--muted)]">
                   {SITE.address.label}<br />
                   <a href={`mailto:${SITE.email}`} className="font-semibold text-[var(--primary)] hover:opacity-80">{SITE.email}</a>

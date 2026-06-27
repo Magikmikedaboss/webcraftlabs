@@ -339,7 +339,14 @@ type FAQItem = {
 export function ScoreBar({ value }: { value: number }) {
   const safe = Math.max(0, Math.min(10, value));
   return (
-    <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+    <div
+      className="h-2 overflow-hidden rounded-full bg-slate-200"
+      role="meter"
+      aria-valuenow={safe}
+      aria-valuemin={0}
+      aria-valuemax={10}
+      aria-label={`Score: ${safe} out of 10`}
+    >
       <div
         className="h-full rounded-full bg-blue-600"
         style={{ width: `${safe * 10}%` }}
@@ -592,7 +599,7 @@ export function NextSteps({ steps = [] }: { steps: string[] }) {
 // ─── Classified Document Components ──────────────────────────────────────────
 
 export function ClassifiedHeader({
-  lab = "WEBCRAFT LABS",
+  lab = "WEBCRAFT LABZ",
   archive = "ARCHIVE FILE",
   classification = "SPECULATIVE FICTION",
   accessLevel = "04",

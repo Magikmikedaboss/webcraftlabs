@@ -20,7 +20,9 @@ function toNumber(value?: number | `${number}`) {
 }
 
 export default function MdxImage({ src, alt, width, height, className }: MdxImageProps) {
-  if (!src) return null;
+  if (!src || src.trim() === "") {
+    throw new Error("MdxImage: src must be a non-empty string. Provide a valid image path.");
+  }
   if (!alt || alt.trim() === "") {
     throw new Error("All images must have a meaningful alt text. Please provide a descriptive alt prop.");
   }

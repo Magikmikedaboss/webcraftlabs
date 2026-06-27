@@ -9,13 +9,15 @@ let allowedOrigins: string[] | null = null;
 
 if (allowedOriginRaw) {
   try {
-    const primaryOrigin = new URL(allowedOriginRaw).origin;
-    // Allow localhost variations for development
+    const parsed = new URL(allowedOriginRaw);
+    const primaryOrigin = parsed.origin;
+    // Allow localhost variations for development (any port)
     allowedOrigins = [primaryOrigin];
-    if (primaryOrigin === 'http://localhost:3000') {
-      allowedOrigins.push('http://127.0.0.1:3000');
-    } else if (primaryOrigin === 'http://127.0.0.1:3000') {
-      allowedOrigins.push('http://localhost:3000');
+    const port = parsed.port ? `:${parsed.port}` : '';
+    if (parsed.hostname === 'localhost') {
+      allowedOrigins.push(`http://127.0.0.1${port}`);
+    } else if (parsed.hostname === '127.0.0.1') {
+      allowedOrigins.push(`http://localhost${port}`);
     }
   } catch (err) {
     const errorMsg = `FATAL: Invalid NEXT_PUBLIC_SITE_URL configuration: "${allowedOriginRaw}". Must be a valid URL.`;

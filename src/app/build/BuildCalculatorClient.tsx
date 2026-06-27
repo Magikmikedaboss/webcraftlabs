@@ -394,7 +394,7 @@ function buildSheetText(args: {
   weeksHigh: number;
 }) {
   const lines = [
-    `WebCraft Labs - Build Sheet`,
+    `WebCraft Labz - Build Sheet`,
     ``,
     `Estimate: ${formatPrice(args.priceLow)} - ${formatPrice(args.priceHigh)}`,
     `Timeline: ${args.weeksLow}-${args.weeksHigh} weeks`,

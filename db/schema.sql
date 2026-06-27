@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS documents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     source_id TEXT NOT NULL REFERENCES sources(id),
     path TEXT,
-    file_hash TEXT
+    file_hash TEXT,
+    UNIQUE(source_id, path)
 );
 CREATE TABLE IF NOT EXISTS chunks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

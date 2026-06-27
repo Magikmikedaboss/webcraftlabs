@@ -2,7 +2,7 @@
 import PostIndexClient from "@/components/content/PostIndexClient";
 import { getAllNews } from "@/lib/mdx/news";
 import SiteShell from "@/components/SiteShell";
-import { SITE } from "@/lib/site";
+import { getBaseUrl, SITE } from "@/lib/site";
 import Link from "next/link";
 
 export const metadata = {
@@ -29,7 +29,7 @@ export const metadata = {
     images: ["/images/business-marketing-solutions-concept-art.jpg"],
   },
   alternates: {
-    canonical: new URL('/news', SITE.url).toString(),
+    canonical: `${getBaseUrl()}/news`,
   },
 };
 

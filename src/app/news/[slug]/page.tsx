@@ -17,6 +17,17 @@ import { notFound } from "next/navigation";
 import PrevNext from "@/components/content/PrevNext";
 import ShareBar from "@/components/mdx/ShareBar";
 
+function getNewsPostMeta(slug: string, image?: string) {
+  const baseUrl = getBaseUrl();
+  return {
+    baseUrl,
+    url: `${baseUrl}/news/${slug}`,
+    socialImage: image
+      ? new URL(image, baseUrl).toString()
+      : `${baseUrl}/images/business-marketing-solutions-concept-art.jpg`,
+  };
+}
+
 export function generateStaticParams() {
   return getAllNewsSlugs().map((slug: string) => ({ slug }));
 }
@@ -25,11 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const { slug } = await params;
     const post = getNewsBySlug(slug as string);
-    const baseUrl = getBaseUrl();
-    const url = `${baseUrl}/news/${slug}`;
-    const socialImage = post.frontmatter.image
-      ? new URL(post.frontmatter.image, baseUrl).toString()
-      : `${baseUrl}/images/business-marketing-solutions-concept-art.jpg`;
+    const { url, socialImage } = getNewsPostMeta(slug, post.frontmatter.image);
 
     return {
       title: post.frontmatter.title,
@@ -76,11 +83,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  const baseUrl = getBaseUrl();
-  const url = `${baseUrl}/news/${post.slug}`;
-  const socialImage = post.frontmatter.image
-    ? new URL(post.frontmatter.image, baseUrl).toString()
-    : `${baseUrl}/images/business-marketing-solutions-concept-art.jpg`;
+  const { baseUrl, url, socialImage } = getNewsPostMeta(post.slug, post.frontmatter.image);
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',

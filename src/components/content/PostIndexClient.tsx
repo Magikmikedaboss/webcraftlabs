@@ -20,7 +20,7 @@ interface PostIndexClientProps {
 }
 
 export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
-  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const optionRefs = useRef<(HTMLElement | null)[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [tagSearch, setTagSearch] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -180,6 +180,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             setHighlightedIndex(0);
           }}
           onKeyDown={handleInputKeyDown}
+          onBlur={() => { setDropdownOpen(false); setHighlightedIndex(-1); }}
           role="combobox"
           aria-controls="tag-combobox-listbox"
           aria-expanded={dropdownOpen}
@@ -200,14 +201,16 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             className="absolute z-10 mt-2 w-full bg-[var(--surface,theme(colors.slate.900))]/95 dark:bg-[var(--surface-dark,#0d1420)]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] max-h-60 overflow-auto"
           >
             {filteredTags.map((tag, idx) => (
-              <button
+              <div
                 key={tag}
                 ref={el => {
                   optionRefs.current[idx] = el ?? null;
                 }}
                 id={`tag-option-${idx}`}
                 role="option"
+                tabIndex={-1}
                 aria-selected={activeHighlightedIndex === idx}
+                onMouseDown={e => e.preventDefault()}
                 onMouseEnter={() => setHighlightedIndex(idx)}
                 onClick={() => {
                   setSelectedTag(tag);
@@ -215,14 +218,14 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
                   setTagSearch("");
                   setHighlightedIndex(-1);
                 }}
-                className={`w-full text-left px-4 py-2 text-sm transition ${
+                className={`w-full text-left px-4 py-2 text-sm cursor-default transition ${
                   activeHighlightedIndex === idx
                     ? kindTheme.btnActive
                     : "hover:bg-white/10"
                 }`}
               >
                 {tag} <span className="opacity-60">({tagCounts[tag]})</span>
-              </button>
+              </div>
             ))}
           </div>
         )}

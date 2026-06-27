@@ -107,25 +107,18 @@ export default function SiteShell({
             <span>{SITE.name}</span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation — driven by SITE.nav (first=About, last=Contact CTA, middle=Explore dropdown) */}
           <nav className="hidden items-center gap-1 md:flex">
-            <NavLink href="/about" label="About" />
+            <NavLink href={SITE.nav[0].href} label={SITE.nav[0].label} />
             <DropdownNav
               label="Explore"
-              items={[
-                { href: "/services", label: "Services" },
-                { href: "/portfolio", label: "Portfolio" },
-                { href: "/knowledge", label: "Knowledge" },
-                { href: "/build", label: "Build" },
-                { href: "/blog", label: "Blog" },
-                { href: "/news", label: "News" },
-              ]}
+              items={SITE.nav.slice(1, -1) as { href: string; label: string }[]}
             />
             <Link
-              href="/contact"
+              href={SITE.nav[SITE.nav.length - 1].href}
               className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-white shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
             >
-              Contact
+              {SITE.nav[SITE.nav.length - 1].label}
             </Link>
             <ThemeToggle />
           </nav>
