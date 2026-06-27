@@ -144,7 +144,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
       <Script id={`news-breadcrumb-jsonld-${post.slug}`} type="application/ld+json">
         {JSON.stringify(breadcrumbJsonLd)}
       </Script>
-      <main className="editorial mx-auto max-w-6xl px-6 py-12">
+      <div className="editorial mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[1fr,280px]">
           <article className="min-w-0">
             <header className="mb-10 border-b border-[var(--border)] pb-8">
@@ -212,7 +212,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
             </div>
           </aside>
         </div>
-      </main>
+      </div>
     </SiteShell>
   );
 }

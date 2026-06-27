@@ -605,7 +605,7 @@ export function ClassifiedHeader({
   const bar = "████████████████████████████████████████████████████";
   return (
     <div className="my-10 rounded-xl border border-slate-700 bg-slate-950 p-6 font-mono text-xs text-slate-100 shadow-2xl">
-      <div className="mb-5 overflow-hidden whitespace-nowrap tracking-widest text-slate-600">
+      <div aria-hidden="true" className="mb-5 overflow-hidden whitespace-nowrap tracking-widest text-slate-600">
         {bar}
       </div>
       <div className="space-y-1 text-center">
@@ -622,7 +622,7 @@ export function ClassifiedHeader({
           </div>
         </div>
       </div>
-      <div className="mt-5 overflow-hidden whitespace-nowrap tracking-widest text-slate-600">
+      <div aria-hidden="true" className="mt-5 overflow-hidden whitespace-nowrap tracking-widest text-slate-600">
         {bar}
       </div>
     </div>

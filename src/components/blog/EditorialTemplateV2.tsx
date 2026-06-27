@@ -278,7 +278,7 @@ export default function EditorialTemplateV2({
   const date = post.published || post.date;
 
   return (
-    <main
+    <div
       className="min-h-screen bg-[#fafaf7] px-3 py-4 text-slate-950 sm:px-6 sm:py-6 lg:px-8"
       aria-labelledby="post-title"
     >
@@ -356,6 +356,6 @@ export default function EditorialTemplateV2({
           <ReadNext related={related} />
         </div>
       </article>
-    </main>
+    </div>
   );
 }
