@@ -9,7 +9,9 @@ type MdxImageProps = {
 };
 
 function toNumber(value?: number | `${number}`) {
-  if (typeof value === "number") return value;
+  if (typeof value === "number") {
+    return Number.isFinite(value) && value > 0 ? value : undefined;
+  }
   if (typeof value === "string") {
     const parsed = Number(value);
     return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;

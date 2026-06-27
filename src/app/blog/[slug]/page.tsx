@@ -176,7 +176,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       tags: p!.frontmatter.tags as string[] | undefined,
     }));
 
-  const wordCount = post.content.split(/\s+/).length;
+  // Strip MDX import statements (no-ops with next-mdx-remote, but pollute word count)
+  const cleanContent = post.content.replace(/^import\s+.+\s+from\s+['"].+['"]\s*;?\s*$/gm, '').trim();
+  // Strip JSX/HTML tags and markdown syntax for an accurate word count
+  const wordCount = cleanContent
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/[`*#_\[\]()!]/g, ' ')
+    .split(/\s+/).filter(Boolean).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 200));
   const isLab = post.frontmatter.template === "lab";
 
@@ -239,7 +246,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           pageUrl={url}
         >
           <MDXRemote
-            source={post.content}
+            source={cleanContent}
             components={mdxComponents}
           />
         </LabNotebookTemplate>
@@ -263,7 +270,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           related={related}
         >
           <MDXRemote
-            source={post.content}
+            source={cleanContent}
             components={mdxComponents}
           />
         </EditorialTemplateV2>

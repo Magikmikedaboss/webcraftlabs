@@ -70,7 +70,7 @@ export default function AboutPage() {
               src="/images/web-development-lone-tree-in-the-middle-of-a-field-with-mountains.webp"
               alt="A lone tree in a field with mountains in the background"
               fill
-              sizes="100vw"
+              sizes="(max-width: 1280px) calc(100vw - 3rem), 1104px"
               className="object-cover object-center"
               priority
               fetchPriority="high"

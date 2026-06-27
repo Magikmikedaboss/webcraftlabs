@@ -61,6 +61,10 @@ export async function POST(req: NextRequest) {
     } catch {
       return NextResponse.json({ error: "Invalid JSON payload." }, { status: 400 });
     }
+    // Reject non-empty payloads that are not plain objects
+    if (body === null || typeof body !== "object" || Array.isArray(body)) {
+      return NextResponse.json({ error: "Invalid payload. Expected a JSON object." }, { status: 400 });
+    }
   }
 
   const hasUrlsProperty =

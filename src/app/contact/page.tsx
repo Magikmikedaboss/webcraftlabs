@@ -69,7 +69,7 @@ export default function ContactPage() {
                 <div className="text-sm font-semibold text-[var(--primary)]">WebCraft LabZ HQ</div>
                 <div className="mt-2 text-sm text-[var(--muted)]">
                   {SITE.address.label}<br />
-                  <span className="font-semibold text-[var(--primary)]">{SITE.email}</span>
+                  <a href={`mailto:${SITE.email}`} className="font-semibold text-[var(--primary)] hover:opacity-80">{SITE.email}</a>
                 </div>
                 <div className="mt-6 text-sm">
                   <div className="font-semibold">Typical turnaround</div>

@@ -278,7 +278,11 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             {/* Footer */}
             <div className="flex items-center justify-between text-xs text-[var(--muted)]">
               <span>
-                {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(post.date))}
+                {(() => {
+                  const [y, m, d] = (post.date || '').split('-').map(Number);
+                  const dt = new Date(y, (m || 1) - 1, d || 1);
+                  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(dt);
+                })()}
               </span>
 
               <span className={`flex items-center gap-1 font-semibold ${kindTheme.link} ${kindTheme.linkHover} transition`}>

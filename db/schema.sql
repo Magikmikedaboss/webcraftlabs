@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS documents (
 );
 CREATE TABLE IF NOT EXISTS chunks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source_id TEXT NOT NULL REFERENCES sources(id),
     document_id INTEGER NOT NULL REFERENCES documents(id),
     page_number INTEGER,
     section TEXT,
@@ -27,8 +26,6 @@ CREATE TABLE IF NOT EXISTS entities (
 );
 CREATE TABLE IF NOT EXISTS research_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source_id TEXT NOT NULL REFERENCES sources(id),
-    document_id INTEGER NOT NULL REFERENCES documents(id),
     chunk_id INTEGER NOT NULL REFERENCES chunks(id),
     page_number INTEGER,
     domain TEXT,
@@ -64,3 +61,10 @@ CREATE TABLE IF NOT EXISTS quantitative_measurements (
     event_id INTEGER NOT NULL REFERENCES research_events(id),
     measurement TEXT
 );
+-- Child-side FK indexes (not covered by PK or leftmost composite key)
+CREATE INDEX IF NOT EXISTS idx_documents_source_id ON documents(source_id);
+CREATE INDEX IF NOT EXISTS idx_chunks_document_id ON chunks(document_id);
+CREATE INDEX IF NOT EXISTS idx_research_events_chunk_id ON research_events(chunk_id);
+CREATE INDEX IF NOT EXISTS idx_event_entities_entity_id ON event_entities(entity_id);
+CREATE INDEX IF NOT EXISTS idx_event_tags_tag_id ON event_tags(tag_id);
+CREATE INDEX IF NOT EXISTS idx_quantitative_measurements_event_id ON quantitative_measurements(event_id);

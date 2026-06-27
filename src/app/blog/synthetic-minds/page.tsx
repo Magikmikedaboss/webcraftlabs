@@ -1,7 +1,7 @@
 
+import { permanentRedirect } from "next/navigation";
 
-import { notFound } from "next/navigation";
-
-// This route is now deprecated. Synthetic Minds intro is now a blog post.
+// Synthetic Minds intro is now the series overview blog post.
 export default function Page() {
-  return notFound();}
+  permanentRedirect("/blog/synthetic-minds-series");
+}

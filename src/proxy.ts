@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Validate and parse NEXT_PUBLIC_SITE_URL at module load time.
-// If unset (dev / preview), allowedOrigins is null and the domain check is skipped —
-// only the presence of origin/referer is enforced on state-changing requests.
+// When unset (preview/dev), allowedOrigins is null and the guard falls back to
+// request.nextUrl.origin at request time — only same-origin requests are accepted.
+// Set NEXT_PUBLIC_SITE_URL in production for an explicit allowlist.
 const allowedOriginRaw = process.env.NEXT_PUBLIC_SITE_URL;
 let allowedOrigins: string[] | null = null;
 
@@ -13,6 +14,8 @@ if (allowedOriginRaw) {
     allowedOrigins = [primaryOrigin];
     if (primaryOrigin === 'http://localhost:3000') {
       allowedOrigins.push('http://127.0.0.1:3000');
+    } else if (primaryOrigin === 'http://127.0.0.1:3000') {
+      allowedOrigins.push('http://localhost:3000');
     }
   } catch (err) {
     const errorMsg = `FATAL: Invalid NEXT_PUBLIC_SITE_URL configuration: "${allowedOriginRaw}". Must be a valid URL.`;
@@ -32,11 +35,15 @@ export async function proxy(request: NextRequest) {
   if (isStateChanging && !origin && !referer) {
     return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
   }  
+  // When no explicit allowlist is configured, fall back to the server's own origin
+  // so preview deployments work without bypassing the CSRF guard entirely.
+  const effectiveOrigins = allowedOrigins ?? [request.nextUrl.origin];
+
   // Check origin header if present
   if (origin) {
     try {
       const originNormalized = new URL(origin).origin;
-      if (allowedOrigins !== null && !allowedOrigins.includes(originNormalized)) {
+      if (!effectiveOrigins.includes(originNormalized)) {
         return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
       }
     } catch {
@@ -49,7 +56,7 @@ export async function proxy(request: NextRequest) {
   if (referer) {
     try {
       const refererOrigin = new URL(referer).origin;
-      if (allowedOrigins !== null && !allowedOrigins.includes(refererOrigin)) {
+      if (!effectiveOrigins.includes(refererOrigin)) {
         return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
       }
     } catch {

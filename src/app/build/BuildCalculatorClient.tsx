@@ -259,8 +259,9 @@ export default function BuildCalculatorClient() {
               </div>
 
               <div className="mt-6">
-                <div className="text-sm font-semibold text-[var(--text)] mb-1">Build sheet</div>
+                <label htmlFor="build-sheet-textarea" className="text-sm font-semibold text-[var(--text)] mb-1 block">Build sheet</label>
                 <textarea
+                  id="build-sheet-textarea"
                   readOnly
                   value={est.buildSheetText}
                   className="min-h-[120px] mt-2 h-64 w-full rounded-2xl border-2 border-[var(--border)] bg-[var(--surface)] p-4 text-xs text-[var(--text)] shadow-inner transition-all duration-200"

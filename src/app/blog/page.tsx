@@ -27,7 +27,7 @@ export default function BlogIndexPage() {
     kind: "blog" as const,
   }));
 
-  const postsWithoutIntro = posts.filter(p => p.slug !== INTRO_POST_SLUG);
+  const postsWithoutIntro = posts;
 
   return (
     <SiteShell background="surface">
@@ -68,8 +68,7 @@ export default function BlogIndexPage() {
             </div>
 
             <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
-              WebCraft LabZ
-              <span className="block mt-3 bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-400 bg-clip-text text-transparent">
+              {SITE.name}              <span className="block mt-3 bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-400 bg-clip-text text-transparent">
                 Tech & Development Blog
               </span>
             </h1>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import BuildCalculatorClient from "./BuildCalculatorClient";
-import { SITE } from "@/lib/site";
+import { SITE, getBaseUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Build Calculator",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ["/images/dynamic-website-speed-light-trails-with-long-exposure-.jpg"],
   },
   alternates: {
-    canonical: new URL('/build', SITE.url).toString(),
+    canonical: `${getBaseUrl()}/build`,
   },
 };
 export default function BuildPage() {

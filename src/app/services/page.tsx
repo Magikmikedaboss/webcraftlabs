@@ -161,7 +161,7 @@ export default function ServicesPage() {
               src="/images/beautiful-landscape-with-trees-and-mountains-marketing-agency-hero.webp"
               alt="Professional marketing services landscape"
               fill
-              sizes="(max-width: 1280px) calc(100vw - 3rem), 1152px"              className="object-cover object-center"
+              sizes="(max-width: 1280px) calc(100vw - 3rem), 1104px"              className="object-cover object-center"
               priority
               fetchPriority="high"
             />
@@ -260,7 +260,7 @@ export default function ServicesPage() {
                   href={s.href || "/contact"}
                   className="inline-flex items-center rounded-lg border border-[var(--primary)]/25 bg-[var(--primary)]/5 px-3 py-1.5 text-xs font-semibold text-[var(--primary)] hover:opacity-80"
                 >
-                  Learn more →
+                  {s.href ? 'Learn more →' : 'Get in touch →'}
                 </Link>
               </div>
             </div>
