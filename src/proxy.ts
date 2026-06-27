@@ -1,20 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Validate and parse NEXT_PUBLIC_SITE_URL at module load time
-const allowedOriginRaw = process.env.NEXT_PUBLIC_SITE_URL || 'https://webcraftlabz.com';
-let allowedOrigins: string[];
+// Validate and parse NEXT_PUBLIC_SITE_URL at module load time.
+// If unset (dev / preview), allowedOrigins is null and the domain check is skipped —
+// only the presence of origin/referer is enforced on state-changing requests.
+const allowedOriginRaw = process.env.NEXT_PUBLIC_SITE_URL;
+let allowedOrigins: string[] | null = null;
 
-try {
-  const primaryOrigin = new URL(allowedOriginRaw).origin;
-  // Allow localhost variations for development
-  allowedOrigins = [primaryOrigin];
-  if (primaryOrigin === 'http://localhost:3000') {
-    allowedOrigins.push('http://127.0.0.1:3000');
+if (allowedOriginRaw) {
+  try {
+    const primaryOrigin = new URL(allowedOriginRaw).origin;
+    // Allow localhost variations for development
+    allowedOrigins = [primaryOrigin];
+    if (primaryOrigin === 'http://localhost:3000') {
+      allowedOrigins.push('http://127.0.0.1:3000');
+    }
+  } catch (err) {
+    const errorMsg = `FATAL: Invalid NEXT_PUBLIC_SITE_URL configuration: "${allowedOriginRaw}". Must be a valid URL.`;
+    console.error(errorMsg, err);
+    throw new Error(errorMsg);
   }
-} catch (err) {
-  const errorMsg = `FATAL: Invalid NEXT_PUBLIC_SITE_URL configuration: "${allowedOriginRaw}". Must be a valid URL.`;
-  console.error(errorMsg, err);
-  throw new Error(errorMsg);
 }
 
 export async function proxy(request: NextRequest) {
@@ -32,7 +36,7 @@ export async function proxy(request: NextRequest) {
   if (origin) {
     try {
       const originNormalized = new URL(origin).origin;
-      if (!allowedOrigins.includes(originNormalized)) {
+      if (allowedOrigins !== null && !allowedOrigins.includes(originNormalized)) {
         return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
       }
     } catch {
@@ -45,7 +49,7 @@ export async function proxy(request: NextRequest) {
   if (referer) {
     try {
       const refererOrigin = new URL(referer).origin;
-      if (!allowedOrigins.includes(refererOrigin)) {
+      if (allowedOrigins !== null && !allowedOrigins.includes(refererOrigin)) {
         return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
       }
     } catch {

@@ -1,13 +1,13 @@
 export default function SplitCompare({
   leftTitle,
   rightTitle,
-  left,
-  right,
+  left = [],
+  right = [],
 }: {
   leftTitle: string;
   rightTitle: string;
-  left: string[];
-  right: string[];
+  left?: string[];
+  right?: string[];
 }) {
   return (
     <div

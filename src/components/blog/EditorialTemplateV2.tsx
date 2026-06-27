@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+﻿﻿import Image from "next/image";
 import Link from "next/link";
 import ShareBarClient from "../ShareBarClient";
 import { BLUR_DATA_URL as BLUR } from "./constants";
@@ -57,11 +57,15 @@ export function Chapter({
   number = 1,
   title,
   eyebrow,
+  image,
+  imageAlt,
   children,
 }: {
   number?: number;
   title: string;
   eyebrow?: string;
+  image?: string;
+  imageAlt?: string;
   children?: React.ReactNode;
 }) {
   return (
@@ -79,6 +83,17 @@ export function Chapter({
           {title}
         </h2>
       </div>
+      {image && (
+        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-100 shadow-sm sm:rounded-[2rem]">
+          <Image
+            src={image}
+            alt={imageAlt ?? title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
+        </div>
+      )}
       <div className="prose prose-slate mt-8 max-w-none prose-lg prose-headings:font-black prose-headings:tracking-tight prose-p:leading-8 prose-a:text-indigo-700 prose-strong:text-slate-950 sm:prose-xl sm:prose-p:leading-9">
         {children}
       </div>
@@ -293,7 +308,7 @@ export default function EditorialTemplateV2({
             </p>
           )}
           <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-500 sm:mt-9">
-            <span>By {post.author || "WebCraft Labs"}</span>
+            <span>By {post.author || "WebCraft Labz"}</span>
             {date && (
               <>
                 <span>·</span>
@@ -329,7 +344,7 @@ export default function EditorialTemplateV2({
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
               {post.ctaText ||
-                "WebCraft Labs builds fast, polished websites for businesses and creators who want their ideas to feel premium from the first scroll."}
+                "WebCraft Labz builds fast, polished websites for businesses and creators who want their ideas to feel premium from the first scroll."}
             </p>
             <Link
               href={post.ctaHref || "/contact"}

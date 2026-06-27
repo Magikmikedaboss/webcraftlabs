@@ -244,42 +244,54 @@ Final conclusion block.
 ## Basic Article Shape
 
 ```mdx
-<LabHero />
+<LabHero
+  label="Research Note"
+  date="Month YYYY"
+  title="Post Title"
+  edition="Edition Name"
+  subtitle="Short subtitle."
+/>
 
-<LabContents />
+<LabContents items={[]} />
 
-<QuickPicks />
+<QuickPicks picks={[]} />
 
-<LabSection number="01" eyebrow="..." title="...">
-  <LabNote title="..." />
+<LabSection number="01" eyebrow="Eyebrow" title="Section Title">
+  <LabNote title="Note Title">Note text.</LabNote>
 </LabSection>
 
-<LabSection number="02" eyebrow="..." title="...">
+<LabSection number="02" eyebrow="Eyebrow" title="Section Title">
   <LabStackDiagram />
-  <LabObservation title="..." />
+  <LabObservation title="Observation">Observation text.</LabObservation>
 </LabSection>
 
-<LabSection number="03" eyebrow="..." title="...">
-  <FrameworkScorecard ... />
+<LabSection number="03" eyebrow="Eyebrow" title="Section Title">
+  <FrameworkScorecard
+    name="Tool Name"
+    scores={[]}
+  />
 </LabSection>
 
-<LabSection number="04" eyebrow="..." title="...">
-  <FrameworkTable rows={[...]} />
+<LabSection number="04" eyebrow="Eyebrow" title="Section Title">
+  <FrameworkTable rows={[]} />
 </LabSection>
 
-<LabSection number="05" eyebrow="..." title="...">
-  <ExperimentResult ... />
+<LabSection number="05" eyebrow="Eyebrow" title="Section Title">
+  <ExperimentResult
+    title="Experiment Title"
+    results={[]}
+  />
 </LabSection>
 
-<LabSection number="06" eyebrow="..." title="...">
+<LabSection number="06" eyebrow="Eyebrow" title="Section Title">
   <DecisionFlow />
 </LabSection>
 
-<FAQ items={[...]} />
+<FAQ items={[]} />
 
-<NextSteps steps={[...]} />
+<NextSteps steps={[]} />
 
-<LabVerdict title="...">
-  ...
+<LabVerdict title="The Verdict">
+  Conclusion text.
 </LabVerdict>
 ```

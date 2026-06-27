@@ -1,4 +1,5 @@
 const config = {
+  plugins: ["stylelint-scss"],
   rules: {
     "scss/at-rule-no-unknown": [
       true,

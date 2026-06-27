@@ -220,8 +220,8 @@
   animation: fade-in-up 0.5s ease both;
 
   --i: 0;
-  animation-delay: calc(var(--i) * var(--stagger-delay));
-}
+
+  animation-delay: calc(var(--i) * var(--stagger-delay));}
 .editorial .prose > *:nth-child(1)  { --i: 0; }
 .editorial .prose > *:nth-child(2)  { --i: 1; }
 .editorial .prose > *:nth-child(3)  { --i: 2; }

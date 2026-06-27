@@ -24,7 +24,7 @@ const learningPaths = [
   {
     title: "Future of Work",
     description: "The shift from output-heavy work to systems that amplify taste, judgment, and speed.",
-    href: "/news/2026-manifesto-from-websites-to-systems",
+    href: "/news/manifesto",
     tone: "from-cyan-500 to-emerald-500",
   },
   {
@@ -57,7 +57,7 @@ const topicMap = [
   {
     title: "Future Systems",
     description: "Platforms that learn, adapt, and expand what teams can do.",
-    href: "/news/2026-manifesto-from-websites-to-systems",
+    href: "/news/manifesto",
     chips: ["Systems", "Automation", "Adaptation"],
   },
   {
@@ -107,7 +107,7 @@ const modules = [
   },
   {
     title: "Future of Work",
-    href: "/news/2026-manifesto-from-websites-to-systems",
+    href: "/news/manifesto",
     summary: "The shift from static sites to adaptive, intelligent systems.",
     items: [
       "Start Here: Websites to systems",
@@ -153,7 +153,7 @@ const featuredArticles = [
   {
     title: "From Websites to Systems",
     description: "The broader shift behind the hub: interfaces becoming intelligence layers.",
-    href: "/news/2026-manifesto-from-websites-to-systems",
+    href: "/news/manifesto",
     label: "Manifesto",
   },
 ] as const;

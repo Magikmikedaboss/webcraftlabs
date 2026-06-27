@@ -6,14 +6,14 @@ CREATE TABLE IF NOT EXISTS sources (
 );
 CREATE TABLE IF NOT EXISTS documents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source_id TEXT,
+    source_id TEXT NOT NULL REFERENCES sources(id),
     path TEXT,
     file_hash TEXT
 );
 CREATE TABLE IF NOT EXISTS chunks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source_id TEXT,
-    document_id INTEGER,
+    source_id TEXT NOT NULL REFERENCES sources(id),
+    document_id INTEGER NOT NULL REFERENCES documents(id),
     page_number INTEGER,
     section TEXT,
     text TEXT
@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS entities (
 );
 CREATE TABLE IF NOT EXISTS research_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source_id TEXT,
-    document_id INTEGER,
-    chunk_id INTEGER,
+    source_id TEXT NOT NULL REFERENCES sources(id),
+    document_id INTEGER NOT NULL REFERENCES documents(id),
+    chunk_id INTEGER NOT NULL REFERENCES chunks(id),
     page_number INTEGER,
     domain TEXT,
     event_type TEXT,
@@ -45,20 +45,22 @@ CREATE TABLE IF NOT EXISTS research_events (
     confidence_v TEXT
 );
 CREATE TABLE IF NOT EXISTS event_entities (
-    event_id INTEGER,
-    entity_id INTEGER,
-    role TEXT
+    event_id INTEGER NOT NULL REFERENCES research_events(id),
+    entity_id INTEGER NOT NULL REFERENCES entities(id),
+    role TEXT,
+    PRIMARY KEY (event_id, entity_id)
 );
 CREATE TABLE IF NOT EXISTS tags (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    tag TEXT
+    tag TEXT NOT NULL UNIQUE
 );
 CREATE TABLE IF NOT EXISTS event_tags (
-    event_id INTEGER,
-    tag TEXT
+    event_id INTEGER NOT NULL REFERENCES research_events(id),
+    tag_id INTEGER NOT NULL REFERENCES tags(id),
+    PRIMARY KEY (event_id, tag_id)
 );
 CREATE TABLE IF NOT EXISTS quantitative_measurements (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    event_id INTEGER,
+    event_id INTEGER NOT NULL REFERENCES research_events(id),
     measurement TEXT
 );

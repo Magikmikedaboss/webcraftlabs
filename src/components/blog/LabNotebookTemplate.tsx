@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ShareBarClient from "../ShareBarClient";
+import { SITE } from "@/lib/site";
 
 interface PostProps {
   title: string;
@@ -30,7 +31,7 @@ export default function LabNotebookTemplate({
             <span className="grid size-7 place-items-center rounded bg-white text-sm font-black text-black">
               W
             </span>
-            WebCraft Labs
+            {SITE.name}
           </Link>
           <Link href="/blog" className="text-lg" aria-label="Blog">
             <span aria-hidden="true">☰</span>
@@ -44,7 +45,7 @@ export default function LabNotebookTemplate({
           )}
           {children}
           <footer className="border-t border-black/10 px-5 sm:px-8 lg:px-16 xl:px-20 py-10 lg:py-16 font-mono text-xs text-slate-500">
-            <p>Filed by {post.author || "WebCraft Labs"}</p>
+            <p>Filed by {post.author || SITE.name}</p>
             {readMins && <p className="mt-2">{readMins} minute read</p>}
           </footer>
         </div>

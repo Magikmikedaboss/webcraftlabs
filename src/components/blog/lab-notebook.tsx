@@ -170,7 +170,7 @@ export function FrameworkScorecard({
             <div key={score.label}>
               <div className="mb-1 flex justify-between font-mono text-xs">
                 <span>{score.label}</span>
-                <span>{score.value}/10</span>
+                <span>{Math.max(0, Math.min(10, score.value))}/10</span>
               </div>
               <div className="h-2 rounded-full bg-slate-200">
                 <div
@@ -401,13 +401,14 @@ export function FrameworkTable({ rows = [] }: { rows: FrameworkTableRow[] }) {
   return (
     <div className="my-8 overflow-hidden rounded-[1.5rem] border border-black/10 bg-white/80 shadow-sm">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[620px] text-left text-sm">
+        <table className="w-full min-w-[740px] text-left text-sm">
           <thead className="bg-slate-950 font-mono text-xs uppercase tracking-wide text-white">
             <tr>
               <th className="px-4 py-4">Framework</th>
               <th className="px-4 py-4">Performance</th>
               <th className="px-4 py-4">SEO</th>
               <th className="px-4 py-4">Learning</th>
+              <th className="px-4 py-4">Ecosystem</th>
               <th className="px-4 py-4">Best For</th>
             </tr>
           </thead>
@@ -418,6 +419,7 @@ export function FrameworkTable({ rows = [] }: { rows: FrameworkTableRow[] }) {
                 <td className="px-4 py-4">{row.performance != null ? `${row.performance}/10` : "—"}</td>
                 <td className="px-4 py-4">{row.seo != null ? `${row.seo}/10` : "—"}</td>
                 <td className="px-4 py-4">{row.learning != null ? `${row.learning}/10` : "—"}</td>
+                <td className="px-4 py-4">{row.ecosystem != null ? `${row.ecosystem}/10` : "—"}</td>
                 <td className="px-4 py-4">{row.best || "—"}</td>
               </tr>
             ))}

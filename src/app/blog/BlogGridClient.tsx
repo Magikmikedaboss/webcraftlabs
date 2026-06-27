@@ -1,4 +1,3 @@
-"use client";
 import PostIndexClient from "@/components/content/PostIndexClient";
 
 type BlogGridPost = {

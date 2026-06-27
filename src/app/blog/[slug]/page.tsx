@@ -240,7 +240,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         >
           <MDXRemote
             source={post.content}
-            options={{ blockJS: false, blockDangerousJS: true }}
             components={mdxComponents}
           />
         </LabNotebookTemplate>
@@ -265,7 +264,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         >
           <MDXRemote
             source={post.content}
-            options={{ blockJS: false, blockDangerousJS: true }}
             components={mdxComponents}
           />
         </EditorialTemplateV2>

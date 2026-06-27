@@ -166,6 +166,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
       <div className="mb-10 relative max-w-xs w-full">
         <input
           ref={inputRef}
+          aria-label={`Filter ${kindLabel.toLowerCase()} posts by tag`}
           type="text"
           placeholder="Filter by tag..."
           value={tagSearch}
@@ -191,7 +192,6 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
           }
           className={`w-full px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-sm focus:outline-none focus:ring-2 ${kindTheme.focusRing} transition-all`}
         />
-
         {dropdownOpen && (
           <div
             ref={dropdownRef}

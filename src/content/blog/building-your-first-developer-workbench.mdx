@@ -219,9 +219,14 @@ Project Has a Home
 You don't need to master Git on day one. Start with:
 
 ```bash
+# If this is a brand-new repo, set up the remote first:
+git remote add origin https://github.com/your-username/your-repo.git
+git branch -M main
+
+# Then commit and push:
 git add .
 git commit -m "initial project setup"
-git push
+git push -u origin main
 ```
 
 That's the beginner doorway. Walk through it.

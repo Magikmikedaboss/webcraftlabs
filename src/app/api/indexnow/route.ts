@@ -54,10 +54,19 @@ export async function POST(req: NextRequest) {
   const siteHost = new URL(baseUrl).host;
 
   let body: unknown;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON payload." }, { status: 400 });
+  const contentType = req.headers.get("content-type");
+  const contentLength = req.headers.get("content-length");
+  const hasExplicitBody = contentType != null || (contentLength != null && contentLength !== "0");
+
+  if (hasExplicitBody) {
+  let body: unknown = {};
+  const rawBody = await req.text();
+  if (rawBody.trim()) {
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON payload." }, { status: 400 });
+    }
   }
 
   const hasUrlsProperty =
@@ -79,7 +88,6 @@ export async function POST(req: NextRequest) {
         .map((url: string) => normalizeCandidateUrl(url, siteHost))
         .filter((url: string | null): url is string => Boolean(url))
     : await getSitemapUrls(siteHost);
-
   const uniqueUrls = [...new Set(urls)].slice(0, 10000);
   if (uniqueUrls.length === 0) {
     return NextResponse.json(

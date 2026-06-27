@@ -1,4 +1,4 @@
-name: Submit IndexNow URLs
+﻿name: Submit IndexNow URLs
 
 on:
   push:
@@ -31,15 +31,6 @@ jobs:
           if [[ "$INDEXNOW_ENDPOINT" != https://* ]]; then
             echo "INDEXNOW_ENDPOINT must use https://."
             exit 1
-          fi
-
-          if [ -n "${INDEXNOW_ENDPOINT_HOST:-}" ]; then
-            endpoint_host="${INDEXNOW_ENDPOINT#https://}"
-            endpoint_host="${endpoint_host%%/*}"
-            if [ "$endpoint_host" != "$INDEXNOW_ENDPOINT_HOST" ]; then
-              echo "INDEXNOW_ENDPOINT host does not match INDEXNOW_ENDPOINT_HOST."
-              exit 1
-            fi
           fi
 
           curl --fail --show-error --silent --max-time 30 \

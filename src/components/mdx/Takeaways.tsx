@@ -5,9 +5,12 @@ export default function Takeaways({
   title?: string;
   items?: { id: string; text: string }[];
 }) {
-  if (!Array.isArray(items) || items.length === 0) {
-    return null;
+  if (!Array.isArray(items)) {
+    throw new Error("Takeaways.items must be an array.");
   }
+
+  if (items.length === 0) {
+    return null;  }
 
   return (
     <div className="takeaways">
