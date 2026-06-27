@@ -46,6 +46,9 @@ import {
   FrameworkAccordion,
   FAQ,
   NextSteps,
+  ClassifiedHeader,
+  RecoveredLog,
+  SystemOutput,
 } from "@/components/blog/lab-notebook";
 import { getBaseUrl, SITE } from "@/lib/site";
 
@@ -220,6 +223,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     FrameworkAccordion,
     FAQ,
     NextSteps,
+    ClassifiedHeader,
+    RecoveredLog,
+    SystemOutput,
     img: MdxImage,
     Link,
     Image,

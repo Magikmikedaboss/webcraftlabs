@@ -142,16 +142,18 @@ export default function SiteShell({
         </div>
       </header>
 
-      {(title || intro) && (
-        <section className="border-b border-[var(--border)]">
-          <div className="mx-auto max-w-7xl px-6 py-8">
-            {title && <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">{title}</h1>}
-            {intro && <div className="mt-2 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">{intro}</div>}
-          </div>
-        </section>
-      )}
+      <main>
+        {(title || intro) && (
+          <section className="border-b border-[var(--border)]">
+            <div className="mx-auto max-w-7xl px-6 py-8">
+              {title && <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">{title}</h1>}
+              {intro && <div className="mt-2 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">{intro}</div>}
+            </div>
+          </section>
+        )}
 
-      {children}
+        {children}
+      </main>
 
       <footer className="border-t border-[var(--border)]">
         <div className="mx-auto max-w-7xl px-6 py-12">

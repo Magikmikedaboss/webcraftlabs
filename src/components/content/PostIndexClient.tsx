@@ -279,9 +279,17 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             <div className="flex items-center justify-between text-xs text-[var(--muted)]">
               <span>
                 {(() => {
-                  const [y, m, d] = (post.date || '').split('-').map(Number);
-                  const dt = new Date(y, (m || 1) - 1, d || 1);
-                  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(dt);
+                  const parts = (post.date || '').split('-').map(Number);
+                  const [y, m, d] = parts;
+                  if (!y || !m || !d || !Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) return null;
+                  const dt = new Date(y, m - 1, d);
+                  if (
+                    dt.getFullYear() !== y ||
+                    dt.getMonth() !== m - 1 ||
+                    dt.getDate() !== d
+                  ) {
+                    return null;
+                  }                  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(dt);
                 })()}
               </span>
 
