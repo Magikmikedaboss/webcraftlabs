@@ -1,4 +1,4 @@
-import { SITE } from "@/lib/site";
+import { SITE, getBaseUrl } from "@/lib/site";
 import SiteShell from "@/components/SiteShell";
 import ContactForm from "./ContactForm";
 import Script from "next/script";
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: `Contact ${SITE.name} | Las Vegas Web Design & Marketing`,
     description: `Contact ${SITE.name} for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.`,
     type: "website",
-    url: new URL('/contact', SITE.url).toString(),
+    url: `${getBaseUrl()}/contact`,
     siteName: SITE.name,
     images: [
       {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     images: ["/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg"],
   },
   alternates: {
-    canonical: new URL('/contact', SITE.url).toString()
+    canonical: `${getBaseUrl()}/contact`
   }
 };
 
@@ -37,7 +37,7 @@ export default function ContactPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    '@id': `${SITE.url}#organization`,
+    '@id': `${getBaseUrl()}#organization`,
     contactPoint: [{
       '@type': 'ContactPoint',
       email: SITE.email,

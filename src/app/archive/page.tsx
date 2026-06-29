@@ -136,17 +136,6 @@ export default function ArchivePage() {
             </Section>
           )}
 
-          {/* Orientation */}
-          {archivePosts
-            .filter((p) => getDocType(p.frontmatter.archiveId) === "Orientation")
-            .map((post) => (
-              <div key={post.slug} className="pt-8 border-t border-slate-800">
-                <p className="text-xs font-mono tracking-widest text-slate-600 uppercase mb-4">
-                  Orientation
-                </p>
-                <ArchiveCard post={post} />
-              </div>
-            ))}
 
         </main>
 

@@ -62,7 +62,7 @@ export function getPostBySlug(slug: string): { slug: string; content: string; fr
 }
 
 export function getAllPosts() {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date()); // YYYY-MM-DD site-local
   return getAllPostSlugs()
     .map((slug) => getPostBySlug(slug))
     .filter((p) => p.frontmatter.date <= today)

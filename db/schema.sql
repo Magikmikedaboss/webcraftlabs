@@ -1,4 +1,4 @@
--- Example schema for RSS Feed Ingestion System
+-- Schema for research documents, chunks, entities, and events
 CREATE TABLE IF NOT EXISTS sources (
     id TEXT NOT NULL PRIMARY KEY,
     name TEXT,

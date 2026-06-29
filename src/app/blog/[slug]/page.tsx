@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/blog/${slug}`;
     const socialImage = new URL(
-      post.frontmatter.image || "/images/structure-database-software-development.jpg",
+      post.frontmatter.image || "/images/structure-database-software-development.webp",
       siteUrl,
     ).toString();
 
@@ -115,7 +115,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/blog/${post.slug}`;
   const socialImage = new URL(
-    post.frontmatter.image || "/images/structure-database-software-development.jpg",
+    post.frontmatter.image || "/images/structure-database-software-development.webp",
     siteUrl,
   ).toString();
   const articleJsonLd = {
