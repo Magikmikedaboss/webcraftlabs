@@ -231,7 +231,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     HandwrittenNote,
     img: MdxImage,
     Link,
-    Image,
+    Image: MdxImage,
   };
 
   return (
