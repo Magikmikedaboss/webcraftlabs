@@ -98,7 +98,7 @@ const config: ServicePageConfig = {
   shellIntro:
     "Improve search visibility with technical SEO, faster pages, cleaner site structure, stronger internal linking, and local search foundations.",
   hero: {
-    src: "/images/close-up-shot-of-man-wearing-glasses-reflecting-web-design-development.jpg",
+    src: "/images/close-up-shot-of-man-wearing-glasses-reflecting-web-design-development.webp",
     alt: "Technical SEO analysis and optimization workflow",
   },
   eyebrow: "Technical SEO",

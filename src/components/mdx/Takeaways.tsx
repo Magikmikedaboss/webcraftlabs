@@ -6,7 +6,7 @@ export default function Takeaways({
   items?: { id: string; text: string }[];
 }) {
   if (!Array.isArray(items)) {
-    throw new Error("Takeaways.items must be an array.");
+    return null;
   }
 
   if (items.length === 0) {

@@ -11,12 +11,12 @@ type Post = {
   description: string;
   date: string;
   tags: string[];
-  kind: string;
+  kind: "blog" | "news";
 };
 
 interface PostIndexClientProps {
   posts: Post[];
-  kind: string;
+  kind: "blog" | "news";
 }
 
 export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {

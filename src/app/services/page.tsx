@@ -44,7 +44,7 @@ const SERVICES = [
     ),
   },
   {
-    title: "Marketing Websites",
+    title: "Las Vegas Web Design",
     text: "Premium websites engineered to rank, load fast, and convert visitors into calls.",
     href: "/las-vegas-web-design",
     bullets: ["Custom design system", "Local SEO-ready structure", "Speed + accessibility pass"],

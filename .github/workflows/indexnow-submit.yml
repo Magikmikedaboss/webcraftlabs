@@ -9,6 +9,9 @@ on:
       - "src/content/news/**"
       - "src/app/sitemap.ts"
       - "src/app/api/indexnow/**"
+      - "src/app/knowledge/page.tsx"
+      - "src/app/las-vegas-web-design/page.tsx"
+      - "src/app/services/**"
   workflow_dispatch:
 
 jobs:

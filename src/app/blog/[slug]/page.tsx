@@ -48,6 +48,7 @@ import {
   ClassifiedHeader,
   RecoveredLog,
   SystemOutput,
+  HandwrittenNote,
 } from "@/components/blog/lab-notebook";
 import { getBaseUrl, SITE } from "@/lib/site";
 
@@ -225,6 +226,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     ClassifiedHeader,
     RecoveredLog,
     SystemOutput,
+    HandwrittenNote,
     img: MdxImage,
     Link,
     Image,

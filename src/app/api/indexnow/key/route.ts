@@ -20,7 +20,7 @@ export function GET() {
   return new Response(key, {
     headers: {
       ...TEXT_HEADERS,
-      "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+      "Cache-Control": "no-store",
       "X-IndexNow-Key-Location": `${baseUrl}/api/indexnow/key`,
     },
   });

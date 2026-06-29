@@ -50,7 +50,7 @@ export default function AboutPage() {
       }
       intro={
         <div className="max-w-3xl space-y-4">
-          <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
+          <p className="text-lg sm:text-xl text-[var(--muted)] leading-relaxed">
             WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows designed for the next generation of business.
           </p>
           <p className="text-base text-[var(--muted)]">

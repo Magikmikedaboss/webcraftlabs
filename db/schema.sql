@@ -1,6 +1,6 @@
 -- Example schema for RSS Feed Ingestion System
 CREATE TABLE IF NOT EXISTS sources (
-    id TEXT PRIMARY KEY,
+    id TEXT NOT NULL PRIMARY KEY,
     name TEXT,
     metadata TEXT
 );
