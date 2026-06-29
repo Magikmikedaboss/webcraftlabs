@@ -6,9 +6,9 @@ type BlogGridPost = {
   description: string;
   date: string;
   tags: string[];
-  kind: string;
+  kind: "blog" | "news";
 };
 
-export default function BlogGridClient({ posts, kind }: { posts: BlogGridPost[]; kind: string }) {
+export default function BlogGridClient({ posts, kind }: { posts: BlogGridPost[]; kind: "blog" | "news" }) {
   return <PostIndexClient posts={posts} kind={kind} />;
 }

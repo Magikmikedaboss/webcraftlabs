@@ -1,14 +1,22 @@
-﻿name: Submit IndexNow URLs
+name: Submit IndexNow URLs
 
 on:
   push:
     branches:
       - main
     paths:
+      - "src/app/page.tsx"
+      - "src/app/about/page.tsx"
+      - "src/app/contact/page.tsx"
+      - "src/app/portfolio/page.tsx"
+      - "src/app/build/page.tsx"
       - "src/content/blog/**"
       - "src/content/news/**"
       - "src/app/sitemap.ts"
       - "src/app/api/indexnow/**"
+      - "src/app/knowledge/page.tsx"
+      - "src/app/las-vegas-web-design/page.tsx"
+      - "src/app/services/**"
   workflow_dispatch:
 
 jobs:

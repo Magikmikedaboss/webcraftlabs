@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import "@/app/blog/editorial.css";
 
 import { getAllPostSlugs, getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
+import ArchiveNav from "@/components/archive/ArchiveNav";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -48,6 +49,7 @@ import {
   ClassifiedHeader,
   RecoveredLog,
   SystemOutput,
+  HandwrittenNote,
 } from "@/components/blog/lab-notebook";
 import { getBaseUrl, SITE } from "@/lib/site";
 
@@ -62,7 +64,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/blog/${slug}`;
     const socialImage = new URL(
-      post.frontmatter.image || "/images/structure-database-software-development.jpg",
+      post.frontmatter.image || "/images/structure-database-software-development.webp",
       siteUrl,
     ).toString();
 
@@ -113,7 +115,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/blog/${post.slug}`;
   const socialImage = new URL(
-    post.frontmatter.image || "/images/structure-database-software-development.jpg",
+    post.frontmatter.image || "/images/structure-database-software-development.webp",
     siteUrl,
   ).toString();
   const articleJsonLd = {
@@ -188,6 +190,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     .split(/\s+/).filter(Boolean).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 200));
   const isLab = post.frontmatter.template === "lab";
+  const isArchive = post.frontmatter.collection === "webcraft-archive";
 
   const mdxComponents = {
     Callout,
@@ -225,9 +228,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     ClassifiedHeader,
     RecoveredLog,
     SystemOutput,
+    HandwrittenNote,
     img: MdxImage,
     Link,
-    Image,
+    Image: MdxImage,
   };
 
   return (
@@ -268,7 +272,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           pageUrl={url}
           cover={post.frontmatter.image as string | undefined}
           coverAbs={socialImage}
-          related={related}
+          related={isArchive ? [] : related}
+          backHref={isArchive ? "/archive" : "/blog"}
+          backLabel={isArchive ? "← Back to Archive" : "← Back to Blog"}
         >
           <MDXRemote
             source={post.content}
@@ -276,6 +282,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           />
         </EditorialTemplateV2>
       )}
+      {isArchive && <ArchiveNav slug={post.slug} />}
     </SiteShell>
   );
 }

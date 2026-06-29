@@ -98,7 +98,7 @@ const config: ServicePageConfig = {
   shellIntro:
     "Fast, scalable, SEO-friendly websites built to help your business attract customers, generate leads, and grow online.",
   hero: {
-    src: "/images/web-development-cross-platform-solutions-design-and-development.jpg",
+    src: "/images/web-development-cross-platform-solutions-design-and-development.webp",
     alt: "Custom website development architecture and cross-platform delivery",
   },
   eyebrow: "Custom Web Development",

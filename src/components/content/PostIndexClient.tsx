@@ -11,12 +11,12 @@ type Post = {
   description: string;
   date: string;
   tags: string[];
-  kind: string;
+  kind: "blog" | "news";
 };
 
 interface PostIndexClientProps {
   posts: Post[];
-  kind: string;
+  kind: "blog" | "news";
 }
 
 export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
@@ -180,11 +180,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             setHighlightedIndex(0);
           }}
           onKeyDown={handleInputKeyDown}
-          onBlur={(e) => {
-            if (dropdownRef.current?.contains(e.relatedTarget as Node)) return;
-            setDropdownOpen(false);
-            setHighlightedIndex(-1);
-          }}
+          onBlur={() => { setDropdownOpen(false); setHighlightedIndex(-1); }}
           role="combobox"
           aria-controls="tag-combobox-listbox"
           aria-expanded={dropdownOpen}

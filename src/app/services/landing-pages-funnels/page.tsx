@@ -98,7 +98,7 @@ const config: ServicePageConfig = {
   shellIntro:
     "Conversion-focused landing pages and funnels built to turn campaign traffic into leads, bookings, quote requests, and sales opportunities.",
   hero: {
-    src: "/images/dynamic-website-speed-light-trails-with-long-exposure-.jpg",
+    src: "/images/dynamic-website-speed-light-trails-with-long-exposure-.webp",
     alt: "High-converting landing page and funnel performance",
   },
   eyebrow: "Landing Pages + Funnels",

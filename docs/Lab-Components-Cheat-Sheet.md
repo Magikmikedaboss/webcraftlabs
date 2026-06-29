@@ -296,6 +296,20 @@ Compact green-on-dark terminal output block. Supports optional `title`.
 </SystemOutput>
 ```
 
+## HandwrittenNote
+
+Warm amber-tinted aside styled to evoke a handwritten margin note. Use for short editorial asides, personal observations, or closing reflections. No props — content is passed as children.
+
+```mdx
+<HandwrittenNote>
+This wasn't the first signal.
+
+It won't be the last.
+
+Stop asking who sent it. Start asking who sent **ours**.
+</HandwrittenNote>
+```
+
 ---
 
 ## Basic Article Shape

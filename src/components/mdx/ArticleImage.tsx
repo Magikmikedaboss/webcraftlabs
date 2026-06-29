@@ -9,20 +9,24 @@ export default function ArticleImage({
   alt: string;
   caption?: string;
 }) {
+  if (!src || src.trim() === "") {
+    throw new Error("ArticleImage: src must be a non-empty string. Provide a valid image path.");
+  }
   if (!alt || alt.trim() === "") {
     throw new Error("ArticleImage: alt text must be a non-empty string. Provide a meaningful image description.");
   }
+  const safeSrc = src.trim();
+  const safeAlt = alt.trim();
   return (
     <figure className="my-10">
       <div className="relative w-full overflow-hidden rounded-2xl" style={{ aspectRatio: "16/9" }}>
         <Image
-          src={src}
-          alt={alt}
+          src={safeSrc}
+          alt={safeAlt}
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 800px"
-        />
-      </div>
+        />      </div>
       {caption && (
         <figcaption
           className="mt-3 text-center text-sm italic"

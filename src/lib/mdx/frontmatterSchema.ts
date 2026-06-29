@@ -26,6 +26,30 @@ export const BlogFrontmatterSchema = z.object({
   published: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   slug: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   series: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  archiveId: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  collection: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+}).superRefine((data, ctx) => {
+  if (data.collection === 'webcraft-archive') {
+    if (!data.archiveId) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'archiveId is required when collection is "webcraft-archive"',
+        path: ['archiveId'],
+      });
+      return;
+    }
+    const validPrefixes = ['Investigation', 'Treatise', 'Recovered Record'];
+    const isValid =
+      validPrefixes.some(p => data.archiveId!.startsWith(p)) ||
+      data.archiveId === 'Orientation';
+    if (!isValid) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'archiveId must start with "Investigation", "Treatise", or "Recovered Record", or be exactly "Orientation"',
+        path: ['archiveId'],
+      });
+    }
+  }
 });
 
 export type BlogFrontmatter = z.infer<typeof BlogFrontmatterSchema>;

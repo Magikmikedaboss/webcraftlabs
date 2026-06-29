@@ -15,7 +15,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/web-development-cross-platform-solutions-design-and-development.jpg",
+        url: "/images/web-development-cross-platform-solutions-design-and-development.webp",
         width: 1200,
         height: 630,
         alt: "About WebCraft Labz - Intelligence Layer for Modern Business",
@@ -26,8 +26,7 @@ export const metadata = {
     card: "summary_large_image",
     title: `About | ${SITE.name}`,
     description: ABOUT_DESCRIPTION,
-    images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
-  },
+    images: ["/images/web-development-cross-platform-solutions-design-and-development.webp"],  },
   alternates: {
     canonical: `${getBaseUrl()}/about`,
   },
@@ -50,7 +49,7 @@ export default function AboutPage() {
       }
       intro={
         <div className="max-w-3xl space-y-4">
-          <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
+          <p className="text-lg sm:text-xl text-[var(--muted)] leading-relaxed">
             WebCraft Labz builds intelligent websites, software platforms, research systems, and AI-powered workflows designed for the next generation of business.
           </p>
           <p className="text-base text-[var(--muted)]">

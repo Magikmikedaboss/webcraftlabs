@@ -98,10 +98,9 @@ const config: ServicePageConfig = {
   shellIntro:
     "Launch and grow SaaS products with clean architecture, secure user flows, dashboards, billing, and scalable product foundations.",
   hero: {
-    src: "/images/structure-database-software-development.jpg",
+    src: "/images/structure-database-software-development.webp",
     alt: "SaaS architecture with data and software platform components",
-  },
-  eyebrow: "SaaS Development",
+  },  eyebrow: "SaaS Development",
   heading: "Build the First Version Without Building the Whole Castle",
   paragraphs: [
     "A SaaS product does not need every feature on day one. It needs the right foundation, the right user flows, and a clear path from idea to usable product.",

@@ -44,7 +44,7 @@ export async function getMdxContent(baseDir: string, slug: string): Promise<MdxC
   const { data, content } = matter(file);
   const mdxSource = await serialize(content, {
     scope: data,
-    blockJS: false,
+    blockJS: true,
     blockDangerousJS: true,
   });
   

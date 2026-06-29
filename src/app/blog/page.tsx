@@ -3,7 +3,7 @@ import Link from "next/link";
 import BlogGridClient from "./BlogGridClient";
 import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";
-import { SITE } from "@/lib/site";
+import { SITE, getBaseUrl } from "@/lib/site";
 
 // Slug for the Synthetic Minds intro post
 const INTRO_POST_SLUG = "what-is-synthetic-minds";
@@ -13,7 +13,7 @@ export const metadata = {
   description:
     "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
   alternates: {
-    canonical: new URL("/blog", SITE.url).toString(),
+    canonical: `${getBaseUrl()}/blog`,
   },
 };
 

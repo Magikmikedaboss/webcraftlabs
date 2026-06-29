@@ -1,11 +1,13 @@
 export default function Checklist({ items = [] }: { items?: string[] }) {
   if (!Array.isArray(items)) {
-    return null;
+    throw new Error("Checklist: items must be an array of strings.");
+  }
+  if (items.some((item) => typeof item !== "string")) {
+    throw new Error("Checklist: each item must be a string.");
   }
   if (items.length === 0) {
     return null;
   }
-
   return (
     <ul className="my-6 space-y-2">
       {items.map((t, i) => (

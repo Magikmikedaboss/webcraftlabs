@@ -676,3 +676,13 @@ export function SystemOutput({
     </div>
   );
 }
+
+export function HandwrittenNote({ children }: { children: React.ReactNode }) {
+  return (
+    <aside className="relative my-8 rotate-[1deg] rounded-sm border border-amber-300 bg-amber-50/90 px-6 py-5 shadow-md ring-1 ring-amber-200/60">
+      <div className="font-serif text-sm italic leading-8 text-amber-900">
+        {children}
+      </div>
+    </aside>
+  );
+}

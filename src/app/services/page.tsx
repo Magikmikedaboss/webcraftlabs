@@ -12,7 +12,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/web-development-cross-platform-solutions-design-and-development.jpg",
+        url: "/images/web-development-cross-platform-solutions-design-and-development.webp",
         width: 1200,
         height: 630,
         alt: "WebCraft Labz Services - Custom Web Development",
@@ -23,7 +23,7 @@ export const metadata = {
     card: "summary_large_image",
     title: `Services | ${SITE.name}`,
     description: 'SEO-optimized website design, marketing funnels, and growth strategies. Custom web development, SaaS platforms, and digital solutions built for real business growth.',
-    images: ["/images/web-development-cross-platform-solutions-design-and-development.jpg"],
+    images: ["/images/web-development-cross-platform-solutions-design-and-development.webp"],
   },
   alternates: {
     canonical: new URL('/services', SITE.url).toString(),
@@ -44,7 +44,7 @@ const SERVICES = [
     ),
   },
   {
-    title: "Marketing Websites",
+    title: "Las Vegas Web Design",
     text: "Premium websites engineered to rank, load fast, and convert visitors into calls.",
     href: "/las-vegas-web-design",
     bullets: ["Custom design system", "Local SEO-ready structure", "Speed + accessibility pass"],

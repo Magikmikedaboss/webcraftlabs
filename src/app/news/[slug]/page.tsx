@@ -24,12 +24,11 @@ function getNewsPostMeta(slug: string, image?: string) {
     url: `${baseUrl}/news/${slug}`,
     socialImage: image
       ? new URL(image, baseUrl).toString()
-      : `${baseUrl}/images/business-marketing-solutions-concept-art.jpg`,
-  };
-}
+      : `${baseUrl}/images/business-marketing-solutions-concept-art.webp`,
+  };}
 
 export function generateStaticParams() {
-  return getAllNewsSlugs().map((slug: string) => ({ slug }));
+  return getAllNews().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

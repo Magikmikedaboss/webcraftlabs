@@ -321,7 +321,7 @@ export default function Episode2() {
       </p>
 
       <div className="flex justify-between">
-        <Link href="/blog/synthetic-minds/episode-1-first-spark">
+        <Link href="/blog/episode-1-first-spark">
           ← Episode 1: The First Spark
         </Link>
         <Link href="/blog/synthetic-minds">Series Home →</Link>
