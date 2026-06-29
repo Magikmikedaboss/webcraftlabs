@@ -6,29 +6,27 @@ export default function Takeaways({
   items?: { id: string; text: string }[];
 }) {
   if (!Array.isArray(items)) {
-    return null;
+    throw new Error(`Takeaways: expected items array, got ${typeof items}`);
   }
-
   if (items.length === 0) {
-    return null;  }
-
-  const validItems = items.filter(
-    (item): item is { id: string; text: string } =>
-      item !== null &&
-      typeof item === "object" &&
-      typeof (item as { id?: unknown }).id === "string" &&
-      typeof (item as { text?: unknown }).text === "string"
-  );
-
-  if (validItems.length === 0) {
     return null;
   }
-
+  for (const item of items) {
+    if (item === null || typeof item !== "object") {
+      throw new Error(`Takeaways: each item must be an object, got ${JSON.stringify(item)}`);
+    }
+    if (typeof (item as { id?: unknown }).id !== "string") {
+      throw new Error(`Takeaways: item.id must be a string (got ${JSON.stringify((item as { id?: unknown }).id)})`);
+    }
+    if (typeof (item as { text?: unknown }).text !== "string") {
+      throw new Error(`Takeaways: item.text must be a string (got ${JSON.stringify((item as { text?: unknown }).text)})`);
+    }
+  }
   return (
     <div className="takeaways">
       <h3>{title}</h3>
       <ul>
-        {validItems.map((item) => (
+        {(items as { id: string; text: string }[]).map((item) => (
           <li key={item.id}>{item.text}</li>
         ))}
       </ul>

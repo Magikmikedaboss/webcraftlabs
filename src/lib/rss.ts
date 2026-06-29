@@ -29,12 +29,15 @@ export type RssFeedOptions = {
 };
 
 export function buildRssFeed(opts: RssFeedOptions): string {
-  const lastBuildDate =
-    opts.items.length > 0
-      ? new Date(opts.items[0].date).toUTCString()
-      : new Date().toUTCString();
+  const newestDate = opts.items.reduce<Date | null>((best, item) => {
+    const d = new Date(item.date);
+    if (isNaN(d.getTime())) return best;
+    return best === null || d > best ? d : best;
+  }, null);
+  const lastBuildDate = newestDate !== null ? newestDate.toUTCString() : new Date().toUTCString();
 
   const itemXml = opts.items
+    .filter((item) => Number.isFinite(new Date(item.date).getTime()))
     .map(
       (item) =>
         `<item>

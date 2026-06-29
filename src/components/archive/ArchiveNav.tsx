@@ -39,12 +39,12 @@ export default function ArchiveNav({ slug }: { slug: string }) {
           {prev ? (
             <NavCard doc={prev} direction="prev" />
           ) : (
-            <div />
+            <div className="hidden sm:block" />
           )}
           {next ? (
             <NavCard doc={next} direction="next" />
           ) : (
-            <div />
+            <div className="hidden sm:block" />
           )}
         </div>
 

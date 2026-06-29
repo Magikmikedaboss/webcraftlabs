@@ -54,7 +54,14 @@ export function getNewsBySlug(slug: string): { slug: string; content: string; fr
 }
 
 export function getAllNews() {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date());
+  const get = (type: string) => parts.find((p) => p.type === type)!.value;
+  const today = `${get('year')}-${get('month')}-${get('day')}`;
   return getAllNewsSlugs()
     .map((slug) => getNewsBySlug(slug))
     .filter((p) => p.frontmatter.date <= today)

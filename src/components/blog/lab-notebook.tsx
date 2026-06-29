@@ -784,7 +784,7 @@ export function QuestionCard({ children }: { children: React.ReactNode }) {
   return (
     <div className="my-8 rounded-xl border border-dashed border-slate-600 bg-slate-900/40 p-5 lg:p-7 font-mono text-sm text-slate-300">
       <p className="mb-3 text-[10px] uppercase tracking-[0.25em] text-slate-500">
-        Open Question
+        Mystery
       </p>
       <div className="italic leading-7">{children}</div>
     </div>

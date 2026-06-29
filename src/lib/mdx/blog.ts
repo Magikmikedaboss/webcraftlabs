@@ -61,30 +61,41 @@ export function getPostBySlug(slug: string): { slug: string; content: string; fr
   };
 }
 
+/** Returns the current publish cutoff date (YYYY-MM-DD, America/Los_Angeles). */
+function publishCutoff(): string {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date());
+  const get = (type: string) => parts.find((p) => p.type === type)!.value;
+  return `${get('year')}-${get('month')}-${get('day')}`;
+}
+
+/** Descending-date comparator for posts with a `frontmatter.date` field. */
+function newestFirst<T extends { frontmatter: { date: string } }>(a: T, b: T): number {
+  if (a.frontmatter.date < b.frontmatter.date) return 1;
+  if (a.frontmatter.date > b.frontmatter.date) return -1;
+  return 0;
+}
+
 export function getAllPosts() {
-  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date()); // YYYY-MM-DD site-local
+  const today = publishCutoff();
   return getAllPostSlugs()
     .map((slug) => getPostBySlug(slug))
     .filter((p) => p.frontmatter.date <= today)
-    .sort((a, b) => {
-      if (a.frontmatter.date < b.frontmatter.date) return 1;
-      if (a.frontmatter.date > b.frontmatter.date) return -1;
-      return 0;
-    });
+    .sort(newestFirst);
 }
 
 /** Frontmatter-only variant — no MDX content string returned. */
 export function getAllPostFrontmatter() {
-  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date());
+  const today = publishCutoff();
   return getAllPostSlugs()
     .map((slug) => {
       const { slug: safeSlug, frontmatter } = getPostBySlug(slug);
       return { slug: safeSlug, frontmatter };
     })
     .filter((p) => p.frontmatter.date <= today)
-    .sort((a, b) => {
-      if (a.frontmatter.date < b.frontmatter.date) return 1;
-      if (a.frontmatter.date > b.frontmatter.date) return -1;
-      return 0;
-    });
+    .sort(newestFirst);
 }

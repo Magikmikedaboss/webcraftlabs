@@ -4,7 +4,15 @@ import { XML_HEADERS, escapeXml } from "@/lib/rss";
 
 export async function GET() {
   const baseUrl = getBaseUrl();
-  const items = getAllNews().slice(0, 100);
+  const validItems = getAllNews().filter((p) => {
+    const d = new Date(p.frontmatter.date);
+    return !isNaN(d.getTime());
+  }).slice(0, 100);
+
+  const latestDate = validItems.reduce<Date | null>((best, p) => {
+    const d = new Date(p.frontmatter.date);
+    return best === null || d > best ? d : best;
+  }, null);
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -14,7 +22,7 @@ export async function GET() {
     <link>${baseUrl}/news</link>
     <atom:link href="${baseUrl}/news/feed.xml" rel="self" type="application/rss+xml" />
     <language>en-us</language>
-    <lastBuildDate>${new Date(items[0]?.frontmatter.date ?? Date.now()).toUTCString()}</lastBuildDate>    ${items
+    <lastBuildDate>${latestDate !== null ? latestDate.toUTCString() : new Date().toUTCString()}</lastBuildDate>    ${validItems
       .map(
         (post) => `<item>
       <title>${escapeXml(post.frontmatter.title)}</title>

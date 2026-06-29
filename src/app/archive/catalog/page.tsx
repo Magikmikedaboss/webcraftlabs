@@ -124,7 +124,7 @@ export default function ArchiveCatalogPage() {
         </div>
 
         {/* ── Catalog ────────────────────────────────────────── */}
-        <main className="mx-auto max-w-5xl px-6 py-12">
+        <div className="mx-auto max-w-5xl px-6 py-12">
           <section>
             <div className="flex items-center gap-3 mb-8">
               <h2 className="text-xs font-mono tracking-[0.2em] text-slate-500 uppercase">
@@ -139,7 +139,7 @@ export default function ArchiveCatalogPage() {
               ))}
             </div>
           </section>
-        </main>
+        </div>
 
         {/* ── Footer ─────────────────────────────────────────── */}
         <footer className="border-t border-slate-800/60 mt-8">
@@ -217,14 +217,14 @@ function ArchiveCard({
         <p className="text-slate-100 group-hover:text-white leading-relaxed mb-4 transition-colors">
           {hook}
         </p>
-        {/* Open question */}
-        {frontmatter.question && (
+        {/* Mystery */}
+        {frontmatter.mystery && (
           <div className="border-t border-slate-800/60 pt-3 mb-4">
             <p className="text-[10px] font-mono tracking-widest text-slate-700 uppercase mb-1.5">
-              Open Question
+              Mystery
             </p>
             <p className="text-sm italic text-slate-400">
-              {frontmatter.question}
+              {frontmatter.mystery}
             </p>
           </div>
         )}

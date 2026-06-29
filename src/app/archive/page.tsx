@@ -133,6 +133,36 @@ export default function ArchiveLanding() {
           </section>
         )}
 
+        {/* ── Section Navigation ───────────────────────────── */}
+        <section className="border-b border-slate-800">
+          <div className="mx-auto max-w-5xl px-6 py-14">
+            <p className="text-[10px] font-mono tracking-[0.3em] text-slate-600 uppercase mb-8">
+              Navigate the Archive
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-800 border border-slate-800 rounded-lg overflow-hidden">
+              {[
+                { href: "/archive/catalog",      label: "Catalog",      desc: "Full reading sequence" },
+                { href: "/archive/institutions",  label: "Institutions", desc: "Participating bodies" },
+                { href: "/archive/collections",   label: "Collections",  desc: "Thematic groupings" },
+                { href: "/archive/glossary",      label: "Glossary",     desc: "Provisional definitions" },
+                { href: "/archive/timeline",      label: "Timeline",     desc: "Publication history" },
+                { href: "/archive/search",        label: "Search",       desc: "Title, mystery, and summary search" },              ].map(({ href, label, desc }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="group bg-[#07090f] hover:bg-slate-900 transition-colors px-6 py-5 flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <p className="text-sm font-semibold text-slate-300 group-hover:text-white transition-colors">{label}</p>
+                    <p className="text-[11px] font-mono text-slate-700 mt-0.5">{desc}</p>
+                  </div>
+                  <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs font-mono">→</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ── Footer ───────────────────────────────────────── */}
         <footer className="mt-auto border-t border-slate-800/60">
           <div className="mx-auto max-w-5xl px-6 py-8 flex items-center justify-between gap-4">

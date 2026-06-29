@@ -6,14 +6,14 @@ CREATE TABLE IF NOT EXISTS sources (
 );
 CREATE TABLE IF NOT EXISTS documents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source_id TEXT NOT NULL REFERENCES sources(id),
+    source_id TEXT NOT NULL REFERENCES sources(id) ON DELETE CASCADE,
     path TEXT NOT NULL,
     file_hash TEXT,
     UNIQUE(source_id, path)
 );
 CREATE TABLE IF NOT EXISTS chunks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    document_id INTEGER NOT NULL REFERENCES documents(id),
+    document_id INTEGER NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
     page_number INTEGER,
     section TEXT,
     text TEXT
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS entities (
 );
 CREATE TABLE IF NOT EXISTS research_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    chunk_id INTEGER NOT NULL REFERENCES chunks(id),
+    chunk_id INTEGER NOT NULL REFERENCES chunks(id) ON DELETE CASCADE,
     page_number INTEGER,
     domain TEXT,
     event_type TEXT,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS research_events (
     confidence_v TEXT
 );
 CREATE TABLE IF NOT EXISTS event_entities (
-    event_id INTEGER NOT NULL REFERENCES research_events(id),
+    event_id INTEGER NOT NULL REFERENCES research_events(id) ON DELETE CASCADE,
     entity_id INTEGER NOT NULL REFERENCES entities(id),
     role TEXT,
     PRIMARY KEY (event_id, entity_id)
@@ -53,13 +53,13 @@ CREATE TABLE IF NOT EXISTS tags (
     tag TEXT NOT NULL UNIQUE
 );
 CREATE TABLE IF NOT EXISTS event_tags (
-    event_id INTEGER NOT NULL REFERENCES research_events(id),
+    event_id INTEGER NOT NULL REFERENCES research_events(id) ON DELETE CASCADE,
     tag_id INTEGER NOT NULL REFERENCES tags(id),
     PRIMARY KEY (event_id, tag_id)
 );
 CREATE TABLE IF NOT EXISTS quantitative_measurements (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    event_id INTEGER NOT NULL REFERENCES research_events(id),
+    event_id INTEGER NOT NULL REFERENCES research_events(id) ON DELETE CASCADE,
     measurement TEXT
 );
 -- Child-side FK indexes (not covered by PK or leftmost composite key)

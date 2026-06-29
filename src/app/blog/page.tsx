@@ -5,9 +5,6 @@ import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";
 import { SITE, getBaseUrl } from "@/lib/site";
 
-// Slug for the Synthetic Minds intro post
-const INTRO_POST_SLUG = "what-is-synthetic-minds";
-
 export const metadata = {
   title: "Blog",
   description:

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import BuildCalculatorClient from "./BuildCalculatorClient";
-import { SITE, getBaseUrl } from "@/lib/site";
+import { getBaseUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Build Calculator",

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
-import { SITE } from "@/lib/site";
+import { SITE, getBaseUrl } from "@/lib/site";
 
 const learningPaths = [
   {
@@ -175,7 +175,7 @@ export const metadata = {
       "A clickable learning hub for Synthetic Minds, Axon, enterprise AI, future work, and human plus AI creativity.",
   },
   alternates: {
-    canonical: new URL("/knowledge", SITE.url).toString(),
+    canonical: `${getBaseUrl()}/knowledge`,
   },
 };
 

@@ -1,9 +1,8 @@
 import "@/app/blog/editorial.css";
-import { getAllNewsSlugs, getNewsBySlug, getAllNews } from "@/lib/mdx/news";
+import { getNewsBySlug, getAllNews } from "@/lib/mdx/news";
 import { getBaseUrl, SITE } from "@/lib/site";
 import SiteShell from "@/components/SiteShell";
 import type { Metadata } from "next";
-import Script from "next/script";
 
 import Callout from "@/components/mdx/Callout";
 import Checklist from "@/components/mdx/Checklist";
@@ -146,12 +145,8 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <SiteShell background="bg">
-      <Script id={`news-jsonld-${post.slug}`} type="application/ld+json">
-        {JSON.stringify(articleJsonLd)}
-      </Script>
-      <Script id={`news-breadcrumb-jsonld-${post.slug}`} type="application/ld+json">
-        {JSON.stringify(breadcrumbJsonLd)}
-      </Script>
+      <script id={`news-jsonld-${post.slug}`} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, '\\u003c') }} />
+      <script id={`news-breadcrumb-jsonld-${post.slug}`} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c') }} />
       <div className="editorial mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[1fr,280px]">
           <article className="min-w-0">
@@ -181,7 +176,6 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
             <div className="prose prose-custom max-w-none">
               <MDXRemote
                 source={post.content}
-                options={{ blockJS: true, blockDangerousJS: true }}
                 components={{
                   Callout,
                   Stat,

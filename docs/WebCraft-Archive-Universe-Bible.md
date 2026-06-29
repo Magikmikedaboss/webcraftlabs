@@ -66,7 +66,7 @@ archiveId: "Investigation 203"        # full institutional designation
 slug: "the-silent-vault"              # clean, memorable URL
 description: "SEO description"        # one strong sentence
 summary: "Investigation hook"         # 1–3 sentences that create curiosity, not describe the document
-question: "What disappeared?"         # the single open question the document investigates
+mystery: "What disappeared?"          # the single central mystery the document investigates
 author: "Institutional Author"        # office, committee, or WebCraft Archive
 badge: "Archive"                      # always "Archive" for collection docs
 collection: "webcraft-archive"        # filter/query key
@@ -707,72 +707,65 @@ Metadata should communicate these answers before the document itself begins.
 
 ---
 
-### Part XI.II — Required Metadata
+### Part XI.II — Metadata Fields
 
-Every public Archive document should include the following core fields.
-
-#### Identity
-
-- Archive ID
-- Document Title
-- Document Type
-- Collection
-- Classification
-- Current Revision
-
-These fields establish the document's identity within the Archive.
+> **Implementation note:** The current MDX frontmatter contract (`BlogFrontmatterSchema`) consumes only the fields listed under **Currently Implemented**. Fields listed under **Planned / Aspirational** are part of the full Archive specification but are not yet read by the schema, the archive page renderer, or the catalog. Authors should provide only the implemented fields for now; the aspirational fields are documented here as a design target for future expansion.
 
 ---
 
-#### Provenance
+#### Currently Implemented
 
+These fields are enforced or consumed by the current schema and page rendering.
+
+| Field | Frontmatter key | Notes |
+|---|---|---|
+| Archive ID | `archiveId` | Required when `collection: webcraft-archive`. Must start with `Investigation`, `Treatise`, `Recovered Record`, or be exactly `Orientation`. Document type is inferred from this prefix. |
+| Document Title | `title` | Required. |
+| Description | `description` | Required. Shown in metadata and previews. |
+| Collection | `collection` | Required for archive documents. Set to `webcraft-archive`. |
+| Publication Date | `date` | Required. ISO `YYYY-MM-DD`. Used as the public publish date. |
+| Display Date Override | `published` | Optional. Alternative date string used for display in the editorial header when `date` alone is insufficient (e.g. a formatted institutional date). Falls back to `date` when absent. |
+| Badge Label | `badge` | Optional. Short label shown in the document header badge. Should be `"Archive"` for all archive documents. |
+| Pull Quote | `pullQuote` | Optional. The most resonant or unsettling line from the document. Displayed prominently in the editorial layout above the body. |
+| Summary / Hook | `summary` | Optional. One-sentence investigation hook shown on catalog cards. |
+| Open Question | `mystery` | Required. The unanswered question posed at the end of catalog cards. |
+| Author | `author` | Optional. Defaults to site name when absent. |
+| Cover Image | `image` | Optional. Used as the document hero image. |
+| Tags | `tags` | Optional. Array of strings. |
+#### Planned / Aspirational
+
+The fields below are part of the full Archive metadata specification but are **not currently read by the schema or rendered by any page component**. Do not add these to MDX frontmatter until the implementation is expanded to support them.
+
+**Identity (extended)**
+- Classification
+- Current Revision
+
+**Provenance**
 - Origin
 - Recovery Source
 - Recovering Institution
 - Publishing Institution
-- Original Author (if known)
 - Translator (if applicable)
 
-These fields describe where the document entered the Archive and how it reached its current form.
+Unknown provenance values should remain explicitly marked as **Unknown** rather than omitted once these fields are implemented.
 
-Unknown values should remain explicitly marked as **Unknown** rather than omitted.
+**Confidence**
 
----
+Every document will eventually distinguish between:
 
-#### Confidence
-
-Every document should distinguish between different forms of certainty.
-
-**Translation Confidence** — How accurately the original text is believed to have been reconstructed.
-
-**Historical Confidence** — How strongly available evidence supports the document's authenticity or historical claims.
-
-**Scholarly Consensus** — The current institutional position regarding interpretation.
+- **Translation Confidence** — How accurately the original text is believed to have been reconstructed.
+- **Historical Confidence** — How strongly available evidence supports the document's authenticity or historical claims.
+- **Scholarly Consensus** — The current institutional position regarding interpretation.
 
 These values measure different things and should never be combined.
 
----
-
-#### Publication
-
-Each document should record:
-
+**Publication history**
 - Date Created (if known)
 - Date Recovered
 - First Archive Publication
-- Current Revision
 - Review Status
 
-The publication history of a document forms part of the Archive's own history.
-
----
-
-#### Relationships
-
-Every document should identify its relationship to other documents.
-
-Examples include:
-
+**Relationships**
 - Related Investigations
 - Referenced Treatises
 - Related Recovered Records
@@ -781,18 +774,13 @@ Examples include:
 
 The Archive is a network of evidence rather than a sequence of isolated publications.
 
----
-
-#### Discovery
-
-Every document should include:
-
+**Discovery**
 - Keywords
 - Primary Topics
 - Named Mysteries
 - Institutions Involved
 
-These fields assist future scholarship without influencing interpretation.
+These fields will assist future scholarship without influencing interpretation.
 
 ---
 
@@ -962,6 +950,57 @@ Sometimes, it is in the way the Archive chose to catalog it.
 > **Readers should never need to ask what a document is, where it came from, or how it relates to the Archive.**
 >
 > **The metadata should answer those questions before the first sentence of the document is read.**
+
+---
+
+---
+
+## PART XII — The Single Mystery Principle
+
+### Principle
+
+Every Archive document investigates **one primary mystery**.
+
+Subquestions may arise naturally during the investigation, but the document should remain anchored to a single central mystery that readers can remember long after they finish reading.
+
+A reader may forget the details.
+
+They should never forget the mystery.
+
+### Implementation
+
+Every Archive document must include a `mystery:` frontmatter field — a single sentence, framed as a question, that names the mystery the document investigates.
+
+This field drives:
+- The catalog card (displayed as **Mystery** before the reader enters the document)
+- The internal `<QuestionCard>` component when used inside document prose
+- The reader's mental model of what the document is *about*
+
+If you cannot write one sentence that captures the mystery, the document's focus is unclear. Clarify before publishing.
+
+### The Identity Test
+
+A document has achieved the right level of focus when you can describe it by its mystery alone:
+
+> "It's the one that asks what disappeared."
+> "It's the one that asks who built the first one."
+
+If the description requires more than the mystery, the mystery is probably not sharp enough.
+
+### Companion Rule: The Hook
+
+The `summary:` field should be the hook — the observation or event that leads the reader to the mystery.
+
+The `mystery:` field is the question that the hook raises.
+
+They work together:
+
+```
+summary: "A civilization built a simulation. Then asked who built theirs."
+mystery: "Who built the first one?"
+```
+
+The hook creates forward momentum. The mystery names the destination.
 
 ---
 

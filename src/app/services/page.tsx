@@ -1,7 +1,9 @@
 import SiteShell from "@/components/SiteShell";
 import Link from "next/link";
 import Image from "next/image";
-import { SITE } from "@/lib/site";
+import { SITE, getBaseUrl } from "@/lib/site";
+
+const baseUrl = getBaseUrl();
 
 export const metadata = {
   title: "Services",
@@ -26,7 +28,7 @@ export const metadata = {
     images: ["/images/web-development-cross-platform-solutions-design-and-development.webp"],
   },
   alternates: {
-    canonical: new URL('/services', SITE.url).toString(),
+    canonical: `${baseUrl}/services`,
   },
 };
 

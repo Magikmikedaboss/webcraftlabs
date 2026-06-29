@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
@@ -13,7 +13,7 @@ import ArchiveNav from "@/components/archive/ArchiveNav";
 const getCachedPost = cache(getPostBySlug);
 
 import Link from "next/link";
-import Image from "next/image";
+import SafeMdxImage from "@/components/mdx/SafeMdxImage";
 import Callout from "@/components/mdx/Callout";
 import Stat from "@/components/mdx/Stat";
 import Checklist from "@/components/mdx/Checklist";
@@ -66,6 +66,10 @@ import { getBaseUrl, SITE } from "@/lib/site";
 export function generateStaticParams() {
   return getArchivePosts().map((p) => ({ slug: p.slug }));
 }
+
+// Only serve slugs that were pre-generated (published, non-future-dated).
+// Any other slug — including future-dated docs — gets a 404 at the edge.
+export const dynamicParams = false;
 
 export async function generateMetadata({
   params,
@@ -126,10 +130,6 @@ export default async function ArchiveDocPage({
   }
 
   // Only serve archive collection documents at this route
-  if (post.frontmatter.collection !== "webcraft-archive") {
-    redirect(`/blog/${slug}`);
-  }
-
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/archive/${slug}`;
   const socialImage = new URL(
@@ -193,8 +193,8 @@ export default async function ArchiveDocPage({
     QuickPicks, FrameworkTable, LabObservation, ExperimentResult,
     HandSketch, LabStamp, FrameworkAccordion, FAQ, NextSteps,
     img: MdxImage,
+    Image: SafeMdxImage,
     Link,
-    Image,
   };
 
   return (

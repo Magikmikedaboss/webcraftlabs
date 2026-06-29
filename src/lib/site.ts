@@ -28,6 +28,27 @@ export const SITE = {
 } as const;
 
 /**
+ * Explicit header navigation groups so the desktop header is never coupled
+ * to the order of SITE.nav. Update here when header layout changes.
+ */
+export const HEADER_NAV = {
+  /** Standalone link rendered first in the desktop header */
+  standalone: { href: "/about", label: "About" },
+  /** Items collapsed into the "Explore" dropdown */
+  dropdown: [
+    { href: "/knowledge", label: "Knowledge" },
+    { href: "/build", label: "Build" },
+    { href: "/services", label: "Services" },
+    { href: "/portfolio", label: "Portfolio" },
+    { href: "/blog", label: "Blog" },
+    { href: "/archive", label: "Archive" },
+    { href: "/news", label: "News" },
+  ],
+  /** Primary CTA button rendered last in the desktop header */
+  cta: { href: "/contact", label: "Contact" },
+};
+
+/**
  * Returns the normalized base URL (removes trailing slash and validates format)
  * Throws an error if SITE.url is invalid to catch misconfiguration early
  */

@@ -17,10 +17,10 @@ function isAuthorized(req: NextRequest): boolean {
   return tokenHeader === expectedToken || bearerToken === expectedToken;
 }
 
-function normalizeCandidateUrl(candidate: string, siteHost: string): string | null {
+function normalizeCandidateUrl(candidate: string, siteOrigin: string): string | null {
   try {
     const parsed = new URL(candidate);
-    if ((parsed.protocol !== "https:" && parsed.protocol !== "http:") || parsed.host !== siteHost) {
+    if (parsed.origin !== siteOrigin) {
       return null;
     }
     if (parsed.username || parsed.password) {
@@ -32,11 +32,11 @@ function normalizeCandidateUrl(candidate: string, siteHost: string): string | nu
   }
 }
 
-async function getSitemapUrls(siteHost: string): Promise<string[]> {
+async function getSitemapUrls(siteOrigin: string): Promise<string[]> {
   const entries = await sitemap();
 
   return entries
-    .map((entry) => normalizeCandidateUrl(entry.url, siteHost))
+    .map((entry) => normalizeCandidateUrl(entry.url, siteOrigin))
     .filter((url): url is string => Boolean(url));
 }
 
@@ -54,7 +54,9 @@ export async function POST(req: NextRequest) {
   }
 
   const baseUrl = getBaseUrl();
-  const siteHost = new URL(baseUrl).host;
+  const siteUrl = new URL(baseUrl);
+  const siteOrigin = siteUrl.origin;
+  const siteHost = siteUrl.host;
 
   let body: unknown = {};
   const rawBody = await req.text();
@@ -86,9 +88,9 @@ export async function POST(req: NextRequest) {
   const urls = hasUrlsProperty
     ? (requestedUrls as unknown[])
         .filter((item): item is string => typeof item === "string")
-        .map((url: string) => normalizeCandidateUrl(url, siteHost))
+        .map((url: string) => normalizeCandidateUrl(url, siteOrigin))
         .filter((url: string | null): url is string => Boolean(url))
-    : await getSitemapUrls(siteHost);
+    : await getSitemapUrls(siteOrigin);
   const uniqueUrls = [...new Set(urls)].slice(0, 10000);
   if (uniqueUrls.length === 0) {
     return NextResponse.json(

@@ -1,24 +1,24 @@
-﻿import type { Metadata } from "next";
+﻿﻿import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { cache } from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 import "@/app/blog/editorial.css";
 
-import { getAllPostSlugs, getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
+import { getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
 import ArchiveNav from "@/components/archive/ArchiveNav";
 
 // Deduplicate the file read/parse between generateMetadata and the page component.
 const getCachedPost = cache(getPostBySlug);
 
 import Link from "next/link";
-import Image from "next/image";
 import Callout from "@/components/mdx/Callout";
 import Stat from "@/components/mdx/Stat";
 import Checklist from "@/components/mdx/Checklist";
 import PullQuote from "@/components/mdx/PullQuote";
 import Takeaways from "@/components/mdx/Takeaways";
 import MdxImage from "@/components/mdx/MdxImage";
+import SafeMdxImage from "@/components/mdx/SafeMdxImage";
 import ArticleImage from "@/components/mdx/ArticleImage";
 import SiteShell from "@/components/SiteShell";
 import EditorialTemplateV2, {
@@ -63,8 +63,10 @@ import {
 } from "@/components/blog/lab-notebook";
 import { getBaseUrl, SITE } from "@/lib/site";
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
-  return getAllPostSlugs().map((slug) => ({ slug }));
+  return getAllPosts().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -252,7 +254,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     ScholarlyExample,
     img: MdxImage,
     Link,
-    Image,
+    Image: SafeMdxImage,
   };
 
   return (
