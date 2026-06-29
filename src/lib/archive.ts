@@ -5,12 +5,21 @@
  * Update this file whenever a new Archive document is published.
  */
 
-// Canonical reading order — the intended sequence for researchers
+import { getAllPostFrontmatter } from "@/lib/mdx/blog";
+
+// Canonical reading order — reader journey sequence
+// Readers fall in love first (Recovered Records), then become scholars.
+// Rule: evidence precedes scholarship. Wonder precedes analysis.
 export const ARCHIVE_ORDER = [
   {
     slug: "welcome-to-the-archive",
     archiveId: "Orientation",
     title: "Welcome to the Archive",
+  },
+  {
+    slug: "the-last-simulation",
+    archiveId: "Recovered Record 611",
+    title: "The Last Simulation",
   },
   {
     slug: "the-silent-vault",
@@ -31,11 +40,6 @@ export const ARCHIVE_ORDER = [
     slug: "treatise-2-on-the-nature-of-evidence",
     archiveId: "Treatise II",
     title: "On the Nature of Evidence",
-  },
-  {
-    slug: "the-last-simulation",
-    archiveId: "Recovered Record 611",
-    title: "The Last Simulation",
   },
   {
     slug: "the-last-radio-signal",
@@ -93,4 +97,18 @@ export function getArchiveCitedBy(slug: string): ArchiveDoc[] {
   return (CITED_BY_MAP[slug] ?? [])
     .map((s) => ARCHIVE_ORDER.find((d) => d.slug === s))
     .filter(Boolean) as ArchiveDoc[];
+}
+
+/**
+ * Returns all published archive documents with frontmatter only (no MDX content).
+ * Sorted by ARCHIVE_ORDER; documents not in the order list appear last.
+ */
+export function getArchivePosts() {
+  return getAllPostFrontmatter()
+    .filter((p) => p.frontmatter.collection === "webcraft-archive")
+    .sort((a, b) => {
+      const ai = ARCHIVE_ORDER.findIndex((d) => d.slug === a.slug);
+      const bi = ARCHIVE_ORDER.findIndex((d) => d.slug === b.slug);
+      return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
+    });
 }

@@ -1,11 +1,15 @@
 ﻿import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
+import { cache } from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 import "@/app/blog/editorial.css";
 
 import { getAllPostSlugs, getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
 import ArchiveNav from "@/components/archive/ArchiveNav";
+
+// Deduplicate the file read/parse between generateMetadata and the page component.
+const getCachedPost = cache(getPostBySlug);
 
 import Link from "next/link";
 import Image from "next/image";
@@ -50,6 +54,12 @@ import {
   RecoveredLog,
   SystemOutput,
   HandwrittenNote,
+  FieldNotebook,
+  MarginNote,
+  EvidenceCard,
+  QuestionCard,
+  ThoughtExperiment,
+  ScholarlyExample,
 } from "@/components/blog/lab-notebook";
 import { getBaseUrl, SITE } from "@/lib/site";
 
@@ -60,11 +70,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {
     const { slug } = await params;
-    const post = getPostBySlug(slug);
+    const post = getCachedPost(slug);
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/blog/${slug}`;
     const socialImage = new URL(
-      post.frontmatter.image || "/images/structure-database-software-development.webp",
+      post.frontmatter.image || "/images/structure-database-software-development.jpg",
       siteUrl,
     ).toString();
 
@@ -107,15 +117,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   let post: ReturnType<typeof getPostBySlug>;
   try {
-    post = getPostBySlug(slug);
+    post = getCachedPost(slug);
   } catch {
     notFound();
+  }
+
+  // Archive documents now live at /archive/[slug]
+  if (post.frontmatter.collection === "webcraft-archive") {
+    permanentRedirect(`/archive/${slug}`);
   }
 
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/blog/${post.slug}`;
   const socialImage = new URL(
-    post.frontmatter.image || "/images/structure-database-software-development.webp",
+    post.frontmatter.image || "/images/structure-database-software-development.jpg",
     siteUrl,
   ).toString();
   const articleJsonLd = {
@@ -229,9 +244,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     RecoveredLog,
     SystemOutput,
     HandwrittenNote,
+    FieldNotebook,
+    MarginNote,
+    EvidenceCard,
+    QuestionCard,
+    ThoughtExperiment,
+    ScholarlyExample,
     img: MdxImage,
     Link,
-    Image: MdxImage,
+    Image,
   };
 
   return (

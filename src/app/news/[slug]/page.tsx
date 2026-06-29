@@ -11,6 +11,12 @@ import PullQuote from "@/components/mdx/PullQuote";
 import Stat from "@/components/mdx/Stat";
 import Takeaways from "@/components/mdx/Takeaways";
 import MdxImage from "@/components/mdx/MdxImage";
+import {
+  BigQuote,
+  Insight,
+  StatBlock,
+  Chapter,
+} from "@/components/blog/EditorialTemplateV2";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 
@@ -175,13 +181,17 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
             <div className="prose prose-custom max-w-none">
               <MDXRemote
                 source={post.content}
-                options={{ blockJS: false, blockDangerousJS: true }}
+                options={{ blockJS: true, blockDangerousJS: true }}
                 components={{
                   Callout,
                   Stat,
                   Checklist,
                   PullQuote,
                   Takeaways,
+                  BigQuote,
+                  Insight,
+                  StatBlock,
+                  Chapter,
                   img: MdxImage,
                 }}
               />

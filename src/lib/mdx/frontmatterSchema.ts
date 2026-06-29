@@ -28,6 +28,7 @@ export const BlogFrontmatterSchema = z.object({
   series: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   archiveId: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   collection: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  question: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
 }).superRefine((data, ctx) => {
   if (data.collection === 'webcraft-archive') {
     if (!data.archiveId) {

@@ -72,3 +72,19 @@ export function getAllPosts() {
       return 0;
     });
 }
+
+/** Frontmatter-only variant — no MDX content string returned. */
+export function getAllPostFrontmatter() {
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date());
+  return getAllPostSlugs()
+    .map((slug) => {
+      const { slug: safeSlug, frontmatter } = getPostBySlug(slug);
+      return { slug: safeSlug, frontmatter };
+    })
+    .filter((p) => p.frontmatter.date <= today)
+    .sort((a, b) => {
+      if (a.frontmatter.date < b.frontmatter.date) return 1;
+      if (a.frontmatter.date > b.frontmatter.date) return -1;
+      return 0;
+    });
+}

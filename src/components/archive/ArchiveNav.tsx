@@ -71,7 +71,7 @@ export default function ArchiveNav({ slug }: { slug: string }) {
               return (
                 <li key={doc.slug}>
                   <Link
-                    href={`/blog/${doc.slug}`}
+                    href={`/archive/${doc.slug}`}
                     className={`
                       flex items-baseline gap-3 rounded px-2 py-1.5 -mx-2
                       text-sm transition-colors
@@ -130,7 +130,7 @@ function NavCard({
   const isPrev = direction === "prev";
   return (
     <Link
-      href={`/blog/${doc.slug}`}
+      href={`/archive/${doc.slug}`}
       className={`
         group block border border-slate-800 rounded-lg px-5 py-4
         hover:border-slate-700 hover:bg-slate-900/60 transition-colors
@@ -160,7 +160,7 @@ function RefGroup({ label, docs }: { label: string; docs: ArchiveDoc[] }) {
         {docs.map((doc) => (
           <Link
             key={doc.slug}
-            href={`/blog/${doc.slug}`}
+            href={`/archive/${doc.slug}`}
             className="flex items-baseline gap-2 group"
           >
             <span className="font-mono text-[10px] text-slate-600 shrink-0">
