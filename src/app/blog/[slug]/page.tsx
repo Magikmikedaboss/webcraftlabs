@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import "@/app/blog/editorial.css";
 
 import { getAllPostSlugs, getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
+import ArchiveNav from "@/components/archive/ArchiveNav";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -189,6 +190,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     .split(/\s+/).filter(Boolean).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 200));
   const isLab = post.frontmatter.template === "lab";
+  const isArchive = post.frontmatter.collection === "webcraft-archive";
 
   const mdxComponents = {
     Callout,
@@ -270,7 +272,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           pageUrl={url}
           cover={post.frontmatter.image as string | undefined}
           coverAbs={socialImage}
-          related={related}
+          related={isArchive ? [] : related}
+          backHref={isArchive ? "/archive" : "/blog"}
+          backLabel={isArchive ? "← Back to Archive" : "← Back to Blog"}
         >
           <MDXRemote
             source={post.content}
@@ -278,6 +282,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           />
         </EditorialTemplateV2>
       )}
+      {isArchive && <ArchiveNav slug={post.slug} />}
     </SiteShell>
   );
 }

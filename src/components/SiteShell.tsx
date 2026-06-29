@@ -109,23 +109,17 @@ export default function SiteShell({
 
           {/* Desktop Navigation — driven by SITE.nav (first=About, last=Contact CTA, middle=Explore dropdown) */}
           <nav className="hidden items-center gap-1 md:flex">
-            {SITE.nav.length > 0 && (
-              <NavLink href={SITE.nav[0].href} label={SITE.nav[0].label} />
-            )}
-            {SITE.nav.length > 2 && (
-              <DropdownNav
-                label="Explore"
-                items={SITE.nav.slice(1, -1) as { href: string; label: string }[]}
-              />
-            )}
-            {SITE.nav.length >= 2 && (
-              <Link
-                href={SITE.nav[SITE.nav.length - 1].href}
-                className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-white shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
-              >
-                {SITE.nav[SITE.nav.length - 1].label}
-              </Link>
-            )}
+            <NavLink href={SITE.nav[0].href} label={SITE.nav[0].label} />
+            <DropdownNav
+              label="Explore"
+              items={SITE.nav.slice(1, -1) as { href: string; label: string }[]}
+            />
+            <Link
+              href={SITE.nav[SITE.nav.length - 1].href}
+              className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-white shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
+            >
+              {SITE.nav[SITE.nav.length - 1].label}
+            </Link>
             <ThemeToggle />
           </nav>
 

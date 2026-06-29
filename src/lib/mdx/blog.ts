@@ -62,8 +62,10 @@ export function getPostBySlug(slug: string): { slug: string; content: string; fr
 }
 
 export function getAllPosts() {
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   return getAllPostSlugs()
     .map((slug) => getPostBySlug(slug))
+    .filter((p) => p.frontmatter.date <= today)
     .sort((a, b) => {
       if (a.frontmatter.date < b.frontmatter.date) return 1;
       if (a.frontmatter.date > b.frontmatter.date) return -1;

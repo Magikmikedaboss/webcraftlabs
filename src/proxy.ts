@@ -14,11 +14,11 @@ if (allowedOriginRaw) {
     // Allow localhost variations for development (any port)
     allowedOrigins = [primaryOrigin];
     const port = parsed.port ? `:${parsed.port}` : '';
-    const scheme = parsed.protocol;
     if (parsed.hostname === 'localhost') {
-      allowedOrigins.push(`${scheme}//127.0.0.1${port}`);
+      allowedOrigins.push(`http://127.0.0.1${port}`);
     } else if (parsed.hostname === '127.0.0.1') {
-      allowedOrigins.push(`${scheme}//localhost${port}`);    }
+      allowedOrigins.push(`http://localhost${port}`);
+    }
   } catch (err) {
     const errorMsg = `FATAL: Invalid NEXT_PUBLIC_SITE_URL configuration: "${allowedOriginRaw}". Must be a valid URL.`;
     console.error(errorMsg, err);

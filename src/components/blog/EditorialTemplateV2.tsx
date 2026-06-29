@@ -271,6 +271,8 @@ export default function EditorialTemplateV2({
   cover,
   coverAbs: _coverAbs,
   related,
+  backHref = "/blog",
+  backLabel = "← Back to Blog",
   children,
 }: {
   post: PostProps;
@@ -279,6 +281,8 @@ export default function EditorialTemplateV2({
   cover?: string;
   coverAbs?: string;
   related?: RelatedPost[];
+  backHref?: string;
+  backLabel?: string;
   children: React.ReactNode;
 }) {
   const date = post.published || post.date;
@@ -290,10 +294,10 @@ export default function EditorialTemplateV2({
     >
       <div className="mx-auto mb-4 flex max-w-7xl items-center justify-between px-1 text-xs sm:mb-6 sm:text-sm">
         <Link
-          href="/blog"
+          href={backHref}
           className="font-semibold text-slate-600 transition hover:text-indigo-700"
         >
-          ← Back to Blog
+          {backLabel}
         </Link>
         {readMins && <span className="text-slate-500">{readMins} min read</span>}
       </div>
