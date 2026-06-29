@@ -1,4 +1,4 @@
-﻿﻿name: Submit IndexNow URLs
+name: Submit IndexNow URLs
 
 on:
   push:

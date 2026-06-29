@@ -135,7 +135,7 @@ export default function SiteShell({
         </div>
       </header>
 
-      <ContentTag>
+      <main>
         {(title || intro) && (
           <section className="border-b border-[var(--border)]">
             <div className="mx-auto max-w-7xl px-6 py-8">
@@ -146,7 +146,7 @@ export default function SiteShell({
         )}
 
         {children}
-      </ContentTag>
+      </main>
       <footer className="border-t border-[var(--border)]">
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-lg p-4 sm:p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6 md:gap-8">

@@ -223,7 +223,7 @@ export default function ServicesPage() {
           </p>
         </div>
         <div className="grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((s) => (
+          {SERVICES.slice(1).map((s) => (
             <div
               key={s.title}
               className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"

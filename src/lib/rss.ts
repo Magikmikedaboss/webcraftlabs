@@ -40,8 +40,8 @@ export function buildRssFeed(opts: RssFeedOptions): string {
         `<item>
       <title>${escapeXml(item.title)}</title>
       <description>${escapeXml(item.description)}</description>
-      <link>${item.url}</link>
-      <guid isPermaLink="true">${item.url}</guid>
+      <link>${escapeXml(item.url)}</link>
+      <guid isPermaLink="true">${escapeXml(item.url)}</guid>
       <pubDate>${new Date(item.date).toUTCString()}</pubDate>${
         item.category ? `\n      <category>${escapeXml(item.category)}</category>` : ""
       }
@@ -54,8 +54,8 @@ export function buildRssFeed(opts: RssFeedOptions): string {
   <channel>
     <title>${escapeXml(opts.title)}</title>
     <description>${escapeXml(opts.description)}</description>
-    <link>${opts.link}</link>
-    <atom:link href="${opts.selfUrl}" rel="self" type="application/rss+xml" />
+    <link>${escapeXml(opts.link)}</link>
+    <atom:link href="${escapeXml(opts.selfUrl)}" rel="self" type="application/rss+xml" />
     <language>en-us</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
     ${itemXml}
