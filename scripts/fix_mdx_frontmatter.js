@@ -10,17 +10,24 @@ const __dirname = path.dirname(__filename);
 
 function readArchiveOrder() {
   const p = path.join(__dirname, '..', 'src', 'lib', 'archive-order.json');
-  if (!fs.existsSync(p)) return {};
-  try {
-    const arr = JSON.parse(fs.readFileSync(p, 'utf8'));
-    const slugs = {};
-    for (const it of arr) {
-      if (it && typeof it.slug === 'string') slugs[it.slug] = it.archiveId ?? null;
-    }
-    return slugs;
-  } catch {
-    return {};
+  if (!fs.existsSync(p)) {
+    throw new Error(`Missing archive-order.json at ${p}`);
   }
+  const raw = fs.readFileSync(p, 'utf8');
+  let arr;
+  try {
+    arr = JSON.parse(raw);
+  } catch (err) {
+    throw new Error(`Failed to parse archive-order.json at ${p}: ${err && err.message ? err.message : err}`);
+  }
+  if (!Array.isArray(arr)) {
+    throw new Error(`archive-order.json did not contain an array at ${p}`);
+  }
+  const slugs = {};
+  for (const it of arr) {
+    if (it && typeof it.slug === 'string') slugs[it.slug] = it.archiveId ?? null;
+  }
+  return slugs;
 }
 
 function fixFiles() {
