@@ -41,6 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const { slug } = await params;
     const post = getNewsBySlug(slug as string);
+    if (!isNewsPublished(post.frontmatter)) return { title: `News | ${SITE.name}` };
     const { url, socialImage } = getNewsPostMeta(slug, post.frontmatter.image);
 
     return {

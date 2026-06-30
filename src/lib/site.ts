@@ -67,6 +67,7 @@ export function getBaseUrl(): string {
   if (!['http:', 'https:'].includes(parsed.protocol)) {
     throw new Error(`SITE.url must use http or https protocol, got: ${parsed.protocol}`);
   }
-  // Remove trailing slash for consistent URL construction
-  return rawUrl.replace(/\/$/, '');
+  // Return only the origin (scheme + host + port) so pathnames in SITE.url
+  // never corrupt canonical URLs built as `${baseUrl}/some-path`.
+  return parsed.origin;
 }
