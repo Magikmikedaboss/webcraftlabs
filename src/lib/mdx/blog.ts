@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
 import { BLOG_DIR } from "../blog";
+import { publishCutoff } from "./publishCutoff";
 
 function sanitizeSlug(slug: string): string {
   // Decode and allow [a-zA-Z0-9-_]
@@ -59,18 +60,6 @@ export function getPostBySlug(slug: string): { slug: string; content: string; fr
     content,
     frontmatter: parsed.data,
   };
-}
-
-/** Returns the current publish cutoff date (YYYY-MM-DD, America/Los_Angeles). */
-function publishCutoff(): string {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Los_Angeles',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).formatToParts(new Date());
-  const get = (type: string) => parts.find((p) => p.type === type)!.value;
-  return `${get('year')}-${get('month')}-${get('day')}`;
 }
 
 /** Descending-date comparator for posts with a `frontmatter.date` field. */

@@ -60,7 +60,13 @@ export default function CollectionsPage() {
           {Object.entries(COLLECTION_THEMES).map(([key, theme]) => {
             const accent = COLLECTION_ACCENTS[key] ?? COLLECTION_ACCENTS.Knowledge;
             const docs = theme.slugs
-              .map((slug) => postsBySlug[slug])
+              .map((slug) => {
+                const doc = postsBySlug[slug];
+                if (!doc && process.env.NODE_ENV !== "production") {
+                  console.warn(`[collections] slug not found in published posts: "${slug}" (collection: ${key})`);
+                }
+                return doc;
+              })
               .filter(Boolean);
 
             return (

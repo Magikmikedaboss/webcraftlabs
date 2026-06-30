@@ -52,8 +52,7 @@ export default function ArchiveSearchPage() {
             </h1>
             <p className="text-base text-slate-500">
               Searches titles, mysteries, descriptions, and summaries across all published documents.
-            </p>
-          </div>
+            </p>          </div>
         </header>
 
         <ArchiveSearchClient docs={docs} />

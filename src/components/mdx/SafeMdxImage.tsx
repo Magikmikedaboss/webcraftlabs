@@ -30,9 +30,14 @@ export default function SafeMdxImage({
   const h = typeof height === "string" ? Number(height) : height;
 
   if (!w || !h) {
-    // Fallback: dimensions were lost — render a plain img to avoid throwing.
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        `SafeMdxImage: missing width or height for src="${src}". Fix the MDX frontmatter or image props.`,
+      );
+    }
+    // Dev-only fallback: dimensions were lost due to Turbopack/next-mdx-remote compilation quirk.
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} className={className} {...(rest as Record<string, unknown> & object)} loading="lazy" decoding="async" />;
+    return <img loading="lazy" decoding="async" {...(rest as Record<string, unknown> & object)} src={src} alt={alt} className={className} />;
   }
 
   return (

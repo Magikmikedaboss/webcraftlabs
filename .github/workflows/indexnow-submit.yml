@@ -18,8 +18,13 @@ on:
       - "src/app/api/indexnow/**"
       - "src/app/knowledge/page.tsx"
       - "src/app/archive/**"
+      - "src/app/services/**"
+      - "src/app/build/page.tsx"
       - "src/app/las-vegas-web-design/page.tsx"
       - "src/app/services/**"
+      - "src/lib/mdx/blog.ts"
+      - "src/lib/mdx/news.ts"
+      - "src/lib/rss.ts"
   workflow_dispatch:
 
 jobs:

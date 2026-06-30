@@ -26,7 +26,7 @@ interface PostProps {
 
 interface RelatedPost {
   id?: string;
-  slug: string;
+  slug?: string;
   href?: string;
   image?: string;
   title: string;

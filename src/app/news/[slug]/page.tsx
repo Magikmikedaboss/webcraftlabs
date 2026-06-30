@@ -10,6 +10,7 @@ import PullQuote from "@/components/mdx/PullQuote";
 import Stat from "@/components/mdx/Stat";
 import Takeaways from "@/components/mdx/Takeaways";
 import MdxImage from "@/components/mdx/MdxImage";
+import SafeMdxImage from "@/components/mdx/SafeMdxImage";
 import {
   BigQuote,
   Insight,
@@ -187,6 +188,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
                   StatBlock,
                   Chapter,
                   img: MdxImage,
+                  Image: SafeMdxImage,
                 }}
               />
             </div>

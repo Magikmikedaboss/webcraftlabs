@@ -20,6 +20,9 @@ function isAuthorized(req: NextRequest): boolean {
 function normalizeCandidateUrl(candidate: string, siteOrigin: string): string | null {
   try {
     const parsed = new URL(candidate);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      return null;
+    }
     if (parsed.origin !== siteOrigin) {
       return null;
     }

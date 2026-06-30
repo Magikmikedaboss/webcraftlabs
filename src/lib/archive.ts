@@ -130,7 +130,7 @@ export interface Institution {
   voice: string;
   positions: InstitutionPosition[];
   /** slugs of archive documents this institution produced or contributed to */
-  documents: string[];
+  documents: ReadonlyArray<ArchiveDoc["slug"]>;
 }
 
 export const INSTITUTIONS: Institution[] = [

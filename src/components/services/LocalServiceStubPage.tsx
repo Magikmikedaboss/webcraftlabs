@@ -42,8 +42,7 @@ export default function LocalServiceStubPage({
         </div>
 
         <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <h3 className="text-lg font-semibold">Related local service pages</h3>
-          <div className="mt-3 flex flex-wrap gap-3 text-sm">
+          <h3 className="text-lg font-semibold">Related service pages</h3>          <div className="mt-3 flex flex-wrap gap-3 text-sm">
             {relatedLinks.map(({ href, label }) => (
               <Link key={href} href={href} className="text-[var(--primary)] hover:underline">
                 {label}

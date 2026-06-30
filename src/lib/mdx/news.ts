@@ -4,6 +4,7 @@ import { NEWS_DIR } from "../news";
 import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
+import { publishCutoff } from "./publishCutoff";
 
 function sanitizeSlug(slug: string): string {
   // Decode and allow [A-Za-z0-9-_], normalize to lowercase for consistency
@@ -54,14 +55,7 @@ export function getNewsBySlug(slug: string): { slug: string; content: string; fr
 }
 
 export function getAllNews() {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Los_Angeles',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).formatToParts(new Date());
-  const get = (type: string) => parts.find((p) => p.type === type)!.value;
-  const today = `${get('year')}-${get('month')}-${get('day')}`;
+  const today = publishCutoff();
   return getAllNewsSlugs()
     .map((slug) => getNewsBySlug(slug))
     .filter((p) => p.frontmatter.date <= today)

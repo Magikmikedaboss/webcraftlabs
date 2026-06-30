@@ -128,13 +128,12 @@ export default function InstitutionsPage() {
                         <Link
                           key={doc.slug}
                           href={`/archive/${doc.slug}`}
-                          className="inline-flex items-center gap-2 border border-slate-800 hover:border-slate-600 rounded px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-slate-200 transition-colors"
+                          className="group inline-flex items-center gap-2 border border-slate-800 hover:border-slate-600 rounded px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-slate-200 transition-colors"
                         >
                           <span className="text-slate-600">{doc.archiveId}</span>
                           <span>{doc.title}</span>
                           <span className="text-slate-700 group-hover:text-slate-500">→</span>
-                        </Link>
-                      ))}
+                        </Link>                      ))}
                     </div>
                   </div>
                 )}

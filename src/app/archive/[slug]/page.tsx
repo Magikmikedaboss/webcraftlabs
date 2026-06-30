@@ -125,8 +125,12 @@ export default async function ArchiveDocPage({
   let post: ReturnType<typeof getPostBySlug>;
   try {
     post = getCachedPost(slug);
-  } catch {
-    notFound();
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "";
+    if (msg.startsWith("Post not found") || msg === "Invalid slug") {
+      notFound();
+    }
+    throw err;
   }
 
   // Only serve archive collection documents at this route
