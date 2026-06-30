@@ -1,20 +1,24 @@
-﻿import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+﻿﻿import type { Metadata } from "next";
+import { notFound, permanentRedirect } from "next/navigation";
+import { cache } from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 import "@/app/blog/editorial.css";
 
-import { getAllPostSlugs, getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
+import { getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
 import ArchiveNav from "@/components/archive/ArchiveNav";
 
+// Deduplicate the file read/parse between generateMetadata and the page component.
+const getCachedPost = cache(getPostBySlug);
+
 import Link from "next/link";
-import Image from "next/image";
 import Callout from "@/components/mdx/Callout";
 import Stat from "@/components/mdx/Stat";
 import Checklist from "@/components/mdx/Checklist";
 import PullQuote from "@/components/mdx/PullQuote";
 import Takeaways from "@/components/mdx/Takeaways";
 import MdxImage from "@/components/mdx/MdxImage";
+import SafeMdxImage from "@/components/mdx/SafeMdxImage";
 import ArticleImage from "@/components/mdx/ArticleImage";
 import SiteShell from "@/components/SiteShell";
 import EditorialTemplateV2, {
@@ -50,21 +54,29 @@ import {
   RecoveredLog,
   SystemOutput,
   HandwrittenNote,
+  FieldNotebook,
+  MarginNote,
+  EvidenceCard,
+  QuestionCard,
+  ThoughtExperiment,
+  ScholarlyExample,
 } from "@/components/blog/lab-notebook";
 import { getBaseUrl, SITE } from "@/lib/site";
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
-  return getAllPostSlugs().map((slug) => ({ slug }));
+  return getAllPosts().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {
     const { slug } = await params;
-    const post = getPostBySlug(slug);
+    const post = getCachedPost(slug);
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/blog/${slug}`;
     const socialImage = new URL(
-      post.frontmatter.image || "/images/structure-database-software-development.webp",
+      post.frontmatter.image || "/images/structure-database-software-development.jpg",
       siteUrl,
     ).toString();
 
@@ -107,15 +119,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   let post: ReturnType<typeof getPostBySlug>;
   try {
-    post = getPostBySlug(slug);
+    post = getCachedPost(slug);
   } catch {
     notFound();
+  }
+
+  // Archive documents now live at /archive/[slug]
+  if (post.frontmatter.collection === "webcraft-archive") {
+    permanentRedirect(`/archive/${slug}`);
   }
 
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/blog/${post.slug}`;
   const socialImage = new URL(
-    post.frontmatter.image || "/images/structure-database-software-development.webp",
+    post.frontmatter.image || "/images/structure-database-software-development.jpg",
     siteUrl,
   ).toString();
   const articleJsonLd = {
@@ -229,9 +246,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     RecoveredLog,
     SystemOutput,
     HandwrittenNote,
+    FieldNotebook,
+    MarginNote,
+    EvidenceCard,
+    QuestionCard,
+    ThoughtExperiment,
+    ScholarlyExample,
     img: MdxImage,
     Link,
-    Image: MdxImage,
+    Image: SafeMdxImage,
   };
 
   return (

@@ -3,27 +3,19 @@ export default function Takeaways({
   items = [],
 }: {
   title?: string;
-  items?: { id: string; text: string }[];
+  items?: unknown;
 }) {
-  if (!Array.isArray(items)) {
-    return null;
-  }
-
-  if (items.length === 0) {
-    return null;  }
-
-  const validItems = items.filter(
+  const safeItems = Array.isArray(items) ? items : [];
+  const validItems = safeItems.filter(
     (item): item is { id: string; text: string } =>
       item !== null &&
       typeof item === "object" &&
       typeof (item as { id?: unknown }).id === "string" &&
-      typeof (item as { text?: unknown }).text === "string"
+      typeof (item as { text?: unknown }).text === "string",
   );
-
   if (validItems.length === 0) {
     return null;
   }
-
   return (
     <div className="takeaways">
       <h3>{title}</h3>

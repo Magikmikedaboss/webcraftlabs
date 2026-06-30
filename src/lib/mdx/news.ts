@@ -4,6 +4,7 @@ import { NEWS_DIR } from "../news";
 import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
+import { publishCutoff } from "./publishCutoff";
 
 function sanitizeSlug(slug: string): string {
   // Decode and allow [A-Za-z0-9-_], normalize to lowercase for consistency
@@ -31,6 +32,10 @@ export function getAllNewsSlugs() {
     return [];
   }
 }
+export function isNewsPublished(frontmatter: z.infer<typeof BlogFrontmatterSchema>): boolean {
+  return frontmatter.date <= publishCutoff();
+}
+
 export function getNewsBySlug(slug: string): { slug: string; content: string; frontmatter: z.infer<typeof BlogFrontmatterSchema> } {
   const safeSlug = sanitizeSlug(slug);
   let fullPath = `${NEWS_DIR}/${safeSlug}.mdx`;
@@ -54,10 +59,9 @@ export function getNewsBySlug(slug: string): { slug: string; content: string; fr
 }
 
 export function getAllNews() {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   return getAllNewsSlugs()
     .map((slug) => getNewsBySlug(slug))
-    .filter((p) => p.frontmatter.date <= today)
+    .filter((p) => isNewsPublished(p.frontmatter))
     .sort((a, b) => {
       if (a.frontmatter.date < b.frontmatter.date) return 1;
       if (a.frontmatter.date > b.frontmatter.date) return -1;

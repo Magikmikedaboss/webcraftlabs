@@ -66,7 +66,7 @@ If no `urls` list is provided, the endpoint submits URLs from the generated site
 
 ### Optional: Automatic Trigger on Content Updates
 
-This repo includes [.github/workflows/indexnow-submit.yml](.github/workflows/indexnow-submit.yml), which triggers on pushes to `main` when blog/news content changes.
+This repo includes a [GitHub Actions workflow](.github/workflows/indexnow-submit.yml) that triggers on pushes to `main` when content or site structure changes (blog, news, archive, knowledge, services, sitemap, key static pages, and the IndexNow API itself).
 
 Add these GitHub repository secrets to enable it:
 

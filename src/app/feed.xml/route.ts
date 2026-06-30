@@ -1,7 +1,7 @@
 import { getBaseUrl, SITE } from "@/lib/site";
 import { getAllPosts } from "@/lib/mdx/blog";
 import { getAllNews } from "@/lib/mdx/news";
-import { XML_HEADERS, escapeXml } from "@/lib/rss";
+import { XML_HEADERS, buildRssFeed } from "@/lib/rss";
 
 export async function GET() {
   const baseUrl = getBaseUrl();
@@ -23,34 +23,17 @@ export async function GET() {
   }));
 
   const items = [...newsItems, ...blogItems]
-    .sort((a, b) => {
-      if (a.date === b.date) return 0;
-      return a.date > b.date ? -1 : 1;
-    })
+    .filter((item) => Number.isFinite(new Date(item.date).getTime()))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 100);
 
-  const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>${escapeXml(SITE.name)} Updates</title>
-    <description>${escapeXml(SITE.tagline)}</description>
-    <link>${baseUrl}</link>
-    <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml" />
-    <language>en-us</language>
-    <lastBuildDate>${new Date(items[0]?.date ?? Date.now()).toUTCString()}</lastBuildDate>    ${items
-      .map(
-        (item) => `<item>
-      <title>${escapeXml(item.title)}</title>
-      <description>${escapeXml(item.description)}</description>
-      <link>${item.url}</link>
-      <guid isPermaLink="true">${item.url}</guid>
-      <pubDate>${new Date(item.date).toUTCString()}</pubDate>
-      <category>${item.category}</category>
-    </item>`,
-      )
-      .join("\n")}
-  </channel>
-</rss>`;
+  const rss = buildRssFeed({
+    title: `${SITE.name} Updates`,
+    description: SITE.tagline,
+    link: baseUrl,
+    selfUrl: `${baseUrl}/feed.xml`,
+    items,
+  });
 
   return new Response(rss, { headers: XML_HEADERS });
 }

@@ -26,7 +26,8 @@ interface PostProps {
 
 interface RelatedPost {
   id?: string;
-  slug: string;
+  slug?: string;
+  href?: string;
   image?: string;
   title: string;
   badge?: string;
@@ -229,7 +230,7 @@ function ReadNext({ related }: { related?: RelatedPost[] }) {
         {related.map((p) => (
           <Link
             key={p.id || p.slug}
-            href={`/blog/${p.slug}${p.id ? `?id=${encodeURIComponent(p.id)}` : ""}`}
+            href={p.href ?? `/blog/${p.slug}${p.id ? `?id=${encodeURIComponent(p.id)}` : ""}`}
             className="group overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:rounded-[2rem]"
           >
             {p.image && (

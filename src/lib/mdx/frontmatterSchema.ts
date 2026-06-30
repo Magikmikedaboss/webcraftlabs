@@ -28,6 +28,17 @@ export const BlogFrontmatterSchema = z.object({
   series: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   archiveId: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   collection: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  mystery: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+}).superRefine((data, ctx) => {
+  if (data.collection === 'webcraft-archive') {
+    if (!data.mystery) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'mystery is required when collection is "webcraft-archive"',
+        path: ['mystery'],
+      });
+    }
+  }
 }).superRefine((data, ctx) => {
   if (data.collection === 'webcraft-archive') {
     if (!data.archiveId) {

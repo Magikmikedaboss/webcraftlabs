@@ -677,12 +677,156 @@ export function SystemOutput({
   );
 }
 
-export function HandwrittenNote({ children }: { children: React.ReactNode }) {
+function NotebookAside({
+  author,
+  institution,
+  date,
+  location,
+  rotation,
+  children,
+}: {
+  author?: string;
+  institution?: string;
+  date?: string;
+  location?: string;
+  rotation: number;
+  children: React.ReactNode;
+}) {
   return (
-    <aside className="relative my-8 rotate-[1deg] rounded-sm border border-amber-300 bg-amber-50/90 px-6 py-5 shadow-md ring-1 ring-amber-200/60">
+    <aside
+      className="relative my-8 rounded-sm border border-amber-300 bg-amber-50/90 px-6 py-5 shadow-md ring-1 ring-amber-200/60"
+      style={{ transform: `rotate(${rotation}deg)` }}
+    >
+      {(author || institution || date || location) && (
+        <div className="mb-3 pb-3 border-b border-amber-200/60 space-y-0.5">
+          {author && (
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-amber-700">
+              {author}
+            </p>
+          )}
+          {institution && (
+            <p className="font-mono text-[10px] text-amber-600">{institution}</p>
+          )}
+          {location && (
+            <p className="font-mono text-[10px] text-amber-500">{location}</p>
+          )}
+          {date && (
+            <p className="font-mono text-[10px] text-amber-500">{date}</p>
+          )}
+        </div>
+      )}
       <div className="font-serif text-sm italic leading-8 text-amber-900">
         {children}
       </div>
     </aside>
+  );
+}
+
+export function HandwrittenNote({
+  rotation = 1,
+  ...props
+}: {
+  author?: string;
+  institution?: string;
+  date?: string;
+  location?: string;
+  rotation?: number;
+  children: React.ReactNode;
+}) {
+  return <NotebookAside rotation={rotation} {...props} />;
+}
+
+export function FieldNotebook({
+  rotation = -1,
+  ...props
+}: {
+  author?: string;
+  institution?: string;
+  date?: string;
+  location?: string;
+  rotation?: number;
+  children: React.ReactNode;
+}) {
+  return <NotebookAside rotation={rotation} {...props} />;
+}
+
+export function MarginNote({
+  author,
+  children,
+}: {
+  author?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <aside className="my-6 ml-6 border-l-2 border-slate-500 pl-4 font-mono text-xs text-slate-500">
+      {author && (
+        <p className="mb-2 font-bold uppercase tracking-[0.2em] text-slate-400 text-[10px]">
+          {author}
+        </p>
+      )}
+      <div className="italic leading-6">{children}</div>
+    </aside>
+  );
+}
+
+export function EvidenceCard({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="my-8 rounded-xl border border-slate-700 bg-slate-950 p-5 lg:p-7 font-mono text-xs text-slate-300 shadow-lg">
+      <p className="mb-4 text-[10px] uppercase tracking-[0.25em] text-slate-500">
+        Evidence Summary
+      </p>
+      <div className="space-y-1 leading-6">{children}</div>
+    </div>
+  );
+}
+
+export function QuestionCard({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="my-8 rounded-xl border border-dashed border-slate-600 bg-slate-900/40 p-5 lg:p-7 font-mono text-sm text-slate-300">
+      <p className="mb-3 text-[10px] uppercase tracking-[0.25em] text-slate-500">
+        Mystery
+      </p>
+      <div className="italic leading-7">{children}</div>
+    </div>
+  );
+}
+
+export function ThoughtExperiment({
+  title,
+  children,
+}: {
+  title?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="my-8 rounded-xl border border-indigo-700/40 bg-indigo-950/30 p-5 lg:p-7 font-mono text-sm text-slate-200 shadow-lg">
+      <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-indigo-400">
+        Thought Experiment
+      </p>
+      {title && (
+        <p className="mb-4 text-base font-bold text-white">{title}</p>
+      )}
+      <div className="italic leading-7 text-slate-300">{children}</div>
+    </div>
+  );
+}
+
+export function ScholarlyExample({
+  title,
+  children,
+}: {
+  title?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="my-8 rounded-xl border border-emerald-700/40 bg-emerald-950/20 p-5 lg:p-7 font-mono text-sm text-slate-200 shadow-md">
+      <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-emerald-400">
+        Scholarly Example
+      </p>
+      {title && (
+        <p className="mb-4 text-base font-bold text-white">{title}</p>
+      )}
+      <div className="leading-7 text-slate-300">{children}</div>
+    </div>
   );
 }

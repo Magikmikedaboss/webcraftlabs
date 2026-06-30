@@ -127,10 +127,12 @@ export default function RootLayout({
                 if (theme === 'dark') {
                   document.documentElement.setAttribute('data-theme', 'dark');
                   document.documentElement.classList.add('dark');
+                  document.documentElement.classList.remove('light');
                   document.documentElement.style.colorScheme = 'dark';
                 } else {
                   document.documentElement.setAttribute('data-theme', 'light');
                   document.documentElement.classList.remove('dark');
+                  document.documentElement.classList.add('light');
                   document.documentElement.style.colorScheme = 'light';
                 }
               } catch(e) {}

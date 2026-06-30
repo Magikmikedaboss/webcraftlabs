@@ -1,12 +1,11 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
-import { getAllPosts } from "@/lib/mdx/blog";
 import { getBaseUrl } from "@/lib/site";
-import { ARCHIVE_ORDER } from "@/lib/archive";
+import { getArchivePosts, ARCHIVE_ORDER } from "@/lib/archive";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "WebCraft Archive",
+  title: "WebCraft Archive — A Living Collection of Recovered Documents",
   description:
     "A living collection of recovered investigations, scholarly treatises, and historical reconstructions. Authenticity varies. Inquiry continues.",
   alternates: {
@@ -14,137 +13,168 @@ export const metadata: Metadata = {
   },
 };
 
-type DocType = "Investigation" | "Treatise" | "Recovered Record" | "Orientation" | "Unknown";
+export default function ArchiveLanding() {
+  const archivePosts = getArchivePosts();
 
-function getDocType(archiveId: string | undefined): DocType {
-  if (!archiveId) return "Unknown";
-  if (archiveId.startsWith("Investigation")) return "Investigation";
-  if (archiveId.startsWith("Treatise")) return "Treatise";
-  if (archiveId.startsWith("Recovered Record")) return "Recovered Record";
-  if (archiveId === "Orientation") return "Orientation";
-  return "Unknown";
-}
-
-function getStatusLabel(type: DocType): string {
-  switch (type) {
-    case "Investigation": return "OPEN";
-    case "Treatise": return "LIVING DOCUMENT";
-    case "Recovered Record": return "UNKNOWN ORIGIN";
-    case "Orientation": return "ACTIVE";
-    default: return "UNCLASSIFIED";
-  }
-}
-
-function getStatusColor(type: DocType): string {
-  switch (type) {
-    case "Investigation": return "text-amber-400 border-amber-400/40 bg-amber-400/10";
-    case "Treatise": return "text-cyan-400 border-cyan-400/40 bg-cyan-400/10";
-    case "Recovered Record": return "text-violet-400 border-violet-400/40 bg-violet-400/10";
-    case "Orientation": return "text-emerald-400 border-emerald-400/40 bg-emerald-400/10";
-    default: return "text-slate-400 border-slate-400/40 bg-slate-400/10";
-  }
-}
-
-function getTypeAccent(type: DocType): string {
-  switch (type) {
-    case "Investigation": return "border-l-amber-500";
-    case "Treatise": return "border-l-cyan-500";
-    case "Recovered Record": return "border-l-violet-500";
-    case "Orientation": return "border-l-emerald-500";
-    default: return "border-l-slate-500";
-  }
-}
-
-export default function ArchivePage() {
-  const allPosts = getAllPosts();
-  const archivePosts = allPosts
-    .filter((p) => p.frontmatter.collection === "webcraft-archive")
-    .sort((a, b) => {
-      const ai = ARCHIVE_ORDER.findIndex((d) => d.slug === a.slug);
-      const bi = ARCHIVE_ORDER.findIndex((d) => d.slug === b.slug);
-      return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
-    });
-
-  const investigations = archivePosts.filter(
-    (p) => getDocType(p.frontmatter.archiveId) === "Investigation"
+  const investigations = archivePosts.filter((p) =>
+    p.frontmatter.archiveId?.startsWith("Investigation")
   );
-  const treatises = archivePosts.filter(
-    (p) => getDocType(p.frontmatter.archiveId) === "Treatise"
+  const treatises = archivePosts.filter((p) =>
+    p.frontmatter.archiveId?.startsWith("Treatise")
   );
-  const recoveredRecords = archivePosts.filter(
-    (p) => getDocType(p.frontmatter.archiveId) === "Recovered Record"
+  const recoveredRecords = archivePosts.filter((p) =>
+    p.frontmatter.archiveId?.startsWith("Recovered Record")
   );
+
+  // Recommended entry point: position 2 in reading sequence (The Last Simulation)
+  const entryDocMeta = ARCHIVE_ORDER[1];
+  const entryPost = archivePosts.find((p) => p.slug === entryDocMeta.slug);
 
   return (
     <SiteShell background="bg">
-      <div className="min-h-screen bg-[#05080f] text-slate-200">
+      <div className="min-h-screen bg-[#05080f] text-slate-200 flex flex-col">
 
-        {/* ── Header ─────────────────────────────────────────── */}
-        <header className="border-b border-slate-800 bg-[#07090f]/80 backdrop-blur-sm">
-          <div className="mx-auto max-w-5xl px-6 py-12">
-            <p className="text-xs font-mono tracking-[0.25em] text-slate-500 uppercase mb-3">
-              WebCraft Labz — Special Collection
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
-              WebCraft Archive
-            </h1>
-            <p className="max-w-2xl text-slate-400 leading-relaxed">
-              A living collection of recovered investigations, scholarly treatises,
-              and historical reconstructions. Records are incomplete.
-              Interpretations remain provisional.
-            </p>
-            <blockquote className="mt-6 border-l-2 border-slate-600 pl-4 text-sm italic text-slate-500">
-              &ldquo;The Archive does not announce truth. It preserves evidence.&rdquo;            </blockquote>
-          </div>
-        </header>
-
-        {/* ── Stats bar ──────────────────────────────────────── */}
-        <div className="border-b border-slate-800 bg-[#07090f]/60">
-          <div className="mx-auto max-w-5xl px-6 py-4 flex flex-wrap gap-x-8 gap-y-2 text-xs font-mono">
-            <Stat label="Recovered Documents" value={archivePosts.length} />
-            <Stat label="Open Investigations" value={investigations.length} />
-            <Stat label="Living Treatises" value={treatises.length} />
-            <Stat label="Recovered Records" value={recoveredRecords.length} />
-            <Stat label="Current Scholarly Consensus" value="Developing" />
+        {/* ── Archive Status ─────────────────────────────────── */}
+        <div className="border-b border-slate-800/40 bg-[#07090f]">
+          <div className="mx-auto max-w-5xl px-6 py-3 flex items-center gap-6">
+            <span className="text-[10px] font-mono tracking-[0.3em] text-slate-600 uppercase">
+              Archive Status
+            </span>
+            <span className="text-[10px] font-mono tracking-[0.3em] text-slate-400 uppercase">
+              Active
+            </span>
+            <span className="text-[10px] font-mono tracking-[0.3em] text-slate-600 uppercase">
+              Inquiry Continues
+            </span>
           </div>
         </div>
 
-        {/* ── Catalog ────────────────────────────────────────── */}
-        <main className="mx-auto max-w-5xl px-6 py-12 space-y-16">
+        {/* ── Hero ─────────────────────────────────────────── */}
+        <header className="border-b border-slate-800">
+          <div className="mx-auto max-w-5xl px-6 pt-20 pb-16">
 
-          {investigations.length > 0 && (
-            <Section heading="Investigations" count={investigations.length}>
-              {investigations.map((post) => (
-                <ArchiveCard key={post.slug} post={post} />
-              ))}
-            </Section>
-          )}
-
-          {treatises.length > 0 && (
-            <Section heading="Treatises" count={treatises.length}>
-              {treatises.map((post) => (
-                <ArchiveCard key={post.slug} post={post} />
-              ))}
-            </Section>
-          )}
-
-          {recoveredRecords.length > 0 && (
-            <Section heading="Recovered Records" count={recoveredRecords.length}>
-              {recoveredRecords.map((post) => (
-                <ArchiveCard key={post.slug} post={post} />
-              ))}
-            </Section>
-          )}
-
-
-        </main>
-
-        {/* ── Footer note ────────────────────────────────────── */}
-        <footer className="border-t border-slate-800 mt-8">
-          <div className="mx-auto max-w-5xl px-6 py-8 text-center">
-            <p className="text-xs font-mono text-slate-600">
-              ARCHIVE STATUS: ACTIVE — INQUIRY CONTINUES
+            <p className="text-[11px] font-mono tracking-[0.3em] text-slate-600 uppercase mb-6">
+              WebCraft Labz — Special Collection
             </p>
+
+            <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight text-white leading-none mb-10">
+              WebCraft<br />Archive
+            </h1>
+
+            <blockquote className="max-w-xl text-base sm:text-lg text-slate-400 italic leading-relaxed mb-10 border-l-2 border-slate-700 pl-5">
+              &ldquo;The Archive does not announce truth. It preserves evidence.&rdquo;
+            </blockquote>
+
+            {/* Reader promise */}
+            <div className="max-w-2xl mb-10 space-y-2">
+              <p className="text-2xl sm:text-3xl font-semibold text-slate-100 leading-snug">
+                Every document begins with a mystery.
+              </p>
+              <p className="text-2xl sm:text-3xl font-semibold text-slate-500 leading-snug">
+                The deeper you investigate, the stranger the record becomes.
+              </p>
+              <p className="pt-3 text-sm text-slate-500 leading-relaxed">
+                Recovered investigations. Scholarly treatises. Lost records.
+                Explore the evidence and decide for yourself.
+              </p>
+            </div>
+
+            {/* Institutional data plates */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-slate-800 border border-slate-800 rounded-lg overflow-hidden mb-10">
+              <DataPlate label="Documents" value={archivePosts.length} />
+              <DataPlate label="Investigations" value={investigations.length} />
+              <DataPlate label="Treatises" value={treatises.length} />
+              <DataPlate label="Recovered Records" value={recoveredRecords.length} />
+            </div>
+
+            {/* Primary CTA */}
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/archive/catalog"
+                className="inline-flex items-center gap-2 bg-slate-100 text-slate-900 font-semibold text-sm px-7 py-3 rounded-lg hover:bg-white transition-colors"
+              >
+                Enter the Archive
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+        </header>
+
+        {/* ── Start Here ───────────────────────────────────── */}
+        {entryPost && (
+          <section className="border-b border-slate-800">
+            <div className="mx-auto max-w-5xl px-6 py-14">
+              <p className="text-[10px] font-mono tracking-[0.3em] text-slate-600 uppercase mb-6">
+                Recommended Entry Point for New Researchers
+              </p>
+              <Link href={`/archive/${entryDocMeta.slug}`} className="group block max-w-2xl">
+                <div className="border border-slate-800 border-l-2 border-l-violet-500 bg-slate-900/40 hover:bg-slate-900/80 rounded-r-lg px-6 py-6 transition-colors">
+                  <p className="text-[10px] font-mono tracking-widest text-violet-400/80 uppercase mb-2">
+                    {entryDocMeta.archiveId}
+                  </p>
+                  <h2 className="text-xl font-bold text-slate-100 group-hover:text-white mb-3 transition-colors">
+                    {entryDocMeta.title}
+                  </h2>
+                  {entryPost.frontmatter.pullQuote ? (
+                    <p className="text-sm italic text-slate-500 mb-5 leading-relaxed">
+                      &ldquo;{entryPost.frontmatter.pullQuote}&rdquo;
+                    </p>
+                  ) : entryPost.frontmatter.summary ? (
+                    <p className="text-sm text-slate-500 mb-5 leading-relaxed">
+                      {entryPost.frontmatter.summary}
+                    </p>
+                  ) : null}
+                  <span className="text-xs font-mono text-slate-600 group-hover:text-slate-300 transition-colors">
+                    Begin Reading →
+                  </span>
+                </div>
+              </Link>
+            </div>
+          </section>
+        )}
+
+        {/* ── Section Navigation ───────────────────────────── */}
+        <section className="border-b border-slate-800">
+          <div className="mx-auto max-w-5xl px-6 py-14">
+            <p className="text-[10px] font-mono tracking-[0.3em] text-slate-600 uppercase mb-8">
+              Navigate the Archive
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-800 border border-slate-800 rounded-lg overflow-hidden">
+              {[
+                { href: "/archive/catalog",      label: "Catalog",      desc: "Full reading sequence" },
+                { href: "/archive/institutions",  label: "Institutions", desc: "Participating bodies" },
+                { href: "/archive/collections",   label: "Collections",  desc: "Thematic groupings" },
+                { href: "/archive/glossary",      label: "Glossary",     desc: "Provisional definitions" },
+                { href: "/archive/timeline",      label: "Timeline",     desc: "Publication history" },
+                { href: "/archive/search",        label: "Search",       desc: "Title, mystery, and summary search" },              ].map(({ href, label, desc }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="group bg-[#07090f] hover:bg-slate-900 transition-colors px-6 py-5 flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <p className="text-sm font-semibold text-slate-300 group-hover:text-white transition-colors">{label}</p>
+                    <p className="text-[11px] font-mono text-slate-700 mt-0.5">{desc}</p>
+                  </div>
+                  <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs font-mono">→</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Footer ───────────────────────────────────────── */}
+        <footer className="mt-auto border-t border-slate-800/60">
+          <div className="mx-auto max-w-5xl px-6 py-8 flex items-center justify-between gap-4">
+            <p className="text-[10px] font-mono tracking-[0.2em] text-slate-700 uppercase">
+              Archive Status: Active — Inquiry Continues
+            </p>
+            <Link
+              href="/archive/catalog"
+              className="text-[10px] font-mono text-slate-700 hover:text-slate-500 transition-colors"
+            >
+              Browse Catalog →
+            </Link>
           </div>
         </footer>
 
@@ -155,93 +185,11 @@ export default function ArchivePage() {
 
 /* ── Sub-components ─────────────────────────────────────────── */
 
-function Stat({ label, value }: { label: string; value: string | number }) {
+function DataPlate({ label, value }: { label: string; value: number }) {
   return (
-    <div className="flex items-center gap-2 text-slate-500">
-      <span className="uppercase tracking-widest">{label}</span>
-      <span className="text-slate-300 font-semibold">{value}</span>
+    <div className="bg-[#07090f] px-4 py-5 text-center">
+      <p className="text-3xl font-bold text-white mb-1 tabular-nums">{value}</p>
+      <p className="text-[10px] font-mono tracking-widest text-slate-600 uppercase">{label}</p>
     </div>
-  );
-}
-
-function Section({
-  heading,
-  count,
-  children,
-}: {
-  heading: string;
-  count: number;
-  children: React.ReactNode;
-}) {
-  return (
-    <section>
-      <div className="flex items-center gap-3 mb-6">
-        <h2 className="text-xs font-mono tracking-[0.2em] text-slate-500 uppercase">
-          {heading}
-        </h2>
-        <div className="flex-1 h-px bg-slate-800" />
-        <span className="text-xs font-mono text-slate-600">{count}</span>
-      </div>
-      <div className="space-y-3">{children}</div>
-    </section>
-  );
-}
-
-function ArchiveCard({
-  post,
-}: {
-  post: ReturnType<typeof getAllPosts>[number];
-}) {
-  const { frontmatter, slug } = post;
-  const type = getDocType(frontmatter.archiveId);
-  const statusLabel = getStatusLabel(type);
-  const statusColor = getStatusColor(type);
-  const accentColor = getTypeAccent(type);
-
-  return (
-    <Link href={`/blog/${slug}`} className="group block">
-      <article
-        className={`
-          flex flex-col sm:flex-row sm:items-center gap-4
-          border border-slate-800 border-l-2 ${accentColor}
-          bg-slate-900/40 hover:bg-slate-900/80
-          rounded-r-lg px-5 py-4
-          transition-colors duration-150
-        `}
-      >
-        {/* Left: archiveId + title */}
-        <div className="flex-1 min-w-0">
-          {frontmatter.archiveId && (
-            <p className="text-xs font-mono tracking-widest text-slate-500 uppercase mb-1">
-              {frontmatter.archiveId}
-            </p>
-          )}
-          <h3 className="text-base font-semibold text-slate-100 group-hover:text-white transition-colors leading-snug">
-            {frontmatter.title}
-          </h3>
-          {frontmatter.summary && (
-            <p className="mt-1 text-sm text-slate-500 line-clamp-1">
-              {frontmatter.summary}
-            </p>
-          )}
-        </div>
-
-        {/* Right: status badge + date */}
-        <div className="flex sm:flex-col items-center sm:items-end gap-2 shrink-0">
-          <span
-            className={`
-              text-[10px] font-mono tracking-widest uppercase
-              border rounded px-2 py-0.5
-              ${statusColor}
-            `}
-          >
-            {statusLabel}
-          </span>
-          <span className="text-xs font-mono text-slate-600">
-            {frontmatter.date}
-          </span>
-        </div>
-      </article>
-    </Link>
   );
 }

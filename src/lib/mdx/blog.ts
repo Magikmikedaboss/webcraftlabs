@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
 import { BLOG_DIR } from "../blog";
+import { publishCutoff } from "./publishCutoff";
 
 function sanitizeSlug(slug: string): string {
   // Decode and allow [a-zA-Z0-9-_]
@@ -61,14 +62,29 @@ export function getPostBySlug(slug: string): { slug: string; content: string; fr
   };
 }
 
+/** Descending-date comparator for posts with a `frontmatter.date` field. */
+function newestFirst<T extends { frontmatter: { date: string } }>(a: T, b: T): number {
+  if (a.frontmatter.date < b.frontmatter.date) return 1;
+  if (a.frontmatter.date > b.frontmatter.date) return -1;
+  return 0;
+}
+
 export function getAllPosts() {
-  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date()); // YYYY-MM-DD site-local
+  const today = publishCutoff();
   return getAllPostSlugs()
     .map((slug) => getPostBySlug(slug))
     .filter((p) => p.frontmatter.date <= today)
-    .sort((a, b) => {
-      if (a.frontmatter.date < b.frontmatter.date) return 1;
-      if (a.frontmatter.date > b.frontmatter.date) return -1;
-      return 0;
-    });
+    .sort(newestFirst);
+}
+
+/** Frontmatter-only variant — no MDX content string returned. */
+export function getAllPostFrontmatter() {
+  const today = publishCutoff();
+  return getAllPostSlugs()
+    .map((slug) => {
+      const { slug: safeSlug, frontmatter } = getPostBySlug(slug);
+      return { slug: safeSlug, frontmatter };
+    })
+    .filter((p) => p.frontmatter.date <= today)
+    .sort(newestFirst);
 }

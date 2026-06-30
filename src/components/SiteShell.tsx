@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { FaLinkedin } from "react-icons/fa";
-import { SITE } from "@/lib/site";
+import { SITE, HEADER_NAV } from "@/lib/site";
 import styles from "./siteShell.module.css";
 import React, { useState, useRef, useId } from "react";
 import MobileMenu from "./MobileMenu";
@@ -83,12 +83,15 @@ export default function SiteShell({
   intro,
   right,
   background = 'surface', // 'surface' (light) or 'bg' (theme default)
+  asMain = true,
 }: {
   children: React.ReactNode;
   title?: React.ReactNode;
   intro?: React.ReactNode;
   right?: React.ReactNode;
   background?: 'surface' | 'bg';
+  /** Set to false when the page already provides its own <main> landmark. Defaults to true. */
+  asMain?: boolean;
 }) {
   const bgClass = background === 'surface' ? 'bg-[var(--surface)]' : 'bg-[var(--bg)]';
   return (
@@ -107,18 +110,18 @@ export default function SiteShell({
             <span>{SITE.name}</span>
           </Link>
 
-          {/* Desktop Navigation — driven by SITE.nav (first=About, last=Contact CTA, middle=Explore dropdown) */}
+          {/* Desktop Navigation — groups defined in HEADER_NAV (site.ts) */}
           <nav className="hidden items-center gap-1 md:flex">
-            <NavLink href={SITE.nav[0].href} label={SITE.nav[0].label} />
+            <NavLink href={HEADER_NAV.standalone.href} label={HEADER_NAV.standalone.label} />
             <DropdownNav
               label="Explore"
-              items={SITE.nav.slice(1, -1) as { href: string; label: string }[]}
+              items={HEADER_NAV.dropdown}
             />
             <Link
-              href={SITE.nav[SITE.nav.length - 1].href}
+              href={HEADER_NAV.cta.href}
               className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-white shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
             >
-              {SITE.nav[SITE.nav.length - 1].label}
+              {HEADER_NAV.cta.label}
             </Link>
             <ThemeToggle />
           </nav>
@@ -135,21 +138,34 @@ export default function SiteShell({
         </div>
       </header>
 
-      <main>
-        {(title || intro) && (
-          <section className="border-b border-[var(--border)]">
-            <div className="mx-auto max-w-7xl px-6 py-8">
-              {title && <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">{title}</h1>}
-              {intro && <div className="mt-2 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">{intro}</div>}
-            </div>
-          </section>
-        )}
-
-        {children}
-      </main>
+      {asMain ? (
+        <main>
+          {(title || intro) && (
+            <section className="border-b border-[var(--border)]">
+              <div className="mx-auto max-w-7xl px-6 py-8">
+                {title && <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">{title}</h1>}
+                {intro && <div className="mt-2 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">{intro}</div>}
+              </div>
+            </section>
+          )}
+          {children}
+        </main>
+      ) : (
+        <div>
+          {(title || intro) && (
+            <section className="border-b border-[var(--border)]">
+              <div className="mx-auto max-w-7xl px-6 py-8">
+                {title && <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">{title}</h1>}
+                {intro && <div className="mt-2 max-w-2xl text-sm sm:text-base md:text-lg text-[var(--muted)]">{intro}</div>}
+              </div>
+            </section>
+          )}
+          {children}
+        </div>
+      )}
       <footer className="border-t border-[var(--border)]">
         <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-lg p-4 sm:p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6 md:gap-8">
+          <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-lg p-4 sm:p-6 md:p-8 flex flex-col md:flex-row md:flex-wrap md:items-center md:justify-between gap-4 sm:gap-6 md:gap-8 overflow-hidden">
             <div className="flex items-center gap-4 mb-6 md:mb-0">
               <span className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] rounded-full flex items-center justify-center text-white text-xl sm:text-2xl shadow-md" aria-label={SITE.name} title={SITE.name}>
                 {/* Branding visual: fallback to initials */}
@@ -160,7 +176,7 @@ export default function SiteShell({
                 <div className="text-xs sm:text-sm text-[var(--muted)]">{SITE.tagline}</div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 md:flex-row md:gap-6 items-start md:items-center">
+            <div className="flex flex-wrap gap-x-4 gap-y-1.5 items-start md:items-center">
               {SITE.nav.map((n) => (
                 <Link key={n.href} href={n.href} className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--primary)] transition">
                   {n.label}

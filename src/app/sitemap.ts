@@ -123,14 +123,96 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/archive`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/archive/catalog`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/news`,
       lastModified,
       changeFrequency: 'weekly',
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/services/custom-website-development`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/landing-pages-funnels`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.78,
+    },
+    {
+      url: `${baseUrl}/services/saas-platform-development`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.78,
+    },
+    {
+      url: `${baseUrl}/services/seo-technical-optimization`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.78,
+    },
+    {
+      url: `${baseUrl}/archive/timeline`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/archive/glossary`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    },
+    {
+      url: `${baseUrl}/archive/collections`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/archive/institutions`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    },
+    {
+      url: `${baseUrl}/archive/search`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blog/synthetic-minds`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    },
   ];
 
-  const blogRoutes: MetadataRoute.Sitemap = getAllPosts().map((post) => {
+  const allPosts = getAllPosts();
+
+  const blogRoutes: MetadataRoute.Sitemap = allPosts
+    .filter((post) => post.frontmatter.collection !== "webcraft-archive")
+    .map((post) => {
     const parsedDate = post.frontmatter.date ? new Date(post.frontmatter.date) : undefined;
     const isValidDate = parsedDate && Number.isFinite(parsedDate.getTime());
 
@@ -139,6 +221,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...(isValidDate ? { lastModified: parsedDate } : {}),
       changeFrequency: 'monthly',
       priority: 0.65,
+    };
+  });
+
+  const archiveRoutes: MetadataRoute.Sitemap = allPosts
+    .filter((post) => post.frontmatter.collection === "webcraft-archive")
+    .map((post) => {
+    const parsedDate = post.frontmatter.date ? new Date(post.frontmatter.date) : undefined;
+    const isValidDate = parsedDate && Number.isFinite(parsedDate.getTime());
+
+    return {
+      url: `${baseUrl}/archive/${post.slug}`,
+      ...(isValidDate ? { lastModified: parsedDate } : {}),
+      changeFrequency: 'monthly',
+      priority: 0.7,
     };
   });
 
@@ -154,5 +250,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  return [...staticRoutes, ...blogRoutes, ...newsRoutes];
+  return [...staticRoutes, ...blogRoutes, ...archiveRoutes, ...newsRoutes];
 }
