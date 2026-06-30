@@ -135,10 +135,76 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.75,
     },
     {
+      url: `${baseUrl}/about`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/news`,
       lastModified,
       changeFrequency: 'weekly',
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/services/custom-website-development`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/landing-pages-funnels`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.78,
+    },
+    {
+      url: `${baseUrl}/services/saas-platform-development`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.78,
+    },
+    {
+      url: `${baseUrl}/services/seo-technical-optimization`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.78,
+    },
+    {
+      url: `${baseUrl}/archive/timeline`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/archive/glossary`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    },
+    {
+      url: `${baseUrl}/archive/collections`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/archive/institutions`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    },
+    {
+      url: `${baseUrl}/archive/search`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blog/synthetic-minds`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.65,
     },
   ];
 
