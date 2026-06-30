@@ -150,7 +150,7 @@ export default function TimelinePage() {
         <footer className="border-t border-slate-800/60">
           <div className="mx-auto max-w-5xl px-6 py-8 flex flex-wrap items-center justify-between gap-4">
             <p className="text-[10px] font-mono tracking-[0.2em] text-slate-700 uppercase">
-              {posts.length} documents — publication order
+              {chronological.length} documents — publication order
             </p>
             <div className="flex gap-6">
               <Link href="/archive/search" className="text-[10px] font-mono text-slate-700 hover:text-slate-500 transition-colors">Search →</Link>

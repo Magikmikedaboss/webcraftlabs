@@ -27,6 +27,9 @@ function parseFrontmatter(text) {
   return { raw: parsed.matter || null, obj: parsed.data };
 }
 
+// Known collection values aligned with frontmatter schema
+const validCollections = new Set(['webcraft-archive', 'news', 'blog']);
+
 function readArchiveOrder() {
   const p = path.join(__dirname, '..', 'src', 'lib', 'archive.ts');
   if (!fs.existsSync(p)) return {};

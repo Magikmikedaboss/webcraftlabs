@@ -12,9 +12,15 @@ import archiveOrder from './archive-order.json';
 // Canonical reading order — reader journey sequence
 // Readers fall in love first (Recovered Records), then become scholars.
 // Rule: evidence precedes scholarship. Wonder precedes analysis.
-export const ARCHIVE_ORDER = archiveOrder as const;
+export type ArchiveOrderItem = {
+  slug: string;
+  archiveId?: string | null;
+  title: string;
+};
 
-export type ArchiveDoc = (typeof ARCHIVE_ORDER)[number];
+export const ARCHIVE_ORDER: ReadonlyArray<ArchiveOrderItem> = archiveOrder as ArchiveOrderItem[];
+
+export type ArchiveDoc = ArchiveOrderItem;
 
 // Citation graph — which documents formally cite which
 // Key: citing slug, Value: array of cited slugs
