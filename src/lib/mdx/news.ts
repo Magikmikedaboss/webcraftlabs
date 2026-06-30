@@ -32,6 +32,10 @@ export function getAllNewsSlugs() {
     return [];
   }
 }
+export function isNewsPublished(frontmatter: z.infer<typeof BlogFrontmatterSchema>): boolean {
+  return frontmatter.date <= publishCutoff();
+}
+
 export function getNewsBySlug(slug: string): { slug: string; content: string; frontmatter: z.infer<typeof BlogFrontmatterSchema> } {
   const safeSlug = sanitizeSlug(slug);
   let fullPath = `${NEWS_DIR}/${safeSlug}.mdx`;
@@ -55,10 +59,9 @@ export function getNewsBySlug(slug: string): { slug: string; content: string; fr
 }
 
 export function getAllNews() {
-  const today = publishCutoff();
   return getAllNewsSlugs()
     .map((slug) => getNewsBySlug(slug))
-    .filter((p) => p.frontmatter.date <= today)
+    .filter((p) => isNewsPublished(p.frontmatter))
     .sort((a, b) => {
       if (a.frontmatter.date < b.frontmatter.date) return 1;
       if (a.frontmatter.date > b.frontmatter.date) return -1;

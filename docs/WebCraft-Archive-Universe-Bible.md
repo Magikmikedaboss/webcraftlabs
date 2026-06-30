@@ -55,8 +55,10 @@ AI, simulations, and aliens are expressions of this theme — not the theme itse
 | Investigation | Evidence-first, institutional | Dry, precise, unresolved | Investigation 203 |
 | Treatise | Scholarly synthesis | Measured, provisional | Treatise I |
 | Recovered Record | Narrative, unverified authorship | Atmospheric, ambiguous | RR-002 |
-| Recovered Narrative | Story of unknown origin | Literary, internally consistent | RR-611 | *(planned — not yet in schema or renderers)* |
+| Recovered Narrative | Story of unknown origin | Literary, internally consistent | RR-611 |
 | Orientation | Reader entry point | Clear but formal | Welcome to the Archive |
+
+> **Recovered Narrative** is planned — not yet in schema or renderers.
 
 ### Frontmatter Schema (All Archive Documents)
 

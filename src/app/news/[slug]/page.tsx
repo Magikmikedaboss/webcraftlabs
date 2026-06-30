@@ -1,5 +1,5 @@
 import "@/app/blog/editorial.css";
-import { getNewsBySlug, getAllNews } from "@/lib/mdx/news";
+import { getNewsBySlug, getAllNews, isNewsPublished } from "@/lib/mdx/news";
 import { getBaseUrl, SITE } from "@/lib/site";
 import SiteShell from "@/components/SiteShell";
 import type { Metadata } from "next";
@@ -87,6 +87,8 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
   } catch {
     notFound();
   }
+
+  if (!isNewsPublished(post.frontmatter)) notFound();
 
   const { baseUrl, url, socialImage } = getNewsPostMeta(post.slug, post.frontmatter.image);
   const articleJsonLd = {
