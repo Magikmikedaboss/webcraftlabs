@@ -9,21 +9,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 function readArchiveOrder() {
-  const p = path.join(__dirname, '..', 'src', 'lib', 'archive.ts');
-  const src = fs.readFileSync(p, 'utf8');
-  const slugs = {};
-  const arrMatch = src.match(/ARCHIVE_ORDER\s*=\s*\[([\s\S]*?)\] as const;/);
-  if (!arrMatch) return slugs;
-  const body = arrMatch[1];
-  const itemRe = /\{([\s\S]*?)\},?/g;
-  let m;
-  while ((m = itemRe.exec(body))) {
-    const item = m[1];
-    const slugMatch = item.match(/slug:\s*"([^"]+)"/);
-    const idMatch = item.match(/archiveId:\s*"([^"]+)"/);
-    if (slugMatch) slugs[slugMatch[1]] = idMatch ? idMatch[1] : null;
+  const p = path.join(__dirname, '..', 'src', 'lib', 'archive-order.json');
+  if (!fs.existsSync(p)) return {};
+  try {
+    const arr = JSON.parse(fs.readFileSync(p, 'utf8'));
+    const slugs = {};
+    for (const it of arr) {
+      if (it && typeof it.slug === 'string') slugs[it.slug] = it.archiveId ?? null;
+    }
+    return slugs;
+  } catch (err) {
+    return {};
   }
-  return slugs;
 }
 
 function fixFiles() {

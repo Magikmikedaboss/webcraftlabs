@@ -731,10 +731,8 @@ These fields are enforced or consumed by the current schema and page rendering.
 | Author | `author` | Optional. Defaults to site name when absent. |
 | Cover Image | `image` | Optional. Used as the document hero image. |
 | Tags | `tags` | Optional. Array of strings. |
+
 #### Planned / Aspirational
-
-The fields below are part of the full Archive metadata specification but are **not currently read by the schema or rendered by any page component**. Do not add these to MDX frontmatter until the implementation is expanded to support them.
-
 **Identity (extended)**
 - Classification
 - Current Revision

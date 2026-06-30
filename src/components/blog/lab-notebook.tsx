@@ -393,7 +393,7 @@ export function QuickPicks({ picks = [] }: { picks: QuickPick[] }) {
               {pick.title}
             </p>
             <p className="mt-2 text-2xl font-black tracking-tight text-slate-950">
-              {pick.framework || pick.name}
+              {pick.framework || pick.name || pick.title}
             </p>
             <p className="mt-3 text-sm leading-7 text-slate-700">{pick.reason}</p>
           </div>

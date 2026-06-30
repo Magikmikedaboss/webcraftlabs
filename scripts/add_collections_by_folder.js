@@ -12,21 +12,19 @@ function findMdx(dir) {
 }
 
 function readArchiveOrder() {
-  const p = path.join(__dirname, '..', 'src', 'lib', 'archive.ts');
+  // Read the canonical archive-order JSON produced by src/lib/archive-order.json
+  const p = path.join(__dirname, '..', 'src', 'lib', 'archive-order.json');
   if (!fs.existsSync(p)) return {};
-  const src = fs.readFileSync(p, 'utf8');
-  const slugs = {};
-  const arrMatch = src.match(/ARCHIVE_ORDER\s*=\s*\[([\s\S]*?)\] as const;/);
-  if (!arrMatch) return slugs;
-  const body = arrMatch[1];
-  const itemRe = /\{([\s\S]*?)\},?/g;
-  let m;
-  while ((m = itemRe.exec(body))) {
-    const item = m[1];
-    const slugMatch = item.match(/slug:\s*"([^\"]+)"/);
-    if (slugMatch) slugs[slugMatch[1]] = true;
+  try {
+    const arr = JSON.parse(fs.readFileSync(p, 'utf8'));
+    const slugs = {};
+    for (const it of arr) {
+      if (it && typeof it.slug === 'string') slugs[it.slug] = true;
+    }
+    return slugs;
+  } catch (err) {
+    return {};
   }
-  return slugs;
 }
 
 function ensureCollection(filePath, collection) {

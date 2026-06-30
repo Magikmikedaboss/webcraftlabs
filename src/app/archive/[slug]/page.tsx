@@ -39,7 +39,14 @@ export async function generateMetadata({
     }
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/archive/${slug}`;
-    const socialImage = `${siteUrl}${post.frontmatter.image || '/images/structure-database-software-development.jpg'}`;
+    const imageVal = post.frontmatter.image as string | undefined;
+    const socialImage = imageVal
+      ? imageVal.startsWith('http')
+        ? imageVal
+        : imageVal.startsWith('/')
+        ? `${siteUrl}${imageVal}`
+        : new URL(imageVal, siteUrl).toString()
+      : `${siteUrl}/images/structure-database-software-development.jpg`;
 
     return {
       title: post.frontmatter.title,
@@ -88,7 +95,14 @@ export default async function ArchiveDocPage({
   // Only serve archive collection documents at this route
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/archive/${slug}`;
-  const socialImage = `${siteUrl}${post.frontmatter.image || '/images/structure-database-software-development.jpg'}`;
+  const imageVal = post.frontmatter.image as string | undefined;
+  const socialImage = imageVal
+    ? imageVal.startsWith('http')
+      ? imageVal
+      : imageVal.startsWith('/')
+      ? `${siteUrl}${imageVal}`
+      : new URL(imageVal, siteUrl).toString()
+    : `${siteUrl}/images/structure-database-software-development.jpg`;
 
   const articleJsonLd = {
     "@context": "https://schema.org",

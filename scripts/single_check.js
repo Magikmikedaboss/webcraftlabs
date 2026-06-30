@@ -13,18 +13,16 @@ console.log('parsed keys:', Object.keys(obj));
 console.log(JSON.stringify(obj, null, 2));
 
 // compute issues like scan
-const archiveSrc = fs.readFileSync(path.join(__dirname, '..', 'src', 'lib', 'archive.ts'), 'utf8');
-const arrMatch = archiveSrc.match(/ARCHIVE_ORDER\s*=\s*\[([\s\S]*?)\] as const;/);
+const archiveJson = path.join(__dirname, '..', 'src', 'lib', 'archive-order.json');
 const sl = {};
-if (arrMatch) {
-  const body = arrMatch[1];
-  const itemRe = /\{([\s\S]*?)\},?/g;
-  let m;
-  while ((m = itemRe.exec(body))) {
-    const item = m[1];
-    const slugMatch = item.match(/slug:\s*"([^"]+)"/);
-    const idMatch = item.match(/archiveId:\s*"([^"]+)"/);
-    if (slugMatch) sl[slugMatch[1]] = idMatch ? idMatch[1] : null;
+if (fs.existsSync(archiveJson)) {
+  try {
+    const arr = JSON.parse(fs.readFileSync(archiveJson, 'utf8'));
+    for (const it of arr) {
+      if (it && typeof it.slug === 'string') sl[it.slug] = it.archiveId ?? null;
+    }
+  } catch (err) {
+    // ignore parse errors; sl remains empty
   }
 }
 const slug = obj.slug || path.basename(p).replace(/\.mdx$/, '');

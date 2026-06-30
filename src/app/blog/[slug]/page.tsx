@@ -30,7 +30,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const post = getCachedPost(slug);
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/blog/${slug}`;
-    const socialImage = `${siteUrl}${post.frontmatter.image || '/images/structure-database-software-development.jpg'}`;
+    const imageVal = post.frontmatter.image as string | undefined;
+    const socialImage = imageVal
+      ? imageVal.startsWith('http')
+        ? imageVal
+        : imageVal.startsWith('/')
+        ? `${siteUrl}${imageVal}`
+        : new URL(imageVal, siteUrl).toString()
+      : `${siteUrl}/images/structure-database-software-development.jpg`;
 
     return {
       title: post.frontmatter.title,
@@ -83,7 +90,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/blog/${post.slug}`;
-  const socialImage = `${siteUrl}${post.frontmatter.image || '/images/structure-database-software-development.jpg'}`;
+  const imageVal = post.frontmatter.image as string | undefined;
+  const socialImage = imageVal
+    ? imageVal.startsWith('http')
+      ? imageVal
+      : imageVal.startsWith('/')
+      ? `${siteUrl}${imageVal}`
+      : new URL(imageVal, siteUrl).toString()
+    : `${siteUrl}/images/structure-database-software-development.jpg`;
   // Ensure we only pass a string date for rendered publication text.
   // `post.frontmatter.published` may be a boolean sentinel; coerce to
   // a string only when it's explicitly a string (legacy tokens), otherwise

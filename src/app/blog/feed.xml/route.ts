@@ -4,8 +4,9 @@ import { XML_HEADERS, buildRssFeed } from "@/lib/rss";
 
 export async function GET() {
   const baseUrl = getBaseUrl();
-  // Filter out posts with invalid dates first, then limit to 100 items.
+  // Exclude archive posts, filter invalid dates, sort by date, and cap at 100
   const items = getAllPosts()
+    .filter((p) => p.frontmatter.collection !== 'webcraft-archive')
     .filter((p) => {
       const d = p.frontmatter.date ? new Date(p.frontmatter.date) : null;
       return d && Number.isFinite(d.getTime());

@@ -265,15 +265,6 @@ Monospace diagram frame for ASCII diagrams or annotated sketches.
 
 Classified-document header block. Used in sci-fi and speculative fiction posts.
 
-```mdx
-<ClassifiedHeader
-  lab="WEBCRAFT LABZ"
-  archive="ARCHIVE FILE"
-  classification="SPECULATIVE FICTION"
-  accessLevel="OPEN"
-/
->
-```
 
 ## RecoveredLog
 
