@@ -23,11 +23,22 @@ export const BlogFrontmatterSchema = z.object({
   template: z.enum(["lab", "editorial"]).optional(),
   badge: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   pullQuote: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
-  published: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  // Prefer boolean published; accept a few legacy string tokens (case-insensitive)
+  // Normalize legacy published string tokens to boolean true at the schema boundary.
+  // Accept a real boolean, or accept a handful of legacy strings (case-insensitive)
+  // which are converted to `true`. Any other string values are rejected.
+  published: z.union([
+    z.boolean(),
+    z.string()
+      .trim()
+      .transform((v) => v.toLowerCase())
+      .refine((v) => ['true', 'published', 'yes'].includes(v), { message: 'published must be boolean or one of true/published/yes' })
+      .transform(() => true),
+  ]).optional(),
   slug: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   series: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   archiveId: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
-  collection: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  collection: z.union([z.literal('webcraft-archive'), z.literal('news'), z.literal('blog')]).optional(),
   mystery: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
 }).superRefine((data, ctx) => {
   if (data.collection === 'webcraft-archive') {

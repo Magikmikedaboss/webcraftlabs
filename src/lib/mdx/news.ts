@@ -4,7 +4,7 @@ import { NEWS_DIR } from "../news";
 import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
-import { publishCutoff } from "./publishCutoff";
+import { laPublishCutoff } from "./publishCutoff";
 
 function sanitizeSlug(slug: string): string {
   // Decode and allow [A-Za-z0-9-_], normalize to lowercase for consistency
@@ -32,10 +32,6 @@ export function getAllNewsSlugs() {
     return [];
   }
 }
-export function isNewsPublished(frontmatter: z.infer<typeof BlogFrontmatterSchema>): boolean {
-  return frontmatter.date <= publishCutoff();
-}
-
 export function getNewsBySlug(slug: string): { slug: string; content: string; frontmatter: z.infer<typeof BlogFrontmatterSchema> } {
   const safeSlug = sanitizeSlug(slug);
   let fullPath = `${NEWS_DIR}/${safeSlug}.mdx`;
@@ -67,4 +63,19 @@ export function getAllNews() {
       if (a.frontmatter.date > b.frontmatter.date) return -1;
       return 0;
     });
+}
+
+export function isNewsPublished(frontmatter: { date: string; published?: unknown } ) {
+  // Accept only explicit true-like markers for `published` to force publish.
+  // Allow boolean true, or the string values 'true', 'published', 'yes' (case-insensitive).
+  if (typeof frontmatter.published === 'boolean') {
+    return frontmatter.published;
+  } else if (typeof frontmatter.published === 'string') {
+    const v = frontmatter.published.trim().toLowerCase();
+    return ['true', 'published', 'yes'].includes(v);
+  }
+
+  // Otherwise compare the frontmatter date to today's date in America/Los_Angeles
+  const today = laPublishCutoff();
+  return frontmatter.date <= today;
 }

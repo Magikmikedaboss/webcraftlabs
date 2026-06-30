@@ -1,9 +1,7 @@
-
 "use client";
 
-
 import Link from "next/link";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useMemo, useState } from "react";
 
 type Post = {
   slug: string;
@@ -11,6 +9,7 @@ type Post = {
   description: string;
   date: string;
   tags: string[];
+  href?: string;
   kind: "blog" | "news";
 };
 
@@ -19,307 +18,244 @@ interface PostIndexClientProps {
   kind: "blog" | "news";
 }
 
+function formatDate(date: string) {
+  const parts = date.split("-").map(Number);
+  const [y, m, d] = parts;
+
+  if (!y || !m || !d) return "";
+
+  const dt = new Date(y, m - 1, d);
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(dt);
+}
+
 export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
-  const optionRefs = useRef<(HTMLElement | null)[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [tagSearch, setTagSearch] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const kindLabel = kind === "blog" ? "Journal" : "Newsroom";
 
   const tagCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    posts.forEach(post => {
-      post.tags.forEach(tag => {
+
+    posts.forEach((post) => {
+      post.tags.forEach((tag) => {
         counts[tag] = (counts[tag] || 0) + 1;
       });
     });
+
     return counts;
   }, [posts]);
 
-  const allTags = useMemo(
-    () => Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]),
-    [tagCounts]
-  );
-
-  const filteredTags = useMemo(() => {
-    if (!tagSearch.trim()) return allTags;
-    return allTags.filter(tag =>
-      tag.toLowerCase().includes(tagSearch.toLowerCase())
-    );
-  }, [allTags, tagSearch]);
-
-  const activeHighlightedIndex = dropdownOpen
-    ? filteredTags.length === 0
-      ? -1
-      : Math.min(Math.max(highlightedIndex, 0), filteredTags.length - 1)
-    : -1;
+  const allTags = useMemo(() => {
+    return Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
+  }, [tagCounts]);
 
   const filteredPosts = selectedTag
-    ? posts.filter(p => p.tags.includes(selectedTag))
+    ? posts.filter((post) => post.tags.includes(selectedTag))
     : posts;
 
-  const kindLabel = kind === "blog" ? "Blog" : "News";
-
-  const kindTheme =
-    kind === "blog"
-      ? {
-          btnActive: "bg-cyan-500/20 text-cyan-300",
-          focusRing: "focus:ring-cyan-400/40",
-          tag: "bg-cyan-500 text-white",
-          cardHover: "hover:border-cyan-400/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.25)]",
-          cardGlow: "bg-cyan-400/20",
-          tagText: "text-cyan-300",
-          titleHover: "group-hover:text-cyan-300",
-          link: "text-cyan-400",
-          linkHover: "group-hover:translate-x-1",
-        }
-      : {
-          btnActive: "bg-blue-500/20 text-blue-300",
-          focusRing: "focus:ring-blue-400/40",
-          tag: "bg-blue-500 text-white",
-          cardHover: "hover:border-blue-400/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.25)]",
-          cardGlow: "bg-blue-400/20",
-          tagText: "text-blue-300",
-          titleHover: "group-hover:text-blue-300",
-          link: "text-blue-400",
-          linkHover: "group-hover:translate-x-1",
-        };
-
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (
-        inputRef.current &&
-        !inputRef.current.contains(e.target as Node) &&
-        !(dropdownRef.current && dropdownRef.current.contains(e.target as Node))
-      ) {
-        setDropdownOpen(false);
-        setHighlightedIndex(-1);
-      }
-    }
-    if (dropdownOpen) {
-      document.addEventListener("mousedown", handleClick);
-      return () => document.removeEventListener("mousedown", handleClick);
-    }
-  }, [dropdownOpen]);
-
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!dropdownOpen && ["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
-      setDropdownOpen(true);
-      if (filteredTags.length > 0) setHighlightedIndex(0);
-      return;
-    }
-    if (!dropdownOpen) return;
-
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setHighlightedIndex(idx => {
-        const next = Math.min(idx + 1, filteredTags.length - 1);
-        // Scroll into view after state update
-        setTimeout(() => {
-          optionRefs.current[next]?.scrollIntoView({ block: "nearest" });
-        }, 0);
-        return next;
-      });
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setHighlightedIndex(idx => {
-        const prev = Math.max(idx - 1, 0);
-        setTimeout(() => {
-          optionRefs.current[prev]?.scrollIntoView({ block: "nearest" });
-        }, 0);
-        return prev;
-      });
-    } else if (e.key === "Enter") {
-      if (activeHighlightedIndex >= 0) {
-        const tag = filteredTags[activeHighlightedIndex];
-        setSelectedTag(tag);
-        setDropdownOpen(false);
-        setTagSearch("");
-        setHighlightedIndex(-1);
-      }
-    } else if (e.key === "Escape") {
-      setDropdownOpen(false);
-      setHighlightedIndex(-1);
-    }
-  };
-
+  const featuredPost = filteredPosts[0];
+  const remainingPosts = filteredPosts.slice(1);
 
   if (posts.length === 0) {
     return (
-      <div className="text-center py-16">
-        <div className="text-6xl mb-4">📝</div>
-        <h2 className="text-2xl font-bold text-[var(--text)] mb-2">
-          No {kindLabel} Posts Yet
-        </h2>
-        <p className="text-[var(--muted)]">
-          Check back soon for updates!
+      <section className="mx-auto max-w-5xl px-6 py-24 text-center">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400">
+          {kindLabel}
         </p>
-      </div>
+
+        <h2 className="text-3xl font-semibold tracking-tight text-[var(--text)]">
+          Nothing published yet.
+        </h2>
+
+        <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-[var(--muted)]">
+          The archive is quiet for now. New entries will appear here when they
+          are ready.
+        </p>
+      </section>
     );
   }
 
   return (
-    <div>
-      {/* Tag Search */}
-      <div className="mb-10 relative max-w-xs w-full">
-        <input
-          ref={inputRef}
-          aria-label={`Filter ${kindLabel.toLowerCase()} posts by tag`}
-          type="text"
-          placeholder="Filter by tag..."
-          value={tagSearch}
-          onChange={e => {
-            setTagSearch(e.target.value);
-            setDropdownOpen(true);
-            setHighlightedIndex(0);
-          }}
-          onFocus={() => {
-            setDropdownOpen(true);
-            setHighlightedIndex(0);
-          }}
-          onKeyDown={handleInputKeyDown}
-          onBlur={() => { setDropdownOpen(false); setHighlightedIndex(-1); }}
-          role="combobox"
-          aria-controls="tag-combobox-listbox"
-          aria-expanded={dropdownOpen}
-          aria-autocomplete="list"
-          aria-haspopup="listbox"
-          aria-activedescendant={
-            activeHighlightedIndex >= 0 && filteredTags[activeHighlightedIndex]
-              ? `tag-option-${activeHighlightedIndex}`
-              : undefined
-          }
-          className={`w-full px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-sm focus:outline-none focus:ring-2 ${kindTheme.focusRing} transition-all`}
-        />
-        {dropdownOpen && (
-          <div
-            ref={dropdownRef}
-            id="tag-combobox-listbox"
-            role="listbox"
-            onMouseDown={e => e.preventDefault()}
-            className="absolute z-10 mt-2 w-full bg-[var(--surface,theme(colors.slate.900))]/95 dark:bg-[var(--surface-dark,#0d1420)]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] max-h-60 overflow-auto"
-          >
-            {filteredTags.map((tag, idx) => (
-              <div
-                key={tag}
-                ref={el => {
-                  optionRefs.current[idx] = el ?? null;
-                }}
-                id={`tag-option-${idx}`}
-                role="option"
-                tabIndex={-1}
-                aria-selected={activeHighlightedIndex === idx}
-                onMouseDown={e => e.preventDefault()}
-                onMouseEnter={() => setHighlightedIndex(idx)}
-                onClick={() => {
-                  setSelectedTag(tag);
-                  setDropdownOpen(false);
-                  setTagSearch("");
-                  setHighlightedIndex(-1);
-                }}
-                className={`w-full text-left px-4 py-2 text-sm cursor-default transition ${
-                  activeHighlightedIndex === idx
-                    ? kindTheme.btnActive
-                    : "hover:bg-white/10"
-                }`}
-              >
-                {tag} <span className="opacity-60">({tagCounts[tag]})</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+    <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+      {/* Header */}
+      <header className="mb-14 border-b border-white/10 pb-10">
+        <div className="mb-5 flex flex-wrap items-center gap-3">
+          <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+            WebCraft Labs
+          </span>
 
-      {/* Selected Tag */}
-      {selectedTag && (
-        <div className="mb-6 flex gap-2">
+          <span className="text-xs uppercase tracking-[0.22em] text-[var(--muted)]">
+            {kindLabel}
+          </span>
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+          <div>
+            <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-[var(--text)] sm:text-6xl">
+              Ideas for the next internet.
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
+              Essays, field notes, and research from the edge of AI, software,
+              websites, automation, and the strange new machinery of modern
+              work.
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-sm leading-7 text-[var(--muted)]">
+              <span className="block text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+                Index
+              </span>
+              <span className="mt-3 block">
+                {posts.length} published {posts.length === 1 ? "entry" : "entries"}.
+                Updated as new research, essays, and experiments are released.
+              </span>
+            </p>
+          </div>
+        </div>
+      </header>
+
+      {/* Filters */}
+      {allTags.length > 0 && (
+        <div className="mb-12 flex flex-wrap gap-2">
           <button
             onClick={() => setSelectedTag(null)}
-            className={`px-3 py-1 rounded-full ${kindTheme.tag} text-xs font-semibold shadow hover:scale-105 transition`}
+            className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] transition ${
+              selectedTag === null
+                ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-200"
+                : "border-white/10 bg-white/[0.03] text-[var(--muted)] hover:border-white/20 hover:text-[var(--text)]"
+            }`}
           >
-            {selectedTag} ×
+            All
           </button>
+
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(tag)}
+              className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] transition ${
+                selectedTag === tag
+                  ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-200"
+                  : "border-white/10 bg-white/[0.03] text-[var(--muted)] hover:border-white/20 hover:text-[var(--text)]"
+              }`}
+            >
+              {tag}
+              <span className="ml-2 opacity-50">{tagCounts[tag]}</span>
+            </button>
+          ))}
         </div>
       )}
 
-      {/* Grid */}
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {filteredPosts.map(post => (
+      {/* Featured */}
+      {featuredPost && (
+        <Link
+          href={featuredPost.href ?? `/${kind}/${featuredPost.slug}`}
+          className="group mb-16 block overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.08] via-white/[0.035] to-cyan-400/[0.06] p-1 transition hover:border-cyan-300/30"
+        >
+          <article className="relative overflow-hidden rounded-[1.75rem] bg-[var(--surface)] p-8 sm:p-10 lg:p-12">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl transition group-hover:bg-cyan-400/20" />
+
+            <div className="relative grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+              <div>
+                <p className="mb-6 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">
+                  Featured Entry
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {featuredPost.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-[var(--muted)]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="max-w-3xl text-3xl font-semibold tracking-[-0.035em] text-[var(--text)] transition group-hover:text-cyan-200 sm:text-5xl">
+                  {featuredPost.title}
+                </h2>
+
+                <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
+                  {featuredPost.description}
+                </p>
+
+                <div className="mt-8 flex items-center gap-5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
+                  <span>{formatDate(featuredPost.date)}</span>
+                  <span className="h-1 w-1 rounded-full bg-current opacity-40" />
+                  <span className="text-cyan-300 transition group-hover:translate-x-1">
+                    Read Article →
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </Link>
+      )}
+
+      {/* List */}
+      <div className="space-y-4">
+        {remainingPosts.map((post) => (
           <Link
             key={post.slug}
-            href={`/${kind}/${post.slug}`}
-            className={`group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 transition-all duration-300 hover:scale-[1.03] ${kindTheme.cardHover}`}
+            href={post.href ?? `/${kind}/${post.slug}`}
+            className="group block border-t border-white/10 py-7 transition hover:border-cyan-300/30"
           >
-            {/* Glow */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none">
-              <div className={`absolute -top-10 -right-10 w-40 h-40 ${kindTheme.cardGlow} blur-3xl`} />
-            </div>
+            <article className="grid gap-5 sm:grid-cols-[0.8fr_1.6fr_0.4fr] sm:items-start">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+                  {post.tags[0] || kindLabel}
+                </p>
 
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-3">
-              {post.tags.map(tag => (
-                <span
-                  key={tag}
-                  className={`text-xs px-2 py-1 rounded-full bg-white/10 border border-white/10 ${kindTheme.tagText}`}
-                >
-                  {tag}
+                <p className="mt-3 text-sm text-[var(--muted)]">
+                  {formatDate(post.date)}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-semibold tracking-[-0.025em] text-[var(--text)] transition group-hover:text-cyan-200">
+                  {post.title}
+                </h3>
+
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--muted)]">
+                  {post.description}
+                </p>
+              </div>
+
+              <div className="text-left sm:text-right">
+                <span className="inline-flex text-sm font-semibold text-cyan-300 transition group-hover:translate-x-1">
+                  Read →
                 </span>
-              ))}
-            </div>
-
-            {/* Title */}
-            <h3 className={`text-xl font-bold text-[var(--text)] ${kindTheme.titleHover} transition mb-2`}>
-              {post.title}
-            </h3>
-
-            {/* Description */}
-            <p className="text-sm text-[var(--muted)] line-clamp-3 mb-4">
-              {post.description}
-            </p>
-
-            {/* Footer */}
-            <div className="flex items-center justify-between text-xs text-[var(--muted)]">
-              <span>
-                {(() => {
-                  const parts = (post.date || '').split('-').map(Number);
-                  const [y, m, d] = parts;
-                  if (!y || !m || !d || !Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) return null;
-                  const dt = new Date(y, m - 1, d);
-                  if (
-                    dt.getFullYear() !== y ||
-                    dt.getMonth() !== m - 1 ||
-                    dt.getDate() !== d
-                  ) {
-                    return null;
-                  }                  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(dt);
-                })()}
-              </span>
-
-              <span className={`flex items-center gap-1 font-semibold ${kindTheme.link} ${kindTheme.linkHover} transition`}>
-                Read →
-              </span>
-            </div>
+              </div>
+            </article>
           </Link>
         ))}
       </div>
 
       {/* No Results */}
       {filteredPosts.length === 0 && selectedTag && (
-        <div className="text-center py-16">
-          <div className="text-4xl mb-4">🔍</div>
-          <h3 className="text-xl font-bold text-[var(--text)] mb-2">
-            No posts found for &quot;{selectedTag}&quot;
-          </h3>
+        <div className="py-20 text-center">
+          <p className="text-sm text-[var(--muted)]">
+            No entries found for{" "}
+            <span className="text-[var(--text)]">{selectedTag}</span>.
+          </p>
+
           <button
             onClick={() => setSelectedTag(null)}
-            className={`mt-4 ${kindTheme.link} hover:underline font-semibold`}
+            className="mt-5 text-sm font-semibold text-cyan-300 hover:underline"
           >
             Clear filter
           </button>
         </div>
       )}
-    </div>
+    </section>
   );
 }

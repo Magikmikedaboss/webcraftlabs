@@ -3,8 +3,7 @@
 **Status:** Living Document  
 **Scope:** Internal reference only. Not for publication.  
 **Last Updated:** 2026-06-29
-**Parts:** XI
-
+**Parts:** XII
 ---
 
 ## PART I — Constitution
@@ -57,8 +56,6 @@ AI, simulations, and aliens are expressions of this theme — not the theme itse
 | Recovered Record | Narrative, unverified authorship | Atmospheric, ambiguous | RR-002 |
 | Recovered Narrative | Story of unknown origin | Literary, internally consistent | RR-611 |
 | Orientation | Reader entry point | Clear but formal | Welcome to the Archive |
-
-> **Recovered Narrative** is planned — not yet in schema or renderers.
 
 ### Frontmatter Schema (All Archive Documents)
 
@@ -730,7 +727,7 @@ These fields are enforced or consumed by the current schema and page rendering.
 | Badge Label | `badge` | Optional. Short label shown in the document header badge. Should be `"Archive"` for all archive documents. |
 | Pull Quote | `pullQuote` | Optional. The most resonant or unsettling line from the document. Displayed prominently in the editorial layout above the body. |
 | Summary / Hook | `summary` | Optional. One-sentence investigation hook shown on catalog cards. |
-| Mystery | `mystery` | Required. The unanswered question posed at the end of catalog cards. |
+| Mystery (Open Question) | `mystery` | Required. The unanswered question posed at the end of catalog cards. |
 | Author | `author` | Optional. Defaults to site name when absent. |
 | Cover Image | `image` | Optional. Used as the document hero image. |
 | Tags | `tags` | Optional. Array of strings. |
@@ -997,6 +994,10 @@ The `mystery:` field is the question that the hook raises.
 
 They work together:
 
+```yaml
+summary: "A civilization built a simulation. Then asked who built theirs."
+mystery: "Who built the first one?"
+```
 
 The hook creates forward momentum. The mystery names the destination.
 

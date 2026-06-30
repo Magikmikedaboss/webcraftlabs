@@ -1,33 +1,36 @@
 import { getBaseUrl, SITE } from "@/lib/site";
 import { getAllPosts } from "@/lib/mdx/blog";
-import { XML_HEADERS, escapeXml } from "@/lib/rss";
+import { XML_HEADERS, buildRssFeed } from "@/lib/rss";
 
 export async function GET() {
   const baseUrl = getBaseUrl();
-  const items = getAllPosts().slice(0, 100);
+  // Filter out posts with invalid dates first, then limit to 100 items.
+  const items = getAllPosts()
+    .filter((p) => {
+      const d = p.frontmatter.date ? new Date(p.frontmatter.date) : null;
+      return d && Number.isFinite(d.getTime());
+    })
+    .sort((a, b) => {
+      const ta = new Date(a.frontmatter.date).getTime() || 0;
+      const tb = new Date(b.frontmatter.date).getTime() || 0;
+      return tb - ta;
+    })
+    .slice(0, 100);
 
-  const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>${escapeXml(SITE.name)} Blog</title>
-    <description>${escapeXml(SITE.tagline)}</description>
-    <link>${baseUrl}/blog</link>
-    <atom:link href="${baseUrl}/blog/feed.xml" rel="self" type="application/rss+xml" />
-    <language>en-us</language>
-    <lastBuildDate>${items.length > 0 ? new Date(items[0].frontmatter.date).toUTCString() : new Date().toUTCString()}</lastBuildDate>
-    ${items
-      .map(
-        (post) => `<item>
-      <title>${escapeXml(post.frontmatter.title)}</title>
-      <description>${escapeXml(post.frontmatter.description)}</description>
-      <link>${baseUrl}/blog/${post.slug}</link>
-      <guid isPermaLink="true">${baseUrl}/blog/${post.slug}</guid>
-      <pubDate>${new Date(post.frontmatter.date).toUTCString()}</pubDate>
-    </item>`,
-      )
-      .join("\n")}
-  </channel>
-</rss>`;
+  const rss = buildRssFeed({
+    title: `${SITE.name} Blog`,
+    description: SITE.tagline,
+    link: `${baseUrl}/blog`,
+    selfUrl: `${baseUrl}/blog/feed.xml`,
+    items: items
+      .filter((post) => post.frontmatter.collection !== "webcraft-archive")
+      .map((post) => ({
+        title: post.frontmatter.title,
+        description: post.frontmatter.description,
+        url: `${baseUrl}/blog/${post.slug}`,
+        date: post.frontmatter.date,
+        category: "Blog",
+      })),  });
 
   return new Response(rss, { headers: XML_HEADERS });
 }

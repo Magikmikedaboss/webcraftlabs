@@ -11,56 +11,11 @@ import ArchiveNav from "@/components/archive/ArchiveNav";
 // Deduplicate the file read/parse between generateMetadata and the page component.
 const getCachedPost = cache(getPostBySlug);
 
-import Link from "next/link";
-import Callout from "@/components/mdx/Callout";
-import Stat from "@/components/mdx/Stat";
-import Checklist from "@/components/mdx/Checklist";
-import PullQuote from "@/components/mdx/PullQuote";
-import Takeaways from "@/components/mdx/Takeaways";
-import MdxImage from "@/components/mdx/MdxImage";
-import SafeMdxImage from "@/components/mdx/SafeMdxImage";
-import ArticleImage from "@/components/mdx/ArticleImage";
+import mdxComponents from '@/lib/mdxComponents';
 import SiteShell from "@/components/SiteShell";
-import EditorialTemplateV2, {
-  BigQuote,
-  Insight,
-  StatBlock,
-  SplitCompare,
-  PostTimeline,
-  Chapter,
-} from "@/components/blog/EditorialTemplateV2";
+import EditorialTemplateV2 from "@/components/blog/EditorialTemplateV2";
 import LabNotebookTemplate from "@/components/blog/LabNotebookTemplate";
-import {
-  LabHero,
-  LabSection,
-  LabNote,
-  LabCard,
-  FrameworkScorecard,
-  LabStackDiagram,
-  DecisionFlow,
-  LabVerdict,
-  ScoreBar,
-  LabContents,
-  QuickPicks,
-  FrameworkTable,
-  LabObservation,
-  ExperimentResult,
-  HandSketch,
-  LabStamp,
-  FrameworkAccordion,
-  FAQ,
-  NextSteps,
-  ClassifiedHeader,
-  RecoveredLog,
-  SystemOutput,
-  HandwrittenNote,
-  FieldNotebook,
-  MarginNote,
-  EvidenceCard,
-  QuestionCard,
-  ThoughtExperiment,
-  ScholarlyExample,
-} from "@/components/blog/lab-notebook";
+// Lab notebook components are provided via centralized mdxComponents
 import { getBaseUrl, SITE } from "@/lib/site";
 
 export const dynamicParams = false;
@@ -75,10 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const post = getCachedPost(slug);
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/blog/${slug}`;
-    const socialImage = new URL(
-      post.frontmatter.image || "/images/structure-database-software-development.jpg",
-      siteUrl,
-    ).toString();
+    const socialImage = `${siteUrl}${post.frontmatter.image || '/images/structure-database-software-development.jpg'}`;
 
     return {
       title: post.frontmatter.title,
@@ -131,10 +83,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/blog/${post.slug}`;
-  const socialImage = new URL(
-    post.frontmatter.image || "/images/structure-database-software-development.jpg",
-    siteUrl,
-  ).toString();
+  const socialImage = `${siteUrl}${post.frontmatter.image || '/images/structure-database-software-development.jpg'}`;
+  // Ensure we only pass a string date for rendered publication text.
+  // `post.frontmatter.published` may be a boolean sentinel; coerce to
+  // a string only when it's explicitly a string (legacy tokens), otherwise
+  // keep the canonical `date` field for display.
+  const publishedString = typeof post.frontmatter.published === 'string'
+    ? post.frontmatter.published
+    : undefined;
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -183,8 +139,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     ],
   };
 
-  // prev/next â†’ used as related reading cards
-  const list = getAllPosts();
+  // prev/next → used as related reading cards
+  // Exclude archive posts so related/adjacent cards only include normal blog content
+  const list = getAllPosts().filter((p) => p.frontmatter.collection !== "webcraft-archive");
   const idx = list.findIndex((p) => p.slug === post.slug);
   const prev = idx > 0 ? list[idx - 1] : null;
   const next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
@@ -207,55 +164,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     .split(/\s+/).filter(Boolean).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 200));
   const isLab = post.frontmatter.template === "lab";
-  const isArchive = post.frontmatter.collection === "webcraft-archive";
+  const isArchive = (post.frontmatter.collection as string) === "webcraft-archive";
 
-  const mdxComponents = {
-    Callout,
-    Stat,
-    Checklist,
-    PullQuote,
-    Takeaways,
-    BigQuote,
-    Insight,
-    StatBlock,
-    SplitCompare,
-    PostTimeline,
-    Chapter,
-    ArticleImage,
-    // Lab Notebook components
-    LabHero,
-    LabSection,
-    LabNote,
-    LabCard,
-    FrameworkScorecard,
-    LabStackDiagram,
-    DecisionFlow,
-    LabVerdict,
-    ScoreBar,
-    LabContents,
-    QuickPicks,
-    FrameworkTable,
-    LabObservation,
-    ExperimentResult,
-    HandSketch,
-    LabStamp,
-    FrameworkAccordion,
-    FAQ,
-    NextSteps,
-    ClassifiedHeader,
-    RecoveredLog,
-    SystemOutput,
-    HandwrittenNote,
-    FieldNotebook,
-    MarginNote,
-    EvidenceCard,
-    QuestionCard,
-    ThoughtExperiment,
-    ScholarlyExample,
-    img: MdxImage,
-    Link,
-    Image: SafeMdxImage,
-  };
+  // Use shared MDX components mapping
+  // (imported earlier as `mdxComponents`)
 
   return (
     <SiteShell background="bg">
@@ -263,13 +175,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <script id={`blog-breadcrumb-jsonld-${post.slug}`} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c') }} />
       {isLab ? (
         <LabNotebookTemplate
-          post={{
-            title: post.frontmatter.title as string,
-            description: post.frontmatter.description as string | undefined,
-            summary: post.frontmatter.description as string | undefined,
-            published: (post.frontmatter.published || post.frontmatter.date) as string | undefined,
-            author: post.frontmatter.author as string | undefined,
-          }}
+            post={{
+              title: post.frontmatter.title as string,
+              description: post.frontmatter.description as string | undefined,
+              summary: post.frontmatter.description as string | undefined,
+              // Pass a true date-bearing symbol for display, and only include
+              // the legacy `published` string when it exists as a string.
+              date: post.frontmatter.date as string | undefined,
+              published: publishedString as string | undefined,
+              author: post.frontmatter.author as string | undefined,
+            }}
           readMins={readMins}
           pageUrl={url}
         >
@@ -284,7 +199,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             title: post.frontmatter.title as string,
             description: post.frontmatter.description as string | undefined,
             summary: post.frontmatter.summary as string | undefined,
-            published: (post.frontmatter.published || post.frontmatter.date) as string | undefined,
+            // Use `date` for rendered publication text and only keep
+            // `published` when it is a string token.
+            date: post.frontmatter.date as string | undefined,
+            published: publishedString as string | undefined,
             author: post.frontmatter.author as string | undefined,
             image: post.frontmatter.image as string | undefined,
             badge: post.frontmatter.badge as string | undefined,
@@ -305,7 +223,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           />
         </EditorialTemplateV2>
       )}
-      {isArchive && <ArchiveNav slug={post.slug} />}
+      {isArchive && <ArchiveNav slug={post.slug as import('@/lib/archive').ArchiveDoc['slug']} />}
     </SiteShell>
   );
 }

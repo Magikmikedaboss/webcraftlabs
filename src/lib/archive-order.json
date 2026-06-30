@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "welcome-to-the-archive",
+    "archiveId": "Orientation",
+    "title": "Welcome to the Archive"
+  },
+  {
+    "slug": "the-last-simulation",
+    "archiveId": "Recovered Record 611",
+    "title": "The Last Simulation"
+  },
+  {
+    "slug": "the-silent-vault",
+    "archiveId": "Investigation 203",
+    "title": "The Silent Vault"
+  },
+  {
+    "slug": "treatise-1-on-the-preservation-of-knowledge",
+    "archiveId": "Treatise I",
+    "title": "On the Preservation of Knowledge"
+  },
+  {
+    "slug": "the-duplicate-manuscript",
+    "archiveId": "Investigation 047",
+    "title": "The Duplicate Manuscript"
+  },
+  {
+    "slug": "treatise-2-on-the-nature-of-evidence",
+    "archiveId": "Treatise II",
+    "title": "On the Nature of Evidence"
+  },
+  {
+    "slug": "the-last-radio-signal",
+    "archiveId": "Recovered Record 002",
+    "title": "The Last Radio Signal"
+  }
+]

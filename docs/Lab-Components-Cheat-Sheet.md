@@ -270,8 +270,9 @@ Classified-document header block. Used in sci-fi and speculative fiction posts.
   lab="WEBCRAFT LABZ"
   archive="ARCHIVE FILE"
   classification="SPECULATIVE FICTION"
-  accessLevel="04"
-/>
+  accessLevel="OPEN"
+/
+>
 ```
 
 ## RecoveredLog
@@ -298,10 +299,17 @@ Compact green-on-dark terminal output block. Supports optional `title`.
 
 ## HandwrittenNote
 
-Warm amber-tinted aside styled to evoke a handwritten margin note. Use for short editorial asides, personal observations, or closing reflections. No props — content is passed as children.
+Warm amber-tinted aside styled to evoke a handwritten margin note. Use for short editorial asides, personal observations, or closing reflections.
 
-```mdx
-<HandwrittenNote>
+Props:
+- `children: ReactNode` — note body content.
+- `author?: string` — optional author label shown above the note.
+- `institution?: string` — optional institution label.
+- `date?: string` — optional date string.
+- `location?: string` — optional location string.
+- `rotation?: number` — optional small rotation for visual variation (default: 1).
+
+Example usage:
 This wasn't the first signal.
 
 It won't be the last.

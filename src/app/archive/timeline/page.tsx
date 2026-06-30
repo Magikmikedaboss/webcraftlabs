@@ -30,10 +30,11 @@ export default function TimelinePage() {
   const posts = getArchivePosts();
 
   // Sort by publication date, newest first for display; exclude Orientation from main flow
-  const chronological = [...posts].sort((a, b) =>
-    String(b.frontmatter.date ?? "").localeCompare(String(a.frontmatter.date ?? ""))
-  );
-
+  const chronological = posts
+    .filter((post) => !String(post.frontmatter.archiveId ?? "").startsWith("Orientation"))
+    .sort((a, b) =>
+      String(b.frontmatter.date ?? "").localeCompare(String(a.frontmatter.date ?? ""))
+    );
   // Group by year
   const byYear = chronological.reduce<Record<string, typeof posts>>((acc, post) => {
     const raw = String(post.frontmatter.date ?? "");

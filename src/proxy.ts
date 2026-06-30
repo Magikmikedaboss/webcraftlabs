@@ -41,7 +41,7 @@ export async function proxy(request: NextRequest) {
   // so preview deployments work without bypassing the CSRF guard entirely.
   const effectiveOrigins = allowedOrigins ?? [request.nextUrl.origin];
 
-  // Check origin header if present
+  // Prefer Origin when present; fall back to Referer only when Origin is missing.
   if (origin) {
     try {
       const originNormalized = new URL(origin).origin;
@@ -49,20 +49,15 @@ export async function proxy(request: NextRequest) {
         return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
       }
     } catch {
-      // Invalid URL format in origin header from request
       return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
     }
-  }
-
-  // Check referer header if present
-  if (referer) {
+  } else if (referer) {
     try {
       const refererOrigin = new URL(referer).origin;
       if (!effectiveOrigins.includes(refererOrigin)) {
         return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
       }
     } catch {
-      // Invalid URL format in referer header from request
       return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
     }
   }

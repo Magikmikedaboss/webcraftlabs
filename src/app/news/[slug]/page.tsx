@@ -4,19 +4,8 @@ import { getBaseUrl, SITE } from "@/lib/site";
 import SiteShell from "@/components/SiteShell";
 import type { Metadata } from "next";
 
-import Callout from "@/components/mdx/Callout";
-import Checklist from "@/components/mdx/Checklist";
-import PullQuote from "@/components/mdx/PullQuote";
-import Stat from "@/components/mdx/Stat";
-import Takeaways from "@/components/mdx/Takeaways";
-import MdxImage from "@/components/mdx/MdxImage";
-import SafeMdxImage from "@/components/mdx/SafeMdxImage";
-import {
-  BigQuote,
-  Insight,
-  StatBlock,
-  Chapter,
-} from "@/components/blog/EditorialTemplateV2";
+import mdxComponents from '@/lib/mdxComponents';
+// Editorial subcomponents are provided via `mdxComponents`.
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
 
@@ -25,13 +14,15 @@ import ShareBar from "@/components/mdx/ShareBar";
 
 function getNewsPostMeta(slug: string, image?: string) {
   const baseUrl = getBaseUrl();
+  const normalizedImage = image
+    ? `${baseUrl}${image.startsWith('/') ? image : `/${image}`}`
+    : `${baseUrl}/images/business-marketing-solutions-concept-art.webp`;
   return {
     baseUrl,
     url: `${baseUrl}/news/${slug}`,
-    socialImage: image
-      ? new URL(image, baseUrl).toString()
-      : `${baseUrl}/images/business-marketing-solutions-concept-art.webp`,
-  };}
+    socialImage: normalizedImage,
+  };
+}
 
 export function generateStaticParams() {
   return getAllNews().map((post) => ({ slug: post.slug }));
@@ -178,22 +169,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
               </div>
             </header>
             <div className="prose prose-custom max-w-none">
-              <MDXRemote
-                source={post.content}
-                components={{
-                  Callout,
-                  Stat,
-                  Checklist,
-                  PullQuote,
-                  Takeaways,
-                  BigQuote,
-                  Insight,
-                  StatBlock,
-                  Chapter,
-                  img: MdxImage,
-                  Image: SafeMdxImage,
-                }}
-              />
+              <MDXRemote source={post.content} components={mdxComponents} />
             </div>
             <PrevNext
               kind="news"

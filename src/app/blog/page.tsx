@@ -5,14 +5,32 @@ import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";
 import { SITE, getBaseUrl } from "@/lib/site";
 
+const siteBase = getBaseUrl();
+const blogUrl = `${siteBase}/blog`;
+
 export const metadata = {
   title: "Blog",
   description:
     "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
   alternates: {
-    canonical: `${getBaseUrl()}/blog`,
+    canonical: blogUrl,
   },
-};
+  openGraph: {
+    title: "Blog",
+    description:
+      "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
+    url: blogUrl,
+    type: "website",
+    images: [{ url: `${siteBase}/images/web-development-wide-angle-view-of-a-modern-skyscraper-with-reflective-glass.jpg`, width: 1200, height: 630, alt: "Blog" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog",
+    description:
+      "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
+    images: [`${siteBase}/images/web-development-wide-angle-view-of-a-modern-skyscraper-with-reflective-glass.jpg`],
+  },};
+
 
 export default function BlogIndexPage() {
   const posts = getAllPosts().map((p) => ({
@@ -21,6 +39,7 @@ export default function BlogIndexPage() {
     description: p.frontmatter.description,
     date: p.frontmatter.date,
     tags: p.frontmatter.tags || [],
+    href: `/blog/${p.slug}`,
     kind: "blog" as const,
   }));
 

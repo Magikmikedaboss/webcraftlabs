@@ -12,55 +12,10 @@ import ArchiveNav from "@/components/archive/ArchiveNav";
 // Deduplicate the file read/parse between generateMetadata and the page component.
 const getCachedPost = cache(getPostBySlug);
 
-import Link from "next/link";
-import SafeMdxImage from "@/components/mdx/SafeMdxImage";
-import Callout from "@/components/mdx/Callout";
-import Stat from "@/components/mdx/Stat";
-import Checklist from "@/components/mdx/Checklist";
-import PullQuote from "@/components/mdx/PullQuote";
-import Takeaways from "@/components/mdx/Takeaways";
-import MdxImage from "@/components/mdx/MdxImage";
-import ArticleImage from "@/components/mdx/ArticleImage";
+import mdxComponents from '@/lib/mdxComponents';
 import SiteShell from "@/components/SiteShell";
-import EditorialTemplateV2, {
-  BigQuote,
-  Insight,
-  StatBlock,
-  SplitCompare,
-  PostTimeline,
-  Chapter,
-} from "@/components/blog/EditorialTemplateV2";
-import {
-  ClassifiedHeader,
-  RecoveredLog,
-  SystemOutput,
-  HandwrittenNote,
-  FieldNotebook,
-  MarginNote,
-  EvidenceCard,
-  QuestionCard,
-  ThoughtExperiment,
-  ScholarlyExample,
-  LabHero,
-  LabSection,
-  LabNote,
-  LabCard,
-  FrameworkScorecard,
-  LabStackDiagram,
-  DecisionFlow,
-  LabVerdict,
-  ScoreBar,
-  LabContents,
-  QuickPicks,
-  FrameworkTable,
-  LabObservation,
-  ExperimentResult,
-  HandSketch,
-  LabStamp,
-  FrameworkAccordion,
-  FAQ,
-  NextSteps,
-} from "@/components/blog/lab-notebook";
+import EditorialTemplateV2 from "@/components/blog/EditorialTemplateV2";
+// Lab and editorial subcomponents are provided via `mdxComponents`.
 import { getBaseUrl, SITE } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -84,10 +39,7 @@ export async function generateMetadata({
     }
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/archive/${slug}`;
-    const socialImage = new URL(
-      post.frontmatter.image || "/images/structure-database-software-development.jpg",
-      siteUrl,
-    ).toString();
+    const socialImage = `${siteUrl}${post.frontmatter.image || '/images/structure-database-software-development.jpg'}`;
 
     return {
       title: post.frontmatter.title,
@@ -136,10 +88,7 @@ export default async function ArchiveDocPage({
   // Only serve archive collection documents at this route
   const siteUrl = getBaseUrl();
   const url = `${siteUrl}/archive/${slug}`;
-  const socialImage = new URL(
-    post.frontmatter.image || "/images/structure-database-software-development.jpg",
-    siteUrl,
-  ).toString();
+  const socialImage = `${siteUrl}${post.frontmatter.image || '/images/structure-database-software-development.jpg'}`;
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -185,25 +134,17 @@ export default async function ArchiveDocPage({
     .filter(Boolean).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 200));
 
-  const mdxComponents = {
-    Callout, Stat, Checklist, PullQuote, Takeaways,
-    BigQuote, Insight, StatBlock, SplitCompare, PostTimeline, Chapter,
-    ArticleImage,
-    ClassifiedHeader, RecoveredLog, SystemOutput, HandwrittenNote,
-    FieldNotebook, MarginNote, EvidenceCard, QuestionCard,
-    ThoughtExperiment, ScholarlyExample,
-    LabHero, LabSection, LabNote, LabCard, FrameworkScorecard,
-    LabStackDiagram, DecisionFlow, LabVerdict, ScoreBar, LabContents,
-    QuickPicks, FrameworkTable, LabObservation, ExperimentResult,
-    HandSketch, LabStamp, FrameworkAccordion, FAQ, NextSteps,
-    img: MdxImage,
-    Image: SafeMdxImage,
-    Link,
-  };
+  // Use shared MDX components mapping
+  // (imported earlier as `mdxComponents`)
+
+  // Remove the first line-level Markdown H1 anywhere in authored MDX content
+  // so authored titles that appear after MDX components are not duplicated.
+  // Use multiline mode so ^ matches the start of any line, and remove only
+  // the first matching heading line.
+  const contentForMdx = cleanContent.replace(/^[ \t]*#\s+.*(?:\r?\n)?/m, "").trim();
 
   return (
-    <SiteShell background="bg">
-      <script
+    <SiteShell background="bg" showArchiveQuote={true}>      <script
         id={`archive-jsonld-${post.slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -222,14 +163,17 @@ export default async function ArchiveDocPage({
           title: post.frontmatter.title as string,
           description: post.frontmatter.description as string | undefined,
           summary: post.frontmatter.summary as string | undefined,
-          published: (post.frontmatter.published || post.frontmatter.date) as string | undefined,
+          published:
+            typeof post.frontmatter.published === "string"
+              ? post.frontmatter.published
+              : undefined,
+          date: post.frontmatter.date as string | undefined,
           author: post.frontmatter.author as string | undefined,
           image: post.frontmatter.image as string | undefined,
           badge: post.frontmatter.badge as string | undefined,
           pullQuote: post.frontmatter.pullQuote as string | undefined,
           tags: post.frontmatter.tags as string[] | undefined,
-        }}
-        readMins={readMins}
+        }}        readMins={readMins}
         pageUrl={url}
         cover={post.frontmatter.image as string | undefined}
         coverAbs={socialImage}
@@ -237,9 +181,9 @@ export default async function ArchiveDocPage({
         backHref="/archive"
         backLabel="← Back to Archive"
       >
-        <MDXRemote source={post.content} components={mdxComponents} />
+        <MDXRemote source={contentForMdx} components={mdxComponents} />
       </EditorialTemplateV2>
-      <ArchiveNav slug={post.slug} />
+      <ArchiveNav slug={post.slug as import('@/lib/archive').ArchiveDoc['slug']} />
     </SiteShell>
   );
 }

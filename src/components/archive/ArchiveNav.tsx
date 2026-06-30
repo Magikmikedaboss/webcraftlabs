@@ -1,21 +1,36 @@
 import Link from "next/link";
 import {
   ARCHIVE_ORDER,
-  getArchivePosition,
-  getArchivePrevNext,
   getArchiveCites,
   getArchiveCitedBy,
+  getArchivePosts,
   type ArchiveDoc,
 } from "@/lib/archive";
 
-export default function ArchiveNav({ slug }: { slug: string }) {
-  const pos = getArchivePosition(slug);
+export default function ArchiveNav({ slug }: { slug: ArchiveDoc["slug"] }) {
+  // Derive navigation only from actually published archive posts so links
+  // never point to unpublished/future slugs that would 404.
+  const published: ReturnType<typeof getArchivePosts> = getArchivePosts();
+  const publishedSlugs = new Set(published.map((p) => p.slug));
+  const seq = published.map((p) => {
+    const meta = ARCHIVE_ORDER.find((d) => d.slug === p.slug);
+    return {
+      slug: p.slug,
+      archiveId: meta?.archiveId ?? p.frontmatter.archiveId ?? p.slug,
+      title: p.frontmatter.title ?? meta?.title ?? p.slug,
+    } as ArchiveDoc;
+  });
+
+  const pos = seq.findIndex((d) => d.slug === slug);
   if (pos === -1) return null;
 
-  const current = ARCHIVE_ORDER[pos];
-  const { prev, next } = getArchivePrevNext(slug);
-  const cites = getArchiveCites(slug);
-  const citedBy = getArchiveCitedBy(slug);
+  const current = seq[pos];
+  const prev = pos > 0 ? seq[pos - 1] : null;
+  const next = pos < seq.length - 1 ? seq[pos + 1] : null;
+
+  // Only show cites/cited-by entries that are published
+  const cites = getArchiveCites(slug).filter((d) => publishedSlugs.has(d.slug));
+  const citedBy = getArchiveCitedBy(slug).filter((d) => publishedSlugs.has(d.slug));
 
   return (
     <div className="border-t border-slate-800 bg-[#07090f] text-slate-300">
@@ -66,7 +81,7 @@ export default function ArchiveNav({ slug }: { slug: string }) {
             Archive Reading Sequence
           </p>
           <ol className="space-y-1">
-            {ARCHIVE_ORDER.map((doc, i) => {
+            {seq.map((doc, i) => {
               const isCurrent = doc.slug === slug;
               return (
                 <li key={doc.slug}>
@@ -109,7 +124,7 @@ export default function ArchiveNav({ slug }: { slug: string }) {
             Inquiry continues.
           </p>
           <p className="text-[10px] font-mono text-slate-700">
-            Document {pos + 1} of {ARCHIVE_ORDER.length}
+            Document {pos + 1} of {seq.length}
           </p>
         </div>
 
