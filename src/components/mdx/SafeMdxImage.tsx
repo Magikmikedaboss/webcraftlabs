@@ -30,12 +30,9 @@ export default function SafeMdxImage({
   const h = typeof height === "string" ? Number(height) : height;
 
   if (!w || !h) {
-    if (process.env.NODE_ENV === "production") {
-      throw new Error(
-        `SafeMdxImage: missing width or height for src="${src}". Fix the MDX frontmatter or image props.`,
-      );
-    }
-    // Dev-only fallback: dimensions were lost due to Turbopack/next-mdx-remote compilation quirk.
+    // Turbopack/next-mdx-remote can drop numeric JSX prop values (e.g. width={1200}) in both
+    // dev and production builds. Fall back to a plain <img> so the build doesn't fail and
+    // the image still renders. The MDX source remains the source of truth for dimensions.
     // eslint-disable-next-line @next/next/no-img-element
     return <img loading="lazy" decoding="async" {...(rest as Record<string, unknown> & object)} src={src} alt={alt} className={className} />;
   }
