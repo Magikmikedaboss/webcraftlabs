@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 
 type Post = {
   slug: string;
@@ -43,6 +43,9 @@ function formatDate(date: string) {
 
 export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const kindLabel = kind === "blog" ? "Journal" : "Newsroom";
 
@@ -62,9 +65,35 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
     return Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
   }, [tagCounts]);
 
-  const filteredPosts = selectedTag
-    ? posts.filter((post) => post.tags.includes(selectedTag))
-    : posts;
+  const suggestionPool = useMemo(() => {
+    const tags = allTags;
+    const titles = posts.map((p) => p.title);
+    const combined = Array.from(new Set([...tags, ...titles]));
+    return combined;
+  }, [allTags, posts]);
+
+  const suggestions = useMemo(() => {
+    const q = searchTerm.trim().toLowerCase();
+    if (!q) return [];
+    return suggestionPool
+      .filter((s) => s.toLowerCase().includes(q))
+      .slice(0, 8);
+  }, [searchTerm, suggestionPool]);
+
+  const filteredPosts = useMemo(() => {
+    const q = searchTerm.trim().toLowerCase();
+    if (selectedTag) {
+      return posts.filter((post) => post.tags.includes(selectedTag));
+    }
+    if (!q) return posts;
+    return posts.filter((post) => {
+      return (
+        post.title.toLowerCase().includes(q) ||
+        post.description.toLowerCase().includes(q) ||
+        post.tags.some((t) => t.toLowerCase().includes(q))
+      );
+    });
+  }, [posts, searchTerm, selectedTag]);
 
   const featuredPost = filteredPosts[0];
   const remainingPosts = filteredPosts.slice(1);
@@ -129,36 +158,46 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
         </div>
       </header>
 
-      {/* Filters */}
-      {allTags.length > 0 && (
-        <div className="mb-12 flex flex-wrap gap-2">
-          <button
-            onClick={() => setSelectedTag(null)}
-            className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] transition ${
-              selectedTag === null
-                ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-200"
-                : "border-white/10 bg-white/[0.03] text-[var(--muted)] hover:border-white/20 hover:text-[var(--text)]"
-            }`}
-          >
-            All
-          </button>
+      {/* Search bar with autocomplete suggestions */}
+      <div className="mb-12">
+        <div className="relative max-w-xl">
+          <label className="sr-only">Search posts</label>
+          <input
+            ref={inputRef}
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setSelectedTag(null);
+              setShowSuggestions(true);
+            }}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            placeholder="Search posts, tags, and titles"
+            className="w-full rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            aria-autocomplete="list"
+          />
 
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setSelectedTag(tag)}
-              className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] transition ${
-                selectedTag === tag
-                  ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-200"
-                  : "border-white/10 bg-white/[0.03] text-[var(--muted)] hover:border-white/20 hover:text-[var(--text)]"
-              }`}
-            >
-              {tag}
-              <span className="ml-2 opacity-50">{tagCounts[tag]}</span>
-            </button>
-          ))}
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="absolute left-0 right-0 z-20 mt-2 max-h-64 overflow-auto rounded-xl border border-white/10 bg-[var(--surface)] p-2 shadow-lg">
+              {suggestions.map((s) => (
+                <li
+                  key={s}
+                  onMouseDown={() => {
+                    // Use onMouseDown to prevent blur-before-click issues
+                    setSearchTerm(s);
+                    setSelectedTag(allTags.includes(s) ? s : null);
+                    setShowSuggestions(false);
+                    inputRef.current?.focus();
+                  }}
+                  className="cursor-pointer rounded-md px-3 py-2 text-sm text-[var(--text)] hover:bg-white/[0.03]"
+                >
+                  {s}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Featured */}
       {featuredPost && (
