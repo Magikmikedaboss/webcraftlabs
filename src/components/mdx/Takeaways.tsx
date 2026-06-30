@@ -1,12 +1,14 @@
 export type TakeawayItem = { id: string; text: string };
 
 function isValidTakeaway(item: unknown): item is TakeawayItem {
-  return (
-    item !== null &&
-    typeof item === "object" &&
-    typeof (item as { id?: unknown }).id === "string" &&
-    typeof (item as { text?: unknown }).text === "string"
-  );
+  if (item === null || typeof item !== 'object') return false;
+  const maybeId = (item as { id?: unknown }).id;
+  const maybeText = (item as { text?: unknown }).text;
+  if (typeof maybeId !== 'string' || typeof maybeText !== 'string') return false;
+  const id = maybeId;
+  const text = maybeText;
+  if (id.trim().length === 0 || text.trim().length === 0) return false;
+  return true;
 }
 
 export function Takeaways({
@@ -18,12 +20,13 @@ export function Takeaways({
 }) {
   const validItems = Array.isArray(items) ? items.filter(isValidTakeaway) : [];
   if (validItems.length === 0) return null;
+  const normalized = validItems.map((it) => ({ id: it.id.trim(), text: it.text.trim() }));
   return (
     <div className="takeaways">
       <h3>{title}</h3>
       <ul>
-        {validItems.map((item) => (
-          <li key={item.id}>{item.text}</li>
+        {normalized.map((item, i) => (
+          <li key={`${item.id}-${i}`}>{item.text}</li>
         ))}
       </ul>
     </div>

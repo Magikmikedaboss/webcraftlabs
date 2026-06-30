@@ -106,7 +106,17 @@ export default async function ArchiveDocPage({
 
   const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "ScholarlyArticle",
+    // Derive the most-appropriate schema.org type from the canonical
+    // `archiveId` where possible instead of always hard-coding a single
+    // type. Fall back to `CreativeWork` when the variant is unknown.
+    "@type": (() => {
+      const aid = String(post.frontmatter.archiveId || "").toLowerCase();
+      if (!aid) return "CreativeWork";
+      if (aid.includes("treatise") || aid.includes("paper") || aid.includes("scholar")) return "ScholarlyArticle";
+      if (aid.includes("report")) return "Report";
+      if (aid.includes("essay") || aid.includes("article")) return "Article";
+      return "CreativeWork";
+    })(),
     headline: post.frontmatter.title,
     description: post.frontmatter.description,
     datePublished: post.frontmatter.date,
@@ -151,11 +161,20 @@ export default async function ArchiveDocPage({
   // Use shared MDX components mapping
   // (imported earlier as `mdxComponents`)
 
-  // Remove the first line-level Markdown H1 anywhere in authored MDX content
-  // so authored titles that appear after MDX components are not duplicated.
-  // Use multiline mode so ^ matches the start of any line, and remove only
-  // the first matching heading line.
-  const contentForMdx = cleanContent.replace(/^[ \t]*#\s+.*(?:\r?\n)?/m, "").trim();
+  // Remove the first line-level Markdown H1 only when it duplicates the
+  // frontmatter title. Many MDX authors include the title as an H1 in the
+  // body; when that title matches `frontmatter.title` we strip it to avoid
+  // duplication. Otherwise leave the content untouched.
+  const firstH1Match = cleanContent.match(/^[ \t]*#\s+(.*)(?:\r?\n)?/m);
+  let contentForMdx = cleanContent;
+  if (firstH1Match && post.frontmatter.title) {
+    const h1Text = (firstH1Match[1] || "").trim().replace(/\s+/g, " ");
+    const fmTitle = String(post.frontmatter.title).trim().replace(/\s+/g, " ");
+    if (h1Text.localeCompare(fmTitle, undefined, { sensitivity: "base" }) === 0) {
+      // remove only the first matching H1 line
+      contentForMdx = cleanContent.replace(/^[ \t]*#\s+.*(?:\r?\n)?/m, "").trim();
+    }
+  }
 
   return (
     <SiteShell background="bg" showArchiveQuote={true}>      <script

@@ -14,7 +14,10 @@ function findMdx(dir) {
 function readArchiveOrder() {
   // Read the canonical archive-order JSON produced by src/lib/archive-order.json
   const p = path.join(__dirname, '..', 'src', 'lib', 'archive-order.json');
-  if (!fs.existsSync(p)) return {};
+  if (!fs.existsSync(p)) {
+    console.error(`Missing canonical archive-order.json at ${p}`);
+    process.exit(2);
+  }
   try {
     const arr = JSON.parse(fs.readFileSync(p, 'utf8'));
     const slugs = {};
@@ -23,7 +26,8 @@ function readArchiveOrder() {
     }
     return slugs;
   } catch (err) {
-    return {};
+    console.error(`Failed to parse archive-order.json at ${p}:`, err && err.message ? err.message : err);
+    process.exit(2);
   }
 }
 
@@ -34,6 +38,10 @@ function ensureCollection(filePath, collection) {
   // Skip files that are part of the webcraft archive mapping when setting blog collection
   if (collection === 'blog') {
     const archiveMap = readArchiveOrder();
+    // If we couldn't load the canonical archive-order mapping, do not attempt
+    // to change a file's collection here — failing closed avoids accidentally
+    // overwriting archive items to 'blog' when the source of truth is unavailable.
+    if (archiveMap === null) return null;
     const slug = data.slug || path.basename(filePath).replace(/\.mdx$/, '');
     if (archiveMap[slug]) return null;
   }

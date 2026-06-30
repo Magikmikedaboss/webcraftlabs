@@ -301,14 +301,6 @@ Props:
 - `rotation?: number` — optional small rotation for visual variation (default: 1).
 
 Example usage:
-This wasn't the first signal.
-
-It won't be the last.
-
-Stop asking who sent it. Start asking who sent **ours**.
-</HandwrittenNote>
-```
-
 ---
 
 ## Basic Article Shape

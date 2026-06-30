@@ -5,11 +5,6 @@
     "title": "Welcome to the Archive"
   },
   {
-    "slug": "the-last-simulation",
-    "archiveId": "Recovered Record 611",
-    "title": "The Last Simulation"
-  },
-  {
     "slug": "the-silent-vault",
     "archiveId": "Investigation 203",
     "title": "The Silent Vault"
@@ -28,6 +23,11 @@
     "slug": "treatise-2-on-the-nature-of-evidence",
     "archiveId": "Treatise II",
     "title": "On the Nature of Evidence"
+  },
+  {
+    "slug": "the-last-simulation",
+    "archiveId": "Recovered Record 611",
+    "title": "The Last Simulation"
   },
   {
     "slug": "the-last-radio-signal",

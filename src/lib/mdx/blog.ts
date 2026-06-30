@@ -75,7 +75,7 @@ function newestFirst<T extends { frontmatter: { date: string } }>(a: T, b: T): n
 }
 
 export function getAllPosts() {
-  const today = publishCutoff();
+  const _today = publishCutoff();
   return getAllPostSlugs()
     .map((slug) => getPostBySlug(slug))
     .filter((p) => isPostPublished(p.frontmatter))
@@ -84,7 +84,7 @@ export function getAllPosts() {
 
 /** Frontmatter-only variant — no MDX content string returned. */
 export function getAllPostFrontmatter() {
-  const today = publishCutoff();
+  const _today = publishCutoff();
   return getAllPostSlugs()
     .map((slug) => {
       const { slug: safeSlug, frontmatter } = getPostBySlug(slug);

@@ -1,6 +1,9 @@
 export default function Checklist({ items = [] }: { items?: string[] }) {
   const validItems = Array.isArray(items)
-    ? items.filter((item): item is string => typeof item === "string")
+    ? items
+        .filter((item): item is string => typeof item === "string")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
     : [];
   if (validItems.length === 0) {
     return null;

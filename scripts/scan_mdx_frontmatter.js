@@ -40,10 +40,11 @@ function readArchiveOrder() {
       if (it && typeof it.slug === 'string') slugs[it.slug] = it.archiveId ?? null;
     }
     return slugs;
-  } catch (err) {
+  } catch (_err) {
     return {};
   }
 }
+
 
 function isValidDateString(s) {
   if (!s) return false;
@@ -64,6 +65,7 @@ function scan() {
     console.error('No src/content directory found.');
     process.exit(2);
   }
+  const archiveMap = readArchiveOrder();
   const files = findMdxFiles(root);
   const report = [];
   for (const f of files) {
@@ -74,23 +76,26 @@ function scan() {
       issues.push('missing frontmatter');
     } else {
       const fm = parsed.obj;
+      const slug = fm.slug || path.basename(f).replace(/\.mdx$/, '');
+      const inArchiveMap = Object.prototype.hasOwnProperty.call(archiveMap, slug);
       if (!fm.collection) issues.push('missing collection');
       else if (!validCollections.has(String(fm.collection))) {
         issues.push(`invalid collection: ${fm.collection}`);
-      }      if (fm.collection === 'webcraft-archive') {
+      }
+      if (inArchiveMap && fm.collection !== 'webcraft-archive') {
+        issues.push('should be collection:webcraft-archive');
+      }
+      if (fm.collection === 'webcraft-archive') {
         // Mirror the fixer behavior: only require archiveId when the
         // ARCHIVE_ORDER mapping provides a non-null archiveId for this slug.
-        const archiveMap = readArchiveOrder();
-        const slug = fm.slug || path.basename(f).replace(/\.mdx$/, '');
-        const mappedId = Object.prototype.hasOwnProperty.call(archiveMap, slug)
+        const mappedId = inArchiveMap
           ? archiveMap[slug]
           : undefined;
         if (mappedId) {
           if (!fm.archiveId) issues.push('missing archiveId');
         }
         if (!fm.mystery) issues.push('missing mystery');
-      }
-      if (fm.date) {
+      }      if (fm.date) {
         let dateStr = fm.date;
         if (dateStr instanceof Date) dateStr = dateStr.toISOString().slice(0, 10);
         if (!isValidDateString(String(dateStr))) issues.push(`invalid date: ${fm.date}`);

@@ -22,14 +22,22 @@ function formatDate(date: string) {
   const parts = date.split("-").map(Number);
   const [y, m, d] = parts;
 
-  if (!y || !m || !d) return "";
+  if (!Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return "";
 
-  const dt = new Date(y, m - 1, d);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  if (
+    dt.getUTCFullYear() !== y ||
+    dt.getUTCMonth() !== m - 1 ||
+    dt.getUTCDate() !== d
+  ) {
+    return "";
+  }
 
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC",
   }).format(dt);
 }
 

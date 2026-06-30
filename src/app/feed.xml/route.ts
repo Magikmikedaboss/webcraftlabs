@@ -6,14 +6,16 @@ import { XML_HEADERS, buildRssFeed } from "@/lib/rss";
 export async function GET() {
   const baseUrl = getBaseUrl();
 
-  const blogItems = getAllPosts().map((post) => ({
-    title: post.frontmatter.title,
-    description: post.frontmatter.description,
-    url: `${baseUrl}/blog/${post.slug}`,
-    date: post.frontmatter.date,
-    category: "Blog",
-  }));
-
+  const blogItems = getAllPosts().map((post) => {
+    const isArchivePost = post.frontmatter.collection === "webcraft-archive";
+    return {
+      title: post.frontmatter.title,
+      description: post.frontmatter.description,
+      url: isArchivePost ? `${baseUrl}/archive/${post.slug}` : `${baseUrl}/blog/${post.slug}`,
+      date: post.frontmatter.date,
+      category: isArchivePost ? "Archive" : "Blog",
+    };
+  });
   const newsItems = getAllNews().map((post) => ({
     title: post.frontmatter.title,
     description: post.frontmatter.description,

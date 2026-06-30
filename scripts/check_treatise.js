@@ -22,7 +22,7 @@ else {
         if (item && item.slug) slugs[item.slug] = item.archiveId || null;
       }
       return slugs;
-    } catch (e) {
+    } catch {
       return {};
     }
   })();

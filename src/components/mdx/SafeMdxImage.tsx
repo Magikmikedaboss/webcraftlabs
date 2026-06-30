@@ -45,8 +45,9 @@ export default function SafeMdxImage({
   const safeHeight = typeof h === "number" && Number.isFinite(h) && h > 0 ? h : undefined;
 
   // Compute a string alt value for rendering. If decorative, use an empty
-  // alt; otherwise, the earlier validation guarantees `alt` is a non-empty string.
-  const imageAlt: string = decorative ? '' : (alt ?? '');
+  // alt; otherwise, the earlier validation guarantees `alt` is a non-empty
+  // string so we preserve the caller-provided value rather than defaulting.
+  const imageAlt: string = decorative ? '' : (alt as string);
 
   if (!safeWidth || !safeHeight) {
     // Turbopack/next-mdx-remote can drop numeric JSX prop values (e.g. width={1200}) in both

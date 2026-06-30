@@ -18,7 +18,7 @@ function readArchiveOrder() {
       if (it && typeof it.slug === 'string') slugs[it.slug] = it.archiveId ?? null;
     }
     return slugs;
-  } catch (err) {
+  } catch {
     return {};
   }
 }
@@ -51,11 +51,8 @@ function fixFiles() {
           data.archiveId = mappedId;
           changed = true;
         }
-      } else if (data.archiveId !== undefined) {
-        delete data.archiveId;
-        changed = true;
-      }      if (!data.mystery) {
-        data.mystery = 'TBD';
+      }
+      if (!data.mystery) {        data.mystery = 'TBD';
         changed = true;
       }
     }
