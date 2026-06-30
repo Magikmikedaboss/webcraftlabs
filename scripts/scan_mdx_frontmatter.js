@@ -40,7 +40,7 @@ function readArchiveOrder() {
       if (it && typeof it.slug === 'string') slugs[it.slug] = it.archiveId ?? null;
     }
     return slugs;
-  } catch (_err) {
+  } catch {
     return {};
   }
 }
