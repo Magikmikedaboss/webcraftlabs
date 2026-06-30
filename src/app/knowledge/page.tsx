@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
+import KnowledgeConstellation from "@/components/KnowledgeConstellation";
 import { SITE, getBaseUrl } from "@/lib/site";
 
 const learningPaths = [
@@ -200,7 +201,7 @@ export default function KnowledgePage() {
                 </span>
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-7 text-slate-200 sm:text-lg">
-                A clickable map for the ideas, articles, products, and experiments that shape how WebCraft thinks. Start with a path, zoom into a topic, or drop into the modules behind each theme.
+                A curated constellation of our most consequential ideas, research, and products. Traverse thematic paths, inspect topic relationships, or open compact modules that teach the craft.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
@@ -250,9 +251,9 @@ export default function KnowledgePage() {
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <div className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200">Command Deck</div>
-                    <h2 className="mt-2 text-2xl font-semibold">A living research map</h2>
+                    <h2 className="mt-2 text-2xl font-semibold">A continuously curated research map</h2>
                   </div>
-                  <div className="rounded-full border border-white/15 bg-white/8 px-3 py-1 text-xs font-semibold text-cyan-100">V1 / clickable</div>
+                  <div className="rounded-full border border-white/15 bg-white/8 px-3 py-1 text-xs font-semibold text-cyan-100">Constellation Live</div>
                 </div>
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -261,14 +262,14 @@ export default function KnowledgePage() {
                       <div className="h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(103,232,249,0.8)]" />
                       <span className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">Synthetic Minds</span>
                     </div>
-                    <p className="mt-4 text-sm leading-6 text-slate-200">Creative intelligence, invention, and the first path into the hub.</p>
+                    <p className="mt-4 text-sm leading-6 text-slate-200">Creative intelligence, invention, and the foundational path into the hub.</p>
                   </div>
                   <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
                     <div className="flex items-center justify-between gap-3">
                       <div className="h-3 w-3 rounded-full bg-indigo-300 shadow-[0_0_20px_rgba(165,180,252,0.8)]" />
                       <span className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-200">Axon</span>
                     </div>
-                    <p className="mt-4 text-sm leading-6 text-slate-200">Research intelligence, signals, and structured understanding.</p>
+                    <p className="mt-4 text-sm leading-6 text-slate-200">Research intelligence, signal design, and structured insight.</p>
                   </div>
                   <div className="rounded-3xl border border-white/10 bg-white/5 p-4 sm:col-span-2">
                     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -290,9 +291,9 @@ export default function KnowledgePage() {
             <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
               Learning Paths
             </span>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Pick a route through the thinking</h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Follow a curated route</h2>
             <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-              These are the five core paths in the hub. Each card opens into a different corner of the WebCraft universe.
+              Five focused learning routes that distill our research and practice. Each path guides you through narrative, experiments, and next steps.
             </p>
           </div>
 
@@ -319,40 +320,45 @@ export default function KnowledgePage() {
         <section id="map" className="mx-auto max-w-7xl px-6 py-14">
           <div className="mb-8 max-w-3xl">
             <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
-              Topic Map
+              Topic Constellation
             </span>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Clickable cards for now, constellation later</h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Interactive Constellation</h2>
             <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-              This version keeps the map crisp and readable. Each node is a card you can open immediately, and each card hints at what it connects to next.
+              An interactive view revealing relationships between ideas — drag, zoom, and open topics from the map.
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {topicMap.map((topic, index) => (
-              <Link
-                key={topic.title}
-                href={topic.href}
-                className="group relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.97),rgba(248,251,255,0.92))] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-indigo-500/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <div className="absolute right-4 top-4 h-12 w-12 rounded-full bg-[radial-gradient(circle,rgba(14,165,233,0.18),transparent_70%)]" />
-                <div className="relative flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">Node {index + 1}</div>
-                    <h3 className="mt-2 text-2xl font-semibold text-[var(--text)]">{topic.title}</h3>
-                  </div>
-                  <div className="rounded-full border border-[var(--border)] bg-white px-3 py-1 text-xs font-semibold text-[var(--muted)] shadow-sm">Open</div>
-                </div>
-                <p className="relative mt-4 text-sm leading-6 text-[var(--muted)]">{topic.description}</p>
-                <div className="relative mt-5 flex flex-wrap gap-2">
-                  {topic.chips.map((chip) => (
-                    <span key={chip} className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs font-medium text-[var(--text)]">
-                      {chip}
-                    </span>
+          <div className="mb-6 grid gap-4 lg:grid-cols-[1fr_auto] items-start">
+            <div>
+              <KnowledgeConstellation topics={topicMap} />
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <details className="lg:hidden rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
+                <summary className="cursor-pointer text-sm font-semibold">Topics</summary>
+                <ul className="mt-3 flex flex-col gap-2">
+                  {topicMap.map((t) => (
+                    <li key={t.title}>
+                      <Link href={t.href} className="block rounded px-2 py-1 text-sm text-[var(--muted)] hover:bg-[var(--bg)]">
+                        {t.title}
+                      </Link>
+                    </li>
                   ))}
-                </div>
-              </Link>
-            ))}
+                </ul>
+              </details>
+
+              <nav aria-label="Topics" className="hidden lg:block w-56">
+                <ul className="flex flex-col gap-2">
+                  {topicMap.map((t) => (
+                    <li key={t.title}>
+                      <Link href={t.href} className="block rounded px-2 py-1 text-sm text-[var(--muted)] hover:bg-[var(--bg)]">
+                        {t.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
           </div>
         </section>
 
@@ -362,9 +368,9 @@ export default function KnowledgePage() {
               <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
                 Modules
               </span>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Each topic becomes a small curriculum</h2>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Each topic is a compact curriculum</h2>
               <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-                Every topic can expand into lessons, articles, and experiments. The structure stays consistent so the whole hub feels like one system.
+                Concise lessons, essential readings, and hands-on experiments — designed so every topic teaches a practice, not just a concept.
               </p>
             </div>
 
@@ -398,9 +404,9 @@ export default function KnowledgePage() {
             <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
               Featured Articles
             </span>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">The strongest signal in the system</h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Canonical essays and notes</h2>
             <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-              These posts and notes anchor the hub today. As the library grows, this section can evolve into a live feed.
+              Selected essays and notes that define our current thinking — the best starting points to understand our perspective.
             </p>
           </div>
 
