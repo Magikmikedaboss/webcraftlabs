@@ -69,6 +69,20 @@ const topicMap = [
   },
 ] as const;
 
+function TopicListItems() {
+  return (
+    <>
+      {topicMap.map((t) => (
+        <li key={t.title}>
+          <Link href={t.href} className="block rounded px-2 py-1 text-sm text-[var(--muted)] hover:bg-[var(--bg)]">
+            {t.title}
+          </Link>
+        </li>
+      ))}
+    </>
+  );
+}
+
 const modules = [
   {
     title: "Synthetic Minds",
@@ -337,25 +351,13 @@ export default function KnowledgePage() {
               <details className="lg:hidden rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
                 <summary className="cursor-pointer text-sm font-semibold">Topics</summary>
                 <ul className="mt-3 flex flex-col gap-2">
-                  {topicMap.map((t) => (
-                    <li key={t.title}>
-                      <Link href={t.href} className="block rounded px-2 py-1 text-sm text-[var(--muted)] hover:bg-[var(--bg)]">
-                        {t.title}
-                      </Link>
-                    </li>
-                  ))}
+                  <TopicListItems />
                 </ul>
               </details>
 
               <nav aria-label="Topics" className="hidden lg:block w-56">
                 <ul className="flex flex-col gap-2">
-                  {topicMap.map((t) => (
-                    <li key={t.title}>
-                      <Link href={t.href} className="block rounded px-2 py-1 text-sm text-[var(--muted)] hover:bg-[var(--bg)]">
-                        {t.title}
-                      </Link>
-                    </li>
-                  ))}
+                  <TopicListItems />
                 </ul>
               </nav>
             </div>

@@ -227,7 +227,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
               </div>
 
               <div>
-                <h2 className="max-w-3xl text-3xl font-semibold tracking-[-0.035em] text-[var(--text)] transition group-hover:text-cyan-200 sm:text-5xl">
+                <h2 className="max-w-3xl text-3xl font-semibold tracking-[-0.035em] text-[var(--text)] sm:text-5xl">
                   {featuredPost.title}
                 </h2>
 
@@ -268,7 +268,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
               </div>
 
               <div>
-                <h3 className="text-2xl font-semibold tracking-[-0.025em] text-[var(--text)] transition group-hover:text-cyan-200">
+                <h3 className="text-2xl font-semibold tracking-[-0.025em] text-[var(--text)]">
                   {post.title}
                 </h3>
 

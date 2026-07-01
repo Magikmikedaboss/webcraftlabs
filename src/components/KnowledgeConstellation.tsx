@@ -43,6 +43,7 @@ export default function KnowledgeConstellation({
   const router = useRouter();
   const fgRef = useRef<any>(null);
   const [mounted, setMounted] = useState(false);
+  const chargeAppliedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -70,12 +71,12 @@ export default function KnowledgeConstellation({
     return { nodes, links };
   }, [topics]);
 
-  useEffect(() => {
-    if (!mounted || !fgRef.current) return;
-
-    const charge = fgRef.current.d3Force("charge");
-    charge?.strength?.(-140);
-  }, [mounted]);
+  // Apply the charge force once the graph engine is ready.
+  // We previously attempted to apply this as soon as the component
+  // mounted, but `fgRef.current` can still be null while the
+  // ForceGraph2D internal engine initializes. Use `onEngineStop`
+  // to apply the force once the graph is attached, and guard so
+  // the change is applied only once.
 
   useEffect(() => {
     if (!mounted) return;
@@ -89,7 +90,14 @@ export default function KnowledgeConstellation({
       const graph = fg.graphData?.();
       const nodes = graph?.nodes as GraphNode[] | undefined;
 
-      if (!nodes) return;
+      // If nodes are not yet available, keep the animation loop
+      // running until the graph attaches and the labels have
+      // finished fading in. This avoids the case where the first
+      // frame sees an empty node array and the loop stops.
+      if (!nodes) {
+        raf = requestAnimationFrame(step);
+        return;
+      }
 
       let dirty = false;
 
@@ -142,6 +150,18 @@ export default function KnowledgeConstellation({
           cooldownTicks={100}
           onNodeClick={(node: any) => {
             if (node?.href) router.push(node.href);
+          }}
+          onEngineStop={() => {
+            if (chargeAppliedRef.current) return;
+            const fg = fgRef.current;
+            const charge = fg?.d3Force?.("charge");
+            if (charge && typeof charge.strength === "function") {
+              // apply new strength then reheat the simulation so the
+              // updated force takes effect visually
+              charge.strength(-140);
+              fg?.d3ReheatSimulation?.();
+            }
+            chargeAppliedRef.current = true;
           }}
           nodeCanvasObject={(
             node: any,
