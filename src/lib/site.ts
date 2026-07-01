@@ -67,7 +67,7 @@ export function getBaseUrl(): string {
   if (!['http:', 'https:'].includes(parsed.protocol)) {
     throw new Error(`SITE.url must use http or https protocol, got: ${parsed.protocol}`);
   }
-  // Return only the origin (scheme + host + port) so pathnames in SITE.url
-  // never corrupt canonical URLs built as `${baseUrl}/some-path`.
-  return parsed.origin;
+  // Build base URL from parsed components and strip search/hash for consistency
+  const pathname = parsed.pathname.replace(/\/$/, '');
+  return `${parsed.origin}${pathname === '' ? '' : pathname}`;
 }

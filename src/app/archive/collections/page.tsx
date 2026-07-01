@@ -21,6 +21,7 @@ const COLLECTION_ACCENTS: Record<string, { border: string; text: string; glow: s
 export default function CollectionsPage() {
   const posts = getArchivePosts();
   const postsBySlug = Object.fromEntries(posts.map((p) => [p.slug, p]));
+  const availableSlugs = new Set(posts.map((p) => p.slug));
 
   return (
     <SiteShell background="bg" asMain={false}>
@@ -59,15 +60,18 @@ export default function CollectionsPage() {
         <main className="mx-auto max-w-5xl px-6 py-14 space-y-10">
           {Object.entries(COLLECTION_THEMES).map(([key, theme]) => {
             const accent = COLLECTION_ACCENTS[key] ?? COLLECTION_ACCENTS.Knowledge;
-            const docs = theme.slugs
-              .map((slug) => {
-                const doc = postsBySlug[slug];
-                if (!doc && process.env.NODE_ENV !== "production") {
-                  console.warn(`[collections] slug not found in published posts: "${slug}" (collection: ${key})`);
+              // Map configured slugs to posts; warn in dev if configured slugs are missing
+              if (process.env.NODE_ENV !== 'production') {
+                const missing = theme.slugs.filter((s) => !availableSlugs.has(s));
+                if (missing.length) {
+                  // Keep this visible to developers but silent in production
+                  // so the cross-file contract between COLLECTION_THEMES and getArchivePosts()
+                  // remains observable during development.
+                  console.warn(`Archive collection "${key}" references missing slugs: ${missing.join(', ')}`);
                 }
-                return doc;
-              })
-              .filter(Boolean);
+              }
+
+              const docs = theme.slugs.map((slug) => postsBySlug[slug]).filter(Boolean);
 
             return (
               <section

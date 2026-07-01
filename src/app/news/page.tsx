@@ -41,6 +41,7 @@ export default async function NewsIndexPage() {
     description: p.frontmatter.description,
     date: p.frontmatter.date,
     tags: p.frontmatter.tags || [],
+    href: `/news/${p.slug}`,
     kind: "news" as const,
   }));
 

@@ -220,16 +220,17 @@ export function PostTimeline({
 }
 
 function ReadNext({ related }: { related?: RelatedPost[] }) {
-  if (!related?.length) return null;
+  const filtered = related?.filter((p) => p.href || p.slug) ?? [];
+  if (!filtered.length) return null;
   return (
     <section className="mx-auto mt-20 max-w-6xl border-t border-slate-200 pt-10 sm:mt-24 sm:pt-12">
       <p className="text-xs font-black uppercase tracking-[0.25em] text-indigo-700">
         Continue Reading
       </p>
       <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {related.map((p) => (
+        {filtered.map((p) => (
           <Link
-            key={p.id || p.slug}
+            key={p.id || p.slug || p.href}
             href={p.href ?? `/blog/${p.slug}${p.id ? `?id=${encodeURIComponent(p.id)}` : ""}`}
             className="group overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:rounded-[2rem]"
           >
@@ -286,7 +287,10 @@ export default function EditorialTemplateV2({
   backLabel?: string;
   children: React.ReactNode;
 }) {
-  const date = post.published || post.date;
+  // Use the explicit date field for display-only publication dates.
+  // `post.published` is a publication-state flag and must not be used
+  // for date parsing/formatting (it can be a boolean or legacy token).
+  const date = post.date;
 
   return (
     <div

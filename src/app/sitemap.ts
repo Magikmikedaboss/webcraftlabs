@@ -200,12 +200,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
-    {
-      url: `${baseUrl}/blog/synthetic-minds`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.65,
-    },
+    
   ];
 
   const allPosts = getAllPosts();

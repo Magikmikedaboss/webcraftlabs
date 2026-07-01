@@ -265,14 +265,6 @@ Monospace diagram frame for ASCII diagrams or annotated sketches.
 
 Classified-document header block. Used in sci-fi and speculative fiction posts.
 
-```mdx
-<ClassifiedHeader
-  lab="WEBCRAFT LABZ"
-  archive="ARCHIVE FILE"
-  classification="SPECULATIVE FICTION"
-  accessLevel="04"
-/>
-```
 
 ## RecoveredLog
 
@@ -298,18 +290,17 @@ Compact green-on-dark terminal output block. Supports optional `title`.
 
 ## HandwrittenNote
 
-Warm amber-tinted aside styled to evoke a handwritten margin note. Use for short editorial asides, personal observations, or closing reflections. No props — content is passed as children.
+Warm amber-tinted aside styled to evoke a handwritten margin note. Use for short editorial asides, personal observations, or closing reflections.
 
-```mdx
-<HandwrittenNote>
-This wasn't the first signal.
+Props:
+- `children: ReactNode` — note body content.
+- `author?: string` — optional author label shown above the note.
+- `institution?: string` — optional institution label.
+- `date?: string` — optional date string.
+- `location?: string` — optional location string.
+- `rotation?: number` — optional small rotation for visual variation (default: 1).
 
-It won't be the last.
-
-Stop asking who sent it. Start asking who sent **ours**.
-</HandwrittenNote>
-```
-
+Example usage:
 ---
 
 ## Basic Article Shape

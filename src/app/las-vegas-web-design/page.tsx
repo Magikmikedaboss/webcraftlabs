@@ -98,7 +98,7 @@ export default function LasVegasWebDesignPage() {
                 src="/images/modern-computer-display-on-an-office-desk-with-a-web-design.webp"
                 alt="Las Vegas web design services"
                 fill
-                sizes="100vw"
+                sizes="(min-width: 1024px) 1152px, 100vw"
                 className="object-cover"
                 priority
               />

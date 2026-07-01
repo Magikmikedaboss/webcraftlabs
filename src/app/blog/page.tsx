@@ -5,14 +5,32 @@ import { getAllPosts } from "@/lib/mdx/blog";
 import SiteShell from "@/components/SiteShell";
 import { SITE, getBaseUrl } from "@/lib/site";
 
+const siteBase = getBaseUrl();
+const blogUrl = `${siteBase}/blog`;
+
 export const metadata = {
   title: "Blog",
   description:
     "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
   alternates: {
-    canonical: `${getBaseUrl()}/blog`,
+    canonical: blogUrl,
   },
-};
+  openGraph: {
+    title: "Blog",
+    description:
+      "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
+    url: blogUrl,
+    type: "website",
+    images: [{ url: `${siteBase}/images/web-development-wide-angle-view-of-a-modern-skyscraper-with-reflective-glass.jpg`, width: 1200, height: 630, alt: "Blog" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog",
+    description:
+      "Cutting-edge insights on web development, AI, emerging technologies, and the future of software.",
+    images: [`${siteBase}/images/web-development-wide-angle-view-of-a-modern-skyscraper-with-reflective-glass.jpg`],
+  },};
+
 
 export default function BlogIndexPage() {
   const posts = getAllPosts().map((p) => ({
@@ -21,6 +39,7 @@ export default function BlogIndexPage() {
     description: p.frontmatter.description,
     date: p.frontmatter.date,
     tags: p.frontmatter.tags || [],
+    href: `/blog/${p.slug}`,
     kind: "blog" as const,
   }));
 
@@ -28,21 +47,7 @@ export default function BlogIndexPage() {
 
   return (
     <SiteShell background="surface">
-      <div className="relative min-h-screen w-full overflow-hidden bg-[#05080f]">
-        {/* Main background image */}
-        <Image
-          src="/images/web-development-wide-angle-view-of-a-modern-skyscraper-with-reflective-glass.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          aria-hidden="true"
-          className="object-cover z-0 opacity-85 pointer-events-none select-none"
-          style={{ objectPosition: "center 22%" }}
-        />
-        {/* Soft blur layer so the background stays airy without fetching the image twice */}
-        <div className="absolute inset-0 z-0 bg-black/5 backdrop-blur-sm pointer-events-none select-none" />
-        {/* Overlay for readability */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/25 via-black/20 to-black/40 pointer-events-none select-none" />
+      <div className="relative min-h-screen w-full overflow-hidden bg-[var(--surface)]">
         <div className="relative mx-auto max-w-6xl px-6 py-12 z-10">
 
         {/* =========================
@@ -50,12 +55,7 @@ export default function BlogIndexPage() {
         ========================= */}
         <header className="relative mb-16 overflow-hidden rounded-3xl p-10 md:p-14 shadow-xl bg-[var(--page-bg,theme(colors.slate.950))] dark:bg-[var(--page-bg-dark,#0a0f1c)]">
 
-          {/* Gradient Layer */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--hero-from,theme(colors.cyan.600)/70)] via-[var(--hero-via,theme(colors.indigo.700)/60)] to-[var(--hero-to,theme(colors.cyan.500)/60)]" />
-
-          {/* Glow Effects */}
-          <div className="absolute -top-20 -right-20 w-[400px] h-[400px] bg-[var(--hero-glow1,theme(colors.cyan.400)/30)] blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[var(--hero-glow2,theme(colors.blue.500)/20)] blur-[140px]" />
+          {/* Gradient + glow removed to lighten header visual */}
 
           {/* Content */}
           <div className="relative z-10">
@@ -88,10 +88,7 @@ export default function BlogIndexPage() {
         {/* =========================
             CTA (UPGRADED)
         ========================= */}
-        <div className="mt-24 relative overflow-hidden rounded-3xl p-10 md:p-14 text-center bg-[#05080f] shadow-xl">
-
-          {/* Glow Layer */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 blur-2xl opacity-60" />
+        <div className="mt-24 relative overflow-hidden rounded-3xl p-10 md:p-14 text-center bg-[var(--surface)] shadow-xl">
 
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white">

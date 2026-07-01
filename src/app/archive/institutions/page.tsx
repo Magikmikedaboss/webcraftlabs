@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import { getBaseUrl } from "@/lib/site";
-import { INSTITUTIONS, ARCHIVE_ORDER, type InstitutionPosition } from "@/lib/archive";
+import { INSTITUTIONS, getArchivePosts, type InstitutionPosition } from "@/lib/archive";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -29,6 +29,7 @@ function ConfidenceBadge({ level }: { level: InstitutionPosition["confidence"] }
 }
 
 export default function InstitutionsPage() {
+  const published = getArchivePosts();
   return (
     <SiteShell background="bg" asMain={false}>
       <div className="min-h-screen bg-[#05080f] text-slate-200">
@@ -61,8 +62,8 @@ export default function InstitutionsPage() {
             </p>
             <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-px bg-slate-800 border border-slate-800 rounded-lg overflow-hidden max-w-lg">
               <DataPlate label="Institutions" value={INSTITUTIONS.length} />
-              <DataPlate label="Investigations" value={ARCHIVE_ORDER.filter((d) => d.archiveId.startsWith("Investigation")).length} />
-              <DataPlate label="Treatises" value={ARCHIVE_ORDER.filter((d) => d.archiveId.startsWith("Treatise")).length} />
+              <DataPlate label="Investigations" value={published.filter((d) => d.frontmatter.archiveId?.startsWith("Investigation")).length} />
+              <DataPlate label="Treatises" value={published.filter((d) => d.frontmatter.archiveId?.startsWith("Treatise")).length} />
               <DataPlate label="Open Questions" value="∞" />
             </div>
           </div>
@@ -71,7 +72,7 @@ export default function InstitutionsPage() {
         {/* Institution list */}
         <main className="mx-auto max-w-5xl px-6 py-14 space-y-10">
           {INSTITUTIONS.map((inst) => {
-            const docs = ARCHIVE_ORDER.filter((d) => inst.documents.includes(d.slug));
+            const docs = published.filter((d) => inst.documents.some((s) => s === d.slug));
             return (
               <article
                 key={inst.id}
@@ -130,10 +131,11 @@ export default function InstitutionsPage() {
                           href={`/archive/${doc.slug}`}
                           className="group inline-flex items-center gap-2 border border-slate-800 hover:border-slate-600 rounded px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-slate-200 transition-colors"
                         >
-                          <span className="text-slate-600">{doc.archiveId}</span>
-                          <span>{doc.title}</span>
+                          <span className="text-slate-600">{doc.frontmatter.archiveId}</span>
+                          <span>{doc.frontmatter.title}</span>
                           <span className="text-slate-700 group-hover:text-slate-500">→</span>
-                        </Link>                      ))}
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 )}

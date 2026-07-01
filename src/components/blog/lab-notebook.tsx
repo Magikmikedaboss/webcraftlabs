@@ -393,7 +393,7 @@ export function QuickPicks({ picks = [] }: { picks: QuickPick[] }) {
               {pick.title}
             </p>
             <p className="mt-2 text-2xl font-black tracking-tight text-slate-950">
-              {pick.framework || pick.name}
+              {pick.framework || pick.name || pick.title}
             </p>
             <p className="mt-3 text-sm leading-7 text-slate-700">{pick.reason}</p>
           </div>
@@ -618,16 +618,15 @@ export function ClassifiedHeader({
       <div className="space-y-1 text-center">
         <div className="text-base font-black tracking-[0.3em] text-white uppercase">{lab}</div>
         <div className="tracking-[0.2em] text-slate-400 uppercase text-[10px]">{archive}</div>
-        <div className="mt-5 flex justify-center gap-10">
-          <div className="text-left">
+        <div className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-10">
+          <div className="text-center sm:text-left">
             <div className="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-1">Classification</div>
             <div className="text-slate-200 font-bold tracking-widest uppercase">{classification}</div>
           </div>
-          <div className="text-left">
+          <div className="text-center sm:text-left">
             <div className="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-1">Access Level</div>
             <div className="text-slate-200 font-bold tracking-widest">{accessLevel}</div>
-          </div>
-        </div>
+          </div>        </div>
       </div>
       <div aria-hidden="true" className="mt-5 overflow-hidden whitespace-nowrap tracking-widest text-slate-600">
         {bar}

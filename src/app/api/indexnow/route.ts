@@ -6,8 +6,11 @@ const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
 
 function isAuthorized(req: NextRequest): boolean {
   const expectedToken = process.env.INDEXNOW_SUBMIT_TOKEN;
+  // Require an explicitly configured token in all environments. Do not
+  // grant access by default when the token is missing to avoid opening
+  // preview/staging deployments to unauthenticated requests.
   if (!expectedToken) {
-    return process.env.NODE_ENV !== "production";
+    return false;
   }
 
   const tokenHeader = req.headers.get("x-indexnow-token");

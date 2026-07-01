@@ -6,6 +6,7 @@ type BlogGridPost = {
   description: string;
   date: string;
   tags: string[];
+  href?: string;
   kind: "blog" | "news";
 };
 

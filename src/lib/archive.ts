@@ -6,60 +6,32 @@
  */
 
 import { getAllPostFrontmatter } from "@/lib/mdx/blog";
+// Use a structured JSON source of truth for archive ordering to avoid brittle parsing.
+import archiveOrder from './archive-order.json';
 
 // Canonical reading order — reader journey sequence
 // Readers fall in love first (Recovered Records), then become scholars.
 // Rule: evidence precedes scholarship. Wonder precedes analysis.
-export const ARCHIVE_ORDER = [
-  {
-    slug: "welcome-to-the-archive",
-    archiveId: "Orientation",
-    title: "Welcome to the Archive",
-  },
-  {
-    slug: "the-last-simulation",
-    archiveId: "Recovered Record 611",
-    title: "The Last Simulation",
-  },
-  {
-    slug: "the-silent-vault",
-    archiveId: "Investigation 203",
-    title: "The Silent Vault",
-  },
-  {
-    slug: "treatise-1-on-the-preservation-of-knowledge",
-    archiveId: "Treatise I",
-    title: "On the Preservation of Knowledge",
-  },
-  {
-    slug: "the-duplicate-manuscript",
-    archiveId: "Investigation 047",
-    title: "The Duplicate Manuscript",
-  },
-  {
-    slug: "treatise-2-on-the-nature-of-evidence",
-    archiveId: "Treatise II",
-    title: "On the Nature of Evidence",
-  },
-  {
-    slug: "the-last-radio-signal",
-    archiveId: "Recovered Record 002",
-    title: "The Last Radio Signal",
-  },
-] as const;
+export type ArchiveOrderItem = {
+  slug: string;
+  archiveId?: string | null;
+  title: string;
+};
 
-export type ArchiveDoc = (typeof ARCHIVE_ORDER)[number];
+export const ARCHIVE_ORDER: ReadonlyArray<ArchiveOrderItem> = archiveOrder as ArchiveOrderItem[];
+
+export type ArchiveDoc = ArchiveOrderItem;
 
 // Citation graph — which documents formally cite which
 // Key: citing slug, Value: array of cited slugs
-const CITES_MAP: Record<string, readonly string[]> = {
+const CITES_MAP: Partial<Record<ArchiveDoc["slug"], readonly ArchiveDoc["slug"][]>> = {
   "treatise-1-on-the-preservation-of-knowledge": ["the-silent-vault"],
   "treatise-2-on-the-nature-of-evidence": ["the-duplicate-manuscript"],
 };
 
 // Derived inverse map: cited slug → array of citing slugs
-const CITED_BY_MAP: Record<string, string[]> = {};
-for (const [citer, cited] of Object.entries(CITES_MAP)) {
+const CITED_BY_MAP: Partial<Record<ArchiveDoc["slug"], ArchiveDoc["slug"][]>> = {};
+for (const [citer, cited] of Object.entries(CITES_MAP) as [ArchiveDoc["slug"], readonly ArchiveDoc["slug"][]][]) {
   for (const s of cited) {
     (CITED_BY_MAP[s] ??= []).push(citer);
   }
@@ -87,13 +59,13 @@ export function getArchivePrevNext(slug: string): {
   };
 }
 
-export function getArchiveCites(slug: string): ArchiveDoc[] {
+export function getArchiveCites(slug: ArchiveDoc["slug"]): ArchiveDoc[] {
   return (CITES_MAP[slug] ?? [])
     .map((s) => ARCHIVE_ORDER.find((d) => d.slug === s))
     .filter(Boolean) as ArchiveDoc[];
 }
 
-export function getArchiveCitedBy(slug: string): ArchiveDoc[] {
+export function getArchiveCitedBy(slug: ArchiveDoc["slug"]): ArchiveDoc[] {
   return (CITED_BY_MAP[slug] ?? [])
     .map((s) => ARCHIVE_ORDER.find((d) => d.slug === s))
     .filter(Boolean) as ArchiveDoc[];
@@ -383,6 +355,13 @@ export const GLOSSARY: GlossaryEntry[] = [
     source: "Committee on Preservation Theory, Treatise I",
     status: "Established",
   },
+  {
+    term: "The Archive Quote",
+    definition:
+      "\"The Archive does not remember. It merely delays forgetting.\" — a recurring aphorism cited across recovered documents and institutional commentary. Used to emphasize the provisional nature of recovered records and the Archive's role in preserving evidence rather than asserting conclusions.",
+    source: "Attributed — disputed",
+    status: "Provisional",
+  },
 ];
 
 // ── Collection Themes ──────────────────────────────────────────────────────
@@ -390,7 +369,7 @@ export const GLOSSARY: GlossaryEntry[] = [
 export interface CollectionTheme {
   label: string;
   description: string;
-  slugs: readonly string[];
+  slugs: readonly ArchiveDoc["slug"][];
   status: "active" | "planned";
 }
 

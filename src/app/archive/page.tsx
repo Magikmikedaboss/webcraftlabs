@@ -26,12 +26,13 @@ export default function ArchiveLanding() {
     p.frontmatter.archiveId?.startsWith("Recovered Record")
   );
 
-  // Recommended entry point: position 2 in reading sequence (The Last Simulation)
-  const entryDocMeta = ARCHIVE_ORDER[1];
-  const entryPost = archivePosts.find((p) => p.slug === entryDocMeta.slug);
+  // Recommended entry point: The Last Simulation — resolve by slug so changes
+  // to ARCHIVE_ORDER ordering won't affect which document is recommended.
+  const entryDocMeta = ARCHIVE_ORDER.find((d) => d.slug === "the-last-simulation");
+  const entryPost = entryDocMeta && archivePosts.find((p) => p.slug === entryDocMeta.slug);
 
   return (
-    <SiteShell background="bg">
+    <SiteShell background="bg" showArchiveQuote>
       <div className="min-h-screen bg-[#05080f] text-slate-200 flex flex-col">
 
         {/* ── Archive Status ─────────────────────────────────── */}
@@ -61,23 +62,29 @@ export default function ArchiveLanding() {
               WebCraft<br />Archive
             </h1>
 
+            {/* Cinematic opening */}
+            <div className="max-w-2xl mb-10 space-y-5">
+              <p className="text-lg sm:text-xl text-slate-200 leading-relaxed">
+                The WebCraft Archive began with a discovery that should not have been possible.
+              </p>
+              <p className="text-base text-slate-400 leading-relaxed">
+                Researchers recovered a sealed collection of documents — investigations, field notes,
+                technical reports, recovered records — none of which matched the age of the site
+                in which they were found. Several cited archives that did not appear to exist.
+              </p>
+              <p className="text-base text-slate-400 leading-relaxed">
+                Then a second archive was recovered. It used the same cataloging system.
+                The same editorial conventions. The same style of scholarship.
+                The two archives had no known historical connection.
+              </p>
+              <p className="text-sm text-slate-600 leading-relaxed italic">
+                No accepted historical explanation currently accounts for both discoveries.
+              </p>
+            </div>
+
             <blockquote className="max-w-xl text-base sm:text-lg text-slate-400 italic leading-relaxed mb-10 border-l-2 border-slate-700 pl-5">
               &ldquo;The Archive does not announce truth. It preserves evidence.&rdquo;
             </blockquote>
-
-            {/* Reader promise */}
-            <div className="max-w-2xl mb-10 space-y-2">
-              <p className="text-2xl sm:text-3xl font-semibold text-slate-100 leading-snug">
-                Every document begins with a mystery.
-              </p>
-              <p className="text-2xl sm:text-3xl font-semibold text-slate-500 leading-snug">
-                The deeper you investigate, the stranger the record becomes.
-              </p>
-              <p className="pt-3 text-sm text-slate-500 leading-relaxed">
-                Recovered investigations. Scholarly treatises. Lost records.
-                Explore the evidence and decide for yourself.
-              </p>
-            </div>
 
             {/* Institutional data plates */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-slate-800 border border-slate-800 rounded-lg overflow-hidden mb-10">
@@ -88,13 +95,19 @@ export default function ArchiveLanding() {
             </div>
 
             {/* Primary CTA */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap items-center gap-6">
               <Link
                 href="/archive/catalog"
                 className="inline-flex items-center gap-2 bg-slate-100 text-slate-900 font-semibold text-sm px-7 py-3 rounded-lg hover:bg-white transition-colors"
               >
                 Enter the Archive
                 <span aria-hidden="true">→</span>
+              </Link>
+              <Link
+                href="/archive/welcome-to-the-archive"
+                className="text-sm font-mono text-slate-600 hover:text-slate-300 transition-colors"
+              >
+                New here? Read the orientation →
               </Link>
             </div>
           </div>
@@ -165,16 +178,24 @@ export default function ArchiveLanding() {
 
         {/* ── Footer ───────────────────────────────────────── */}
         <footer className="mt-auto border-t border-slate-800/60">
-          <div className="mx-auto max-w-5xl px-6 py-8 flex items-center justify-between gap-4">
+          <div className="mx-auto max-w-5xl px-6 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p className="text-[10px] font-mono tracking-[0.2em] text-slate-700 uppercase">
               Archive Status: Active — Inquiry Continues
             </p>
-            <Link
-              href="/archive/catalog"
-              className="text-[10px] font-mono text-slate-700 hover:text-slate-500 transition-colors"
-            >
-              Browse Catalog →
-            </Link>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
+              <Link
+                href="/archive/welcome-to-the-archive"
+                className="text-[10px] font-mono text-slate-700 hover:text-slate-500 transition-colors"
+              >
+                About the Archive →
+              </Link>
+              <Link
+                href="/archive/catalog"
+                className="text-[10px] font-mono text-slate-700 hover:text-slate-500 transition-colors"
+              >
+                Browse Catalog →
+              </Link>
+            </div>
           </div>
         </footer>
 

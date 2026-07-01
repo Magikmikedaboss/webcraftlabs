@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <style>
+    .bg{fill:#071017}
+    .wall{fill:#0b1720}
+    .aisle{fill:#0f1f2a}
+    .shelf{fill:#1e2b33}
+    .shelf-edge{fill:#22343b}
+    .text{fill:#cbd5df;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;font-size:12px}
+    .note{fill:#9fb0bd;font-size:11px}
+    .question{fill:none;stroke:#cbd5df;stroke-width:3}
+  </style>
+  <rect width="100%" height="100%" class="bg"/>
+  <!-- Eastern wall -->
+  <rect x="28" y="28" width="744" height="36" class="wall"/>
+  <text x="44" y="52" class="text">Eastern Wall (Inscription)</text>
+
+  <!-- Aisles and shelves -->
+  <g transform="translate(48,84)">
+    <g transform="translate(0,0)">
+      <!-- Aisle 1 -->
+      <rect class="aisle" x="0" y="0" width="220" height="220" rx="6"/>
+      <g fill="#0b2a31">
+        <rect x="12" y="12" width="196" height="24" class="shelf"/>
+        <rect x="12" y="48" width="196" height="24" class="shelf"/>
+        <rect x="12" y="84" width="196" height="24" class="shelf"/>
+      </g>
+      <text x="12" y="250" class="note">Aisle 1</text>
+    </g>
+
+    <g transform="translate(236,0)">
+      <!-- Aisle 2 -->
+      <rect class="aisle" x="0" y="0" width="220" height="220" rx="6"/>
+      <g fill="#0b2a31">
+        <rect x="12" y="12" width="196" height="24" class="shelf"/>
+        <rect x="12" y="48" width="196" height="24" class="shelf"/>
+        <rect x="12" y="84" width="196" height="24" class="shelf"/>
+      </g>
+      <text x="12" y="250" class="note">Aisle 2</text>
+    </g>
+
+    <g transform="translate(472,0)">
+      <!-- Aisle 3 -->
+      <rect class="aisle" x="0" y="0" width="220" height="220" rx="6"/>
+      <g fill="#0b2a31">
+        <rect x="12" y="12" width="196" height="24" class="shelf"/>
+        <rect x="12" y="48" width="196" height="24" class="shelf"/>
+        <rect x="12" y="84" width="196" height="24" class="shelf"/>
+      </g>
+      <text x="12" y="250" class="note">Aisle 3</text>
+    </g>
+
+    <!-- Environmental controls -->
+    <g transform="translate(560,128)">
+      <rect x="0" y="0" width="120" height="64" rx="6" class="shelf-edge"/>
+      <text x="6" y="22" class="text">Environmental</text>
+      <text x="6" y="38" class="text">Controls →</text>
+      <circle cx="94" cy="32" r="12" class="shelf-edge"/>
+      <text x="80" y="36" class="note">?</text>
+    </g>
+
+    <!-- caption -->
+    <text x="0" y="300" class="note">All 128 shelf positions confirmed empty at time of recovery.</text>
+  </g>
+</svg>
