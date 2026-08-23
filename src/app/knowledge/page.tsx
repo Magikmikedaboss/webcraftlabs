@@ -4,6 +4,10 @@ import KnowledgeConstellation from "@/components/KnowledgeConstellation";
 import ResourceHero from "@/components/resources/ResourceHero";
 import AudienceEntryPoints from "@/components/resources/AudienceEntryPoints";
 import LearningPaths from "@/components/resources/LearningPaths";
+import FeaturedResources from "@/components/resources/FeaturedResources";
+import FeaturedTool from "@/components/resources/FeaturedTool";
+import FromTheLab from "@/components/resources/FromTheLab";
+import ProjectsAndExperiments from "@/components/resources/ProjectsAndExperiments";
 import { SITE, getBaseUrl } from "@/lib/site";
 
 
@@ -53,96 +57,6 @@ function TopicListItems() {
     </>
   );
 }
-
-const modules = [
-  {
-    title: "Synthetic Minds",
-    href: "/blog/synthetic-minds-series",
-    summary: "A path for readers who want the full narrative arc.",
-    items: [
-      "Start Here: What is Synthetic Minds?",
-      "Key Idea: AI as collaborator, not just tool",
-      "Related Articles: Episode series and essays",
-      "Experiments: Prompting, image generation, creative workflows",
-      "Next Path: Human bottlenecks and new creators",
-    ],
-  },
-  {
-    title: "Axon",
-    href: "/news/introducing-axon",
-    summary: "A research intelligence path focused on structure and signal.",
-    items: [
-      "Start Here: Introducing Axon",
-      "Key Idea: Turning complexity into clarity",
-      "Related Articles: Research-first system design",
-      "Experiments: Signal detection and knowledge clustering",
-      "Next Path: Enterprise intelligence layers",
-    ],
-  },
-  {
-    title: "Enterprise AI",
-    href: "/news/enterprise-ai-human-bottleneck",
-    summary: "A systems view of how organizations change when intelligence becomes operational.",
-    items: [
-      "Start Here: The Human Bottleneck in the Age of Enterprise AI",
-      "Key Idea: Intelligence should reduce friction, not add it",
-      "Related Articles: Workflow and architecture essays",
-      "Experiments: Automation, agents, and decision support",
-      "Next Path: Future of work and organizational leverage",
-    ],
-  },
-  {
-    title: "Future of Work",
-    href: "/news/manifesto",
-    summary: "The shift from static sites to adaptive, intelligent systems.",
-    items: [
-      "Start Here: Websites to systems",
-      "Key Idea: The interface is becoming an operating layer",
-      "Related Articles: Modern web strategy and AI integration",
-      "Experiments: Automations, content flows, and reusable intelligence",
-      "Next Path: Human + AI creativity",
-    ],
-  },
-  {
-    title: "Human + AI Creativity",
-    href: "/blog/what-is-synthetic-minds",
-    summary: "A practical and conceptual bridge between expression and intelligence.",
-    items: [
-      "Start Here: What is Synthetic Minds?",
-      "Key Idea: Creative leverage beats creative volume",
-      "Related Articles: New creators and unexpected systems",
-      "Experiments: Drafting, iteration, and multimodal exploration",
-      "Next Path: Build your own knowledge graph",
-    ],
-  },
-] as const;
-
-const featuredArticles = [
-  {
-    title: "What is Synthetic Minds?",
-    description: "The introduction to the series about AI creativity and invention.",
-    href: "/blog/what-is-synthetic-minds",
-    label: "Series opener",
-  },
-  {
-    title: "Introducing Axon: A Research Signal Intelligence Tool",
-    description: "How Axon turns research noise into something operationally useful.",
-    href: "/news/introducing-axon",
-    label: "Product note",
-  },
-  {
-    title: "The Human Bottleneck in the Age of Enterprise AI",
-    description: "Why judgment, coordination, and overload matter more as systems get smarter.",
-    href: "/news/enterprise-ai-human-bottleneck",
-    label: "Enterprise AI",
-  },
-  {
-    title: "From Websites to Systems",
-    description: "The broader shift behind the hub: interfaces becoming intelligence layers.",
-    href: "/news/manifesto",
-    label: "Manifesto",
-  },
-] as const;
 
 export const metadata = {
   title: "WebCraft Resource Center",
@@ -207,109 +121,31 @@ export default function KnowledgePage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-6 py-14">
-          <div className="rounded-[2rem] border border-[var(--border)] bg-[linear-gradient(180deg,rgba(248,251,255,0.98),rgba(237,244,252,0.92))] p-6 shadow-xl md:p-8">
-            <div className="mb-8 max-w-3xl">
-              <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
-                Modules
-              </span>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Each topic is a compact curriculum</h2>
-              <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-                Concise lessons, essential readings, and hands-on experiments — designed so every topic teaches a practice, not just a concept.
+        <FeaturedResources />
+        <FeaturedTool />
+        <FromTheLab />
+        <ProjectsAndExperiments />
+
+        <section className="rc-canvas-dark mx-auto max-w-7xl px-6 py-16 pb-24">
+          <div className="rc-cta-panel">
+            <div>
+              <span className="rc-eyebrow-on-dark">Need help building this?</span>
+              <h2 className="rc-h2-on-dark mt-4">
+                Want to turn a resource into a real project?
+              </h2>
+              <p className="rc-body-on-dark mt-4 max-w-2xl">
+                This center is where we publish how we think. If you want help building something
+                like it, tell us what you&apos;re working on.
               </p>
             </div>
 
-            <div className="grid gap-5 lg:grid-cols-2">
-              {modules.map((module) => (
-                <div key={module.title} className="rounded-3xl border border-[var(--border)] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-2xl font-semibold text-[var(--text)]">{module.title}</h3>
-                      <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{module.summary}</p>
-                    </div>
-                    <Link href={module.href} className="text-sm font-semibold text-[var(--primary)] transition hover:opacity-80">
-                      Open →
-                    </Link>
-                  </div>
-                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    {module.items.map((item) => (
-                      <div key={item} className="rounded-2xl border border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)]">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="articles" className="mx-auto max-w-7xl px-6 py-14">
-          <div className="mb-8 max-w-3xl">
-            <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
-              Featured Articles
-            </span>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Canonical essays and notes</h2>
-            <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-              Selected essays and notes that define our current thinking — the best starting points to understand our perspective.
-            </p>
-          </div>
-
-          <div className="grid gap-5 lg:grid-cols-4 md:grid-cols-2">
-            {featuredArticles.map((article) => (
-              <Link
-                key={article.title}
-                href={article.href}
-                className="group rounded-3xl border border-[var(--border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-              >
-                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">{article.label}</div>
-                <h3 className="mt-3 text-xl font-semibold text-[var(--text)]">{article.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{article.description}</p>
-                <div className="mt-5 text-sm font-semibold text-[var(--primary)] transition group-hover:translate-x-1">
-                  Read article →
-                </div>
+            <div className="flex flex-col gap-4 sm:flex-row lg:flex-col">
+              <Link href="/contact" className="rc-cta-primary">
+                Talk to us
               </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 py-16 pb-24">
-          <div className="relative overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[linear-gradient(135deg,rgba(8,15,28,0.96),rgba(3,9,18,0.98))] p-8 text-white shadow-2xl md:p-12">
-            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-cyan-400/15 blur-3xl" />
-            <div className="pointer-events-none absolute -left-12 -bottom-20 h-64 w-64 rounded-full bg-indigo-500/15 blur-3xl" />
-            <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-              <div>
-                <span className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
-                  Build with us
-                </span>
-                <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Want to turn a topic into a product, series, or research system?
-                </h2>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200">
-                  This hub is the front door to the way we think. If you want help building the next layer, we can map the ideas into a real site, product, or internal system.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-4 sm:flex-row lg:flex-col">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:scale-[1.02]"
-                >
-                  Build with us
-                </Link>
-                <Link
-                  href="/news/introducing-axon"
-                  className="inline-flex items-center justify-center rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:border-cyan-200 hover:bg-white/10"
-                >
-                  Explore Axon
-                </Link>
-                <Link
-                  href="/blog/synthetic-minds-series"
-                  className="inline-flex items-center justify-center rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:border-cyan-200 hover:bg-white/10"
-                >
-                  Read the series
-                </Link>
-              </div>
+              <Link href="/blog/synthetic-minds-series" className="rc-cta-secondary">
+                Read the series
+              </Link>
             </div>
           </div>
         </section>
