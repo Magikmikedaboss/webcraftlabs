@@ -38,7 +38,7 @@ Off-the-shelf software wins when speed and low upfront cost matter more than a p
 - **The tool's structure is close enough to how you work.** A little friction from an imperfect fit is often cheaper than the time and cost of a custom build.
 - **You need this running now, not in three months.** Off-the-shelf tools are usable today. Custom software has a build timeline.
 
-There's no shame in this. Payroll, email, basic accounting, project tracking — these are rarely the place to spend custom-development budget, because they're not what makes your business different from the next one.
+There's no shame in this. Payroll, email, basic accounting, project tracking — these are rarely the place to spend custom-development budget, because they're not what makes your business different from the next one. A ten-person company and a thousand-person company both run payroll almost identically. Nobody wins customers by having better payroll software.
 
 ---
 
@@ -50,13 +50,49 @@ Custom software earns its cost when the workflow it replaces is actually specifi
 - **Your workflow doesn't fit any tool's data model.** Once your roles, relationships, or edge cases stop matching how a generic tool expects the world to look, you start building workarounds instead of doing the work.
 - **The tool has become the bottleneck.** When you're spending more time working around a tool's limitations than the tool saves you, it's no longer helping.
 
+A gym that tracks member check-ins against class capacity, instructor certifications, and multi-location scheduling has a workflow that doesn't match how a generic scheduling tool expects the world to look — every one of those relationships is specific to how that business actually runs, not a checkbox a generic tool anticipated. Compare that to the same gym's payroll: identical to any other small business, and not worth custom-building.
+
+<div style={{ overflowX: "auto", margin: "2rem 0" }}>
+<table style={{ width: "100%", minWidth: "560px", borderCollapse: "collapse", fontSize: "0.95rem" }}>
+<thead>
+<tr>
+<th style={{ textAlign: "left", padding: "0.75rem 1rem", borderBottom: "2px solid var(--border)", color: "var(--text)" }}></th>
+<th style={{ textAlign: "left", padding: "0.75rem 1rem", borderBottom: "2px solid var(--border)", color: "var(--text)" }}>Off-the-Shelf</th>
+<th style={{ textAlign: "left", padding: "0.75rem 1rem", borderBottom: "2px solid var(--border)", color: "var(--text)" }}>Custom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--text)", fontWeight: 700 }}>Time to running</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Usable today</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Has a build timeline</td>
+</tr>
+<tr>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--text)", fontWeight: 700 }}>Fit to your workflow</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Generic — built to fit everyone reasonably well</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Exact — built around how you actually work</td>
+</tr>
+<tr>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--text)", fontWeight: 700 }}>Who controls the roadmap</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>The vendor</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>You</td>
+</tr>
+<tr>
+<td style={{ padding: "0.75rem 1rem", color: "var(--text)", fontWeight: 700 }}>Best suited for</td>
+<td style={{ padding: "0.75rem 1rem", color: "var(--muted)" }}>Workflows every business shares (payroll, email, accounting)</td>
+<td style={{ padding: "0.75rem 1rem", color: "var(--muted)" }}>The workflow that's actually specific to you</td>
+</tr>
+</tbody>
+</table>
+</div>
+
 ---
 
 ## The Hybrid Path Most Founders Actually Take
 
-Very few businesses go "all off-the-shelf" or "all custom." The more common path is buying what's genuinely generic — email, payments processing, basic infrastructure — and building custom only where the workflow is actually yours.
+Very few businesses go "all off-the-shelf" or "all custom." The more common path is buying what's genuinely generic and building custom only where the workflow is actually yours.
 
-Gartner describes a version of this in its [Pace-Layered Application Strategy](https://cio-wiki.org/wiki/Gartner's_PACE_Layered_Application_Strategy), which splits a company's software into three layers: **systems of record** (stable, long-lived, rarely worth rebuilding), **systems of differentiation** (the part of your process that's actually specific to you), and **systems of innovation** (new, fast-moving, still being figured out). The layers you'd never rebuild are usually the ones best left off-the-shelf. The layer that makes your business different is usually the one worth building.
+In practice, that often looks like: Stripe for payments, a generic project-tracking tool for internal task management, off-the-shelf email — and one custom-built piece that handles the actual thing your business does differently, like that gym's class-capacity-and-certification logic. The generic pieces would cost more to rebuild than they'd ever save you. The custom piece is the one place a generic tool was never going to fit.
 
 This also lines up with the natural arc from [MVP vs. Prototype vs. Production Application](/blog/mvp-vs-prototype-vs-production-application): many teams start on an off-the-shelf tool to validate a workflow, then build custom software once that workflow is proven and worth owning outright.
 
@@ -74,6 +110,8 @@ This also lines up with the natural arc from [MVP vs. Prototype vs. Production A
 If most of your answers point toward "generic" and "still finding out," off-the-shelf is very likely still the right call — and that's a legitimate, sound decision, not a placeholder until you can afford custom.
 
 If most of your answers point toward "specific to us" and "already outgrown," it's worth scoping what custom would actually look like.
+
+Back to that gym: payroll answers "generic" on every question — every business does it the same way, no workarounds needed, nothing left to discover. The class-capacity-and-certification workflow answers the opposite on all four: specific to how that gym runs, already causing workaround spreadsheets, and well past the point of "still finding out" whether it's worth owning. Same framework, two workflows in the same business, two different honest answers.
 
 ---
 

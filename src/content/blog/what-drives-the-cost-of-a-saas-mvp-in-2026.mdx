@@ -8,7 +8,7 @@ summary: >-
   Two products both called an "MVP" can have very different scope — and very
   different cost. Here's what actually drives SaaS MVP cost, and how to plan
   a realistic budget around your own scope instead of a generic price range.
-date: '2026-08-23'
+date: '2026-08-22'
 author: WebCraft Labz
 tags:
   - saas
@@ -60,7 +60,7 @@ Instead of a single number, it's more useful to think in terms of scope category
 </table>
 </div>
 
-Knowing which of these you're actually building — honestly, before you talk to anyone — is the single most useful thing you can bring to a scoping conversation.
+Knowing which of these you're actually building — honestly, before you talk to anyone — is the single most useful thing you can bring to a scoping conversation. The cost drivers below map directly onto these categories: a focused single-workflow MVP is usually light on most of them, and each additional driver you add tends to push a project toward the multi-role or integration-heavy end.
 
 ---
 
@@ -70,11 +70,11 @@ Our own [SaaS platform development process](/services/saas-platform-development)
 
 ### Authentication and account structure
 
-How many ways can someone log in? Is there one account type, or several? A single login flow is simple. Multiple account types with different access levels are not — and this is usually decided earlier in the process than founders expect.
+How many ways can someone log in? Is there one account type, or several? A single login flow — the kind a focused single-workflow MVP usually has — is simple. Multiple account types with different access levels push a project toward a multi-role operational MVP, and that's usually decided earlier in the process than founders expect.
 
 ### Roles and permissions
 
-This is one of the more commonly underestimated drivers. Going from "everyone sees the same thing" to "different people see different things based on who they are" touches your data model, your interface, and your testing — not just one screen.
+This is one of the more commonly underestimated drivers. A focused single-workflow MVP might have exactly one role, where everyone sees the same thing. A multi-role operational MVP might need customer, staff, and admin roles, each seeing different data — and going from "everyone sees the same thing" to "different people see different things based on who they are" touches your data model, your interface, and your testing, not just one screen.
 
 ### Data model complexity
 
@@ -82,21 +82,23 @@ How many distinct entities does your product actually need (customers, orders, p
 
 ### Payments and billing
 
-None, one-time, or recurring subscription billing are three very different amounts of work — and subscription billing in particular brings its own edge cases (upgrades, downgrades, failed payments, cancellations).
+None, one-time, or recurring subscription billing are three very different amounts of work — and subscription billing in particular brings its own edge cases (upgrades, downgrades, failed payments, cancellations). This alone can push an otherwise-focused MVP into integration-heavy-platform territory, since billing almost always means depending on a third-party payment processor.
 
 ### Admin and back-office tooling
 
-Does your team need a dashboard to manage the product, or just your customers? An MVP that only serves customers is a different (usually smaller) scope than one that also needs internal tooling from day one.
+Does your team need a dashboard to manage the product, or just your customers? An MVP that only serves customers is a different (usually smaller) scope than one that also needs internal tooling from day one — internal tooling is itself a form of the multi-role pattern above, just for your own team instead of your customers.
 
 ### Integrations
 
-Every third-party API your product depends on is real scope — not a checkbox. Each one has its own quirks, failure modes, and testing burden.
+Every third-party API your product depends on is real scope — not a checkbox. A product that talks to even one external system (a payment processor, a data provider, another piece of software you don't control) has already moved toward the integration-heavy end of the scope spectrum, and each additional one has its own quirks, failure modes, and testing burden.
 
 ---
 
 ## What Doesn't Move the Price as Much as Founders Think
 
 Visual polish is usually not the biggest lever. A clean, simple interface sitting on top of a simple data model is inexpensive. A polished, beautiful interface sitting on top of a complex data model is not — the complexity was always in the structure underneath, not what it looks like on screen. If a quote seems high and your product "looks simple," the data model and roles underneath it are usually why.
+
+Two products can look almost identical on screen — a login page, a dashboard, a form — and still be worlds apart underneath. A single-user tool that stores one type of record and never talks to another service is a focused single-workflow MVP, however polished it looks. The same screens, wired to three account types with different permissions and a payment provider running underneath, are an entirely different build — the interface didn't get more complex, but everything behind it did.
 
 ---
 
