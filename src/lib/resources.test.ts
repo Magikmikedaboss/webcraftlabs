@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   getAllResources,
   getResourcesByPath,
+  getResourcesByAudience,
   getFeaturedResources,
   isActiveLearningPath,
   resourceHref,
@@ -9,6 +10,7 @@ import {
 } from "./resources";
 import { getAllPosts } from "./mdx/blog";
 import { getAllNews } from "./mdx/news";
+import { AUDIENCES } from "./mdx/frontmatterSchema";
 import { LEARNING_PATH_META, isRecommendedStartValid } from "./resourcePathMeta";
 
 const ARCHIVE_COLLECTION = "webcraft-archive";
@@ -77,6 +79,15 @@ describe("getFeaturedResources", () => {
 
   it("only features resources that are Resource-Center-eligible (have resourceType)", () => {
     expect(getFeaturedResources().every((r) => r.frontmatter.resourceType != null)).toBe(true);
+  });
+});
+
+describe("getResourcesByAudience", () => {
+  it.each(AUDIENCES)("returns only resources tagged with the %s audience", (audience) => {
+    const resources = getResourcesByAudience(audience);
+    for (const resource of resources) {
+      expect(resource.frontmatter.audience).toContain(audience);
+    }
   });
 });
 
