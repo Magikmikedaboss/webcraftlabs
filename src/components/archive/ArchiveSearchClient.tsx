@@ -47,7 +47,11 @@ export default function ArchiveSearchClient({ docs }: { docs: SearchableDoc[] })
     const q = trimmedQuery.toLowerCase();
     if (!q) return docs;
     return docs.filter((d) => {
-      const haystack = [d.title, d.archiveId, d.description, d.mystery, d.summary]
+      const seriesMeta =
+        d.archiveCollection === "synthetic-minds"
+          ? `Synthetic Minds episode ${d.seriesOrder}`
+          : undefined;
+      const haystack = [d.title, d.archiveId, d.description, d.mystery, d.summary, seriesMeta]
         .filter(Boolean)
         .join(" ")
         .toLowerCase();

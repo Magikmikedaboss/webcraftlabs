@@ -57,6 +57,11 @@ export function getArchivePostBySlug(slug: string): {
   if (!parsed.success) {
     throw new Error(`Invalid frontmatter for slug '${safeSlug}': ${parsed.error.message}`);
   }
+  if (parsed.data.collection !== "webcraft-archive") {
+    throw new Error(
+      `Refusing to load '${safeSlug}' from ${ARCHIVE_DIR}: collection must be "webcraft-archive", got '${parsed.data.collection}'`
+    );
+  }
   return {
     slug: safeSlug,
     content,

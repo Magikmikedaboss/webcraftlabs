@@ -64,4 +64,16 @@ describe("getArchivePosts (combined)", () => {
     }
     expect(combined.size).toBe(universe.length + episodes.length);
   });
+
+  it("orders Synthetic Minds episodes (unlisted in ARCHIVE_ORDER) by seriesOrder, not reversed date", () => {
+    // Regression: comparing two entries both absent from ARCHIVE_ORDER used
+    // to compute Infinity - Infinity (NaN), which left them in whatever
+    // order the prior date-based sort produced — i.e. backwards relative to
+    // the series.
+    const episodeSlugsInCombinedOrder = getArchivePosts()
+      .map((p) => p.slug)
+      .filter((s) => s.startsWith("episode-"));
+    const episodeSlugsInSeriesOrder = getSyntheticMindsEpisodes().map((p) => p.slug);
+    expect(episodeSlugsInCombinedOrder).toEqual(episodeSlugsInSeriesOrder);
+  });
 });

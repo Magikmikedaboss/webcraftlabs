@@ -48,8 +48,49 @@ const nextConfig = withMDXConfig({
       },
       // Phase 3.5: Synthetic Minds episodes moved from the Blog collection
       // into the Archive (src/content/archive), each with a canonical
-      // /archive/episode-* URL. The 7 institutional Archive documents already
-      // resolved at /archive/* before this move and need no redirects.
+      // /archive/episode-* URL.
+      //
+      // The 7 institutional Archive documents already resolved at /archive/*
+      // via a route-level redirect in /blog/[slug] before this move — but
+      // their old /blog/<slug> URLs were real, previously-redirecting URLs
+      // too. Removing that route-level redirect without adding these means
+      // any existing link/bookmark/index entry at /blog/<slug> now 404s
+      // instead of reaching /archive/<slug>.
+      {
+        source: '/blog/welcome-to-the-archive',
+        destination: '/archive/welcome-to-the-archive',
+        permanent: true,
+      },
+      {
+        source: '/blog/the-silent-vault',
+        destination: '/archive/the-silent-vault',
+        permanent: true,
+      },
+      {
+        source: '/blog/treatise-1-on-the-preservation-of-knowledge',
+        destination: '/archive/treatise-1-on-the-preservation-of-knowledge',
+        permanent: true,
+      },
+      {
+        source: '/blog/the-duplicate-manuscript',
+        destination: '/archive/the-duplicate-manuscript',
+        permanent: true,
+      },
+      {
+        source: '/blog/treatise-2-on-the-nature-of-evidence',
+        destination: '/archive/treatise-2-on-the-nature-of-evidence',
+        permanent: true,
+      },
+      {
+        source: '/blog/the-last-simulation',
+        destination: '/archive/the-last-simulation',
+        permanent: true,
+      },
+      {
+        source: '/blog/the-last-radio-signal',
+        destination: '/archive/the-last-radio-signal',
+        permanent: true,
+      },
       {
         source: '/blog/episode-1-first-spark',
         destination: '/archive/episode-1-first-spark',

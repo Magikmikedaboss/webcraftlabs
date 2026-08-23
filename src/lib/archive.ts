@@ -83,6 +83,13 @@ export function getArchivePosts() {
   return getAllArchivePostFrontmatter().sort((a, b) => {
     const ai = ARCHIVE_ORDER.findIndex((d) => d.slug === a.slug);
     const bi = ARCHIVE_ORDER.findIndex((d) => d.slug === b.slug);
+    // Both unlisted (e.g. two Synthetic Minds episodes): Infinity - Infinity
+    // is NaN, which sort() doesn't handle meaningfully — fall back to
+    // seriesOrder so unlisted entries still sort deterministically among
+    // themselves instead of leaking whatever order they arrived in.
+    if (ai === -1 && bi === -1) {
+      return (a.frontmatter.seriesOrder ?? 0) - (b.frontmatter.seriesOrder ?? 0);
+    }
     return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
   });
 }

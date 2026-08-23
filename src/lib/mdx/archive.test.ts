@@ -1,5 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { getAllArchivePosts, getAllArchivePostFrontmatter, getArchivePostBySlug } from "./archive";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import fs from "fs";
+import path from "path";
+import { getAllArchivePosts, getAllArchivePostFrontmatter, getArchivePostBySlug, ARCHIVE_DIR } from "./archive";
 import { getAllPosts, getAllPostSlugs } from "./blog";
 import { ARCHIVE_ORDER } from "../archive";
 
@@ -48,6 +50,40 @@ describe("Archive loader — collection separation", () => {
     for (const post of getAllArchivePosts()) {
       expect(["archive-universe", "synthetic-minds"]).toContain(post.frontmatter.archiveCollection);
     }
+  });
+
+  describe("rejects a file with non-Archive frontmatter, even if placed in the Archive directory", () => {
+    // Mocked, not written to disk: src/content/archive/ is scanned by
+    // getAllArchivePosts() in other test files running concurrently, so a
+    // real fixture file here would race against them (create/delete timing
+    // can make a sibling test's readdir see it, then 404 on the read).
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it("throws when collection is a valid, but non-Archive, value", () => {
+      const fixtureSlug = "not-an-archive-doc";
+      const fixturePath = path.join(ARCHIVE_DIR, `${fixtureSlug}.mdx`);
+      const fixtureContent = [
+        "---",
+        "title: Not an Archive document",
+        "description: A Blog-collection file that should never load through the Archive loader.",
+        "date: '2026-01-01'",
+        "collection: blog",
+        "---",
+        "",
+        "Body.",
+        "",
+      ].join("\n");
+
+      vi.spyOn(fs, "existsSync").mockImplementation((p) => p === fixturePath);
+      vi.spyOn(fs, "readFileSync").mockImplementation((p) => {
+        if (p === fixturePath) return fixtureContent;
+        throw new Error(`unexpected readFileSync path in test: ${p}`);
+      });
+
+      expect(() => getArchivePostBySlug(fixtureSlug)).toThrow(/collection must be "webcraft-archive"/);
+    });
   });
 
   it("draft/future-dated Archive content remains excluded (same publish-cutoff gating as Blog/News)", () => {

@@ -117,6 +117,7 @@ export const BlogFrontmatterSchema = z.object({
         path: ['mystery'],
       });
     }
+    let expectedWorkType: typeof data.workType | undefined;
     if (!data.archiveId) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -134,7 +135,26 @@ export const BlogFrontmatterSchema = z.object({
           message: 'archiveId must start with "Investigation", "Treatise", or "Recovered Record", or be exactly "Orientation"',
           path: ['archiveId'],
         });
+      } else {
+        expectedWorkType = data.archiveId === 'Orientation' ? 'orientation'
+          : data.archiveId.startsWith('Investigation') ? 'investigation'
+          : data.archiveId.startsWith('Treatise') ? 'treatise'
+          : 'recovered-record';
       }
+    }
+
+    if (!data.workType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'workType is required when archiveCollection is "archive-universe"',
+        path: ['workType'],
+      });
+    } else if (expectedWorkType && data.workType !== expectedWorkType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `workType must be "${expectedWorkType}" for archiveId "${data.archiveId}"`,
+        path: ['workType'],
+      });
     }
     return;
   }

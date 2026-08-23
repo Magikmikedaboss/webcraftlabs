@@ -90,11 +90,12 @@ describe("BlogFrontmatterSchema — conditional Archive taxonomy (Phase 3.5)", (
       archiveCollection: "archive-universe",
     };
 
-    it("accepts a valid archive-universe document with archiveId and mystery", () => {
+    it("accepts a valid archive-universe document with archiveId, mystery, and matching workType", () => {
       const result = BlogFrontmatterSchema.safeParse({
         ...archiveUniverseBase,
         archiveId: "Investigation 999",
         mystery: "What happened here?",
+        workType: "investigation",
       });
       expect(result.success).toBe(true);
     });
@@ -103,6 +104,7 @@ describe("BlogFrontmatterSchema — conditional Archive taxonomy (Phase 3.5)", (
       const result = BlogFrontmatterSchema.safeParse({
         ...archiveUniverseBase,
         mystery: "What happened here?",
+        workType: "investigation",
       });
       expect(result.success).toBe(false);
     });
@@ -111,6 +113,7 @@ describe("BlogFrontmatterSchema — conditional Archive taxonomy (Phase 3.5)", (
       const result = BlogFrontmatterSchema.safeParse({
         ...archiveUniverseBase,
         archiveId: "Treatise III",
+        workType: "treatise",
       });
       expect(result.success).toBe(false);
     });
@@ -124,13 +127,49 @@ describe("BlogFrontmatterSchema — conditional Archive taxonomy (Phase 3.5)", (
       expect(result.success).toBe(false);
     });
 
-    it("does not require series/seriesOrder/workType", () => {
+    it("does not require series/seriesOrder", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...archiveUniverseBase,
+        archiveId: "Orientation",
+        mystery: "Where do I begin?",
+        workType: "orientation",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("requires workType", () => {
       const result = BlogFrontmatterSchema.safeParse({
         ...archiveUniverseBase,
         archiveId: "Orientation",
         mystery: "Where do I begin?",
       });
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
+    });
+
+    it.each([
+      ["Orientation", "orientation"],
+      ["Investigation 12", "investigation"],
+      ["Treatise IV", "treatise"],
+      ["Recovered Record 900", "recovered-record"],
+    ])("accepts archiveId %s paired with its matching workType", (archiveId, workType) => {
+      expect(
+        BlogFrontmatterSchema.safeParse({
+          ...archiveUniverseBase,
+          archiveId,
+          mystery: "A question.",
+          workType,
+        }).success
+      ).toBe(true);
+    });
+
+    it("rejects a workType that doesn't match the archiveId contract", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...archiveUniverseBase,
+        archiveId: "Investigation 12",
+        mystery: "A question.",
+        workType: "treatise",
+      });
+      expect(result.success).toBe(false);
     });
   });
 

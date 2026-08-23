@@ -70,6 +70,28 @@ describe("next.config.mjs redirects", () => {
     }
   });
 
+  it("redirects every old /blog/<slug> URL for a moved institutional Archive document to /archive/<slug>", async () => {
+    const redirects = await nextConfig.redirects();
+    const bySource = Object.fromEntries(redirects.map((r) => [r.source, r]));
+
+    const institutionalSlugs = [
+      "welcome-to-the-archive",
+      "the-silent-vault",
+      "treatise-1-on-the-preservation-of-knowledge",
+      "the-duplicate-manuscript",
+      "treatise-2-on-the-nature-of-evidence",
+      "the-last-simulation",
+      "the-last-radio-signal",
+    ];
+
+    for (const slug of institutionalSlugs) {
+      const redirect = bySource[`/blog/${slug}`];
+      expect(redirect, `missing redirect for /blog/${slug}`).toBeDefined();
+      expect(redirect.destination).toBe(`/archive/${slug}`);
+      expect(redirect.permanent).toBe(true);
+    }
+  });
+
   it("redirects every legacy nested /blog/synthetic-minds/* route directly to its final destination", async () => {
     const redirects = await nextConfig.redirects();
     const bySource = Object.fromEntries(redirects.map((r) => [r.source, r]));
