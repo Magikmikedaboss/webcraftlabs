@@ -106,11 +106,44 @@ function ItemsGrid({ cfg }: { cfg: ItemsGridConfig }) {
   );
 }
 
+// ─── Structured data ──────────────────────────────────────────────────────────
+
+/**
+ * Builds FAQPage JSON-LD directly from the same `faqs` config every service
+ * page already renders visibly — question/answer text must stay identical
+ * between the two so structured data never claims something the page
+ * doesn't actually say.
+ */
+function buildFaqJsonLd(faqs: FaqItem[]) {
+  if (faqs.length === 0) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+}
+
 // ─── Template ─────────────────────────────────────────────────────────────────
 
 export default function ServicePageTemplate({ config: c }: { config: ServicePageConfig }) {
+  const faqJsonLd = buildFaqJsonLd(c.faqs);
+
   return (
     <SiteShell title={c.shellTitle} intro={c.shellIntro}>
+      {faqJsonLd && (
+        <script
+          id="service-faq-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
+        />
+      )}
       <section className="mx-auto max-w-5xl px-6 py-10">
 
         {/* Hero image */}
