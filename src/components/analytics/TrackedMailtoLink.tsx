@@ -20,7 +20,7 @@ export default function TrackedMailtoLink({
     <a
       href={`mailto:${email}`}
       className={className}
-      onClick={() => trackEvent("mailto_click", { link_url: `mailto:${email}` })}
+      onClick={() => trackEvent("mailto_click", { contact_method: "email" })}
     >
       {children}
     </a>
