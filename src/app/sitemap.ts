@@ -3,6 +3,7 @@ import { MetadataRoute } from 'next';
 import { getBaseUrl } from '@/lib/site';
 import { getAllPosts } from '@/lib/mdx/blog';
 import { getAllNews } from '@/lib/mdx/news';
+import { getAllArchivePosts } from '@/lib/mdx/archive';
 import { ACTIVE_LEARNING_PATHS } from '@/lib/resources';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -194,9 +195,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const allPosts = getAllPosts();
 
-  const blogRoutes: MetadataRoute.Sitemap = allPosts
-    .filter((post) => post.frontmatter.collection !== "webcraft-archive")
-    .map((post) => {
+  const blogRoutes: MetadataRoute.Sitemap = allPosts.map((post) => {
     const parsedDate = post.frontmatter.date ? new Date(post.frontmatter.date) : undefined;
     const isValidDate = parsedDate && Number.isFinite(parsedDate.getTime());
 
@@ -208,9 +207,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  const archiveRoutes: MetadataRoute.Sitemap = allPosts
-    .filter((post) => post.frontmatter.collection === "webcraft-archive")
-    .map((post) => {
+  // Archive documents (both the institutional Archive Universe and the
+  // Synthetic Minds episodes) now live in their own collection/loader,
+  // physically separate from Blog — see src/lib/mdx/archive.ts.
+  const archiveRoutes: MetadataRoute.Sitemap = getAllArchivePosts().map((post) => {
     const parsedDate = post.frontmatter.date ? new Date(post.frontmatter.date) : undefined;
     const isValidDate = parsedDate && Number.isFinite(parsedDate.getTime());
 

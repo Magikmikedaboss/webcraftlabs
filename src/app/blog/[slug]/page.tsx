@@ -1,12 +1,11 @@
 ﻿﻿import type { Metadata } from "next";
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 import "@/app/blog/editorial.css";
 
 import { getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
-import ArchiveNav from "@/components/archive/ArchiveNav";
 
 // Deduplicate the file read/parse between generateMetadata and the page component.
 const getCachedPost = cache(getPostBySlug);
@@ -81,11 +80,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     post = getCachedPost(slug);
   } catch {
     notFound();
-  }
-
-  // Archive documents now live at /archive/[slug]
-  if (post.frontmatter.collection === "webcraft-archive") {
-    permanentRedirect(`/archive/${slug}`);
   }
 
   const siteUrl = getBaseUrl();
@@ -178,7 +172,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     .split(/\s+/).filter(Boolean).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 200));
   const isLab = post.frontmatter.template === "lab";
-  const isArchive = (post.frontmatter.collection as string) === "webcraft-archive";
 
   // Use shared MDX components mapping
   // (imported earlier as `mdxComponents`)
@@ -227,9 +220,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           pageUrl={url}
           cover={post.frontmatter.image as string | undefined}
           coverAbs={socialImage}
-          related={isArchive ? [] : related}
-          backHref={isArchive ? "/archive" : "/blog"}
-          backLabel={isArchive ? "← Back to Archive" : "← Back to Blog"}
+          related={related}
+          backHref="/blog"
+          backLabel="← Back to Blog"
         >
           <MDXRemote
             source={post.content}
@@ -237,7 +230,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           />
         </EditorialTemplateV2>
       )}
-      {isArchive && <ArchiveNav slug={post.slug as import('@/lib/archive').ArchiveDoc['slug']} />}
     </SiteShell>
   );
 }
