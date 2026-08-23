@@ -24,6 +24,28 @@ const nextConfig = withMDXConfig({
         destination: '/news/enterprise-ai-human-bottleneck',
         permanent: true,
       },
+      // Phase 2: the four thin Las Vegas service stub pages were merged
+      // into deep-linked sections on /las-vegas-web-design.
+      {
+        source: '/services/las-vegas-custom-website-development',
+        destination: '/las-vegas-web-design#custom-website-development',
+        permanent: true,
+      },
+      {
+        source: '/services/las-vegas-landing-pages-funnels',
+        destination: '/las-vegas-web-design#landing-pages-funnels',
+        permanent: true,
+      },
+      {
+        source: '/services/las-vegas-saas-platform-development',
+        destination: '/las-vegas-web-design#saas-platform-development',
+        permanent: true,
+      },
+      {
+        source: '/services/las-vegas-seo-technical-optimization',
+        destination: '/las-vegas-web-design#seo-technical-optimization',
+        permanent: true,
+      },
     ];
   },
   experimental: {

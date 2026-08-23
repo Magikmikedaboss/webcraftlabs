@@ -184,11 +184,11 @@ const config: ServicePageConfig = {
     { href: "/services/landing-pages-funnels", label: "Landing Pages + Funnels" },
     { href: "/las-vegas-web-design", label: "Las Vegas Web Design" },
     {
-      href: "/services/las-vegas-seo-technical-optimization",
+      href: "/las-vegas-web-design#seo-technical-optimization",
       label: "Las Vegas SEO + Technical Optimization",
     },
     {
-      href: "/services/las-vegas-custom-website-development",
+      href: "/las-vegas-web-design#custom-website-development",
       label: "Las Vegas Custom Website Development",
     },
   ],

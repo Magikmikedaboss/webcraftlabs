@@ -176,7 +176,7 @@ const config: ServicePageConfig = {
     { href: "/services/seo-technical-optimization", label: "SEO + Technical Optimization" },
     { href: "/services/landing-pages-funnels", label: "Landing Pages + Funnels" },
     { href: "/services/saas-platform-development", label: "SaaS Platform Development" },
-    { href: "/services/las-vegas-custom-website-development", label: "Las Vegas Custom Website Development" },
+    { href: "/las-vegas-web-design#custom-website-development", label: "Las Vegas Custom Website Development" },
     { href: "/las-vegas-web-design", label: "Las Vegas Web Design" },
   ],
   cta: {

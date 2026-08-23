@@ -324,10 +324,10 @@ export default function ServicesPage() {
           </p>
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
             <Link href="/las-vegas-web-design" className="text-[var(--primary)] hover:underline">Las Vegas Web Design</Link>
-            <Link href="/services/las-vegas-custom-website-development" className="text-[var(--primary)] hover:underline">Las Vegas Custom Website Development</Link>
-            <Link href="/services/las-vegas-landing-pages-funnels" className="text-[var(--primary)] hover:underline">Las Vegas Landing Pages + Funnels</Link>
-            <Link href="/services/las-vegas-seo-technical-optimization" className="text-[var(--primary)] hover:underline">Las Vegas SEO + Technical Optimization</Link>
-            <Link href="/services/las-vegas-saas-platform-development" className="text-[var(--primary)] hover:underline">Las Vegas SaaS Platform Development</Link>
+            <Link href="/las-vegas-web-design#custom-website-development" className="text-[var(--primary)] hover:underline">Las Vegas Custom Website Development</Link>
+            <Link href="/las-vegas-web-design#landing-pages-funnels" className="text-[var(--primary)] hover:underline">Las Vegas Landing Pages + Funnels</Link>
+            <Link href="/las-vegas-web-design#seo-technical-optimization" className="text-[var(--primary)] hover:underline">Las Vegas SEO + Technical Optimization</Link>
+            <Link href="/las-vegas-web-design#saas-platform-development" className="text-[var(--primary)] hover:underline">Las Vegas SaaS Platform Development</Link>
           </div>
         </div>
       </section>
