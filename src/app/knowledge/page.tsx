@@ -1,6 +1,8 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import KnowledgeConstellation from "@/components/KnowledgeConstellation";
+import ResourceHero from "@/components/resources/ResourceHero";
+import AudienceEntryPoints from "@/components/resources/AudienceEntryPoints";
 import { SITE, getBaseUrl } from "@/lib/site";
 
 const learningPaths = [
@@ -174,20 +176,20 @@ const featuredArticles = [
 ] as const;
 
 export const metadata = {
-  title: "WebCraft Knowledge Hub",
+  title: "WebCraft Resource Center",
   description:
-    "Explore the WebCraft Knowledge Hub: learning paths, topic maps, modules, and featured articles connecting Synthetic Minds, Axon, enterprise AI, and future work.",
+    "Practical guides, technical tutorials, project breakdowns, and tools for developers, founders, business owners, and teams exploring AI automation.",
   openGraph: {
-    title: `WebCraft Knowledge Hub | ${SITE.name}`,
+    title: `WebCraft Resource Center | ${SITE.name}`,
     description:
-      "A clickable learning hub for Synthetic Minds, Axon, enterprise AI, future work, and human plus AI creativity.",
+      "Practical guides, technical tutorials, project breakdowns, and tools for developers, founders, business owners, and teams exploring AI automation.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `WebCraft Knowledge Hub | ${SITE.name}`,
+    title: `WebCraft Resource Center | ${SITE.name}`,
     description:
-      "A clickable learning hub for Synthetic Minds, Axon, enterprise AI, future work, and human plus AI creativity.",
+      "Practical guides, technical tutorials, project breakdowns, and tools for developers, founders, business owners, and teams exploring AI automation.",
   },
   alternates: {
     canonical: `${getBaseUrl()}/knowledge`,
@@ -197,110 +199,11 @@ export const metadata = {
 export default function KnowledgePage() {
   return (
     <SiteShell background="bg">
-      <div className="relative overflow-hidden bg-[linear-gradient(180deg,#050b16_0%,#081122_26%,#f7fbff_26%,#f7fbff_100%)] text-[var(--text)]">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] bg-[radial-gradient(circle_at_18%_18%,rgba(34,211,238,0.26),transparent_28%),radial-gradient(circle_at_82%_14%,rgba(99,102,241,0.24),transparent_26%),radial-gradient(circle_at_50%_72%,rgba(59,130,246,0.16),transparent_34%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:56px_56px] opacity-20 [mask-image:linear-gradient(180deg,black_0%,transparent_82%)]" />
+      <div className="rc-root">
+        <ResourceHero />
+        <AudienceEntryPoints />
 
-        <section className="relative mx-auto max-w-7xl px-6 pb-14 pt-16 md:pb-20 md:pt-24">
-          <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-end">
-            <div className="max-w-4xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100 backdrop-blur">
-                <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(103,232,249,0.8)]" />
-                WebCraft Learning Hub
-              </span>
-              <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-7xl">
-                Explore the WebCraft
-                <span className="block bg-gradient-to-r from-cyan-300 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
-                  Knowledge Hub
-                </span>
-              </h1>
-              <p className="mt-6 max-w-3xl text-base leading-7 text-slate-200 sm:text-lg">
-                A curated constellation of our most consequential ideas, research, and products. Traverse thematic paths, inspect topic relationships, or open compact modules that teach the craft.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="#paths"
-                  className="rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition hover:border-cyan-300/50 hover:bg-white/15"
-                >
-                  Learning Paths
-                </Link>
-                <Link
-                  href="#map"
-                  className="rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition hover:border-cyan-300/50 hover:bg-white/15"
-                >
-                  Topic Map
-                </Link>
-                <Link
-                  href="#articles"
-                  className="rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition hover:border-cyan-300/50 hover:bg-white/15"
-                >
-                  Featured Articles
-                </Link>
-              </div>
-
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-2xl border border-white/10 bg-white/8 p-4 text-white/95 shadow-lg shadow-cyan-950/20 backdrop-blur">
-                  <div className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">Signal</div>
-                  <div className="mt-2 text-2xl font-semibold">01</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-200">One map for products, series, and research threads.</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/8 p-4 text-white/95 shadow-lg shadow-indigo-950/20 backdrop-blur">
-                  <div className="text-xs font-semibold uppercase tracking-[0.24em] text-indigo-200">Paths</div>
-                  <div className="mt-2 text-2xl font-semibold">05</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-200">Learning routes with room to expand into full series.</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/8 p-4 text-white/95 shadow-lg shadow-sky-950/20 backdrop-blur">
-                  <div className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-200">Modules</div>
-                  <div className="mt-2 text-2xl font-semibold">25+</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-200">Start here, key idea, related reading, experiments, next path.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="absolute -left-6 top-8 h-28 w-28 rounded-full bg-cyan-300/20 blur-3xl" />
-              <div className="absolute -right-6 bottom-6 h-36 w-36 rounded-full bg-indigo-400/20 blur-3xl" />
-
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(9,17,34,0.96),rgba(14,24,46,0.94))] p-6 text-white shadow-[0_30px_80px_rgba(8,15,28,0.45)] backdrop-blur">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200">Command Deck</div>
-                    <h2 className="mt-2 text-2xl font-semibold">A continuously curated research map</h2>
-                  </div>
-                  <div className="rounded-full border border-white/15 bg-white/8 px-3 py-1 text-xs font-semibold text-cyan-100">Constellation Live</div>
-                </div>
-
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(103,232,249,0.8)]" />
-                      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">Synthetic Minds</span>
-                    </div>
-                    <p className="mt-4 text-sm leading-6 text-slate-200">Creative intelligence, invention, and the foundational path into the hub.</p>
-                  </div>
-                  <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="h-3 w-3 rounded-full bg-indigo-300 shadow-[0_0_20px_rgba(165,180,252,0.8)]" />
-                      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-200">Axon</span>
-                    </div>
-                    <p className="mt-4 text-sm leading-6 text-slate-200">Research intelligence, signal design, and structured insight.</p>
-                  </div>
-                  <div className="rounded-3xl border border-white/10 bg-white/5 p-4 sm:col-span-2">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-200">What connects it all</div>
-                        <p className="mt-2 text-lg font-semibold text-white">Knowledge is the interface between research, product, and publishing.</p>
-                      </div>
-                      <div className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-100">Interactive map</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="paths" className="mx-auto max-w-7xl px-6 py-14">
+        <section id="paths" className="rc-canvas mx-auto max-w-7xl px-6 py-14">
           <div className="mb-8 max-w-3xl">
             <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
               Learning Paths
