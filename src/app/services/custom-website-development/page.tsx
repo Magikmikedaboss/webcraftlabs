@@ -95,6 +95,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "Custom Website Development Services",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "Custom Website Development" },
+  ],
   shellIntro:
     "Fast, scalable, SEO-friendly websites built to help your business attract customers, generate leads, and grow online.",
   hero: {

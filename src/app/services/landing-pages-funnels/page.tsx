@@ -95,6 +95,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "Landing Page Design + Sales Funnels",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "Landing Pages + Funnels" },
+  ],
   shellIntro:
     "Conversion-focused landing pages and funnels built to turn campaign traffic into leads, bookings, quote requests, and sales opportunities.",
   hero: {

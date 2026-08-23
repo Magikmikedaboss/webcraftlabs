@@ -89,6 +89,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "AI & Automation",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "AI & Automation" },
+  ],
   shellIntro:
     "Practical workflow automation and AI-assisted systems for businesses that want less manual work — not more hype.",
   eyebrow: "AI & Automation",

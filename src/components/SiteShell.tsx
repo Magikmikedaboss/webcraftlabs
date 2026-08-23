@@ -9,6 +9,7 @@ import Image from "next/image";
 import PoweredBy from "./PoweredBy";
 import ThemeToggle from "./ThemeToggle";
 import TrackedMailtoLink from "./analytics/TrackedMailtoLink";
+import Breadcrumbs, { type BreadcrumbItem } from "./Breadcrumbs";
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
@@ -86,6 +87,7 @@ export default function SiteShell({
   background = 'surface', // 'surface' (light) or 'bg' (theme default)
   asMain = true,
   showArchiveQuote = false,
+  breadcrumbs,
 }: {
   children: React.ReactNode;
   title?: React.ReactNode;
@@ -95,6 +97,8 @@ export default function SiteShell({
   /** Set to false when the page already provides its own <main> landmark. Defaults to true. */
   asMain?: boolean;
   showArchiveQuote?: boolean;
+  /** Rendered above the title/intro section. Omit on the homepage. */
+  breadcrumbs?: BreadcrumbItem[];
 }) {
   const bgClass = background === 'surface' ? 'bg-[var(--surface)]' : 'bg-[var(--bg)]';
   return (
@@ -144,6 +148,7 @@ export default function SiteShell({
 
       {asMain ? (
         <main>
+          {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
           {(title || intro) && (
             <section className="border-b border-[var(--border)]">
               <div className="mx-auto max-w-7xl px-6 py-8">
@@ -156,6 +161,7 @@ export default function SiteShell({
         </main>
       ) : (
         <div>
+          {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
           {(title || intro) && (
             <section className="border-b border-[var(--border)]">
               <div className="mx-auto max-w-7xl px-6 py-8">

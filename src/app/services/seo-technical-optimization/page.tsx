@@ -95,6 +95,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "SEO + Technical Optimization Services",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "SEO + Technical Optimization" },
+  ],
   shellIntro:
     "Improve search visibility with technical SEO, faster pages, cleaner site structure, stronger internal linking, and local search foundations.",
   hero: {

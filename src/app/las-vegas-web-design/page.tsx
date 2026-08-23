@@ -70,6 +70,11 @@ export default function LasVegasWebDesignPage() {
       </Script>
 
       <SiteShell
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Services", href: "/services" },
+          { label: "Las Vegas Web Design" },
+        ]}
         title={
           <span className="inline-flex flex-col gap-3">
             <span className="inline-block self-start rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">

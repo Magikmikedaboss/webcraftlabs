@@ -95,6 +95,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "SaaS Platform Development Services",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "SaaS Platform Development" },
+  ],
   shellIntro:
     "Launch and grow SaaS products with clean architecture, secure user flows, dashboards, billing, and scalable product foundations.",
   hero: {
