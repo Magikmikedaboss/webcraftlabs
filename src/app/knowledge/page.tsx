@@ -305,8 +305,8 @@ export default function KnowledgePage() {
             <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
               Learning Paths
             </span>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Follow a curated route</h2>
-            <p className="mt-3 text-base leading-7 text-[var(--muted)]">
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Follow a curated route</h2>
+            <p className="mt-3 text-base leading-7 text-slate-600">
               Five focused learning routes that distill our research and practice. Each path guides you through narrative, experiments, and next steps.
             </p>
           </div>
