@@ -247,7 +247,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Knowledge Hub Teaser */}
+      {/* Resource Center Teaser */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.12),_transparent_35%),linear-gradient(135deg,_rgba(255,255,255,0.96),_rgba(240,249,255,0.72))] p-8 md:p-12 shadow-xl">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
@@ -256,10 +256,10 @@ export default function AboutPage() {
                 Explore our thinking
               </span>
               <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text)]">
-                The WebCraft Knowledge Hub
+                The WebCraft Resource Center
               </h2>
               <p className="mt-4 max-w-3xl text-base sm:text-lg leading-relaxed text-[var(--muted)]">
-                Our ideas connect across Synthetic Minds, Axon, enterprise AI, future work, and human plus AI creativity. The knowledge hub is where those threads become a map you can actually explore.
+                Practical guides, learning paths, and project breakdowns covering web development, software, and AI automation — organized so you can actually find what&apos;s useful.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <span className="rounded-full border border-[var(--border)] bg-white/80 px-4 py-2 text-sm font-medium text-[var(--text)]">Synthetic Minds</span>
@@ -271,7 +271,7 @@ export default function AboutPage() {
                   href="/knowledge"
                   className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-[1.02] hover:opacity-95"
                 >
-                  Explore the Knowledge Hub →
+                  Explore the Resource Center →
                 </Link>
                 <Link
                   href="/blog/synthetic-minds-series"
