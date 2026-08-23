@@ -25,10 +25,12 @@ export const SITE = {
 } as const;
 
 /**
- * Archive is intentionally excluded from SITE.nav and HEADER_NAV — it's a
- * speculative-fiction project, not a commercial or resource destination, and
- * is surfaced only as a distinctly labeled, visually subordinate footer link
- * (see SiteShell's footer). Do not add it back to primary navigation.
+ * Archive is intentionally excluded from SITE.nav's top-level items and from
+ * HEADER_NAV's primary destinations — it's a speculative-fiction/creative
+ * project, not a commercial or resource destination. It appears in two
+ * secondary places: this distinctly labeled footer link (see SiteShell's
+ * footer), and as the final item in HEADER_NAV.resources.items below. Do
+ * not promote it to a primary top-level nav item.
  */
 export const ARCHIVE_FOOTER_LINK = {
   href: "/archive",
@@ -65,6 +67,7 @@ export const HEADER_NAV = {
       { href: "/knowledge#paths", label: "Learning Paths" },
       { href: "/blog", label: "Blog" },
       { href: "/news", label: "News" },
+      { href: "/archive", label: "Creative Archive" },
     ],
   },
   buildCalculator: { href: "/build", label: "Build Calculator" },

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, it, expect } from "vitest";
 import MobileMenu from "./MobileMenu";
@@ -52,9 +52,29 @@ describe("MobileMenu", () => {
     expect(screen.queryByRole("link", { name: "Contact" })).not.toBeInTheDocument();
   });
 
-  it("never shows Archive in the mobile navigation panel (footer-only per Phase 2)", () => {
+  it("includes Creative Archive as the final item in the Resources group, linking to /archive", () => {
     renderMenu();
     fireEvent.click(screen.getByRole("button", { name: "Open navigation menu" }));
-    expect(screen.queryByText(/Archive/i)).not.toBeInTheDocument();
+
+    const resourcesSummary = screen.getByText("Resources").closest("summary") as HTMLElement;
+    const details = resourcesSummary.closest("details") as HTMLDetailsElement;
+    fireEvent.click(resourcesSummary);
+    expect(details.open).toBe(true);
+
+    const links = within(details)
+      .getAllByRole("link")
+      .map((el) => [el.textContent, el.getAttribute("href")]);
+
+    expect(links[links.length - 1]).toEqual(["Creative Archive", "/archive"]);
+  });
+
+  it("does not surface Archive as a flat top-level mobile link outside the Resources group", () => {
+    renderMenu();
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation menu" }));
+    // Archive legitimately appears inside the Resources group (checked
+    // above) and in the footer — this only asserts it isn't also a
+    // standalone flat link like Work/Build Calculator/About/Contact.
+    const archiveLink = screen.getByRole("link", { name: "Creative Archive" });
+    expect(archiveLink.closest("details")).not.toBeNull();
   });
 });

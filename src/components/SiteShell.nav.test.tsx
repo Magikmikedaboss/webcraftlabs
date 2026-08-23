@@ -60,7 +60,7 @@ describe("SiteShell desktop navigation", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("shows only the four Phase 2 Resources destinations that exist today", () => {
+  it("shows the five Resources destinations that exist today, ending with Creative Archive", () => {
     renderShell();
     fireEvent.click(screen.getByRole("button", { name: /^Resources/ }));
     const menu = screen.getByRole("menu");
@@ -73,15 +73,17 @@ describe("SiteShell desktop navigation", () => {
       ["Learning Paths", "/knowledge#paths"],
       ["Blog", "/blog"],
       ["News", "/news"],
+      ["Creative Archive", "/archive"],
     ]);
   });
 
-  it("never renders Archive in primary desktop navigation", () => {
+  it("never renders Archive as a top-level (closed-menu) navigation item", () => {
     renderShell();
-    fireEvent.click(screen.getByRole("button", { name: /^Services/ }));
-    fireEvent.click(screen.getByRole("button", { name: /^Resources/ }));
-    // Scoped to the header nav landmark — Archive legitimately appears in
-    // the footer (checked separately below), just not here.
+    // Deliberately does not open any dropdown — DropdownNav only renders its
+    // menu contents when open, so this checks the collapsed top-level nav
+    // only. Archive legitimately appears inside the opened Resources
+    // dropdown (checked above) and in the footer (checked below), just not
+    // as a top-level item here.
     const headerNav = screen.getByRole("navigation");
     expect(within(headerNav).queryByText(/Archive/i)).not.toBeInTheDocument();
   });
