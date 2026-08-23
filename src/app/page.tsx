@@ -1,16 +1,24 @@
-
-import SiteShell from "@/components/SiteShell";
 import { Suspense } from "react";
+import SiteShell from "@/components/SiteShell";
+import Hero from "@/components/home/Hero";
+import AudiencePaths from "@/components/home/AudiencePaths";
+import ProofHighlights from "@/components/home/ProofHighlights";
+import ApproachSection from "@/components/home/ApproachSection";
+import ProcessSteps from "@/components/ProcessSteps";
+import ResourceCenterIntro from "@/components/home/ResourceCenterIntro";
 import HomeMagazineFeedServer from "@/components/home/HomeMagazineFeedServer";
+import FinalCta from "@/components/home/FinalCta";
 import { Metadata } from "next";
 import { getBaseUrl, SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Home",
-  description: `${SITE.name} builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs. Websites built like products, not brochures.`,
+  description:
+    "WebCraft Labz designs high-converting websites, custom software, and practical automation for growing businesses, startups, and organizations.",
   openGraph: {
-    title: `${SITE.name} - ${SITE.tagline}`,
-    description: `${SITE.name} builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs. Websites built like products, not brochures.`,
+    title: `${SITE.name} — Websites, Software, and AI Automation`,
+    description:
+      "WebCraft Labz designs high-converting websites, custom software, and practical automation for growing businesses, startups, and organizations.",
     type: "website",
     images: [
       {
@@ -23,8 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} - ${SITE.tagline}`,
-    description: `${SITE.name} builds powerful marketing websites, SaaS platforms, and web tools designed for real-world business needs.`,
+    title: `${SITE.name} — Websites, Software, and AI Automation`,
+    description:
+      "WebCraft Labz designs high-converting websites, custom software, and practical automation for growing businesses, startups, and organizations.",
     images: ["/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg"],
   },
   alternates: {
@@ -35,17 +44,18 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <SiteShell>
-      <Suspense
-        fallback={
-          <div className="min-h-[400px] flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-blue-300 border-t-transparent rounded-full animate-spin motion-reduce:animate-none" role="status" aria-live="polite">
-              <span className="sr-only">Loading…</span>
-            </div>
-          </div>
-        }
-      >
+      <Hero />
+      <AudiencePaths />
+      <ProofHighlights />
+      <ApproachSection />
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <ProcessSteps />
+      </section>
+      <ResourceCenterIntro />
+      <Suspense fallback={null}>
         <HomeMagazineFeedServer />
       </Suspense>
+      <FinalCta />
     </SiteShell>
   );
 }

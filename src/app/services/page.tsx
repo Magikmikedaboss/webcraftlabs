@@ -1,6 +1,7 @@
 import SiteShell from "@/components/SiteShell";
 import Link from "next/link";
 import Image from "next/image";
+import ProcessSteps from "@/components/ProcessSteps";
 import { SITE, getBaseUrl } from "@/lib/site";
 
 const baseUrl = getBaseUrl();
@@ -289,43 +290,17 @@ export default function ServicesPage() {
 
       {/* Process Section */}
       <section className="mx-auto max-w-7xl px-6 pb-16">
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <div className="text-xs uppercase tracking-wider opacity-70">How it works</div>
-          <h3 className="mt-2 text-xl font-semibold">A simple process that stays sharp.</h3>
-          <p className="mt-2 max-w-3xl text-sm opacity-80">
-            Premium doesn’t mean complicated. It means fewer surprises, clear milestones, and a site that performs.
-          </p>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-4">
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-              <div className="text-sm font-semibold">1) Strategy</div>
-              <div className="mt-1 text-sm opacity-80">Goals, offers, pages, and conversion plan.</div>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-              <div className="text-sm font-semibold">2) Design</div>
-              <div className="mt-1 text-sm opacity-80">Premium UI, brand feel, and layout system.</div>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-              <div className="text-sm font-semibold">3) Build</div>
-              <div className="mt-1 text-sm opacity-80">Responsive, fast, SEO-ready development.</div>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-              <div className="text-sm font-semibold">4) Launch + Improve</div>
-              <div className="mt-1 text-sm opacity-80">Tracking, iteration, and growth sprints.</div>
-            </div>
+        <ProcessSteps />
+        <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 md:flex-row md:items-center md:justify-between">
+          <div className="text-sm opacity-80">
+            Want the fastest path? Start with a marketing website, then add funnels + tracking.
           </div>
-
-          <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="text-sm opacity-80">
-              Want the fastest path? Start with a marketing website, then add funnels + tracking.
-            </div>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold hover:bg-[var(--hoverSurface)]"
-            >
-              Book a quick consult →
-            </Link>
-          </div>
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold hover:bg-[var(--hoverSurface)]"
+          >
+            Book a quick consult →
+          </Link>
         </div>
       </section>
 
