@@ -3,6 +3,7 @@ import { MetadataRoute } from 'next';
 import { getBaseUrl } from '@/lib/site';
 import { getAllPosts } from '@/lib/mdx/blog';
 import { getAllNews } from '@/lib/mdx/news';
+import { ACTIVE_LEARNING_PATHS } from '@/lib/resources';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Use stable timestamp to avoid sitemap churn on every build
@@ -74,6 +75,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.75,
     },
+    ...ACTIVE_LEARNING_PATHS.map((path) => ({
+      url: `${baseUrl}/knowledge/paths/${path}`,
+      lastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
     {
       url: `${baseUrl}/las-vegas-web-design`,
       lastModified,

@@ -1,5 +1,29 @@
 import { z } from 'zod';
 
+/**
+ * Resource Center taxonomy (Phase 3). All fields are optional so every
+ * existing MDX file remains valid without edits — only resources that are
+ * explicitly migrated into the Resource Center set these.
+ */
+export const RESOURCE_TYPES = ['guide', 'tutorial', 'essay', 'build-log', 'experiment', 'announcement'] as const;
+export const AUDIENCES = ['developers', 'founders', 'business-owners', 'ai-adopters'] as const;
+export const DIFFICULTIES = ['beginner', 'intermediate', 'advanced'] as const;
+
+/**
+ * "building-software-products" is intentionally included as a valid value
+ * now, even though no published resource uses it yet and no page exists for
+ * it — it's a held-back path (see ACTIVE_LEARNING_PATHS in src/lib/resources.ts),
+ * not a hypothetical field. Including it here avoids a second schema change
+ * when the path activates later.
+ */
+export const LEARNING_PATHS = [
+  'modern-web-development',
+  'ai-workflow-automation',
+  'websites-that-grow-businesses',
+  'experiments-emerging-ideas',
+  'building-software-products',
+] as const;
+
 export const BlogFrontmatterSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
   description: z.string().trim().min(1, 'Description is required'),
@@ -40,6 +64,17 @@ export const BlogFrontmatterSchema = z.object({
   archiveId: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
   collection: z.union([z.literal('webcraft-archive'), z.literal('news'), z.literal('blog')]).optional(),
   mystery: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+
+  // ── Resource Center taxonomy (Phase 3) ──────────────────────────────
+  resourceType: z.enum(RESOURCE_TYPES).optional(),
+  audience: z.array(z.enum(AUDIENCES)).optional(),
+  learningPath: z.enum(LEARNING_PATHS).optional(),
+  difficulty: z.enum(DIFFICULTIES).optional(),
+  /** Internal path only (e.g. "/services/ai-automation") — never an external/arbitrary URL. */
+  relatedService: z.string().trim().optional().transform(v => (v === "" ? undefined : v))
+    .refine(v => v === undefined || /^\/[a-z0-9-]+(?:\/[a-z0-9-]+)*$/.test(v), {
+      message: 'relatedService must be a relative internal path, e.g. "/services/ai-automation"',
+    }),
 }).superRefine((data, ctx) => {
   if (data.collection === 'webcraft-archive') {
     if (!data.mystery) {
