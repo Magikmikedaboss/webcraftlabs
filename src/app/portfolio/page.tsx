@@ -3,29 +3,29 @@ import PortfolioClient from "./PortfolioClient";
 import { PROJECTS } from "./projects";
 import { getBaseUrl } from "@/lib/site";
 
+const PORTFOLIO_DESCRIPTION =
+  "Selected websites, applications, and digital products built by WebCraft Labz, including live work and products in development.";
+
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description:
-    "Showcase of projects built by WebCraft Labz, including client work, personal projects, and case studies.",
+  title: "Selected Builds",
+  description: PORTFOLIO_DESCRIPTION,
   openGraph: {
-    title: "Portfolio | WebCraft Labz",
-    description:
-      "Showcase of projects built by WebCraft Labz, including client work, personal projects, and case studies.",
+    title: "Selected Builds | WebCraft Labz",
+    description: PORTFOLIO_DESCRIPTION,
     type: "website",
     images: [
       {
         url: "/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg",
         width: 1200,
         height: 630,
-        alt: "WebCraft Labz Portfolio - Our Work",
+        alt: "WebCraft Labz Selected Builds",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Portfolio | WebCraft Labz",
-    description:
-      "Showcase of projects built by WebCraft Labz, including client work, personal projects, and case studies.",
+    title: "Selected Builds | WebCraft Labz",
+    description: PORTFOLIO_DESCRIPTION,
     images: ["/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg"],
   },
   alternates: {

@@ -6,7 +6,7 @@ import { PROJECTS } from "@/app/portfolio/projects";
 // No project imagery exists in the repo today (every entry in
 // PortfolioClient renders a labeled placeholder), so this is intentionally
 // a text-led layout rather than an image grid.
-const FEATURED_IDS = ["nelfuoco", "ayso", "ravehouse"] as const;
+const FEATURED_IDS = ["nelfuoco", "leagueos", "ravehouse"] as const;
 
 export default function ProofHighlights() {
   const featured = FEATURED_IDS.map((id) => PROJECTS.find((p) => p.id === id)).filter(
