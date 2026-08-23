@@ -27,11 +27,11 @@ describe("getAllResources", () => {
     expect(all.every((r) => r.frontmatter.resourceType != null)).toBe(true);
   });
 
-  it("actually filters — the result is smaller than every non-Archive post, proving unclassified content is excluded rather than returned wholesale", () => {
-    const rawNonArchiveCount =
-      getAllPosts().filter((p) => p.frontmatter.collection !== ARCHIVE_COLLECTION).length +
-      getAllNews().filter((p) => p.frontmatter.collection !== ARCHIVE_COLLECTION).length;
-    expect(getAllResources().length).toBeLessThan(rawNonArchiveCount);
+  it("matches an independently computed eligible count, rather than returning every non-Archive post regardless of classification", () => {
+    const eligibleNonArchiveCount = [...getAllPosts(), ...getAllNews()]
+      .filter((p) => p.frontmatter.collection !== ARCHIVE_COLLECTION)
+      .filter((p) => p.frontmatter.resourceType != null).length;
+    expect(getAllResources()).toHaveLength(eligibleNonArchiveCount);
   });
 });
 
