@@ -15,6 +15,15 @@ describe("getAllResources", () => {
     expect(all.length).toBeGreaterThan(0);
     expect(all.some((r) => r.frontmatter.collection === "webcraft-archive")).toBe(false);
   });
+
+  it("excludes any post without an explicit resourceType, even if not Archive", () => {
+    const all = getAllResources();
+    expect(all.every((r) => r.frontmatter.resourceType != null)).toBe(true);
+  });
+
+  it("only returns the 13 resources classified with resourceType, not every non-Archive post", () => {
+    expect(getAllResources()).toHaveLength(13);
+  });
 });
 
 describe("getResourcesByPath — real migrated counts", () => {

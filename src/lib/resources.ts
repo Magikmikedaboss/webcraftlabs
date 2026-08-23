@@ -30,17 +30,20 @@ export type ResourceItem = {
   frontmatter: BlogFrontmatter;
 };
 
-function isRealResource(frontmatter: { collection?: string }): boolean {
-  return frontmatter.collection !== ARCHIVE_COLLECTION;
+function isRealResource(frontmatter: { collection?: string; resourceType?: string }): boolean {
+  return frontmatter.collection !== ARCHIVE_COLLECTION && frontmatter.resourceType != null;
 }
 
 /**
- * All published, non-Archive Blog + News content. This is the single query
- * surface every Resource Center section reads from — publish-cutoff gating
- * is already enforced upstream by getAllPosts()/getAllNews(); this adds the
- * Archive exclusion those two don't apply themselves (sitemap.ts, the RSS
- * routes, and buildHomeFeed() each apply the same exclusion independently,
- * since getAllPosts()/getAllNews() intentionally return every collection).
+ * All published, non-Archive, Resource-Center-classified Blog + News
+ * content. This is the single query surface every Resource Center section
+ * reads from — publish-cutoff gating is already enforced upstream by
+ * getAllPosts()/getAllNews(); this adds the Archive exclusion those two
+ * don't apply themselves (sitemap.ts, the RSS routes, and buildHomeFeed()
+ * each apply the same exclusion independently, since getAllPosts()/
+ * getAllNews() intentionally return every collection) and requires an
+ * explicit `resourceType` tag so untagged posts never inflate Resource
+ * Center counts or sections.
  */
 export function getAllResources(): ResourceItem[] {
   const blog: ResourceItem[] = getAllPosts()

@@ -10,11 +10,15 @@ query layer: `src/lib/resources.ts`.
 ## How a resource gets into the Resource Center
 
 Add these optional fields to a Blog or News post's frontmatter. All of them
-are optional — existing content with none of these fields stays valid and
-simply doesn't appear in Resource Center sections.
+are optional at the schema level — existing content with none of these
+fields stays valid — but **`resourceType` is the eligibility marker**:
+`getAllResources()` (the query layer every Resource Center section reads
+from) only includes posts that have it set. A post with `learningPath`,
+`audience`, or `featured` but no `resourceType` still won't appear anywhere
+in the Resource Center.
 
 ```yaml
-resourceType: guide       # guide | tutorial | essay | build-log | experiment | announcement
+resourceType: guide       # required for Resource Center eligibility — guide | tutorial | essay | build-log | experiment | announcement
 audience: [founders]      # any of: developers, founders, business-owners, ai-adopters
 learningPath: ai-workflow-automation
 difficulty: beginner      # beginner | intermediate | advanced (optional, only where genuinely relevant)

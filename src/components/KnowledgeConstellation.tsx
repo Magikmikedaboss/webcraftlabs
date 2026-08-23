@@ -44,6 +44,7 @@ export default function KnowledgeConstellation({
   const fgRef = useRef<any>(null);
   const [mounted, setMounted] = useState(false);
   const chargeAppliedRef = useRef(false);
+  const reduceMotionRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -88,14 +89,12 @@ export default function KnowledgeConstellation({
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
+    reduceMotionRef.current = reduceMotion;
+
+    // nodeCanvasObject reads reduceMotionRef directly, so full label
+    // visibility is guaranteed regardless of whether the graph (loaded via
+    // a client-only dynamic import) has attached to fgRef by this point.
     if (reduceMotion) {
-      const fg = fgRef.current;
-      const graph = fg?.graphData?.();
-      const nodes = graph?.nodes as GraphNode[] | undefined;
-      nodes?.forEach((node) => {
-        node.__labelOpacity = 1;
-      });
-      fg?.refresh?.();
       return;
     }
 
@@ -188,7 +187,7 @@ export default function KnowledgeConstellation({
 
             const radius = 6 + (node.val ?? 1) * 2;
             const fontSize = 12 / globalScale + (node.val ?? 1) * 1.5;
-            const opacity = node.__labelOpacity ?? 0;
+            const opacity = reduceMotionRef.current ? 1 : (node.__labelOpacity ?? 0);
 
             // Decorative node colors from the Resource Center palette — canvas
             // fillStyle requires literal color values (CSS custom properties
