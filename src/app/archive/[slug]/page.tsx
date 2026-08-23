@@ -5,12 +5,12 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 
 import "@/app/blog/editorial.css";
 
-import { getPostBySlug } from "@/lib/mdx/blog";
+import { getArchivePostBySlug } from "@/lib/mdx/archive";
 import { getArchivePosts } from "@/lib/archive";
 import ArchiveNav from "@/components/archive/ArchiveNav";
 
 // Deduplicate the file read/parse between generateMetadata and the page component.
-const getCachedPost = cache(getPostBySlug);
+const getCachedPost = cache(getArchivePostBySlug);
 
 import mdxComponents from '@/lib/mdxComponents';
 import SiteShell from "@/components/SiteShell";
@@ -81,7 +81,7 @@ export default async function ArchiveDocPage({
 }) {
   const { slug } = await params;
 
-  let post: ReturnType<typeof getPostBySlug>;
+  let post: ReturnType<typeof getArchivePostBySlug>;
   try {
     post = getCachedPost(slug);
   } catch (err) {
@@ -104,19 +104,24 @@ export default async function ArchiveDocPage({
       : new URL(imageVal, siteUrl).toString()
     : `${siteUrl}/images/structure-database-software-development.jpg`;
 
+  const isSyntheticMinds = post.frontmatter.archiveCollection === "synthetic-minds";
+
   const articleJsonLd = {
     "@context": "https://schema.org",
-    // Derive the most-appropriate schema.org type from the canonical
-    // `archiveId` where possible instead of always hard-coding a single
-    // type. Fall back to `CreativeWork` when the variant is unknown.
-    "@type": (() => {
-      const aid = String(post.frontmatter.archiveId || "").toLowerCase();
-      if (!aid) return "CreativeWork";
-      if (aid.includes("treatise") || aid.includes("paper") || aid.includes("scholar")) return "ScholarlyArticle";
-      if (aid.includes("report")) return "Report";
-      if (aid.includes("essay") || aid.includes("article")) return "Article";
-      return "CreativeWork";
-    })(),
+    // Synthetic Minds episodes are a creative series, not an institutional
+    // scholarly record — never mapped to ScholarlyArticle/Report. For the
+    // Archive Universe, derive the most-appropriate type from the canonical
+    // `archiveId` where possible, falling back to `CreativeWork`.
+    "@type": isSyntheticMinds
+      ? "CreativeWork"
+      : (() => {
+          const aid = String(post.frontmatter.archiveId || "").toLowerCase();
+          if (!aid) return "CreativeWork";
+          if (aid.includes("treatise") || aid.includes("paper") || aid.includes("scholar")) return "ScholarlyArticle";
+          if (aid.includes("report")) return "Report";
+          if (aid.includes("essay") || aid.includes("article")) return "Article";
+          return "CreativeWork";
+        })(),
     headline: post.frontmatter.title,
     description: post.frontmatter.description,
     datePublished: post.frontmatter.date,
@@ -135,6 +140,16 @@ export default async function ArchiveDocPage({
     },
     mainEntityOfPage: url,
     image: [socialImage],
+    ...(isSyntheticMinds
+      ? {
+          isPartOf: {
+            "@type": "CreativeWorkSeries",
+            name: "Synthetic Minds",
+            url: `${siteUrl}/blog/synthetic-minds-series`,
+          },
+          position: post.frontmatter.seriesOrder,
+        }
+      : {}),
   };
 
   const breadcrumbJsonLd = {
@@ -216,7 +231,10 @@ export default async function ArchiveDocPage({
       >
         <MDXRemote source={contentForMdx} components={mdxComponents} />
       </EditorialTemplateV2>
-      <ArchiveNav slug={post.slug as import('@/lib/archive').ArchiveDoc['slug']} />
+      <ArchiveNav
+        slug={post.slug as import('@/lib/archive').ArchiveDoc['slug']}
+        archiveCollection={post.frontmatter.archiveCollection}
+      />
     </SiteShell>
   );
 }

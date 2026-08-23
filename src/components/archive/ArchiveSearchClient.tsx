@@ -11,6 +11,8 @@ export interface SearchableDoc {
   mystery?: string;
   summary?: string;
   date?: string;
+  archiveCollection?: "archive-universe" | "synthetic-minds";
+  seriesOrder?: number;
 }
 
 const DOC_TYPE_COLOR: Record<string, string> = {
@@ -20,12 +22,20 @@ const DOC_TYPE_COLOR: Record<string, string> = {
   Orientation:      "text-emerald-400",
 };
 
-function docTypeColor(archiveId?: string): string {
+function docTypeColor(archiveId?: string, archiveCollection?: string): string {
+  if (archiveCollection === "synthetic-minds") return "text-sky-400";
   if (!archiveId) return "text-slate-400";
   for (const [key, cls] of Object.entries(DOC_TYPE_COLOR)) {
     if (archiveId.startsWith(key)) return cls;
   }
   return "text-slate-400";
+}
+
+function docTypeLabel(doc: SearchableDoc): string | undefined {
+  if (doc.archiveCollection === "synthetic-minds") {
+    return `Synthetic Minds — Episode ${doc.seriesOrder}`;
+  }
+  return doc.archiveId;
 }
 
 export default function ArchiveSearchClient({ docs }: { docs: SearchableDoc[] }) {
@@ -95,8 +105,8 @@ export default function ArchiveSearchClient({ docs }: { docs: SearchableDoc[] })
               className="group flex items-start justify-between gap-4 border border-slate-800 hover:border-slate-600 rounded-lg px-5 py-4 bg-slate-900/20 hover:bg-slate-900/60 transition-colors"
             >
               <div className="min-w-0">
-                <p className={`text-[10px] font-mono tracking-widest uppercase mb-1 ${docTypeColor(doc.archiveId)} opacity-80`}>
-                  {doc.archiveId}
+                <p className={`text-[10px] font-mono tracking-widest uppercase mb-1 ${docTypeColor(doc.archiveId, doc.archiveCollection)} opacity-80`}>
+                  {docTypeLabel(doc)}
                 </p>
                 <p className="text-sm font-semibold text-slate-200 group-hover:text-white transition-colors leading-snug">
                   {doc.title}

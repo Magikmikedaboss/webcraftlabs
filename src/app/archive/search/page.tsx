@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Search — WebCraft Archive",
   description:
-    "Search the WebCraft Archive. Titles, mysteries, and descriptions across all published investigations, treatises, and recovered records.",
+    "Search the WebCraft Archive. Titles, mysteries, and descriptions across all published investigations, treatises, recovered records, and Synthetic Minds episodes.",
   alternates: { canonical: `${getBaseUrl()}/archive/search` },
 };
 
@@ -23,6 +23,8 @@ export default function ArchiveSearchPage() {
     mystery: p.frontmatter.mystery as string | undefined,
     summary: p.frontmatter.summary as string | undefined,
     date: p.frontmatter.date as string | undefined,
+    archiveCollection: p.frontmatter.archiveCollection as "archive-universe" | "synthetic-minds" | undefined,
+    seriesOrder: p.frontmatter.seriesOrder as number | undefined,
   }));
 
   return (

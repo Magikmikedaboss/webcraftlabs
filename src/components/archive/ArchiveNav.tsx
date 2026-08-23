@@ -3,14 +3,89 @@ import {
   ARCHIVE_ORDER,
   getArchiveCites,
   getArchiveCitedBy,
-  getArchivePosts,
+  getArchiveUniversePosts,
+  getSyntheticMindsEpisodes,
   type ArchiveDoc,
 } from "@/lib/archive";
 
-export default function ArchiveNav({ slug }: { slug: ArchiveDoc["slug"] }) {
-  // Derive navigation only from actually published archive posts so links
-  // never point to unpublished/future slugs that would 404.
-  const published: ReturnType<typeof getArchivePosts> = getArchivePosts();
+/**
+ * Synthetic Minds episodes get a lightweight series-order nav — no citation
+ * graph, no institutional reading sequence, no evidence controls. Those
+ * concepts belong only to the Archive Universe.
+ */
+function SyntheticMindsNav({ slug }: { slug: string }) {
+  const episodes = getSyntheticMindsEpisodes();
+  const pos = episodes.findIndex((e) => e.slug === slug);
+  if (pos === -1) return null;
+
+  const current = episodes[pos];
+  const prev = pos > 0 ? episodes[pos - 1] : null;
+  const next = pos < episodes.length - 1 ? episodes[pos + 1] : null;
+
+  return (
+    <div className="border-t border-slate-800 bg-[#07090f] text-slate-300">
+      <div className="mx-auto max-w-5xl px-6 py-10 space-y-8">
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-[10px] font-mono tracking-[0.2em] text-slate-600 uppercase">
+            Synthetic Minds / Episode {current.frontmatter.seriesOrder} of {episodes.length}
+          </p>
+          <Link
+            href="/blog/synthetic-minds-series"
+            className="text-xs font-mono text-slate-500 hover:text-slate-200 transition-colors whitespace-nowrap"
+          >
+            ← Series overview
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {prev ? (
+            <Link
+              href={`/archive/${prev.slug}`}
+              className="group block border border-slate-800 rounded-lg px-5 py-4 text-left hover:border-slate-700 hover:bg-slate-900/60 transition-colors"
+            >
+              <p className="text-[10px] font-mono tracking-widest text-slate-600 uppercase mb-1">← Previous</p>
+              <p className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
+                {prev.frontmatter.title}
+              </p>
+            </Link>
+          ) : (
+            <div className="hidden sm:block" />
+          )}
+          {next ? (
+            <Link
+              href={`/archive/${next.slug}`}
+              className="group block border border-slate-800 rounded-lg px-5 py-4 text-right hover:border-slate-700 hover:bg-slate-900/60 transition-colors"
+            >
+              <p className="text-[10px] font-mono tracking-widest text-slate-600 uppercase mb-1">Next →</p>
+              <p className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
+                {next.frontmatter.title}
+              </p>
+            </Link>
+          ) : (
+            <div className="hidden sm:block" />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ArchiveNav({
+  slug,
+  archiveCollection,
+}: {
+  slug: ArchiveDoc["slug"];
+  archiveCollection?: "archive-universe" | "synthetic-minds";
+}) {
+  if (archiveCollection === "synthetic-minds") {
+    return <SyntheticMindsNav slug={slug} />;
+  }
+
+  // Derive navigation only from actually published, archive-universe posts
+  // so links never point to unpublished/future slugs — or to Synthetic
+  // Minds episodes, which have no place in the institutional reading
+  // sequence or citation graph.
+  const published: ReturnType<typeof getArchiveUniversePosts> = getArchiveUniversePosts();
   const publishedSlugs = new Set(published.map((p) => p.slug));
   const seq = published.map((p) => {
     const meta = ARCHIVE_ORDER.find((d) => d.slug === p.slug);

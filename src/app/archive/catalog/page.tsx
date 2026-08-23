@@ -13,9 +13,13 @@ export const metadata: Metadata = {
   },
 };
 
-type DocType = "Investigation" | "Treatise" | "Recovered Record" | "Orientation" | "Unknown";
+type DocType = "Investigation" | "Treatise" | "Recovered Record" | "Orientation" | "Series Episode" | "Unknown";
 
-function getDocType(archiveId: string | undefined): DocType {
+function getDocType(
+  archiveId: string | undefined,
+  archiveCollection?: string
+): DocType {
+  if (archiveCollection === "synthetic-minds") return "Series Episode";
   if (!archiveId) return "Unknown";
   if (archiveId.startsWith("Investigation")) return "Investigation";
   if (archiveId.startsWith("Treatise")) return "Treatise";
@@ -30,6 +34,7 @@ function getStatusLabel(type: DocType): string {
     case "Treatise": return "LIVING DOCUMENT";
     case "Recovered Record": return "UNKNOWN ORIGIN";
     case "Orientation": return "ACTIVE";
+    case "Series Episode": return "CREATIVE SERIES";
     default: return "UNCLASSIFIED";
   }
 }
@@ -40,6 +45,7 @@ function getStatusColor(type: DocType): string {
     case "Treatise": return "text-cyan-400 border-cyan-400/40 bg-cyan-400/10";
     case "Recovered Record": return "text-violet-400 border-violet-400/40 bg-violet-400/10";
     case "Orientation": return "text-emerald-400 border-emerald-400/40 bg-emerald-400/10";
+    case "Series Episode": return "text-sky-400 border-sky-400/40 bg-sky-400/10";
     default: return "text-slate-400 border-slate-400/40 bg-slate-400/10";
   }
 }
@@ -50,6 +56,7 @@ function getTypeAccent(type: DocType): string {
     case "Treatise": return "border-l-cyan-500";
     case "Recovered Record": return "border-l-violet-500";
     case "Orientation": return "border-l-emerald-500";
+    case "Series Episode": return "border-l-sky-500";
     default: return "border-l-slate-500";
   }
 }
@@ -65,6 +72,9 @@ export default function ArchiveCatalogPage() {
   );
   const recoveredRecords = archivePosts.filter(
     (p) => getDocType(p.frontmatter.archiveId) === "Recovered Record"
+  );
+  const seriesEpisodes = archivePosts.filter(
+    (p) => getDocType(p.frontmatter.archiveId, p.frontmatter.archiveCollection) === "Series Episode"
   );
 
   return (
@@ -118,6 +128,7 @@ export default function ArchiveCatalogPage() {
               <StatItem label="Open Investigations" value={investigations.length} />
               <StatItem label="Living Treatises" value={treatises.length} />
               <StatItem label="Recovered Records" value={recoveredRecords.length} />
+              <StatItem label="Synthetic Minds Episodes" value={seriesEpisodes.length} />
               <StatItem label="Current Scholarly Consensus" value="Developing" />
             </div>
           </div>
@@ -180,11 +191,11 @@ function ArchiveCard({
   position: number;
 }) {
   const { frontmatter, slug } = post;
-  const type = getDocType(frontmatter.archiveId);
+  const type = getDocType(frontmatter.archiveId, frontmatter.archiveCollection);
   const statusLabel = getStatusLabel(type);
   const statusColor = getStatusColor(type);
   const accentColor = getTypeAccent(type);
-  const hook = frontmatter.summary || frontmatter.title;
+  const hook = frontmatter.summary || frontmatter.description || frontmatter.title;
 
   return (
     <Link href={`/archive/${slug}`} className="group block">
@@ -199,11 +210,15 @@ function ArchiveCard({
         {/* Identity header: archiveId + title + position */}
         <div className="flex items-start justify-between gap-3 mb-3">
           <div>
-            {frontmatter.archiveId && (
+            {frontmatter.archiveId ? (
               <p className="font-mono text-[10px] text-slate-600 uppercase tracking-widest mb-1">
                 {frontmatter.archiveId}
               </p>
-            )}
+            ) : type === "Series Episode" ? (
+              <p className="font-mono text-[10px] text-slate-600 uppercase tracking-widest mb-1">
+                Synthetic Minds — Episode {frontmatter.seriesOrder}
+              </p>
+            ) : null}
             <h3 className="text-sm text-slate-400 font-medium">
               {frontmatter.title}
             </h3>
