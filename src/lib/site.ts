@@ -32,7 +32,7 @@ export const SITE = {
  */
 export const ARCHIVE_FOOTER_LINK = {
   href: "/archive",
-  label: "WebCraft Archive — a speculative fiction project",
+  label: "WebCraft Archive — Creative Works & Experiments",
 } as const;
 
 /**
