@@ -185,6 +185,26 @@ const config: ServicePageConfig = {
     ],
   },
   faqs,
+  relatedReading: {
+    title: "Related reading",
+    items: [
+      {
+        href: "/blog/mvp-vs-prototype-vs-production-application",
+        label: "MVP vs. Prototype vs. Production Application",
+        description: "What's the difference, and which one you actually need before you scope a build.",
+      },
+      {
+        href: "/blog/custom-software-vs-off-the-shelf-tools",
+        label: "Custom Software vs. Off-the-Shelf Tools",
+        description: "A framework for knowing when you've actually outgrown off-the-shelf tools.",
+      },
+      {
+        href: "/blog/what-drives-the-cost-of-a-saas-mvp-in-2026",
+        label: "What Drives the Cost of a SaaS MVP in 2026?",
+        description: "What actually moves the number — no generic price table.",
+      },
+    ],
+  },
   relatedLinks: [
     { href: "/services/custom-website-development", label: "Custom Website Development" },
     { href: "/services/seo-technical-optimization", label: "SEO + Technical Optimization" },

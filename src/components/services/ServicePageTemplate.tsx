@@ -35,6 +35,12 @@ export interface RelatedLink {
   label: string;
 }
 
+export interface RelatedReadingLink {
+  href: string;
+  label: string;
+  description?: string;
+}
+
 export interface ServicePageConfig {
   // SiteShell props
   shellTitle: string;
@@ -77,6 +83,8 @@ export interface ServicePageConfig {
 
   faqs: FaqItem[];
   relatedLinks: RelatedLink[];
+  /** Optional — a small, restrained set of Resource Center articles relevant to this service. */
+  relatedReading?: { title: string; items: RelatedReadingLink[] };
 
   cta: {
     title: string;
@@ -319,6 +327,25 @@ export default function ServicePageTemplate({ config: c }: { config: ServicePage
             ))}
           </div>
         </section>
+
+        {/* Related reading — optional, restrained set of Resource Center articles */}
+        {c.relatedReading && (
+          <section className="mt-10 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <h3 className="text-lg font-semibold">{c.relatedReading.title}</h3>
+            <ul className="mt-4 space-y-3">
+              {c.relatedReading.items.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-sm font-semibold text-[var(--primary)] hover:underline">
+                    {item.label}
+                  </Link>
+                  {item.description && (
+                    <p className="mt-1 text-sm text-[var(--muted)]">{item.description}</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* CTA banner */}
         <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--primary)] p-8 text-white">
