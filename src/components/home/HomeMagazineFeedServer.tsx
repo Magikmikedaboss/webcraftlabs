@@ -1,36 +1,17 @@
 import HomeMagazineFeed from "@/components/home/HomeMagazineFeed";
-import { getAllBlogPosts } from "@/lib/blog";
-import { getAllNews } from "@/lib/news";
+import { getAllPosts } from "@/lib/mdx/blog";
+import { getAllNews } from "@/lib/mdx/news";
+import { buildHomeFeed } from "@/lib/homeFeed";
 
-export default async function HomeMagazineFeedServer() {
-  // Fetch blog and news posts
-  const blogPosts = await getAllBlogPosts();
-  const newsPosts = await getAllNews();
+export default function HomeMagazineFeedServer() {
+  // getAllPosts()/getAllNews() already enforce the same publish-cutoff /
+  // `published` frontmatter rules used by the Blog, News, sitemap, and RSS
+  // feeds. buildHomeFeed() additionally excludes `collection: "webcraft-archive"`
+  // documents, matching how every other consumer of these loaders treats them.
+  const blogPosts = getAllPosts();
+  const newsPosts = getAllNews();
 
-  // Normalize blog items
-  const blogItems = blogPosts.map((p) => ({
-    type: "blog" as const,
-    title: p.title,
-    href: `/blog/${p.slug}`,
-    date: p.date,
-    description: p.summary,
-    tag: Array.isArray(p.tags) ? p.tags[0] : undefined,
-  }));
-
-  // Normalize news items
-  const newsItems = newsPosts.map((p) => ({
-    type: "news" as const,
-    title: p.title,
-    href: `/news/${p.slug}`,
-    date: p.date,
-    description: p.summary,
-    tag: Array.isArray(p.tags) ? p.tags[0] : undefined,
-  }));
-
-  // Combine and sort
-  const combined = [...blogItems, ...newsItems].sort((a, b) => String(b.date ?? "").localeCompare(String(a.date ?? "")));
-  const featured = combined[0] ?? undefined;
-  const latest = combined.slice(1, 5);
+  const { featured, latest } = buildHomeFeed(blogPosts, newsPosts);
 
   return <HomeMagazineFeed featured={featured} latest={latest} />;
 }
