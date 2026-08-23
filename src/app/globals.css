@@ -216,3 +216,359 @@ body {
   }
 }
 
+/* ===========================
+   Resource Center — "modern technical publishing meets an inventive
+   development workshop." Scoped token namespace (.rc-root) so this
+   palette never touches the sitewide --bg/--surface/--primary tokens
+   used by the homepage, services, blog, news, and archive. Tokens are
+   theme-reactive under the site's real [data-theme="dark"] selector,
+   the same mechanism the sitewide tokens use — just scoped.
+   =========================== */
+.rc-root {
+  --rc-canvas: #f5f3ee;
+  --rc-paper: #ffffff;
+  --rc-ink: #101828;
+  --rc-slate: #475467;
+  --rc-accent: #2457f5;
+  --rc-ember: #f05a3c;
+  --rc-cyan: #27b7ce;
+  --rc-panel: #eaf0ff;
+  --rc-border: #d8dee9;
+
+  /*
+   * Fixed dark-editorial tokens — intentionally NOT overridden by
+   * [data-theme="dark"] below. Projects & Experiments and the closing
+   * CTA use this treatment deliberately in either site theme (a design
+   * choice, per instruction), separate from the page's general light/
+   * dark theme support above.
+   */
+  --rc-dark-bg: #101828;
+  --rc-dark-panel: #182233;
+  --rc-dark-ink: #f5f3ee;
+  --rc-dark-slate: #9aa6b8;
+  --rc-dark-accent: #93b4ff;
+  --rc-dark-border: #2a3550;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] .rc-root {
+  --rc-canvas: #101828;
+  --rc-paper: #182233;
+  --rc-ink: #f5f3ee;
+  --rc-slate: #9aa6b8;
+  --rc-accent: #5b85ff;
+  --rc-ember: #ff7a5c;
+  --rc-cyan: #4fd3e6;
+  --rc-panel: #1e2a44;
+  --rc-border: #2a3550;
+
+  color-scheme: dark;
+}
+
+.rc-canvas {
+  background: var(--rc-canvas);
+  color: var(--rc-ink);
+}
+
+.rc-canvas-dark {
+  background: var(--rc-dark-bg);
+  color: var(--rc-dark-ink);
+}
+
+.rc-eyebrow,
+.rc-eyebrow-muted,
+.rc-eyebrow-on-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+.rc-eyebrow {
+  border: 1px solid var(--rc-border);
+  background: var(--rc-paper);
+  color: var(--rc-accent);
+}
+.rc-eyebrow-muted {
+  border: 1px dashed var(--rc-border);
+  background: transparent;
+  color: var(--rc-slate);
+}
+.rc-eyebrow-on-dark {
+  border: 1px solid var(--rc-dark-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--rc-dark-accent);
+}
+
+.rc-h1 {
+  font-size: clamp(2.1rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--rc-ink);
+  text-wrap: balance;
+}
+.rc-h2 {
+  font-size: clamp(1.5rem, 3vw, 2.15rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--rc-ink);
+  text-wrap: balance;
+}
+.rc-h2-on-dark {
+  font-size: clamp(1.5rem, 3vw, 2.15rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--rc-dark-ink);
+  text-wrap: balance;
+}
+.rc-h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--rc-ink);
+}
+
+.rc-lede {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--rc-slate);
+}
+.rc-body {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--rc-slate);
+}
+.rc-body-muted {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--rc-slate);
+  opacity: 0.9;
+}
+.rc-body-on-dark {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--rc-dark-slate);
+}
+
+.rc-pill-link {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--rc-border);
+  background: var(--rc-paper);
+  color: var(--rc-ink);
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.rc-pill-link:hover {
+  border-color: var(--rc-accent);
+}
+.rc-pill-link:focus-visible,
+.rc-pill-link-solid:focus-visible,
+.rc-card-link:focus-visible,
+.rc-inline-link:focus-visible,
+.rc-card-title-link:focus-visible,
+.rc-cta-primary:focus-visible,
+.rc-cta-secondary:focus-visible {
+  outline: 2px solid var(--rc-accent);
+  outline-offset: 2px;
+}
+.rc-pill-link-solid {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--rc-accent);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: opacity 0.15s ease;
+}
+.rc-pill-link-solid:hover {
+  opacity: 0.92;
+}
+
+.rc-stat-card {
+  border: 1px solid var(--rc-border);
+  background: var(--rc-paper);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+.rc-stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--rc-slate);
+  font-weight: 600;
+}
+.rc-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--rc-ink);
+  margin-top: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+.rc-stat-body {
+  font-size: 0.85rem;
+  color: var(--rc-slate);
+  margin-top: 0.35rem;
+}
+
+.rc-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  border: 1px solid var(--rc-border);
+  background: var(--rc-paper);
+  padding: 1.5rem;
+  height: 100%;
+}
+/* Decorative emphasis only — Ember fails AA contrast for normal text on
+   white, so it's used here as a non-text accent bar, never as text color. */
+.rc-card-featured {
+  border-top: 3px solid var(--rc-ember);
+}
+.rc-card-link {
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.rc-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -12px rgba(16, 24, 40, 0.18);
+}
+.rc-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--rc-ink);
+}
+.rc-card-title-link {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--rc-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rc-card-body {
+  font-size: 0.875rem;
+  color: var(--rc-slate);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+.rc-card-cta {
+  margin-top: auto;
+  padding-top: 1rem;
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--rc-accent);
+}
+.rc-card-count {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--rc-slate);
+  font-variant-numeric: tabular-nums;
+}
+.rc-card-meta {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--rc-slate);
+}
+.rc-card-eyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rc-accent);
+  font-weight: 700;
+}
+
+.rc-panel {
+  border-radius: 1.25rem;
+  border: 1px solid var(--rc-border);
+  background: var(--rc-panel);
+  padding: 1.75rem;
+}
+.rc-panel-muted {
+  border-radius: 1.25rem;
+  border: 1px dashed var(--rc-border);
+  background: var(--rc-paper);
+  padding: 1.5rem;
+}
+.rc-panel-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--rc-ink);
+}
+
+.rc-inline-link {
+  color: var(--rc-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+.rc-inline-link:hover {
+  opacity: 0.85;
+}
+
+.rc-badge-muted {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--rc-dark-slate);
+  border: 1px solid var(--rc-dark-border);
+}
+
+.rc-cta-panel {
+  display: grid;
+  gap: 2rem;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  background: var(--rc-dark-panel);
+  border: 1px solid var(--rc-dark-border);
+}
+@media (min-width: 1024px) {
+  .rc-cta-panel {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+  }
+}
+.rc-cta-primary,
+.rc-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+.rc-cta-primary {
+  background: #ffffff;
+  color: #0f172a;
+}
+.rc-cta-primary:hover {
+  opacity: 0.9;
+}
+.rc-cta-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+.rc-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+

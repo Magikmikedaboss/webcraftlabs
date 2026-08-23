@@ -17,7 +17,7 @@ export default function FeaturedResources() {
 
       <div className="grid gap-5 lg:grid-cols-4 md:grid-cols-2">
         {featured.map((r) => (
-          <Link key={`${r.type}-${r.slug}`} href={resourceHref(r)} className="rc-card rc-card-link">
+          <Link key={`${r.type}-${r.slug}`} href={resourceHref(r)} className="rc-card rc-card-featured rc-card-link">
             <div className="rc-card-eyebrow">{r.type === "news" ? "Announcement" : r.frontmatter.resourceType ?? "Resource"}</div>
             <h3 className="rc-card-title mt-2">{r.frontmatter.title}</h3>
             <p className="rc-card-body mt-2">{r.frontmatter.description}</p>
