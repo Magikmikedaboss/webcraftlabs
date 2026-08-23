@@ -1,6 +1,7 @@
 import { SITE, getBaseUrl } from "@/lib/site";
 import SiteShell from "@/components/SiteShell";
 import ContactForm from "./ContactForm";
+import TrackedMailtoLink from "@/components/analytics/TrackedMailtoLink";
 import Script from "next/script";
 import type { Metadata } from "next";
 
@@ -69,7 +70,7 @@ export default function ContactPage() {
                 <div className="text-sm font-semibold text-[var(--primary)]">{SITE.name} HQ</div>
                 <div className="mt-2 text-sm text-[var(--muted)]">
                   {SITE.address.label}<br />
-                  <a href={`mailto:${SITE.email}`} className="font-semibold text-[var(--primary)] hover:opacity-80">{SITE.email}</a>
+                  <TrackedMailtoLink email={SITE.email} className="font-semibold text-[var(--primary)] hover:opacity-80">{SITE.email}</TrackedMailtoLink>
                 </div>
                 <div className="mt-6 text-sm">
                   <div className="font-semibold">Typical turnaround</div>

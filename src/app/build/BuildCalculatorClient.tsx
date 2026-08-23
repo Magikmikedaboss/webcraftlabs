@@ -15,6 +15,7 @@ import type {
 
 import { formatPrice } from "../../lib/formatPrice";
 import { ADDONS, MAINTENANCE_PLANS } from "../../lib/estimator/config";
+import { trackEvent } from "../../lib/analytics";
 
 export default function BuildCalculatorClient() {
   const [q, setQ] = useState<QuoteDetails>({
@@ -277,6 +278,16 @@ export default function BuildCalculatorClient() {
                     } catch (err) {
                       console.error('localStorage error:', err);
                     }
+                    // GA4 completion event — the calculator's one unambiguous
+                    // "done" state is the user sending their configured build
+                    // sheet on to Contact. No PII (name/email) in params.
+                    trackEvent('build_calculator_complete', {
+                      pages,
+                      design_level: design,
+                      content_readiness: content,
+                      timeline,
+                      feature_count: features.length,
+                    });
                     router.push('/contact');
                   }}
                   className="mt-6"

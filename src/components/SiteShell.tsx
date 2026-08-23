@@ -8,6 +8,7 @@ import MobileMenu from "./MobileMenu";
 import Image from "next/image";
 import PoweredBy from "./PoweredBy";
 import ThemeToggle from "./ThemeToggle";
+import TrackedMailtoLink from "./analytics/TrackedMailtoLink";
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
@@ -186,9 +187,9 @@ export default function SiteShell({
               ))}
             </div>
             <div className="flex flex-col gap-2 items-start md:items-end">
-              <a className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--primary)] transition" href={`mailto:${SITE.email}`}>
+              <TrackedMailtoLink email={SITE.email} className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--primary)] transition">
                 {SITE.email}
-              </a>
+              </TrackedMailtoLink>
               <span className="text-[10px] sm:text-xs text-[var(--muted)]">{SITE.address.label}</span>
               <div className="flex gap-3 mt-2">
                 <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[var(--primary)] hover:text-[var(--secondary)] transition">

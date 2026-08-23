@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
@@ -69,6 +70,9 @@ export default function ContactForm() {
         throw new Error(errorMessage);
       }
       setSuccess("Your request was sent! We'll reply soon.");
+      // GA4 lead-conversion event — fires only after a confirmed 2xx
+      // response from /api/contact. Never blocks the success flow above.
+      trackEvent("generate_lead", { form_id: "contact_form" });
       // Clear localStorage and reset form
       if (typeof window !== "undefined") {
         try {
