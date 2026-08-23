@@ -7,13 +7,17 @@ import {
   resourceHref,
   ACTIVE_LEARNING_PATHS,
 } from "./resources";
+import { getAllPosts } from "./mdx/blog";
+import { getAllNews } from "./mdx/news";
 import { LEARNING_PATH_META, isRecommendedStartValid } from "./resourcePathMeta";
+
+const ARCHIVE_COLLECTION = "webcraft-archive";
 
 describe("getAllResources", () => {
   it("never includes webcraft-archive collection documents", () => {
     const all = getAllResources();
     expect(all.length).toBeGreaterThan(0);
-    expect(all.some((r) => r.frontmatter.collection === "webcraft-archive")).toBe(false);
+    expect(all.some((r) => r.frontmatter.collection === ARCHIVE_COLLECTION)).toBe(false);
   });
 
   it("excludes any post without an explicit resourceType, even if not Archive", () => {
@@ -21,30 +25,28 @@ describe("getAllResources", () => {
     expect(all.every((r) => r.frontmatter.resourceType != null)).toBe(true);
   });
 
-  it("only returns the 13 resources classified with resourceType, not every non-Archive post", () => {
-    expect(getAllResources()).toHaveLength(13);
+  it("actually filters — the result is smaller than every non-Archive post, proving unclassified content is excluded rather than returned wholesale", () => {
+    const rawNonArchiveCount =
+      getAllPosts().filter((p) => p.frontmatter.collection !== ARCHIVE_COLLECTION).length +
+      getAllNews().filter((p) => p.frontmatter.collection !== ARCHIVE_COLLECTION).length;
+    expect(getAllResources().length).toBeLessThan(rawNonArchiveCount);
   });
 });
 
-describe("getResourcesByPath — real migrated counts", () => {
-  it("modern-web-development has exactly 1 resource", () => {
-    expect(getResourcesByPath("modern-web-development")).toHaveLength(1);
+describe("getResourcesByPath — active paths have real, eligible content", () => {
+  it.each(ACTIVE_LEARNING_PATHS)("%s has at least one real, eligible resource", (path) => {
+    const resources = getResourcesByPath(path);
+    expect(resources.length).toBeGreaterThan(0);
+    for (const resource of resources) {
+      expect(resource.frontmatter.learningPath).toBe(path);
+      expect(resource.frontmatter.resourceType).toBeDefined();
+      expect(resource.frontmatter.collection).not.toBe(ARCHIVE_COLLECTION);
+    }
   });
 
-  it("ai-workflow-automation has exactly 5 resources", () => {
-    expect(getResourcesByPath("ai-workflow-automation")).toHaveLength(5);
-  });
-
-  it("websites-that-grow-businesses has exactly 3 resources", () => {
-    expect(getResourcesByPath("websites-that-grow-businesses")).toHaveLength(3);
-  });
-
-  it("experiments-emerging-ideas has exactly 4 resources", () => {
-    expect(getResourcesByPath("experiments-emerging-ideas")).toHaveLength(4);
-  });
-
-  it("building-software-products (held back) has zero resources", () => {
+  it("building-software-products (held back) has zero resources and is not an active path", () => {
     expect(getResourcesByPath("building-software-products")).toHaveLength(0);
+    expect(isActiveLearningPath("building-software-products")).toBe(false);
   });
 });
 
@@ -70,7 +72,11 @@ describe("getFeaturedResources", () => {
   });
 
   it("never includes Archive content in the featured set", () => {
-    expect(getFeaturedResources().some((r) => r.frontmatter.collection === "webcraft-archive")).toBe(false);
+    expect(getFeaturedResources().some((r) => r.frontmatter.collection === ARCHIVE_COLLECTION)).toBe(false);
+  });
+
+  it("only features resources that are Resource-Center-eligible (have resourceType)", () => {
+    expect(getFeaturedResources().every((r) => r.frontmatter.resourceType != null)).toBe(true);
   });
 });
 

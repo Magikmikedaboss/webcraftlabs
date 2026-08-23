@@ -12,6 +12,7 @@ describe("LearningPaths", () => {
     for (const path of ACTIVE_LEARNING_PATHS) {
       const meta = LEARNING_PATH_META[path];
       const count = getResourcesByPath(path).length;
+      expect(count).toBeGreaterThan(0);
       const link = screen.getByRole("link", { name: new RegExp(meta.label) });
       expect(link).toHaveAttribute("href", `/knowledge/paths/${path}`);
       expect(within(link).getByText(new RegExp(`${count} resources?`))).toBeInTheDocument();
