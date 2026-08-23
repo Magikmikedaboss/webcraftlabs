@@ -9,7 +9,7 @@ import {
   isActiveLearningPath,
   resourceHref,
 } from "@/lib/resources";
-import { LEARNING_PATH_META } from "@/lib/resourcePathMeta";
+import { LEARNING_PATH_META, sortByExplicitOrder } from "@/lib/resourcePathMeta";
 
 // Only the four active paths are pre-rendered. Any other segment (including
 // "building-software-products", the held-back path) 404s rather than
@@ -63,7 +63,10 @@ export default async function LearningPathPage({
   const meta = LEARNING_PATH_META[path];
   const resources = getResourcesByPath(path);
   const recommended = resources.find((r) => r.slug === meta.recommendedStart);
-  const rest = resources.filter((r) => r.slug !== meta.recommendedStart);
+  const rest = sortByExplicitOrder(
+    resources.filter((r) => r.slug !== meta.recommendedStart),
+    meta.order
+  );
 
   return (
     <SiteShell
