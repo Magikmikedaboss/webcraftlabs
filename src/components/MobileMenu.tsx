@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { HEADER_NAV, ARCHIVE_FOOTER_LINK } from "@/lib/site";
+import { HEADER_NAV } from "@/lib/site";
 import { useState, useEffect, useRef } from "react";
 import ThemeToggle from "./ThemeToggle";
 
@@ -185,13 +185,6 @@ export default function MobileMenu() {
             <div className="mt-4 pt-4 border-t border-[var(--border)]">
               <ThemeToggle />
             </div>
-            <Link
-              href={ARCHIVE_FOOTER_LINK.href}
-              className="mt-2 py-2 text-xs italic text-[var(--muted)] hover:text-[var(--primary)] transition-colors"
-              onClick={handleNav}
-            >
-              {ARCHIVE_FOOTER_LINK.label}
-            </Link>
           </nav>
         </div>
       )}
