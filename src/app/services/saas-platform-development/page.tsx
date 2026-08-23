@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `SaaS Platform Development Services | ${SITE.name}`,
+  title: "SaaS Platform Development Services",
   description:
     "SaaS platform development services for MVPs, dashboards, authentication, billing, subscriptions, customer workflows, and scalable product foundations.",
   alternates: {

@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `Custom Website Development Services | ${SITE.name}`,
+  title: "Custom Website Development Services",
   description:
     "Custom website development services for businesses that need fast, scalable, SEO-friendly websites built to generate leads and grow online.",
   alternates: {

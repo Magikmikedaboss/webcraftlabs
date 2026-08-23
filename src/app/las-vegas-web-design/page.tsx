@@ -11,7 +11,7 @@ const baseUrl = getBaseUrl();
 const socialImage = `${baseUrl}/images/modern-computer-display-on-an-office-desk-with-a-web-design.webp`;
 
 export const metadata: Metadata = {
-  title: `Las Vegas Web Design | ${SITE.name}`,
+  title: "Las Vegas Web Design",
   description:
     "Custom Las Vegas web design and website development for service businesses, startups, and growing brands. Fast, SEO-ready websites built to convert.",
   alternates: {

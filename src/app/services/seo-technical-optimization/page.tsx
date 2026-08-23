@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `SEO + Technical Optimization Services | ${SITE.name}`,
+  title: "SEO + Technical Optimization Services",
   description:
     "Technical SEO services for faster websites, better indexing, stronger internal linking, Core Web Vitals, schema markup, and local search visibility.",
   alternates: {

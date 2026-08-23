@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `AI & Automation Services | ${SITE.name}`,
+  title: "AI & Automation Services",
   description:
     "Practical workflow automation and AI-assisted systems for businesses that want less manual work — built with clear limitations, human review, and real integrations, not hype.",
   alternates: {

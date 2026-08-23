@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `Landing Page Design + Sales Funnels | ${SITE.name}`,
+  title: "Landing Page Design + Sales Funnels",
   description:
     "Landing page design and funnel development for lead generation, paid ads, service offers, launches, and conversion-focused campaigns.",
   alternates: {
