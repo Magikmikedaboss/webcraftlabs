@@ -7,7 +7,7 @@ import { getResourcesByPath, ACTIVE_LEARNING_PATHS } from "@/lib/resources";
 import { LEARNING_PATH_META } from "@/lib/resourcePathMeta";
 
 describe("LearningPaths", () => {
-  it("renders exactly the four active paths as links with their real counts", () => {
+  it("renders every active path as a link with its real count", () => {
     render(<LearningPaths />);
     for (const path of ACTIVE_LEARNING_PATHS) {
       const meta = LEARNING_PATH_META[path];
@@ -19,14 +19,15 @@ describe("LearningPaths", () => {
     }
   });
 
-  it("renders Building Software Products as a teaser with no link and no fabricated count", () => {
+  it("never renders a 'coming soon' teaser for a path whose status is active", () => {
     render(<LearningPaths />);
-    const comingSoon = LEARNING_PATH_META["building-software-products"];
-    expect(screen.getByText(comingSoon.label)).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: new RegExp(comingSoon.label) })).not.toBeInTheDocument();
-    // No stray digit anywhere near the teaser heading implying a resource count.
-    const heading = screen.getByText(comingSoon.label);
-    const panel = heading.closest("div");
-    expect(panel?.textContent).not.toMatch(/\d+\s+resources?/);
+    // Regression: the teaser used to be hardcoded to always show
+    // building-software-products regardless of its activation status,
+    // which duplicated it as both an active card and a held-back teaser.
+    expect(screen.queryByText("Growing next")).not.toBeInTheDocument();
+    for (const path of ACTIVE_LEARNING_PATHS) {
+      const meta = LEARNING_PATH_META[path];
+      expect(screen.getAllByText(meta.label)).toHaveLength(1);
+    }
   });
 });

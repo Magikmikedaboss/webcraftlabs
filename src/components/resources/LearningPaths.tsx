@@ -4,6 +4,9 @@ import { LEARNING_PATH_META } from "@/lib/resourcePathMeta";
 
 export default function LearningPaths() {
   const comingSoon = LEARNING_PATH_META["building-software-products"];
+  const isComingSoonHeldBack = comingSoon.status !== "active";
+  const pathCount: number = ACTIVE_LEARNING_PATHS.length;
+  const pathCountLabel = pathCount === 1 ? "One active path" : `${pathCount} active paths`;
 
   return (
     <section id="paths" className="rc-canvas mx-auto max-w-7xl px-6 py-14">
@@ -11,7 +14,7 @@ export default function LearningPaths() {
         <span className="rc-eyebrow">Learning Paths</span>
         <h2 className="rc-h2 mt-4">Follow a path that matches what you&apos;re building</h2>
         <p className="rc-body mt-3">
-          Four active paths, each built entirely from real, published resources — no filler.
+          {pathCountLabel}, each built entirely from real, published resources — no filler.
         </p>
       </div>
 
@@ -32,13 +35,17 @@ export default function LearningPaths() {
         })}
       </div>
 
-      {/* Held-back path: honest "coming soon" teaser only — no fake count,
-          no active CTA, no link to a detail page (none exists yet). */}
-      <div className="rc-panel-muted mt-6">
-        <span className="rc-eyebrow-muted">Growing next</span>
-        <h3 className="rc-panel-title mt-2">{comingSoon.label}</h3>
-        <p className="rc-body-muted mt-2">{comingSoon.description}</p>
-      </div>
+      {/* Held-back path teaser — honest "coming soon" only, no fake count,
+          no active CTA, no link to a detail page. Renders only while the
+          path's own status is still "coming-soon"; disappears automatically
+          once it's activated, so this never duplicates an active card. */}
+      {isComingSoonHeldBack && (
+        <div className="rc-panel-muted mt-6">
+          <span className="rc-eyebrow-muted">Growing next</span>
+          <h3 className="rc-panel-title mt-2">{comingSoon.label}</h3>
+          <p className="rc-body-muted mt-2">{comingSoon.description}</p>
+        </div>
+      )}
     </section>
   );
 }

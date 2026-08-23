@@ -49,10 +49,12 @@ export const LEARNING_PATH_META: Record<LearningPath, LearningPathMeta> = {
   },
   "building-software-products": {
     label: "Building Software Products",
-    status: "coming-soon",
-    audience: "Founders and product teams building custom software or SaaS.",
+    status: "active",
+    audience: "Founders and business owners scoping custom software or a SaaS product.",
     description:
-      "Coming to the Resource Center: guides on MVP scope, build-vs-buy decisions, and product architecture. Not yet active — no resources are published on this path.",
+      "Guides on MVP scope, build-vs-buy decisions, and what actually drives SaaS product cost.",
+    recommendedStart: "mvp-vs-prototype-vs-production-application",
+    nextStep: { label: "Explore SaaS platform development services", href: "/services/saas-platform-development" },
   },
 };
 
