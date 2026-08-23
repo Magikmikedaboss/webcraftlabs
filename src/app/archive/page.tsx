@@ -1,20 +1,21 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import { getBaseUrl } from "@/lib/site";
-import { getArchivePosts, ARCHIVE_ORDER } from "@/lib/archive";
+import { getArchiveUniversePosts, getSyntheticMindsEpisodes, ARCHIVE_ORDER } from "@/lib/archive";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "WebCraft Archive — A Living Collection of Recovered Documents",
+  title: "WebCraft Archive — Creative Works & Experiments",
   description:
-    "A living collection of recovered investigations, scholarly treatises, and historical reconstructions. Authenticity varies. Inquiry continues.",
+    "The creative wing of WebCraft Labz—a growing collection of speculative fiction, experimental narratives, imagined worlds, and unconventional digital work.",
   alternates: {
     canonical: `${getBaseUrl()}/archive`,
   },
 };
 
 export default function ArchiveLanding() {
-  const archivePosts = getArchivePosts();
+  const archivePosts = getArchiveUniversePosts();
+  const episodes = getSyntheticMindsEpisodes();
 
   const investigations = archivePosts.filter((p) =>
     p.frontmatter.archiveId?.startsWith("Investigation")
@@ -55,30 +56,32 @@ export default function ArchiveLanding() {
           <div className="mx-auto max-w-5xl px-6 pt-20 pb-16">
 
             <p className="text-[11px] font-mono tracking-[0.3em] text-slate-600 uppercase mb-6">
-              WebCraft Labz — Special Collection
+              WebCraft Labz — Creative Works &amp; Experiments
             </p>
 
             <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight text-white leading-none mb-10">
               WebCraft<br />Archive
             </h1>
 
-            {/* Cinematic opening */}
+            <p className="max-w-2xl text-lg sm:text-xl text-slate-200 leading-relaxed mb-8">
+              The creative wing of WebCraft Labz — a growing collection of speculative fiction,
+              experimental narratives, imagined worlds, and unconventional digital work.
+            </p>
+
+            {/* Cinematic opening — the Archive Universe is a fictional frame story */}
             <div className="max-w-2xl mb-10 space-y-5">
-              <p className="text-lg sm:text-xl text-slate-200 leading-relaxed">
-                The WebCraft Archive began with a discovery that should not have been possible.
+              <p className="text-[10px] font-mono tracking-[0.25em] text-slate-600 uppercase">
+                Inside the Archive: The Archive Universe (speculative fiction)
               </p>
               <p className="text-base text-slate-400 leading-relaxed">
+                The WebCraft Archive Universe began with a discovery that should not have been possible.
                 Researchers recovered a sealed collection of documents — investigations, field notes,
                 technical reports, recovered records — none of which matched the age of the site
                 in which they were found. Several cited archives that did not appear to exist.
               </p>
-              <p className="text-base text-slate-400 leading-relaxed">
-                Then a second archive was recovered. It used the same cataloging system.
-                The same editorial conventions. The same style of scholarship.
-                The two archives had no known historical connection.
-              </p>
               <p className="text-sm text-slate-600 leading-relaxed italic">
-                No accepted historical explanation currently accounts for both discoveries.
+                Entirely fictional. No accepted historical explanation currently accounts for either
+                discovery, because there isn&rsquo;t one — it&rsquo;s a story.
               </p>
             </div>
 
@@ -142,6 +145,34 @@ export default function ArchiveLanding() {
                   </span>
                 </div>
               </Link>
+            </div>
+          </section>
+        )}
+
+        {/* ── Synthetic Minds — a separate creative collection ────────── */}
+        {episodes.length > 0 && (
+          <section className="border-b border-slate-800">
+            <div className="mx-auto max-w-5xl px-6 py-14">
+              <p className="text-[10px] font-mono tracking-[0.3em] text-slate-600 uppercase mb-4">
+                Also in the Archive — A Separate Collection
+              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border border-slate-800 border-l-2 border-l-cyan-500 rounded-r-lg px-6 py-6">
+                <div>
+                  <h2 className="text-xl font-bold text-slate-100 mb-2">🧠 Synthetic Minds</h2>
+                  <p className="text-sm text-slate-400 max-w-xl leading-relaxed">
+                    A cinematic series exploring when intelligence begins inventing — {episodes.length} ordered
+                    episodes, entirely separate from the Archive Universe fiction above. No institutions,
+                    no citations, no evidence controls — just the series, in order.
+                  </p>
+                </div>
+                <Link
+                  href="/blog/synthetic-minds-series"
+                  className="inline-flex shrink-0 items-center gap-2 border border-slate-700 hover:border-slate-500 text-slate-200 text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
+                >
+                  Start the series
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
             </div>
           </section>
         )}

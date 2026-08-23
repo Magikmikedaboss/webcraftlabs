@@ -91,7 +91,7 @@ describe("SiteShell footer", () => {
   it("surfaces Archive only as a distinctly labeled, subordinate footer link", () => {
     renderShell();
     const archiveLink = screen.getByRole("link", {
-      name: "WebCraft Archive — a speculative fiction project",
+      name: "WebCraft Archive — Creative Works & Experiments",
     });
     expect(archiveLink).toHaveAttribute("href", "/archive");
   });

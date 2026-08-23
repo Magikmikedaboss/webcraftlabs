@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import { getBaseUrl } from "@/lib/site";
-import { getArchivePosts } from "@/lib/archive";
+import { getArchiveUniversePosts } from "@/lib/archive";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ function getDocStyle(archiveId?: string) {
 }
 
 export default function TimelinePage() {
-  const posts = getArchivePosts();
+  const posts = getArchiveUniversePosts();
 
   // Sort by publication date, newest first for display; exclude Orientation from main flow
   const chronological = posts

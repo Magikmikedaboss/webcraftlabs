@@ -5,7 +5,7 @@
  * Update this file whenever a new Archive document is published.
  */
 
-import { getAllPostFrontmatter } from "@/lib/mdx/blog";
+import { getAllArchivePostFrontmatter } from "@/lib/mdx/archive";
 // Use a structured JSON source of truth for archive ordering to avoid brittle parsing.
 import archiveOrder from './archive-order.json';
 
@@ -72,17 +72,47 @@ export function getArchiveCitedBy(slug: ArchiveDoc["slug"]): ArchiveDoc[] {
 }
 
 /**
- * Returns all published archive documents with frontmatter only (no MDX content).
- * Sorted by ARCHIVE_ORDER; documents not in the order list appear last.
+ * Returns all published Archive documents with frontmatter only (no MDX
+ * content) — both the institutional Archive Universe and Synthetic Minds.
+ * Sorted by ARCHIVE_ORDER; documents not in the order list (e.g. Synthetic
+ * Minds episodes, which use `seriesOrder` instead) appear last in this
+ * combined view. Prefer getArchiveUniversePosts() / getSyntheticMindsEpisodes()
+ * when a caller only wants one sub-collection.
  */
 export function getArchivePosts() {
-  return getAllPostFrontmatter()
-    .filter((p) => p.frontmatter.collection === "webcraft-archive")
-    .sort((a, b) => {
-      const ai = ARCHIVE_ORDER.findIndex((d) => d.slug === a.slug);
-      const bi = ARCHIVE_ORDER.findIndex((d) => d.slug === b.slug);
-      return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
-    });
+  return getAllArchivePostFrontmatter().sort((a, b) => {
+    const ai = ARCHIVE_ORDER.findIndex((d) => d.slug === a.slug);
+    const bi = ARCHIVE_ORDER.findIndex((d) => d.slug === b.slug);
+    // Both unlisted (e.g. two Synthetic Minds episodes): Infinity - Infinity
+    // is NaN, which sort() doesn't handle meaningfully — fall back to
+    // seriesOrder so unlisted entries still sort deterministically among
+    // themselves instead of leaking whatever order they arrived in.
+    if (ai === -1 && bi === -1) {
+      return (a.frontmatter.seriesOrder ?? 0) - (b.frontmatter.seriesOrder ?? 0);
+    }
+    return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
+  });
+}
+
+/**
+ * Institutional Archive Universe documents only (Investigations, Treatises,
+ * Recovered Records, Orientation). Institutions, glossary, citation graph,
+ * and the timeline are all scoped to this sub-collection — Synthetic Minds
+ * has no institutional apparatus and must never appear here.
+ */
+export function getArchiveUniversePosts() {
+  return getArchivePosts().filter(
+    (p) => p.frontmatter.archiveCollection === "archive-universe"
+  );
+}
+
+/**
+ * Synthetic Minds episodes only, in canonical series order.
+ */
+export function getSyntheticMindsEpisodes() {
+  return getAllArchivePostFrontmatter()
+    .filter((p) => p.frontmatter.archiveCollection === "synthetic-minds")
+    .sort((a, b) => (a.frontmatter.seriesOrder ?? 0) - (b.frontmatter.seriesOrder ?? 0));
 }
 
 // ── Institutions ───────────────────────────────────────────────────────────

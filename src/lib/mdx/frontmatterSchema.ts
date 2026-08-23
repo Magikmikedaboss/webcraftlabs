@@ -65,6 +65,28 @@ export const BlogFrontmatterSchema = z.object({
   collection: z.union([z.literal('webcraft-archive'), z.literal('news'), z.literal('blog')]).optional(),
   mystery: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
 
+  // ── Archive taxonomy (Phase 3.5) ────────────────────────────────────
+  /**
+   * Discriminates the two sub-collections that share `collection:
+   * "webcraft-archive"`: the institutional fiction universe (Investigations,
+   * Treatises, Recovered Records) and the Synthetic Minds creative series.
+   * Required whenever collection is "webcraft-archive" — see superRefine below.
+   */
+  archiveCollection: z.enum(['archive-universe', 'synthetic-minds']).optional(),
+  workType: z.enum([
+    'orientation',
+    'investigation',
+    'treatise',
+    'recovered-record',
+    'series-episode',
+    'story',
+    'poem',
+    'experiment',
+  ]).optional(),
+  seriesOrder: z.number().int().positive().optional(),
+  /** Controlled/trimmed array — never one unrestricted combined sentence. */
+  contentWarnings: z.array(z.string().trim().min(1)).optional(),
+
   // ── Resource Center taxonomy (Phase 3) ──────────────────────────────
   resourceType: z.enum(RESOURCE_TYPES).optional(),
   audience: z.array(z.enum(AUDIENCES)).optional(),
@@ -76,34 +98,90 @@ export const BlogFrontmatterSchema = z.object({
       message: 'relatedService must be a relative internal path, e.g. "/services/ai-automation"',
     }),
 }).superRefine((data, ctx) => {
-  if (data.collection === 'webcraft-archive') {
+  if (data.collection !== 'webcraft-archive') return;
+
+  if (!data.archiveCollection) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'archiveCollection is required when collection is "webcraft-archive"',
+      path: ['archiveCollection'],
+    });
+    return;
+  }
+
+  if (data.archiveCollection === 'archive-universe') {
     if (!data.mystery) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'mystery is required when collection is "webcraft-archive"',
+        message: 'mystery is required when archiveCollection is "archive-universe"',
         path: ['mystery'],
       });
     }
-  }
-}).superRefine((data, ctx) => {
-  if (data.collection === 'webcraft-archive') {
+    let expectedWorkType: typeof data.workType | undefined;
     if (!data.archiveId) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'archiveId is required when collection is "webcraft-archive"',
+        message: 'archiveId is required when archiveCollection is "archive-universe"',
         path: ['archiveId'],
       });
-      return;
+    } else {
+      const validPrefixes = ['Investigation', 'Treatise', 'Recovered Record'];
+      const isValid =
+        validPrefixes.some(p => data.archiveId!.startsWith(p)) ||
+        data.archiveId === 'Orientation';
+      if (!isValid) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'archiveId must start with "Investigation", "Treatise", or "Recovered Record", or be exactly "Orientation"',
+          path: ['archiveId'],
+        });
+      } else {
+        expectedWorkType = data.archiveId === 'Orientation' ? 'orientation'
+          : data.archiveId.startsWith('Investigation') ? 'investigation'
+          : data.archiveId.startsWith('Treatise') ? 'treatise'
+          : 'recovered-record';
+      }
     }
-    const validPrefixes = ['Investigation', 'Treatise', 'Recovered Record'];
-    const isValid =
-      validPrefixes.some(p => data.archiveId!.startsWith(p)) ||
-      data.archiveId === 'Orientation';
-    if (!isValid) {
+
+    if (!data.workType) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'archiveId must start with "Investigation", "Treatise", or "Recovered Record", or be exactly "Orientation"',
-        path: ['archiveId'],
+        message: 'workType is required when archiveCollection is "archive-universe"',
+        path: ['workType'],
+      });
+    } else if (expectedWorkType && data.workType !== expectedWorkType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `workType must be "${expectedWorkType}" for archiveId "${data.archiveId}"`,
+        path: ['workType'],
+      });
+    }
+    return;
+  }
+
+  if (data.archiveCollection === 'synthetic-minds') {
+    // Institutional fields are deliberately not required here — Synthetic
+    // Minds is a creative series, not an institutional record, and should
+    // not need a fabricated archiveId/mystery to satisfy validation.
+    if (data.series !== 'Synthetic Minds') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'series must be exactly "Synthetic Minds" when archiveCollection is "synthetic-minds"',
+        path: ['series'],
+      });
+    }
+    if (data.seriesOrder === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'seriesOrder is required when archiveCollection is "synthetic-minds"',
+        path: ['seriesOrder'],
+      });
+    }
+    if (data.workType !== 'series-episode') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'workType must be "series-episode" when archiveCollection is "synthetic-minds"',
+        path: ['workType'],
       });
     }
   }

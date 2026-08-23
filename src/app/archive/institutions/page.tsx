@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import { getBaseUrl } from "@/lib/site";
-import { INSTITUTIONS, getArchivePosts, type InstitutionPosition } from "@/lib/archive";
+import { INSTITUTIONS, getArchiveUniversePosts, type InstitutionPosition } from "@/lib/archive";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ function ConfidenceBadge({ level }: { level: InstitutionPosition["confidence"] }
 }
 
 export default function InstitutionsPage() {
-  const published = getArchivePosts();
+  const published = getArchiveUniversePosts();
   return (
     <SiteShell background="bg" asMain={false}>
       <div className="min-h-screen bg-[#05080f] text-slate-200">
