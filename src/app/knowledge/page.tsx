@@ -3,40 +3,9 @@ import SiteShell from "@/components/SiteShell";
 import KnowledgeConstellation from "@/components/KnowledgeConstellation";
 import ResourceHero from "@/components/resources/ResourceHero";
 import AudienceEntryPoints from "@/components/resources/AudienceEntryPoints";
+import LearningPaths from "@/components/resources/LearningPaths";
 import { SITE, getBaseUrl } from "@/lib/site";
 
-const learningPaths = [
-  {
-    title: "Synthetic Minds",
-    description: "A cinematic series about AI creativity, invention, and human-machine collaboration.",
-    href: "/blog/synthetic-minds-series",
-    tone: "from-cyan-500 to-blue-600",
-  },
-  {
-    title: "Axon Research Intelligence",
-    description: "A research signal layer for turning complex material into structured understanding.",
-    href: "/news/introducing-axon",
-    tone: "from-sky-500 to-indigo-600",
-  },
-  {
-    title: "Enterprise AI",
-    description: "How intelligent systems reshape workflows, judgment, and organizational leverage.",
-    href: "/news/enterprise-ai-human-bottleneck",
-    tone: "from-indigo-500 to-violet-600",
-  },
-  {
-    title: "Future of Work",
-    description: "The shift from output-heavy work to systems that amplify taste, judgment, and speed.",
-    href: "/news/manifesto",
-    tone: "from-cyan-500 to-emerald-500",
-  },
-  {
-    title: "Human + AI Creativity",
-    description: "A practical and philosophical look at what happens when people create with intelligence layers.",
-    href: "/blog/what-is-synthetic-minds",
-    tone: "from-amber-500 to-pink-500",
-  },
-] as const;
 
 const topicMap = [
   {
@@ -203,36 +172,7 @@ export default function KnowledgePage() {
         <ResourceHero />
         <AudienceEntryPoints />
 
-        <section id="paths" className="rc-canvas mx-auto max-w-7xl px-6 py-14">
-          <div className="mb-8 max-w-3xl">
-            <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
-              Learning Paths
-            </span>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Follow a curated route</h2>
-            <p className="mt-3 text-base leading-7 text-slate-600">
-              Five focused learning routes that distill our research and practice. Each path guides you through narrative, experiments, and next steps.
-            </p>
-          </div>
-
-          <div className="grid gap-5 lg:grid-cols-5 md:grid-cols-2">
-            {learningPaths.map((path) => (
-              <Link
-                key={path.title}
-                href={path.href}
-                className="group relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-              >
-                <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${path.tone}`} />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.12),transparent_38%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <div className={`h-1.5 rounded-full bg-gradient-to-r ${path.tone}`} />
-                <h3 className="mt-4 text-lg font-semibold text-[var(--text)]">{path.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{path.description}</p>
-                <div className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--primary)] transition group-hover:translate-x-1">
-                  Open path →
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <LearningPaths />
 
         <section id="map" className="mx-auto max-w-7xl px-6 py-14">
           <div className="mb-8 max-w-3xl">
