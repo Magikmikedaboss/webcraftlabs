@@ -81,6 +81,24 @@ export default function KnowledgeConstellation({
   useEffect(() => {
     if (!mounted) return;
 
+    // Respect prefers-reduced-motion: skip the fade-in animation entirely
+    // and show labels at full opacity immediately, rather than running the
+    // (purely decorative) per-frame opacity loop below.
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion) {
+      const fg = fgRef.current;
+      const graph = fg?.graphData?.();
+      const nodes = graph?.nodes as GraphNode[] | undefined;
+      nodes?.forEach((node) => {
+        node.__labelOpacity = 1;
+      });
+      fg?.refresh?.();
+      return;
+    }
+
     let raf = 0;
 
     const step = () => {
@@ -121,22 +139,20 @@ export default function KnowledgeConstellation({
     return () => cancelAnimationFrame(raf);
   }, [mounted, data]);
   if (!mounted) {
-    return (
-      <div className="h-[420px] w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)]" />
-    );
+    return <div className="rc-panel h-[420px] w-full" />;
   }
 
   if (!topics.length) {
-    return (
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 text-sm text-[var(--muted)]">
-        No knowledge nodes available yet.
-      </div>
-    );
+    return <div className="rc-panel rc-body p-6">No topic nodes available yet.</div>;
   }
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2">
-      <div className="h-[360px] w-full sm:h-[420px]">
+    <div className="rc-map-frame w-full overflow-hidden rounded-2xl p-2">
+      {/* Canvas widget has no meaningful accessibility tree of its own — the
+          identical set of links is fully available via the plain-text nav
+          rendered alongside it (TopicListItems), so this is hidden rather
+          than exposed as an unlabeled/partially-operable widget. */}
+      <div className="h-[360px] w-full sm:h-[420px]" aria-hidden="true">
         <ForceGraph2D
           ref={fgRef as any}
           graphData={data}
@@ -174,12 +190,16 @@ export default function KnowledgeConstellation({
             const fontSize = 12 / globalScale + (node.val ?? 1) * 1.5;
             const opacity = node.__labelOpacity ?? 0;
 
+            // Decorative node colors from the Resource Center palette — canvas
+            // fillStyle requires literal color values (CSS custom properties
+            // aren't usable here), so these intentionally mirror --rc-cyan,
+            // --rc-accent, and --rc-ember rather than reading them at runtime.
             const color =
               node.group === 0
-                ? "#06b6d4"
+                ? "#27b7ce" // rc-cyan
                 : node.group === 1
-                  ? "#7c3aed"
-                  : "#f97316";
+                  ? "#5b85ff" // rc-accent (dark-panel variant)
+                  : "#ff7a5c"; // rc-ember (dark-panel variant)
 
             ctx.globalAlpha = 0.95;
             ctx.beginPath();
@@ -194,7 +214,7 @@ export default function KnowledgeConstellation({
 
             ctx.globalAlpha = opacity;
             ctx.font = `${fontSize}px Sans-Serif`;
-            ctx.fillStyle = "#e5e7eb";
+            ctx.fillStyle = "#f5f3ee"; // rc-dark-ink
             ctx.textAlign = "left";
             ctx.textBaseline = "middle";
             ctx.fillText(node.title ?? "", node.x + radius + 6, node.y);
@@ -216,7 +236,10 @@ export default function KnowledgeConstellation({
         />
       </div>
 
-      <div className="mt-3 px-1 text-xs text-[var(--muted)]">Drag, zoom, and explore the knowledge map.</div>
+      <div className="rc-body-on-dark mt-3 px-1">
+        Optional: drag and click nodes to explore. Every topic is also listed as a plain link
+        {" "}alongside this map.
+      </div>
     </div>
   );
 }

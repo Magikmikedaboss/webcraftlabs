@@ -9,47 +9,33 @@ import FeaturedTool from "@/components/resources/FeaturedTool";
 import FromTheLab from "@/components/resources/FromTheLab";
 import ProjectsAndExperiments from "@/components/resources/ProjectsAndExperiments";
 import { SITE, getBaseUrl } from "@/lib/site";
+import { ACTIVE_LEARNING_PATHS, getResourcesByPath } from "@/lib/resources";
+import { LEARNING_PATH_META } from "@/lib/resourcePathMeta";
 
-
-const topicMap = [
-  {
-    title: "Synthetic Minds",
-    description: "Creative systems, new mediums, and the evolution of invention.",
-    href: "/blog/synthetic-minds-series",
-    chips: ["AI Creativity", "New Creators", "Human Bottleneck"],
-  },
-  {
-    title: "Axon",
-    description: "Research signals, knowledge systems, and structured intelligence.",
-    href: "/news/introducing-axon",
-    chips: ["Signal Over Noise", "Memory", "Research Layers"],
-  },
-  {
-    title: "Enterprise AI",
-    description: "Operational intelligence, decision chains, and the modern workflow stack.",
-    href: "/news/enterprise-ai-human-bottleneck",
-    chips: ["Agents", "Workflows", "Judgment"],
-  },
-  {
-    title: "Future Systems",
-    description: "Platforms that learn, adapt, and expand what teams can do.",
-    href: "/news/manifesto",
-    chips: ["Systems", "Automation", "Adaptation"],
-  },
-  {
-    title: "Human + AI Creativity",
-    description: "The interface between taste, language, and machine-assisted exploration.",
-    href: "/blog/what-is-synthetic-minds",
-    chips: ["Co-Creation", "Experimentation", "Ideas"],
-  },
-] as const;
+/**
+ * Topic map nodes are now derived directly from the real learning paths —
+ * previously this was a hand-maintained list that pointed two of its five
+ * entries at News announcements framed as evergreen topics, and one at the
+ * 92-word what-is-synthetic-minds stub. Every node here links to a real,
+ * server-rendered path page with a real resource count.
+ */
+const topicMap = ACTIVE_LEARNING_PATHS.map((path) => {
+  const meta = LEARNING_PATH_META[path];
+  const count = getResourcesByPath(path).length;
+  return {
+    title: meta.label,
+    description: meta.description,
+    href: `/knowledge/paths/${path}`,
+    chips: [`${count} ${count === 1 ? "resource" : "resources"}`],
+  };
+});
 
 function TopicListItems() {
   return (
     <>
       {topicMap.map((t) => (
         <li key={t.title}>
-          <Link href={t.href} className="block rounded px-2 py-1 text-sm text-[var(--muted)] hover:bg-[var(--bg)]">
+          <Link href={t.href} className="rc-inline-link block rounded px-2 py-1 text-sm no-underline">
             {t.title}
           </Link>
         </li>
@@ -88,14 +74,13 @@ export default function KnowledgePage() {
 
         <LearningPaths />
 
-        <section id="map" className="mx-auto max-w-7xl px-6 py-14">
+        <section id="discover" className="rc-canvas mx-auto max-w-7xl px-6 py-14">
           <div className="mb-8 max-w-3xl">
-            <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
-              Topic Constellation
-            </span>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Interactive Constellation</h2>
-            <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-              An interactive view revealing relationships between ideas — drag, zoom, and open topics from the map.
+            <span className="rc-eyebrow">Topic Map</span>
+            <h2 className="rc-h2 mt-4">Browse by topic</h2>
+            <p className="rc-body mt-3">
+              Every path below is also a real, server-rendered page — the visual map is an optional
+              way to browse the same links, not the only way to find them.
             </p>
           </div>
 
@@ -105,7 +90,7 @@ export default function KnowledgePage() {
             </div>
 
             <div className="flex flex-col gap-3">
-              <details className="lg:hidden rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
+              <details className="rc-panel-muted lg:hidden">
                 <summary className="cursor-pointer text-sm font-semibold">Topics</summary>
                 <ul className="mt-3 flex flex-col gap-2">
                   <TopicListItems />
