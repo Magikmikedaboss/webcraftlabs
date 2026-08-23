@@ -42,6 +42,7 @@ export async function GET() {
     `- Services overview: ${baseUrl}/services`,
     `- Custom website development: ${baseUrl}/services/custom-website-development`,
     `- SaaS platform development: ${baseUrl}/services/saas-platform-development`,
+    `- AI & Automation: ${baseUrl}/services/ai-automation`,
     `- Landing pages + funnels: ${baseUrl}/services/landing-pages-funnels`,
     `- SEO + technical optimization: ${baseUrl}/services/seo-technical-optimization`,
     `- Las Vegas web design: ${baseUrl}/las-vegas-web-design`,

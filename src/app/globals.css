@@ -193,3 +193,26 @@ body {
   animation: fadeIn 0.2s ease-in-out;
 }
 
+/* ===========================
+   Reduced Motion
+   =========================== */
+/*
+ * Collapse durations to near-zero rather than setting animation/transition
+ * to "none". "none" can strand an element at its keyframe's starting state
+ * (e.g. a fade-in that starts at opacity: 0 would never reach opacity: 1),
+ * which is exactly the "remains hidden" failure mode this must avoid.
+ * Near-zero duration still runs the animation/transition to completion —
+ * just imperceptibly fast — so end states, visibility, and any menu/focus
+ * behavior driven by those end states are unaffected.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

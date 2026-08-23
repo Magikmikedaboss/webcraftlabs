@@ -106,6 +106,7 @@ export default function BuildCalculatorClient() {
     <SiteShell
       title="Website Cost Calculator"
       intro="Get an instant, accurate quote for your website project. Select your pages, design level, and features below. When ready, send your personalized quote request to start building."
+      breadcrumbs={[{ label: "Home", href: "/" }, { label: "Build Calculator" }]}
     >
       <div className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid gap-6 lg:grid-cols-[1fr,384px]">

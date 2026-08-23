@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `SaaS Platform Development Services | ${SITE.name}`,
+  title: "SaaS Platform Development Services",
   description:
     "SaaS platform development services for MVPs, dashboards, authentication, billing, subscriptions, customer workflows, and scalable product foundations.",
   alternates: {
@@ -95,6 +95,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "SaaS Platform Development Services",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "SaaS Platform Development" },
+  ],
   shellIntro:
     "Launch and grow SaaS products with clean architecture, secure user flows, dashboards, billing, and scalable product foundations.",
   hero: {
@@ -184,9 +189,9 @@ const config: ServicePageConfig = {
     { href: "/services/custom-website-development", label: "Custom Website Development" },
     { href: "/services/seo-technical-optimization", label: "SEO + Technical Optimization" },
     { href: "/services/landing-pages-funnels", label: "Landing Pages + Funnels" },
-    { href: "/services/las-vegas-saas-platform-development", label: "Las Vegas SaaS Platform Development" },
+    { href: "/las-vegas-web-design#saas-platform-development", label: "Las Vegas SaaS Platform Development" },
     {
-      href: "/services/las-vegas-custom-website-development",
+      href: "/las-vegas-web-design#custom-website-development",
       label: "Las Vegas Custom Website Development",
     },
   ],

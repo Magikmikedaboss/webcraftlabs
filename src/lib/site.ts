@@ -14,36 +14,61 @@ export const SITE = {
     label: "Las Vegas, NV & Remote",
   },
   nav: [
-    { href: "/about", label: "About" },
-    { href: "/knowledge", label: "Knowledge" },
-    { href: "/build", label: "Build" },
     { href: "/services", label: "Services" },
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/blog", label: "Blog" },
-    { href: "/archive", label: "Archive" },
-    { href: "/news", label: "News" },
+    { href: "/portfolio", label: "Work" },
+    { href: "/knowledge", label: "Resources" },
+    { href: "/build", label: "Build Calculator" },
+    { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ],
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcraftlabz.com",
 } as const;
 
 /**
+ * Archive is intentionally excluded from SITE.nav and HEADER_NAV — it's a
+ * speculative-fiction project, not a commercial or resource destination, and
+ * is surfaced only as a distinctly labeled, visually subordinate footer link
+ * (see SiteShell's footer). Do not add it back to primary navigation.
+ */
+export const ARCHIVE_FOOTER_LINK = {
+  href: "/archive",
+  label: "WebCraft Archive — a speculative fiction project",
+} as const;
+
+/**
  * Explicit header navigation groups so the desktop header is never coupled
  * to the order of SITE.nav. Update here when header layout changes.
+ *
+ * Desktop order: Services, Work, Resources, Build Calculator, About, Contact.
+ * Contact stays the visually prominent CTA button rendered last.
  */
 export const HEADER_NAV = {
-  /** Standalone link rendered first in the desktop header */
-  standalone: { href: "/about", label: "About" },
-  /** Items collapsed into the "Explore" dropdown */
-  dropdown: [
-    { href: "/knowledge", label: "Knowledge" },
-    { href: "/build", label: "Build" },
-    { href: "/services", label: "Services" },
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/blog", label: "Blog" },
-    { href: "/archive", label: "Archive" },
-    { href: "/news", label: "News" },
-  ],
+  services: {
+    label: "Services",
+    items: [
+      { href: "/las-vegas-web-design", label: "Websites & Local Growth" },
+      { href: "/services/saas-platform-development", label: "Custom Software & SaaS" },
+      { href: "/services/ai-automation", label: "AI & Automation" },
+    ],
+  },
+  work: { href: "/portfolio", label: "Work" },
+  /**
+   * Phase 2 intentionally ships only destinations that exist and work today.
+   * Developer Guides, Business Growth, dedicated AI & Automation resources,
+   * and Tools & Templates are deferred to the Phase 3 Resource Center
+   * transformation rather than linked here as placeholders.
+   */
+  resources: {
+    label: "Resources",
+    items: [
+      { href: "/knowledge", label: "Resource Center" },
+      { href: "/knowledge#paths", label: "Learning Paths" },
+      { href: "/blog", label: "Blog" },
+      { href: "/news", label: "News" },
+    ],
+  },
+  buildCalculator: { href: "/build", label: "Build Calculator" },
+  about: { href: "/about", label: "About" },
   /** Primary CTA button rendered last in the desktop header */
   cta: { href: "/contact", label: "Contact" },
 };

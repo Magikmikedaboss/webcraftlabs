@@ -1,6 +1,7 @@
 import SiteShell from "@/components/SiteShell";
 import Link from "next/link";
 import Image from "next/image";
+import ProcessSteps from "@/components/ProcessSteps";
 import { SITE, getBaseUrl } from "@/lib/site";
 
 const baseUrl = getBaseUrl();
@@ -66,6 +67,18 @@ const SERVICES = [
     icon: (
       <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h10M4 17h16" />
+      </svg>
+    ),
+  },
+  {
+    title: "AI & Automation",
+    text: "Practical workflow automation and AI-assisted systems — built with clear limitations and human review.",
+    href: "/services/ai-automation",
+    bullets: ["Workflow automation", "AI-assisted tools where justified", "Human-review checkpoints"],
+    audience: "teams that want less manual work, not more hype",
+    icon: (
+      <svg className="h-5 w-5 text-[var(--primary)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
       </svg>
     ),
   },
@@ -289,43 +302,17 @@ export default function ServicesPage() {
 
       {/* Process Section */}
       <section className="mx-auto max-w-7xl px-6 pb-16">
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <div className="text-xs uppercase tracking-wider opacity-70">How it works</div>
-          <h3 className="mt-2 text-xl font-semibold">A simple process that stays sharp.</h3>
-          <p className="mt-2 max-w-3xl text-sm opacity-80">
-            Premium doesn’t mean complicated. It means fewer surprises, clear milestones, and a site that performs.
-          </p>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-4">
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-              <div className="text-sm font-semibold">1) Strategy</div>
-              <div className="mt-1 text-sm opacity-80">Goals, offers, pages, and conversion plan.</div>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-              <div className="text-sm font-semibold">2) Design</div>
-              <div className="mt-1 text-sm opacity-80">Premium UI, brand feel, and layout system.</div>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-              <div className="text-sm font-semibold">3) Build</div>
-              <div className="mt-1 text-sm opacity-80">Responsive, fast, SEO-ready development.</div>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-              <div className="text-sm font-semibold">4) Launch + Improve</div>
-              <div className="mt-1 text-sm opacity-80">Tracking, iteration, and growth sprints.</div>
-            </div>
+        <ProcessSteps />
+        <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 md:flex-row md:items-center md:justify-between">
+          <div className="text-sm opacity-80">
+            Want the fastest path? Start with a marketing website, then add funnels + tracking.
           </div>
-
-          <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="text-sm opacity-80">
-              Want the fastest path? Start with a marketing website, then add funnels + tracking.
-            </div>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold hover:bg-[var(--hoverSurface)]"
-            >
-              Book a quick consult →
-            </Link>
-          </div>
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold hover:bg-[var(--hoverSurface)]"
+          >
+            Book a quick consult →
+          </Link>
         </div>
       </section>
 
@@ -337,10 +324,10 @@ export default function ServicesPage() {
           </p>
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
             <Link href="/las-vegas-web-design" className="text-[var(--primary)] hover:underline">Las Vegas Web Design</Link>
-            <Link href="/services/las-vegas-custom-website-development" className="text-[var(--primary)] hover:underline">Las Vegas Custom Website Development</Link>
-            <Link href="/services/las-vegas-landing-pages-funnels" className="text-[var(--primary)] hover:underline">Las Vegas Landing Pages + Funnels</Link>
-            <Link href="/services/las-vegas-seo-technical-optimization" className="text-[var(--primary)] hover:underline">Las Vegas SEO + Technical Optimization</Link>
-            <Link href="/services/las-vegas-saas-platform-development" className="text-[var(--primary)] hover:underline">Las Vegas SaaS Platform Development</Link>
+            <Link href="/las-vegas-web-design#custom-website-development" className="text-[var(--primary)] hover:underline">Las Vegas Custom Website Development</Link>
+            <Link href="/las-vegas-web-design#landing-pages-funnels" className="text-[var(--primary)] hover:underline">Las Vegas Landing Pages + Funnels</Link>
+            <Link href="/las-vegas-web-design#seo-technical-optimization" className="text-[var(--primary)] hover:underline">Las Vegas SEO + Technical Optimization</Link>
+            <Link href="/las-vegas-web-design#saas-platform-development" className="text-[var(--primary)] hover:underline">Las Vegas SaaS Platform Development</Link>
           </div>
         </div>
       </section>

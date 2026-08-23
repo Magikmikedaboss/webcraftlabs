@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `Custom Website Development Services | ${SITE.name}`,
+  title: "Custom Website Development Services",
   description:
     "Custom website development services for businesses that need fast, scalable, SEO-friendly websites built to generate leads and grow online.",
   alternates: {
@@ -95,6 +95,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "Custom Website Development Services",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "Custom Website Development" },
+  ],
   shellIntro:
     "Fast, scalable, SEO-friendly websites built to help your business attract customers, generate leads, and grow online.",
   hero: {
@@ -176,7 +181,7 @@ const config: ServicePageConfig = {
     { href: "/services/seo-technical-optimization", label: "SEO + Technical Optimization" },
     { href: "/services/landing-pages-funnels", label: "Landing Pages + Funnels" },
     { href: "/services/saas-platform-development", label: "SaaS Platform Development" },
-    { href: "/services/las-vegas-custom-website-development", label: "Las Vegas Custom Website Development" },
+    { href: "/las-vegas-web-design#custom-website-development", label: "Las Vegas Custom Website Development" },
     { href: "/las-vegas-web-design", label: "Las Vegas Web Design" },
   ],
   cta: {

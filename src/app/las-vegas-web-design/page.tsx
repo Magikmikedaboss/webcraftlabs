@@ -4,13 +4,14 @@ import Link from "next/link";
 import Script from "next/script";
 
 import SiteShell from "@/components/SiteShell";
+import ProcessSteps from "@/components/ProcessSteps";
 import { getBaseUrl, SITE } from "@/lib/site";
 
 const baseUrl = getBaseUrl();
 const socialImage = `${baseUrl}/images/modern-computer-display-on-an-office-desk-with-a-web-design.webp`;
 
 export const metadata: Metadata = {
-  title: `Las Vegas Web Design | ${SITE.name}`,
+  title: "Las Vegas Web Design",
   description:
     "Custom Las Vegas web design and website development for service businesses, startups, and growing brands. Fast, SEO-ready websites built to convert.",
   alternates: {
@@ -69,6 +70,11 @@ export default function LasVegasWebDesignPage() {
       </Script>
 
       <SiteShell
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Services", href: "/services" },
+          { label: "Las Vegas Web Design" },
+        ]}
         title={
           <span className="inline-flex flex-col gap-3">
             <span className="inline-block self-start rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
@@ -192,16 +198,161 @@ export default function LasVegasWebDesignPage() {
 
         <section className="mx-auto max-w-7xl px-6 pb-16">
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-            <h2 className="text-2xl font-bold">Local specialized service pages</h2>
+            <h2 className="text-2xl font-bold">Service areas</h2>
             <p className="mt-3 text-sm text-[var(--muted)]">
-              Need a more specific service path? Use these local pages to jump straight to the right offer.
+              Based in Las Vegas, working with businesses across the valley.
             </p>
-            <div className="mt-4 flex flex-wrap gap-3 text-sm">
-              <Link href="/services/las-vegas-custom-website-development" className="text-[var(--primary)] hover:underline">Las Vegas Custom Website Development</Link>
-              <Link href="/services/las-vegas-landing-pages-funnels" className="text-[var(--primary)] hover:underline">Las Vegas Landing Pages + Funnels</Link>
-              <Link href="/services/las-vegas-seo-technical-optimization" className="text-[var(--primary)] hover:underline">Las Vegas SEO + Technical Optimization</Link>
-              <Link href="/services/las-vegas-saas-platform-development" className="text-[var(--primary)] hover:underline">Las Vegas SaaS Platform Development</Link>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Las Vegas", "Henderson", "Summerlin", "North Las Vegas"].map((area) => (
+                <span
+                  key={area}
+                  className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-sm text-[var(--text)]"
+                >
+                  {area}
+                </span>
+              ))}
             </div>
+          </div>
+        </section>
+
+        {/* Jump links to the service sections below — these anchors are the
+            permanent redirect targets for the four retired local service URLs. */}
+        <section className="mx-auto max-w-7xl px-6 pb-8">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <h2 className="text-lg font-semibold">Jump to a specific service</h2>
+            <div className="mt-4 flex flex-wrap gap-3 text-sm">
+              <Link href="#custom-website-development" className="text-[var(--primary)] hover:underline">Custom Website Development</Link>
+              <Link href="#landing-pages-funnels" className="text-[var(--primary)] hover:underline">Landing Pages + Funnels</Link>
+              <Link href="#saas-platform-development" className="text-[var(--primary)] hover:underline">SaaS Platform Development</Link>
+              <Link href="#seo-technical-optimization" className="text-[var(--primary)] hover:underline">SEO + Technical Optimization</Link>
+            </div>
+          </div>
+        </section>
+
+        <section id="custom-website-development" className="mx-auto max-w-7xl scroll-mt-24 px-6 pb-16">
+          <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 shadow-sm md:p-10">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Las Vegas Custom Website Development</h2>
+            <p className="mt-4 text-base leading-relaxed text-[var(--muted)]">
+              Custom website development for Las Vegas businesses that need stronger visibility, better conversion flow, and scalable website structure — not another template site.
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
+              We build custom websites for Las Vegas service businesses, contractors, and local brands. Focus areas include page speed, local SEO architecture, and clear conversion paths from every page.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-[var(--muted)]">
+              <li>• Custom design and structure built around your services and customers</li>
+              <li>• Local SEO foundations from the first line of code</li>
+              <li>• Mobile-first performance and Core Web Vitals attention</li>
+            </ul>
+            <Link href="/contact" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+              Talk about your website →
+            </Link>
+          </div>
+        </section>
+
+        <section id="landing-pages-funnels" className="mx-auto max-w-7xl scroll-mt-24 px-6 pb-16">
+          <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 shadow-sm md:p-10">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Las Vegas Landing Pages + Funnels</h2>
+            <p className="mt-4 text-base leading-relaxed text-[var(--muted)]">
+              Conversion-focused local landing pages and funnels for Las Vegas campaigns, quote requests, and booked calls.
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
+              We build focused landing pages for Las Vegas service offers, ad campaigns, and lead funnels — each one structured for mobile conversion and measurable campaign performance.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-[var(--muted)]">
+              <li>• Offer-first layout built for paid traffic and promotions</li>
+              <li>• Form and CRM integration for lead capture</li>
+              <li>• Clean tracking so you can see what&apos;s actually working</li>
+            </ul>
+            <Link href="/contact" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+              Talk about your campaign →
+            </Link>
+          </div>
+        </section>
+
+        <section id="saas-platform-development" className="mx-auto max-w-7xl scroll-mt-24 px-6 pb-16">
+          <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 shadow-sm md:p-10">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Las Vegas SaaS Platform Development</h2>
+            <p className="mt-4 text-base leading-relaxed text-[var(--muted)]">
+              SaaS MVP and platform development for Las Vegas teams building digital products, portals, and subscription experiences.
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
+              We help local founders and teams design MVP scope, build core SaaS workflows, and launch platform foundations that can scale with customer demand.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-[var(--muted)]">
+              <li>• MVP scoping and technical architecture</li>
+              <li>• User authentication, dashboards, and subscription billing</li>
+              <li>• A foundation built to scale past launch</li>
+            </ul>
+            <Link href="/services/saas-platform-development" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+              See full SaaS platform details →
+            </Link>
+          </div>
+        </section>
+
+        <section id="seo-technical-optimization" className="mx-auto max-w-7xl scroll-mt-24 px-6 pb-16">
+          <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 shadow-sm md:p-10">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Las Vegas SEO + Technical Optimization</h2>
+            <p className="mt-4 text-base leading-relaxed text-[var(--muted)]">
+              Technical SEO and local optimization for Las Vegas websites that need better rankings, speed, and search-ready structure.
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
+              We improve your Las Vegas search footprint with better indexation, stronger internal linking, and performance-focused page architecture that supports both service and location intent.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-[var(--muted)]">
+              <li>• Technical SEO audit and fixes (crawlability, metadata, structure)</li>
+              <li>• Internal linking built around real search intent</li>
+              <li>• Core Web Vitals and page-speed improvements</li>
+            </ul>
+            <Link href="/services/seo-technical-optimization" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+              See full SEO service details →
+            </Link>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 pb-16">
+          <ProcessSteps />
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 pb-16">
+          <div className="mb-8 max-w-2xl">
+            <h2 className="text-2xl font-bold tracking-tight">Frequently asked questions</h2>
+          </div>
+          <div className="space-y-4">
+            {[
+              {
+                q: "Do you only work with businesses in Las Vegas proper?",
+                a: "No — we work with businesses across the valley, including Henderson, Summerlin, and North Las Vegas, as well as remote clients outside Nevada.",
+              },
+              {
+                q: "Can you redesign my existing site instead of starting over?",
+                a: "Yes. If your current site has a reasonable foundation, we can often improve structure, speed, and conversion without a full rebuild.",
+              },
+              {
+                q: "How is this different from a generic template site?",
+                a: "Templates get you online quickly but rarely match how your business actually explains itself or converts visitors. We build around your specific services, customers, and local search intent.",
+              },
+              {
+                q: "What if I need a SaaS platform or AI automation instead of a marketing website?",
+                a: "That's covered too — see our SaaS Platform Development and AI & Automation service pages for the software side of what we build.",
+              },
+            ].map((faq) => (
+              <div key={faq.q} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
+                <h3 className="font-semibold">{faq.q}</h3>
+                <p className="mt-2 text-sm text-[var(--muted)]">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 pb-16">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <h2 className="text-lg font-semibold">See related work</h2>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              Browse recent website and software projects in our portfolio.
+            </p>
+            <Link href="/portfolio" className="mt-4 inline-flex items-center text-sm font-semibold text-[var(--primary)] hover:underline">
+              View the portfolio →
+            </Link>
           </div>
         </section>
 

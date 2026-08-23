@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
+import type { BreadcrumbItem } from "@/components/Breadcrumbs";
 import { SITE } from "@/lib/site";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -38,6 +39,8 @@ export interface ServicePageConfig {
   // SiteShell props
   shellTitle: string;
   shellIntro: string;
+  /** Rendered above the title via SiteShell. Home > Services > [this page]. */
+  breadcrumbs?: BreadcrumbItem[];
 
   // Optional hero image
   hero?: { src: string; alt: string };
@@ -136,7 +139,7 @@ export default function ServicePageTemplate({ config: c }: { config: ServicePage
   const faqJsonLd = buildFaqJsonLd(c.faqs);
 
   return (
-    <SiteShell title={c.shellTitle} intro={c.shellIntro}>
+    <SiteShell title={c.shellTitle} intro={c.shellIntro} breadcrumbs={c.breadcrumbs}>
       {faqJsonLd && (
         <script
           id="service-faq-jsonld"

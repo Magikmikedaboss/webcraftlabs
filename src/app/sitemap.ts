@@ -81,30 +81,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     },
     {
-      url: `${baseUrl}/services/las-vegas-custom-website-development`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.84,
-    },
-    {
-      url: `${baseUrl}/services/las-vegas-landing-pages-funnels`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.83,
-    },
-    {
-      url: `${baseUrl}/services/las-vegas-seo-technical-optimization`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.83,
-    },
-    {
-      url: `${baseUrl}/services/las-vegas-saas-platform-development`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/portfolio`,
       lastModified,
       changeFrequency: 'monthly',
@@ -163,6 +139,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified,
       changeFrequency: 'monthly',
       priority: 0.78,
+    },
+    {
+      url: `${baseUrl}/services/ai-automation`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/services/seo-technical-optimization`,

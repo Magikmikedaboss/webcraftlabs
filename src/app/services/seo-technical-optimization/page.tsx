@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `SEO + Technical Optimization Services | ${SITE.name}`,
+  title: "SEO + Technical Optimization Services",
   description:
     "Technical SEO services for faster websites, better indexing, stronger internal linking, Core Web Vitals, schema markup, and local search visibility.",
   alternates: {
@@ -95,6 +95,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "SEO + Technical Optimization Services",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "SEO + Technical Optimization" },
+  ],
   shellIntro:
     "Improve search visibility with technical SEO, faster pages, cleaner site structure, stronger internal linking, and local search foundations.",
   hero: {
@@ -184,11 +189,11 @@ const config: ServicePageConfig = {
     { href: "/services/landing-pages-funnels", label: "Landing Pages + Funnels" },
     { href: "/las-vegas-web-design", label: "Las Vegas Web Design" },
     {
-      href: "/services/las-vegas-seo-technical-optimization",
+      href: "/las-vegas-web-design#seo-technical-optimization",
       label: "Las Vegas SEO + Technical Optimization",
     },
     {
-      href: "/services/las-vegas-custom-website-development",
+      href: "/las-vegas-web-design#custom-website-development",
       label: "Las Vegas Custom Website Development",
     },
   ],

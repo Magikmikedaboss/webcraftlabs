@@ -5,7 +5,7 @@ import ServicePageTemplate, { type ServicePageConfig } from "@/components/servic
 const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
-  title: `Landing Page Design + Sales Funnels | ${SITE.name}`,
+  title: "Landing Page Design + Sales Funnels",
   description:
     "Landing page design and funnel development for lead generation, paid ads, service offers, launches, and conversion-focused campaigns.",
   alternates: {
@@ -95,6 +95,11 @@ const faqs = [
 
 const config: ServicePageConfig = {
   shellTitle: "Landing Page Design + Sales Funnels",
+  breadcrumbs: [
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "Landing Pages + Funnels" },
+  ],
   shellIntro:
     "Conversion-focused landing pages and funnels built to turn campaign traffic into leads, bookings, quote requests, and sales opportunities.",
   hero: {
@@ -185,9 +190,9 @@ const config: ServicePageConfig = {
     { href: "/services/seo-technical-optimization", label: "SEO + Technical Optimization" },
     { href: "/services/custom-website-development", label: "Custom Website Development" },
     { href: "/las-vegas-web-design", label: "Las Vegas Web Design" },
-    { href: "/services/las-vegas-landing-pages-funnels", label: "Las Vegas Landing Pages + Funnels" },
+    { href: "/las-vegas-web-design#landing-pages-funnels", label: "Las Vegas Landing Pages + Funnels" },
     {
-      href: "/services/las-vegas-seo-technical-optimization",
+      href: "/las-vegas-web-design#seo-technical-optimization",
       label: "Las Vegas SEO + Technical Optimization",
     },
   ],

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { FaLinkedin } from "react-icons/fa";
-import { SITE, HEADER_NAV } from "@/lib/site";
+import { SITE, HEADER_NAV, ARCHIVE_FOOTER_LINK } from "@/lib/site";
 import styles from "./siteShell.module.css";
 import React, { useState, useRef, useId } from "react";
 import MobileMenu from "./MobileMenu";
@@ -9,6 +9,7 @@ import Image from "next/image";
 import PoweredBy from "./PoweredBy";
 import ThemeToggle from "./ThemeToggle";
 import TrackedMailtoLink from "./analytics/TrackedMailtoLink";
+import Breadcrumbs, { type BreadcrumbItem } from "./Breadcrumbs";
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
@@ -86,6 +87,7 @@ export default function SiteShell({
   background = 'surface', // 'surface' (light) or 'bg' (theme default)
   asMain = true,
   showArchiveQuote = false,
+  breadcrumbs,
 }: {
   children: React.ReactNode;
   title?: React.ReactNode;
@@ -95,6 +97,8 @@ export default function SiteShell({
   /** Set to false when the page already provides its own <main> landmark. Defaults to true. */
   asMain?: boolean;
   showArchiveQuote?: boolean;
+  /** Rendered above the title/intro section. Omit on the homepage. */
+  breadcrumbs?: BreadcrumbItem[];
 }) {
   const bgClass = background === 'surface' ? 'bg-[var(--surface)]' : 'bg-[var(--bg)]';
   return (
@@ -113,13 +117,14 @@ export default function SiteShell({
             <span>{SITE.name}</span>
           </Link>
 
-          {/* Desktop Navigation — groups defined in HEADER_NAV (site.ts) */}
+          {/* Desktop Navigation — groups defined in HEADER_NAV (site.ts).
+              Order: Services, Work, Resources, Build Calculator, About, Contact. */}
           <nav className="hidden items-center gap-1 md:flex">
-            <NavLink href={HEADER_NAV.standalone.href} label={HEADER_NAV.standalone.label} />
-            <DropdownNav
-              label="Explore"
-              items={HEADER_NAV.dropdown}
-            />
+            <DropdownNav label={HEADER_NAV.services.label} items={HEADER_NAV.services.items} />
+            <NavLink href={HEADER_NAV.work.href} label={HEADER_NAV.work.label} />
+            <DropdownNav label={HEADER_NAV.resources.label} items={HEADER_NAV.resources.items} />
+            <NavLink href={HEADER_NAV.buildCalculator.href} label={HEADER_NAV.buildCalculator.label} />
+            <NavLink href={HEADER_NAV.about.href} label={HEADER_NAV.about.label} />
             <Link
               href={HEADER_NAV.cta.href}
               className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-white shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
@@ -143,6 +148,7 @@ export default function SiteShell({
 
       {asMain ? (
         <main>
+          {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
           {(title || intro) && (
             <section className="border-b border-[var(--border)]">
               <div className="mx-auto max-w-7xl px-6 py-8">
@@ -155,6 +161,7 @@ export default function SiteShell({
         </main>
       ) : (
         <div>
+          {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
           {(title || intro) && (
             <section className="border-b border-[var(--border)]">
               <div className="mx-auto max-w-7xl px-6 py-8">
@@ -207,6 +214,14 @@ export default function SiteShell({
             </div>
             {/* Example of PoweredBy badge - you can remove this from your own site and give to clients */}
             <PoweredBy variant="light" size="sm" />
+            {/* Archive is deliberately not part of primary navigation or SITE.nav —
+                surfaced here only, clearly labeled as a creative/fiction project. */}
+            <Link
+              href={ARCHIVE_FOOTER_LINK.href}
+              className="text-[10px] sm:text-xs text-[var(--muted)] italic hover:text-[var(--primary)] transition"
+            >
+              {ARCHIVE_FOOTER_LINK.label}
+            </Link>
           </div>
           {/** Optional archive-specific quote — controlled by page component */}
           {showArchiveQuote && (
