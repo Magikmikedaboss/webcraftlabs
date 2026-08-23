@@ -76,3 +76,162 @@ describe("BlogFrontmatterSchema — Resource Center taxonomy", () => {
     });
   });
 });
+
+describe("BlogFrontmatterSchema — conditional Archive taxonomy (Phase 3.5)", () => {
+  it("requires archiveCollection whenever collection is webcraft-archive", () => {
+    const result = BlogFrontmatterSchema.safeParse({ ...base, collection: "webcraft-archive" });
+    expect(result.success).toBe(false);
+  });
+
+  describe("archive-universe", () => {
+    const archiveUniverseBase = {
+      ...base,
+      collection: "webcraft-archive",
+      archiveCollection: "archive-universe",
+    };
+
+    it("accepts a valid archive-universe document with archiveId and mystery", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...archiveUniverseBase,
+        archiveId: "Investigation 999",
+        mystery: "What happened here?",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("rejects archive-universe without archiveId", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...archiveUniverseBase,
+        mystery: "What happened here?",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects archive-universe without mystery", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...archiveUniverseBase,
+        archiveId: "Treatise III",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("still enforces the archiveId prefix allowlist", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...archiveUniverseBase,
+        archiveId: "Series — Episode 1",
+        mystery: "A fabricated institutional ID should not be accepted here.",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("does not require series/seriesOrder/workType", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...archiveUniverseBase,
+        archiveId: "Orientation",
+        mystery: "Where do I begin?",
+      });
+      expect(result.success).toBe(true);
+    });
+  });
+
+  describe("synthetic-minds", () => {
+    const syntheticMindsBase = {
+      ...base,
+      collection: "webcraft-archive",
+      archiveCollection: "synthetic-minds",
+    };
+
+    it("accepts a valid Synthetic Minds episode with no institutional fields", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...syntheticMindsBase,
+        series: "Synthetic Minds",
+        seriesOrder: 1,
+        workType: "series-episode",
+      });
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.archiveId).toBeUndefined();
+        expect(result.data.mystery).toBeUndefined();
+      }
+    });
+
+    it("does not require archiveId", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...syntheticMindsBase,
+        series: "Synthetic Minds",
+        seriesOrder: 2,
+        workType: "series-episode",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("does not require mystery", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...syntheticMindsBase,
+        series: "Synthetic Minds",
+        seriesOrder: 3,
+        workType: "series-episode",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("rejects a missing or mismatched series value", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...syntheticMindsBase,
+        seriesOrder: 1,
+        workType: "series-episode",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects a missing seriesOrder", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...syntheticMindsBase,
+        series: "Synthetic Minds",
+        workType: "series-episode",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects a non-positive or non-integer seriesOrder", () => {
+      expect(
+        BlogFrontmatterSchema.safeParse({
+          ...syntheticMindsBase,
+          series: "Synthetic Minds",
+          seriesOrder: 0,
+          workType: "series-episode",
+        }).success
+      ).toBe(false);
+      expect(
+        BlogFrontmatterSchema.safeParse({
+          ...syntheticMindsBase,
+          series: "Synthetic Minds",
+          seriesOrder: 1.5,
+          workType: "series-episode",
+        }).success
+      ).toBe(false);
+    });
+
+    it("rejects a workType other than series-episode", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...syntheticMindsBase,
+        series: "Synthetic Minds",
+        seriesOrder: 1,
+        workType: "experiment",
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("contentWarnings", () => {
+    it("accepts an array of trimmed, non-empty strings", () => {
+      const result = BlogFrontmatterSchema.safeParse({ ...base, contentWarnings: ["mild peril"] });
+      expect(result.success).toBe(true);
+    });
+
+    it("rejects an empty-string entry rather than allowing a vague catch-all", () => {
+      const result = BlogFrontmatterSchema.safeParse({ ...base, contentWarnings: [""] });
+      expect(result.success).toBe(false);
+    });
+  });
+});

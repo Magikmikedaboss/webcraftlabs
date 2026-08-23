@@ -15,6 +15,34 @@ import { LEARNING_PATH_META, isRecommendedStartValid } from "./resourcePathMeta"
 
 const ARCHIVE_COLLECTION = "webcraft-archive";
 
+describe("getAllResources — Phase 3.5 Archive move regression", () => {
+  it("the Synthetic Minds series overview remains eligible for the Resource Center", () => {
+    const all = getAllResources();
+    expect(all.some((r) => r.slug === "synthetic-minds-series")).toBe(true);
+  });
+
+  it("no Synthetic Minds episode ever appears (only the Blog-collection overview is eligible)", () => {
+    const all = getAllResources();
+    const episodeSlugs = [
+      "episode-1-first-spark",
+      "episode-2-alien-ideas",
+      "episode-3-thinking-with-something-else",
+      "episode-4-the-unexpected",
+      "episode-5-human-bottleneck",
+      "episode-6-the-new-creators",
+    ];
+    for (const slug of episodeSlugs) {
+      expect(all.some((r) => r.slug === slug)).toBe(false);
+    }
+  });
+
+  it("no institutional Archive Universe document ever appears", () => {
+    const all = getAllResources();
+    expect(all.some((r) => r.slug === "welcome-to-the-archive")).toBe(false);
+    expect(all.some((r) => r.slug === "the-silent-vault")).toBe(false);
+  });
+});
+
 describe("getAllResources", () => {
   it("never includes webcraft-archive collection documents", () => {
     const all = getAllResources();
