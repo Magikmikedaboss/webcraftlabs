@@ -15,6 +15,7 @@ export const ACTIVE_LEARNING_PATHS = [
   "ai-workflow-automation",
   "websites-that-grow-businesses",
   "experiments-emerging-ideas",
+  "building-software-products",
 ] as const satisfies readonly (typeof LEARNING_PATHS)[number][];
 
 export type ActiveLearningPath = (typeof ACTIVE_LEARNING_PATHS)[number];

@@ -1,0 +1,182 @@
+---
+title: "MVP vs. Prototype vs. Production Application: What's the Difference (and Which Do You Need)?"
+description: >-
+  A prototype, an MVP, and a production application solve different problems.
+  Here's how to tell which one you actually need before you scope a build.
+summary: >-
+  Prototype, MVP, and production application are not interchangeable words —
+  they're three different stages with three different jobs. Here's how to
+  tell which one you actually need.
+date: '2026-08-23'
+author: WebCraft Labz
+tags:
+  - saas
+  - mvp
+  - product-strategy
+  - software-development
+collection: blog
+resourceType: guide
+audience: [founders, business-owners]
+learningPath: building-software-products
+difficulty: beginner
+relatedService: /services/saas-platform-development
+---
+
+If you've talked to more than one developer or agency about building something, you've probably heard "prototype," "MVP," and "production application" used almost interchangeably.
+
+They're not the same thing.
+
+Each one answers a different question and represents a different amount of real engineering work. Asking for one when you actually need another is one of the more common — and more expensive — mistakes we see founders make before a build even starts.
+
+This guide walks through what each stage actually is, what it's for, and how to tell which one you need right now.
+
+<div style={{ overflowX: "auto", margin: "2rem 0" }}>
+<table style={{ width: "100%", minWidth: "640px", borderCollapse: "collapse", fontSize: "0.95rem" }}>
+<thead>
+<tr>
+<th style={{ textAlign: "left", padding: "0.75rem 1rem", borderBottom: "2px solid var(--border)", color: "var(--text)" }}></th>
+<th style={{ textAlign: "left", padding: "0.75rem 1rem", borderBottom: "2px solid var(--border)", color: "var(--text)" }}>Prototype</th>
+<th style={{ textAlign: "left", padding: "0.75rem 1rem", borderBottom: "2px solid var(--border)", color: "var(--text)" }}>MVP</th>
+<th style={{ textAlign: "left", padding: "0.75rem 1rem", borderBottom: "2px solid var(--border)", color: "var(--text)" }}>Production Application</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--text)", fontWeight: 700 }}>Answers</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Does this idea make sense?</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Will real customers actually use this?</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Can this hold up under real, ongoing use?</td>
+</tr>
+<tr>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--text)", fontWeight: 700 }}>Real backend / data?</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>No — often simulated or hardcoded</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Yes — real accounts, real persisted data</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Yes, plus hardening for edge cases and scale</td>
+</tr>
+<tr>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--text)", fontWeight: 700 }}>Meant to be disposable?</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>Yes, by design</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>No — it's the foundation you build on next</td>
+<td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>No — real customers depend on it</td>
+</tr>
+<tr>
+<td style={{ padding: "0.75rem 1rem", color: "var(--text)", fontWeight: 700 }}>Typical effort</td>
+<td style={{ padding: "0.75rem 1rem", color: "var(--muted)" }}>Lightest — no working backend to build</td>
+<td style={{ padding: "0.75rem 1rem", color: "var(--muted)" }}>Moderate — one real workflow, end to end</td>
+<td style={{ padding: "0.75rem 1rem", color: "var(--muted)" }}>Ongoing — grows as the product does</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+---
+
+## A quick note on "PoC"
+
+You may also come across the term **proof of concept (PoC)** — a narrow technical test of whether something is even possible, usually thrown away once it answers that one question. We're deliberately scoping this guide to three stages instead of four, because in practice, most founders we talk to aren't asking "is this technically possible." They're asking "what should I actually build first" — and that question sits squarely between prototype, MVP, and production application.
+
+---
+
+## What a Prototype Actually Is
+
+A prototype exists to answer one question: **does this idea make sense once people can see and click through it?**
+
+It's built to look real, not to *be* real.
+
+### What it's for
+
+- Testing a flow or an idea with real people before writing production code
+- Getting internal or investor buy-in on a direction
+- Catching obvious usability problems early, when they're cheap to fix
+
+### What it deliberately skips
+
+A prototype usually has no real backend. No real user accounts. No real data persistence. Click a button and it might just navigate to the next screen — there's nothing actually saved behind it. That's not a shortcut or a corner cut. It's the point. A prototype is disposable by design.
+
+### Signs you only need a prototype
+
+- You're still validating whether the idea itself makes sense
+- You need something to show — investors, a co-founder, early customers — before committing budget to a real build
+- You expect the direction might change significantly based on what you learn
+
+---
+
+## What an MVP Actually Is
+
+The term "MVP" gets thrown around loosely, but it has an actual origin. Eric Ries, who coined the term in *The Lean Startup*, defined it as:
+
+> "That version of a new product which allows a team to collect the maximum amount of validated learning about customers with the least effort." — [Eric Ries, Lean Startup Co.](https://leanstartup.co/resources/articles/what-is-an-mvp/)
+
+Ries also makes a point worth repeating: **an MVP is not about building something minimal.** It's about building the smallest *real* thing that still teaches you something true about how customers actually behave — not what they say they'd do, but what they actually do when the product is in front of them.
+
+That distinction matters. It's why an MVP needs real infrastructure that a prototype doesn't.
+
+### What an MVP has that a prototype doesn't
+
+- Real user accounts and authentication
+- Real data that persists and is genuinely used
+- A real first workflow someone can complete start to finish
+- Enough reliability that a real customer using it won't hit a dead end
+
+### What an MVP can still defer
+
+An MVP is not a smaller version of your entire vision — it's the smallest version that proves your *core* value. Advanced roles and permissions, billing edge cases, admin tooling, deep integrations, and polish can usually wait until you know the core workflow is actually worth building on.
+
+### Signs you're ready for an MVP
+
+- You've already validated the idea (with a prototype, with conversations, or otherwise) and now need real usage data
+- You have a specific, narrow workflow you're confident is the core value
+- You're ready for real users, even if it's a small group
+
+---
+
+## What a Production Application Actually Is
+
+A production application is what an MVP becomes once real customers — and real revenue — depend on it working.
+
+Everything an MVP could reasonably defer starts to matter here: uptime, security hardening, error handling for edge cases nobody hit during the MVP stage, support workflows, and the operational discipline of shipping changes without breaking things for people who are already relying on the product.
+
+### Signs your MVP has outgrown "MVP"
+
+- Customers are asking you when a feature will ship, not whether it should exist
+- An outage or a bug now costs you real money or real trust, not just learning
+- You're adding roles, permissions, or account types because different *types* of real customers need different things
+
+---
+
+## What This Looks Like in Practice
+
+Say you want to build a booking tool for a small gym — members reserve spots in classes online instead of calling the front desk.
+
+- **As a prototype:** a clickable design showing the booking flow — pick a class, pick a time, see a confirmation screen. No real classes, no real members, nothing saved. You're testing whether the flow makes sense to actual gym members before writing a line of backend code.
+- **As an MVP:** real classes, real member accounts, real bookings that persist and actually hold a spot. No waitlists, no recurring memberships, no staff dashboard yet — just the one core workflow: a member reserves a real spot in a real class.
+- **As a production application:** the MVP, plus what happens when it's actually load-bearing — waitlists when a class fills up, cancellation policies, a staff view showing who's coming today, and enough reliability that a member never wonders whether their spot actually got booked.
+
+Same idea, three genuinely different builds — and a different amount of real engineering work at each stage.
+
+---
+
+## A Simple Self-Assessment
+
+Before you scope anything, ask yourself these three questions:
+
+<Checklist items={[
+  "Have I already validated that people want this, or am I still finding out?",
+  "Do I need real user data and real usage patterns, or just a reaction to a flow?",
+  "Does a bug right now cost me learning, or does it cost me a customer?"
+]} />
+
+If you're still finding out whether the idea holds up — you probably need a prototype.
+If you need real usage from real users on a narrow core workflow — you probably need an MVP.
+If real customers and real revenue already depend on it — you're building a production application, whether you called it that or not.
+
+---
+
+## What Comes Next
+
+Knowing your stage answers one question. It doesn't answer whether you should build custom software at all, or what will actually drive the cost once you do.
+
+- If you're not yet sure whether custom software is the right call versus an existing tool, see [Custom Software vs. Off-the-Shelf Tools](/blog/custom-software-vs-off-the-shelf-tools).
+- If you already know you're building an MVP and want to understand what actually drives the cost, see [What Drives the Cost of a SaaS MVP in 2026?](/blog/what-drives-the-cost-of-a-saas-mvp-in-2026)
+
+Not sure which stage you're actually at? That's a normal thing to bring to a first conversation — [talk to us about your SaaS platform](/services/saas-platform-development) before you scope anything.

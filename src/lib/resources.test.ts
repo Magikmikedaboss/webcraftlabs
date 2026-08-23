@@ -15,6 +15,43 @@ import { LEARNING_PATH_META, isRecommendedStartValid } from "./resourcePathMeta"
 
 const ARCHIVE_COLLECTION = "webcraft-archive";
 
+const BUILDING_SOFTWARE_PRODUCTS_SLUGS = [
+  "mvp-vs-prototype-vs-production-application",
+  "custom-software-vs-off-the-shelf-tools",
+  "what-drives-the-cost-of-a-saas-mvp-in-2026",
+];
+
+describe("Phase 4 — Building Software Products resources (pre-activation)", () => {
+  it("all three approved resources are eligible Resource Center content", () => {
+    const allSlugs = getAllResources().map((r) => r.slug);
+    for (const slug of BUILDING_SOFTWARE_PRODUCTS_SLUGS) {
+      expect(allSlugs).toContain(slug);
+    }
+  });
+
+  it("all three carry learningPath: building-software-products", () => {
+    const bySlug = new Map(getAllResources().map((r) => [r.slug, r]));
+    for (const slug of BUILDING_SOFTWARE_PRODUCTS_SLUGS) {
+      expect(bySlug.get(slug)?.frontmatter.learningPath).toBe("building-software-products");
+    }
+  });
+
+  it("all three target the approved founders/business-owners audience", () => {
+    const bySlug = new Map(getAllResources().map((r) => [r.slug, r]));
+    for (const slug of BUILDING_SOFTWARE_PRODUCTS_SLUGS) {
+      const audience = bySlug.get(slug)?.frontmatter.audience;
+      expect(audience).toEqual(expect.arrayContaining(["founders", "business-owners"]));
+    }
+  });
+
+  it("all three are published and retrievable (not draft, not future-dated)", () => {
+    const bySlug = new Map(getAllResources().map((r) => [r.slug, r]));
+    for (const slug of BUILDING_SOFTWARE_PRODUCTS_SLUGS) {
+      expect(bySlug.has(slug)).toBe(true);
+    }
+  });
+});
+
 describe("getAllResources — Phase 3.5 Archive move regression", () => {
   it("the Synthetic Minds series overview remains eligible for the Resource Center", () => {
     const all = getAllResources();
@@ -74,21 +111,30 @@ describe("getResourcesByPath — active paths have real, eligible content", () =
     }
   });
 
-  it("building-software-products (held back) has zero resources and is not an active path", () => {
-    expect(getResourcesByPath("building-software-products")).toHaveLength(0);
-    expect(isActiveLearningPath("building-software-products")).toBe(false);
+  it("building-software-products has its three approved Phase 4 resources classified and is now active", () => {
+    const resources = getResourcesByPath("building-software-products");
+    const slugs = resources.map((r) => r.slug);
+    expect(slugs).toContain("mvp-vs-prototype-vs-production-application");
+    expect(slugs).toContain("custom-software-vs-off-the-shelf-tools");
+    expect(slugs).toContain("what-drives-the-cost-of-a-saas-mvp-in-2026");
+    for (const resource of resources) {
+      expect(resource.frontmatter.audience).toEqual(
+        expect.arrayContaining(["founders", "business-owners"])
+      );
+    }
+    expect(isActiveLearningPath("building-software-products")).toBe(true);
   });
 });
 
 describe("isActiveLearningPath", () => {
-  it("recognizes exactly the four active paths", () => {
+  it("recognizes every currently active path", () => {
     for (const path of ACTIVE_LEARNING_PATHS) {
       expect(isActiveLearningPath(path)).toBe(true);
     }
   });
 
-  it("does not treat building-software-products as active", () => {
-    expect(isActiveLearningPath("building-software-products")).toBe(false);
+  it("does not treat an unrecognized path string as active", () => {
+    expect(isActiveLearningPath("not-a-real-path")).toBe(false);
   });
 });
 
@@ -133,9 +179,12 @@ describe("recommended start resources are real", () => {
   });
 });
 
-describe("building-software-products stays honestly held back", () => {
-  it("is marked coming-soon with no recommendedStart", () => {
-    expect(LEARNING_PATH_META["building-software-products"].status).toBe("coming-soon");
-    expect(LEARNING_PATH_META["building-software-products"].recommendedStart).toBeUndefined();
+describe("building-software-products is now active (Phase 4)", () => {
+  it("is marked active with a recommendedStart that actually exists on the path", () => {
+    const meta = LEARNING_PATH_META["building-software-products"];
+    expect(meta.status).toBe("active");
+    expect(meta.recommendedStart).toBe("mvp-vs-prototype-vs-production-application");
+    const slugs = getResourcesByPath("building-software-products").map((r) => r.slug);
+    expect(isRecommendedStartValid("building-software-products", slugs)).toBe(true);
   });
 });

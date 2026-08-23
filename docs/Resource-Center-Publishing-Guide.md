@@ -32,8 +32,7 @@ featured: true            # optional — keep this to a small, genuinely strong 
 - `ai-workflow-automation`
 - `websites-that-grow-businesses`
 - `experiments-emerging-ideas`
-- `building-software-products` — **valid in the schema, but held back.** See
-  below before using it.
+- `building-software-products` — **active as of Phase 4.**
 
 ## Where each field is consumed
 
@@ -46,24 +45,25 @@ featured: true            # optional — keep this to a small, genuinely strong 
 | `resourceType: "announcement"` | Renders a visible "Announcement" badge in Projects & Experiments |
 | `relatedService` | Not yet rendered anywhere — reserved for a future "related service" callout. Safe to set now; has no effect until that's built |
 
-## Activating "Building Software Products"
+## Activating a held-back path
 
-This path exists in the schema and in `LEARNING_PATH_META`
-(`src/lib/resourcePathMeta.ts`, status: `"coming-soon"`) but has no page and
-appears only as a restrained "Growing next" teaser — no fabricated resource
-count, no active link.
+`building-software-products` was activated in Phase 4 (three real,
+published guides: MVP vs. Prototype vs. Production Application, Custom
+Software vs. Off-the-Shelf Tools, and What Drives the Cost of a SaaS MVP in
+2026), following the same procedure documented here — kept for the next
+path that needs it:
 
-To activate it once real content exists:
-
-1. Set `learningPath: building-software-products` on at least one real,
-   published resource.
-2. In `src/lib/resources.ts`, add `"building-software-products"` to
-   `ACTIVE_LEARNING_PATHS`.
+1. Set `learningPath: <path>` on at least one real, published resource.
+2. In `src/lib/resources.ts`, add the path to `ACTIVE_LEARNING_PATHS`.
 3. In `src/lib/resourcePathMeta.ts`, set its `status` to `"active"` and add a
    `recommendedStart` slug (must be one of the resources now on that path —
    `resources.test.ts` will fail the build if it isn't).
 4. The `/knowledge/paths/[path]` route and sitemap entry pick it up
    automatically — no route code changes needed.
+5. Check any component that renders a hardcoded "coming soon" teaser for the
+   path (e.g. `LearningPaths.tsx`) actually gates that teaser on the path's
+   own `status`, rather than assuming it's always held back — Phase 4 found
+   and fixed exactly this bug.
 
 Do the same in reverse to hold a path back if it ever runs out of real
 content.

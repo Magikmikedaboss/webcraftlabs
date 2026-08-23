@@ -7,8 +7,47 @@ export type LearningPathMeta = {
   description: string;
   /** Slug of the resource to recommend starting with — must be a resource actually on this path. */
   recommendedStart?: string;
+  /**
+   * Explicit editorial reading order for this path's resources *after*
+   * recommendedStart, by slug. Optional — most paths don't need it and rely
+   * on the natural (date-descending) order getResourcesByPath() already
+   * returns. Use this only when the intended reading sequence must not
+   * depend on publish dates (e.g. resources genuinely published the same
+   * day, or where date order and reading order are allowed to differ).
+   *
+   * Resources not listed here keep their natural relative order and are
+   * appended after every explicitly-ordered slug — adding an unrelated
+   * resource to a path never reorders, or gets inserted ahead of, the
+   * slugs named here.
+   */
+  order?: readonly string[];
   nextStep?: { label: string; href: string };
 };
+
+/**
+ * Applies an explicit slug order to a list of resources, falling back to
+ * each resource's existing relative position for anything not named in
+ * `order` (stable sort — never reorders unlisted items relative to each
+ * other or inserts them ahead of an explicitly-ordered slug).
+ */
+export function sortByExplicitOrder<T extends { slug: string }>(
+  items: readonly T[],
+  order?: readonly string[]
+): T[] {
+  if (!order || order.length === 0) return [...items];
+  const rank = new Map(order.map((slug, i) => [slug, i]));
+  return [...items].sort((a, b) => {
+    const ai = rank.get(a.slug);
+    const bi = rank.get(b.slug);
+    // Both unranked: Infinity - Infinity is NaN, which sort() doesn't
+    // handle meaningfully — explicit 0 relies on the spec-guaranteed
+    // stable sort to preserve each item's original relative order instead.
+    if (ai === undefined && bi === undefined) return 0;
+    if (ai === undefined) return 1;
+    if (bi === undefined) return -1;
+    return ai - bi;
+  });
+}
 
 export const LEARNING_PATH_META: Record<LearningPath, LearningPathMeta> = {
   "modern-web-development": {
@@ -49,10 +88,17 @@ export const LEARNING_PATH_META: Record<LearningPath, LearningPathMeta> = {
   },
   "building-software-products": {
     label: "Building Software Products",
-    status: "coming-soon",
-    audience: "Founders and product teams building custom software or SaaS.",
+    status: "active",
+    audience: "Founders and business owners scoping custom software or a SaaS product.",
     description:
-      "Coming to the Resource Center: guides on MVP scope, build-vs-buy decisions, and product architecture. Not yet active — no resources are published on this path.",
+      "Guides on MVP scope, build-vs-buy decisions, and what actually drives SaaS product cost.",
+    recommendedStart: "mvp-vs-prototype-vs-production-application",
+    order: [
+      "mvp-vs-prototype-vs-production-application",
+      "custom-software-vs-off-the-shelf-tools",
+      "what-drives-the-cost-of-a-saas-mvp-in-2026",
+    ],
+    nextStep: { label: "Explore SaaS platform development services", href: "/services/saas-platform-development" },
   },
 };
 
