@@ -4,7 +4,7 @@ import { PROJECTS } from "./projects";
 import { getBaseUrl } from "@/lib/site";
 
 const PORTFOLIO_DESCRIPTION =
-  "Selected websites, applications, and digital products built by WebCraft Labz, including live work and products in development.";
+  "Live websites, tailored business demonstrations, and digital products in development by WebCraft Labz.";
 
 export const metadata: Metadata = {
   title: "Selected Builds",
