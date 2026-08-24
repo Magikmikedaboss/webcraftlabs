@@ -20,4 +20,17 @@ describe("ProofHighlights — homepage compatibility with redesigned Project mod
       expect(ids.has(id)).toBe(true);
     }
   });
+
+  it("discloses Live vs. In development status for every featured project", () => {
+    render(<ProofHighlights />);
+    const liveCount = FEATURED_IDS.filter((id) => PROJECTS.find((p) => p.id === id)?.status === "live").length;
+    const inDevCount = FEATURED_IDS.length - liveCount;
+
+    if (liveCount > 0) {
+      expect(screen.getAllByText("Live").length).toBe(liveCount);
+    }
+    if (inDevCount > 0) {
+      expect(screen.getAllByText("In development").length).toBe(inDevCount);
+    }
+  });
 });
