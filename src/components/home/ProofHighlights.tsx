@@ -8,8 +8,9 @@ import { PROJECTS } from "@/app/portfolio/projects";
 // a text-led layout rather than an image grid.
 export const FEATURED_IDS = ["nelfuoco", "leagueos", "ravehouse"] as const;
 
-const STATUS_LABEL: Record<(typeof PROJECTS)[number]["status"], string> = {
-  live: "Live",
+export const STATUS_LABEL: Record<(typeof PROJECTS)[number]["status"], string> = {
+  live: "Live website",
+  "business-demo": "Business demo",
   "in-development": "In development",
 };
 
@@ -40,11 +41,12 @@ export default function ProofHighlights() {
         {featured.map((project) => (
           <div
             key={project.id}
+            data-testid={`proof-card-${project.id}`}
             className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm"
           >
             <div className="flex items-center justify-between gap-2">
               <div className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
-                {project.phase}
+                {project.projectType}
               </div>
               <span
                 className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--bg)] px-2 py-0.5 text-[10px] font-semibold text-[var(--muted)]"

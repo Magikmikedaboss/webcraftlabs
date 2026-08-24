@@ -2,7 +2,10 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import SiteShell from "@/components/SiteShell";
-import type { Project } from "./projects";
+import { CATEGORY_LABEL, sortByCategoryOrder, type Project, type ProjectStatus } from "./projects";
+
+const DEMO_DISCLOSURE =
+  "Independent demonstration created by WebCraft Labz. It is not presented as the company's official production website.";
 
 function initials(title: string): string {
   const words = title.trim().split(/\s+/).filter(Boolean);
@@ -11,22 +14,45 @@ function initials(title: string): string {
   return (words[0][0] + words[1][0]).toUpperCase();
 }
 
-const STATUS_LABEL: Record<Project["status"], string> = {
-  live: "Live",
-  "in-development": "In development",
-};
-
 /**
- * Deterministic per-project tint strength, derived only from the approved
- * --primary/--surface tokens via color-mix() — no new colors introduced,
- * just a distinct intensity per card so the grid doesn't look uniform.
+ * Whether a public URL should render as an external link (new tab, safe
+ * rel) vs. an internal same-origin link like "/". Only "/" is internal
+ * today, but this keeps the rule explicit rather than assumed.
  */
-const TINT_STRENGTHS = ["14%", "20%", "26%", "18%", "24%", "30%"];
+function isExternalUrl(url: string): boolean {
+  return url !== "/" && /^https?:\/\//i.test(url);
+}
+
+function publicLinkLabel(status: ProjectStatus): string | null {
+  if (status === "live") return "Visit live website";
+  if (status === "business-demo") return "View business demo";
+  return null;
+}
+
+const TINT_STRENGTHS = ["14%", "20%", "26%", "18%", "24%", "30%", "16%", "22%", "28%", "20%"];
 function tintFor(index: number): string {
   return TINT_STRENGTHS[index % TINT_STRENGTHS.length];
 }
 
-function StatusBadge({ status }: { status: Project["status"] }) {
+/**
+ * Distinct but cohesive per-category framing for card previews: live sites
+ * get a solid tonal fill, business demos get a diagonal split (signaling
+ * "presentation, not production"), and in-development gets a dashed
+ * outline (signaling "still being built"). All derived from the same
+ * --primary/--surface tokens — no new colors introduced.
+ */
+function previewBackground(status: ProjectStatus, tint: string): string {
+  if (status === "live") {
+    return `linear-gradient(135deg, color-mix(in srgb, var(--primary) ${tint}, var(--surface)), var(--surface))`;
+  }
+  if (status === "business-demo") {
+    return `linear-gradient(115deg, var(--surface) 45%, color-mix(in srgb, var(--primary) ${tint}, var(--surface)) 45%)`;
+  }
+  return "var(--surface)";
+}
+
+function StatusBadge({ status }: { status: ProjectStatus }) {
+  const dotColor = status === "live" ? "var(--primary)" : "var(--muted)";
   return (
     <span
       className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold"
@@ -36,12 +62,8 @@ function StatusBadge({ status }: { status: Project["status"] }) {
         color: status === "live" ? "var(--primary)" : "var(--muted)",
       }}
     >
-      <span
-        className="h-1.5 w-1.5 rounded-full"
-        style={{ background: status === "live" ? "var(--primary)" : "var(--muted)" }}
-        aria-hidden="true"
-      />
-      {STATUS_LABEL[status]}
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: dotColor }} aria-hidden="true" />
+      {CATEGORY_LABEL[status]}
     </span>
   );
 }
@@ -80,16 +102,17 @@ function ProjectPreview({ project, index }: { project: Project; index: number })
   }
 
   const tint = tintFor(index);
+  const dashed = project.status === "in-development";
 
   return (
     <div
-      className="relative aspect-video w-full overflow-hidden rounded-xl border"
+      className={`relative aspect-video w-full overflow-hidden rounded-xl ${dashed ? "border-2 border-dashed" : "border"}`}
       style={{
         borderColor: "var(--border)",
-        background: `linear-gradient(135deg, color-mix(in srgb, var(--primary) ${tint}, var(--surface)), var(--surface))`,
+        background: previewBackground(project.status, tint),
       }}
       role="img"
-      aria-label={`${project.title} preview — ${STATUS_LABEL[project.status]}`}
+      aria-label={`${project.title} preview — ${CATEGORY_LABEL[project.status]}`}
     >
       <div className="absolute left-3 top-3 flex gap-1.5" aria-hidden="true">
         <span className="h-2 w-2 rounded-full" style={{ background: "var(--border)" }} />
@@ -177,7 +200,8 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
   // links while closed — has to come after them, not before.
   if (!open) return null;
 
-  const canVisit = !!p && p.status === "live" && !!p.publicUrl;
+  const linkLabel = p ? publicLinkLabel(p.status) : null;
+  const canVisit = !!p && !!linkLabel && !!p.publicUrl;
 
   return (
     <div className="fixed inset-0 z-50 pointer-events-auto">
@@ -233,6 +257,27 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
           <div className="flex-1 overflow-y-auto p-5">
             {p ? (
               <div className="space-y-6">
+                {p.status === "business-demo" && (
+                  <div
+                    className="rounded-lg border p-3 text-xs leading-relaxed"
+                    style={{ borderColor: "var(--border)", background: "var(--surface)", color: "var(--muted)" }}
+                  >
+                    {DEMO_DISCLOSURE}
+                  </div>
+                )}
+
+                <section className="space-y-2">
+                  <div
+                    className="text-xs font-semibold uppercase tracking-wide"
+                    style={{ color: "var(--muted)" }}
+                  >
+                    Overview
+                  </div>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text)" }}>
+                    {p.overview}
+                  </p>
+                </section>
+
                 <section className="space-y-2">
                   <div
                     className="text-xs font-semibold uppercase tracking-wide"
@@ -250,26 +295,13 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
                     className="text-xs font-semibold uppercase tracking-wide"
                     style={{ color: "var(--muted)" }}
                   >
-                    What&apos;s been built so far
+                    Built now
                   </div>
                   <ul className="list-disc space-y-1 pl-5 text-sm" style={{ color: "var(--text)" }}>
                     {p.build.map((x) => (
                       <li key={x}>{x}</li>
                     ))}
                   </ul>
-                  {p.wins.length > 0 && (
-                    <ul className="mt-2 space-y-1 text-sm" style={{ color: "var(--text)" }}>
-                      {p.wins.map((x) => (
-                        <li key={x} className="flex gap-2">
-                          <span
-                            className="mt-[6px] h-1.5 w-1.5 flex-none rounded-full"
-                            style={{ background: "var(--primary)" }}
-                          />
-                          <span>{x}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </section>
 
                 <section className="space-y-2">
@@ -286,13 +318,25 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
                   </div>
                 </section>
 
+                <section className="space-y-2">
+                  <div
+                    className="text-xs font-semibold uppercase tracking-wide"
+                    style={{ color: "var(--muted)" }}
+                  >
+                    Design/development focus
+                  </div>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text)" }}>
+                    {p.role}
+                  </p>
+                </section>
+
                 {p.next?.length ? (
                   <section className="space-y-2">
                     <div
                       className="text-xs font-semibold uppercase tracking-wide"
                       style={{ color: "var(--muted)" }}
                     >
-                      Planned / Next
+                      Next or planned work
                     </div>
                     <ul className="list-disc space-y-1 pl-5 text-sm" style={{ color: "var(--text)" }}>
                       {p.next.map((x) => (
@@ -306,12 +350,12 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
                   <section className="space-y-2">
                     <a
                       href={p.publicUrl}
-                      target={p.publicUrl === "/" ? undefined : "_blank"}
-                      rel={p.publicUrl === "/" ? undefined : "noopener noreferrer"}
+                      target={isExternalUrl(p.publicUrl!) ? "_blank" : undefined}
+                      rel={isExternalUrl(p.publicUrl!) ? "noopener noreferrer" : undefined}
                       className="inline-flex items-center justify-center rounded-lg border px-3 py-2 text-sm font-medium"
                       style={{ borderColor: "var(--border)", background: "var(--surface)", color: "var(--text)" }}
                     >
-                      Visit website
+                      {linkLabel}
                     </a>
                   </section>
                 )}
@@ -352,7 +396,8 @@ function ProjectCard({
   index: number;
   onOpen: (id: string) => void;
 }) {
-  const canVisit = project.status === "live" && !!project.publicUrl;
+  const linkLabel = publicLinkLabel(project.status);
+  const canVisit = !!linkLabel && !!project.publicUrl;
 
   return (
     <div
@@ -389,19 +434,102 @@ function ProjectCard({
           className="inline-flex items-center justify-center rounded-lg border px-3 py-2 text-sm font-semibold transition"
           style={{ borderColor: "var(--border)", background: "var(--bg)", color: "var(--text)" }}
         >
-          View project details
+          View build details
         </button>
         {canVisit && (
           <a
             href={project.publicUrl}
-            target={project.publicUrl === "/" ? undefined : "_blank"}
-            rel={project.publicUrl === "/" ? undefined : "noopener noreferrer"}
+            target={isExternalUrl(project.publicUrl!) ? "_blank" : undefined}
+            rel={isExternalUrl(project.publicUrl!) ? "noopener noreferrer" : undefined}
             className="text-sm font-semibold hover:underline"
             style={{ color: "var(--primary)" }}
           >
-            Visit website →
+            {linkLabel} →
           </a>
         )}
+      </div>
+    </div>
+  );
+}
+
+const SECTION_ORDER: ProjectStatus[] = ["live", "business-demo", "in-development"];
+const SECTION_HEADING: Record<ProjectStatus, string> = {
+  live: "Live Websites",
+  "business-demo": "Business Demos",
+  "in-development": "Products in Development",
+};
+
+type FilterValue = "all" | ProjectStatus;
+
+const FILTER_OPTIONS: { value: FilterValue; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "live", label: "Live Websites" },
+  { value: "business-demo", label: "Business Demos" },
+  { value: "in-development", label: "Products in Development" },
+];
+
+function FilterBar({
+  active,
+  counts,
+  onChange,
+}: {
+  active: FilterValue;
+  counts: Record<FilterValue, number>;
+  onChange: (value: FilterValue) => void;
+}) {
+  return (
+    <div role="group" aria-label="Filter builds by category" className="mb-8 flex flex-wrap gap-2">
+      {FILTER_OPTIONS.map((opt) => {
+        const isActive = active === opt.value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onChange(opt.value)}
+            aria-pressed={isActive}
+            className="inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition"
+            style={{
+              borderColor: isActive ? "var(--primary)" : "var(--border)",
+              background: isActive ? "var(--primary)" : "var(--surface)",
+              color: isActive ? "var(--bg)" : "var(--text)",
+            }}
+          >
+            {opt.label}
+            <span
+              className="rounded-full px-1.5 text-xs"
+              style={{
+                background: isActive ? "color-mix(in srgb, var(--bg) 25%, transparent)" : "var(--bg)",
+                color: isActive ? "var(--bg)" : "var(--muted)",
+              }}
+            >
+              {counts[opt.value]}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function ProjectSection({
+  status,
+  projects,
+  onOpen,
+}: {
+  status: ProjectStatus;
+  projects: Project[];
+  onOpen: (id: string) => void;
+}) {
+  if (projects.length === 0) return null;
+  return (
+    <div className="mb-10">
+      <h2 className="mb-4 text-xl font-bold tracking-tight" style={{ color: "var(--text)" }}>
+        {SECTION_HEADING[status]}
+      </h2>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {projects.map((p, i) => (
+          <ProjectCard key={p.id} project={p} index={i} onOpen={onOpen} />
+        ))}
       </div>
     </div>
   );
@@ -411,7 +539,30 @@ export default function PortfolioClient(props: { projects: Project[] }) {
   const { projects } = props;
 
   const liveCount = useMemo(() => projects.filter((p) => p.status === "live").length, [projects]);
-  const inDevelopmentCount = projects.length - liveCount;
+  const demoCount = useMemo(() => projects.filter((p) => p.status === "business-demo").length, [projects]);
+  const inDevelopmentCount = useMemo(
+    () => projects.filter((p) => p.status === "in-development").length,
+    [projects]
+  );
+
+  const byCategory = useMemo(() => {
+    const grouped = {} as Record<ProjectStatus, Project[]>;
+    for (const status of SECTION_ORDER) {
+      grouped[status] = sortByCategoryOrder(
+        projects.filter((p) => p.status === status),
+        status
+      );
+    }
+    return grouped;
+  }, [projects]);
+
+  const [filter, setFilter] = useState<FilterValue>("all");
+  const filterCounts: Record<FilterValue, number> = {
+    all: projects.length,
+    live: liveCount,
+    "business-demo": demoCount,
+    "in-development": inDevelopmentCount,
+  };
 
   const [activeId, setActiveId] = useState<string>("");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -438,40 +589,69 @@ export default function PortfolioClient(props: { projects: Project[] }) {
             Selected Builds
           </p>
           <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl" style={{ color: "var(--text)" }}>
-            Products, platforms, and digital experiences we&apos;re building
+            Websites, business demos, and digital products built around real ideas.
           </h1>
           <p className="mt-5 text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
-            A mix of live work and products still taking shape — real problems, real stacks, and an
-            honest look at what&apos;s actually been built so far.
+            A collection of live websites, tailored business demonstrations, and products still in
+            development—showing how WebCraft Labz approaches design, content, software, and digital
+            workflows.
           </p>
         </header>
 
         {/* Honest counts */}
-        <div className="mb-12 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+        <div className="mb-12 grid gap-4 sm:grid-cols-4">
+          <div
+            data-testid="stat-total"
+            className="rounded-2xl border p-5"
+            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+          >
             <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{projects.length}</div>
             <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Selected builds</div>
           </div>
-          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+          <div
+            data-testid="stat-live"
+            className="rounded-2xl border p-5"
+            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+          >
             <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{liveCount}</div>
-            <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Live</div>
+            <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Live websites</div>
           </div>
-          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+          <div
+            data-testid="stat-demo"
+            className="rounded-2xl border p-5"
+            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+          >
+            <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{demoCount}</div>
+            <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Business demos</div>
+          </div>
+          <div
+            data-testid="stat-in-dev"
+            className="rounded-2xl border p-5"
+            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+          >
             <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{inDevelopmentCount}</div>
             <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>In development</div>
           </div>
         </div>
 
-        {/* Project grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} onOpen={openProject} />
-          ))}
-        </div>
+        <FilterBar active={filter} counts={filterCounts} onChange={setFilter} />
+
+        {/* Grouped project sections */}
+        {filter === "all" ? (
+          SECTION_ORDER.map((status) => (
+            <ProjectSection key={status} status={status} projects={byCategory[status]} onOpen={openProject} />
+          ))
+        ) : byCategory[filter].length > 0 ? (
+          <ProjectSection status={filter} projects={byCategory[filter]} onOpen={openProject} />
+        ) : (
+          <p className="mb-10 text-sm" style={{ color: "var(--muted)" }}>
+            No builds in this category yet.
+          </p>
+        )}
 
         {/* Final CTA */}
         <div
-          className="mt-12 rounded-2xl border p-6"
+          className="mt-2 rounded-2xl border p-6"
           style={{ borderColor: "var(--border)", background: "var(--surface)" }}
         >
           <div className="text-lg font-semibold" style={{ color: "var(--text)" }}>
