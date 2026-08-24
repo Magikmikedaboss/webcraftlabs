@@ -139,8 +139,8 @@ export default function ContactForm() {
       >
         {loading ? "Sending..." : "Send request"}
       </button>
-      {error && <div className="text-red-600 text-sm mt-2" role="status" aria-live="polite">{error}</div>}
-      {success && <div className="text-green-600 text-sm mt-2" role="status" aria-live="polite">{success}</div>}
+      {error && <div className="text-[var(--error)] text-sm mt-2" role="status" aria-live="polite">{error}</div>}
+      {success && <div className="text-[var(--success)] text-sm mt-2" role="status" aria-live="polite">{success}</div>}
     </form>
   );
 }
