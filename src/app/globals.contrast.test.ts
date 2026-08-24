@@ -169,3 +169,25 @@ describe("regression — the six hardcoded failing utilities do not return", () 
     expect(src).toContain("text-[var(--error)]");
   });
 });
+
+describe("regression — Studio Contrast's darker --bg did not break existing --primary-on-bg text", () => {
+  it("ResourceCenterIntro's eyebrow badge moved off --bg (4.32:1, under AA) onto --surface (5.17:1)", () => {
+    const src = readFileSync(join(__dirname, "..", "components", "home", "ResourceCenterIntro.tsx"), "utf8");
+    expect(src).not.toMatch(/bg-\[var\(--bg\)\][^"]*text-\[var\(--primary\)\]/);
+  });
+
+  it("no component pairs --primary/--secondary/--accent text directly on a --bg background", () => {
+    const bg = tokenFrom(rootBlock(), "--bg");
+    const primary = tokenFrom(rootBlock(), "--primary");
+    const secondary = tokenFrom(rootBlock(), "--secondary");
+    const accent = tokenFrom(rootBlock(), "--accent");
+    // Documents the actual measured risk: --primary is only barely under AA
+    // against the new --bg, --secondary and --accent are well under it.
+    // This test doesn't scan every file for the pairing — see the two
+    // component-specific tests above and in the regression suite — it
+    // exists to make the risk visible if --bg is ever adjusted again.
+    expect(contrast(primary, bg)).toBeLessThan(4.5);
+    expect(contrast(secondary, bg)).toBeLessThan(4.5);
+    expect(contrast(accent, bg)).toBeLessThan(4.5);
+  });
+});

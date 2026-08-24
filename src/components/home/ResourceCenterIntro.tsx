@@ -5,7 +5,12 @@ export default function ResourceCenterIntro() {
     <section className="mx-auto max-w-6xl px-6 py-16">
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 md:p-12">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">
+          {/* --surface, not --bg: Studio Contrast intentionally darkened
+              --bg, which dropped this badge's --primary text to 4.32:1
+              (under AA) against it. --surface (unchanged) keeps this at
+              5.17:1; the border still gives the pill its own edge against
+              the parent card, which is also --surface. */}
+          <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">
             Resource Center
           </span>
           <h2 className="mt-4 text-3xl font-bold tracking-tight text-[var(--text)]">
