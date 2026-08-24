@@ -347,11 +347,12 @@ export default function ServicePageTemplate({ config: c }: { config: ServicePage
           </section>
         )}
 
-        {/* CTA banner. --onPrimary, not text-white/85: --primary flips from
-            dark/saturated (light theme) to light/pastel (dark theme), so a
-            fixed white/85 only passed in light theme (4.20:1, still under
-            AA) and failed badly in dark (2.24:1). --onPrimary is tuned per
-            theme against --primary specifically. */}
+        {/* CTA banner uses --onPrimary, not a fixed white-at-85%-opacity
+            body color: --primary flips from dark/saturated (light theme)
+            to light/pastel (dark theme), so that fixed opacity only passed
+            in light theme (4.20:1, still under AA) and failed badly in
+            dark (2.24:1). --onPrimary is tuned per theme against --primary
+            specifically. */}
         <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--primary)] p-8 text-[var(--onPrimary)]">
           <h2 className="text-3xl font-bold">{c.cta.title}</h2>
           <p className="mt-4 max-w-3xl">{c.cta.body}</p>
