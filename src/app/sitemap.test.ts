@@ -1,6 +1,8 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
-import sitemap from "./sitemap";
+import { describe, it, expect, afterEach, beforeEach, vi } from "vitest";
+import sitemap, { STATIC_ROUTE_LAST_MODIFIED, parseValidDate } from "./sitemap";
 import { getAllArchivePosts } from "@/lib/mdx/archive";
+import { getAllPosts } from "@/lib/mdx/blog";
+import { getAllNews } from "@/lib/mdx/news";
 
 const EPISODE_SLUGS = [
   "episode-1-first-spark",
@@ -63,6 +65,175 @@ describe("sitemap — canonical domain", () => {
     for (const entry of entries) {
       expect(entry.url.startsWith("https://www.webcraftlabz.com")).toBe(true);
       expect(entry.url.startsWith("https://webcraftlabz.com/")).toBe(false);
+    }
+  });
+});
+
+describe("sitemap — deterministic lastModified, no Vercel API dependency", () => {
+  const ORIGINAL_ENV = { ...process.env };
+
+  beforeEach(() => {
+    delete process.env.VERCEL_TOKEN;
+    delete process.env.VERCEL_GIT_COMMIT_SHA;
+  });
+
+  afterEach(() => {
+    process.env = { ...ORIGINAL_ENV };
+    vi.unstubAllGlobals();
+    vi.resetModules();
+  });
+
+  it("generates successfully with VERCEL_TOKEN and VERCEL_GIT_COMMIT_SHA both absent", async () => {
+    const entries = await sitemap();
+    expect(entries.length).toBeGreaterThan(0);
+  });
+
+  it("never calls fetch — generation is fully local, no network access", async () => {
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
+    await sitemap();
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("produces no duplicate URLs", async () => {
+    const entries = await sitemap();
+    const urls = entries.map((e) => e.url);
+    expect(new Set(urls).size).toBe(urls.length);
+  });
+
+  it("never includes a URL that is a known redirect source", async () => {
+    const nextConfig = (await import("../../next.config.mjs")).default;
+    const redirects = await nextConfig.redirects!();
+    const redirectSources = new Set(redirects.map((r: { source: string }) => r.source));
+
+    const entries = await sitemap();
+    for (const entry of entries) {
+      const path = new URL(entry.url).pathname;
+      expect(redirectSources.has(path)).toBe(false);
+    }
+  });
+
+  it("every lastModified value, when present, is valid and not future-dated", async () => {
+    const entries = await sitemap();
+    const now = new Date();
+    for (const entry of entries) {
+      if (entry.lastModified === undefined) continue;
+      const date = new Date(entry.lastModified);
+      expect(Number.isFinite(date.getTime())).toBe(true);
+      expect(date.getTime()).toBeLessThanOrEqual(now.getTime());
+    }
+  });
+
+  it("content entries use their real frontmatter date", async () => {
+    const entries = await sitemap();
+    const byUrl = new Map(entries.map((e) => [e.url, e]));
+
+    const [firstPost] = getAllPosts();
+    if (firstPost) {
+      const entry = byUrl.get(`https://www.webcraftlabz.com/blog/${firstPost.slug}`);
+      expect(entry).toBeDefined();
+      expect(new Date(entry!.lastModified!).toISOString().slice(0, 10)).toBe(firstPost.frontmatter.date);
+    }
+
+    const [firstNews] = getAllNews();
+    if (firstNews) {
+      const entry = byUrl.get(`https://www.webcraftlabz.com/news/${firstNews.slug}`);
+      expect(entry).toBeDefined();
+      expect(new Date(entry!.lastModified!).toISOString().slice(0, 10)).toBe(firstNews.frontmatter.date);
+    }
+
+    const [firstArchive] = getAllArchivePosts();
+    if (firstArchive) {
+      const entry = byUrl.get(`https://www.webcraftlabz.com/archive/${firstArchive.slug}`);
+      expect(entry).toBeDefined();
+      expect(new Date(entry!.lastModified!).toISOString().slice(0, 10)).toBe(firstArchive.frontmatter.date);
+    }
+  });
+
+  it("static routes read their date from the STATIC_ROUTE_LAST_MODIFIED registry", async () => {
+    const entries = await sitemap();
+    const homepage = entries.find((e) => e.url === "https://www.webcraftlabz.com");
+    expect(homepage).toBeDefined();
+    expect(new Date(homepage!.lastModified!).toISOString().slice(0, 10)).toBe(
+      STATIC_ROUTE_LAST_MODIFIED["/"]
+    );
+
+    const portfolio = entries.find((e) => e.url === "https://www.webcraftlabz.com/portfolio");
+    expect(portfolio).toBeDefined();
+    expect(new Date(portfolio!.lastModified!).toISOString().slice(0, 10)).toBe(
+      STATIC_ROUTE_LAST_MODIFIED["/portfolio"]
+    );
+  });
+
+  it("does not reintroduce one shared fallback date across static routes", async () => {
+    const entries = await sitemap();
+    const staticUrls = Object.keys(STATIC_ROUTE_LAST_MODIFIED).filter((k) => k !== "/knowledge/paths");
+    const staticDates = staticUrls
+      .map((path) => entries.find((e) => e.url === (path === "/" ? "https://www.webcraftlabz.com" : `https://www.webcraftlabz.com${path}`)))
+      .filter((e): e is NonNullable<typeof e> => e !== undefined)
+      .map((e) => new Date(e.lastModified!).toISOString().slice(0, 10));
+
+    const distinctDates = new Set(staticDates);
+    expect(distinctDates.size).toBeGreaterThan(1);
+  });
+});
+
+describe("parseValidDate — rejects silently-normalized invalid calendar dates", () => {
+  it("accepts a genuinely valid date-only value", () => {
+    const result = parseValidDate("2026-08-24");
+    expect(result).toBeInstanceOf(Date);
+    expect(result!.toISOString().slice(0, 10)).toBe("2026-08-24");
+  });
+
+  it("rejects a date-only value whose day overflows its month (e.g. Feb 30) instead of silently rolling over", () => {
+    // new Date("2026-02-30") does not throw — it silently normalizes to
+    // March 2nd. parseValidDate must catch that instead of accepting it.
+    expect(parseValidDate("2026-02-30")).toBeUndefined();
+  });
+
+  it("rejects a date-only value whose day overflows a 30-day month (e.g. Apr 31)", () => {
+    expect(parseValidDate("2026-04-31")).toBeUndefined();
+  });
+
+  it("rejects an invalid month", () => {
+    expect(parseValidDate("2026-13-01")).toBeUndefined();
+  });
+
+  it("returns undefined for missing input", () => {
+    expect(parseValidDate(undefined)).toBeUndefined();
+  });
+});
+
+describe("sitemap — index routes track their newest content, not just their template file", () => {
+  it("/blog reflects the newest published post date, not an older template-only date", async () => {
+    const entries = await sitemap();
+    const blogIndex = entries.find((e) => e.url === "https://www.webcraftlabz.com/blog");
+    expect(blogIndex).toBeDefined();
+
+    const newestPostDate = getAllPosts()
+      .map((p) => p.frontmatter.date)
+      .sort()
+      .at(-1);
+    expect(newestPostDate).toBeDefined();
+
+    const registryDate = STATIC_ROUTE_LAST_MODIFIED["/blog"];
+    const expectedDate = newestPostDate! > registryDate ? newestPostDate! : registryDate;
+    expect(new Date(blogIndex!.lastModified!).toISOString().slice(0, 10)).toBe(expectedDate);
+  });
+
+  it("/news and /archive entries are never older than their newest respective content item", async () => {
+    const entries = await sitemap();
+
+    const newsIndex = entries.find((e) => e.url === "https://www.webcraftlabz.com/news");
+    const newestNewsDate = getAllNews().map((p) => p.frontmatter.date).sort().at(-1);
+    if (newsIndex?.lastModified && newestNewsDate) {
+      expect(new Date(newsIndex.lastModified).toISOString().slice(0, 10) >= newestNewsDate).toBe(true);
+    }
+
+    const archiveIndex = entries.find((e) => e.url === "https://www.webcraftlabz.com/archive");
+    const newestArchiveDate = getAllArchivePosts().map((p) => p.frontmatter.date).sort().at(-1);
+    if (archiveIndex?.lastModified && newestArchiveDate) {
+      expect(new Date(archiveIndex.lastModified).toISOString().slice(0, 10) >= newestArchiveDate).toBe(true);
     }
   });
 });
