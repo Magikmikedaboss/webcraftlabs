@@ -79,6 +79,8 @@ export const PROJECTS: Project[] = [
     status: "live",
     projectType: "Local-service website",
     publicUrl: "https://www.mikesprohandyman.com/",
+    image: "/images/portfolio/mikes-pro-handyman.webp",
+    imageAlt: "Mike's Pro Handyman homepage, showing service categories and online booking calls-to-action.",
     overview:
       "A live Las Vegas handyman website designed around local discovery, service presentation, useful content, trust, and fast online booking.",
     problem:
