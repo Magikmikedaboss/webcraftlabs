@@ -459,6 +459,58 @@ const SECTION_HEADING: Record<ProjectStatus, string> = {
   "in-development": "Products in Development",
 };
 
+type FilterValue = "all" | ProjectStatus;
+
+const FILTER_OPTIONS: { value: FilterValue; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "live", label: "Live Websites" },
+  { value: "business-demo", label: "Business Demos" },
+  { value: "in-development", label: "Products in Development" },
+];
+
+function FilterBar({
+  active,
+  counts,
+  onChange,
+}: {
+  active: FilterValue;
+  counts: Record<FilterValue, number>;
+  onChange: (value: FilterValue) => void;
+}) {
+  return (
+    <div role="group" aria-label="Filter builds by category" className="mb-8 flex flex-wrap gap-2">
+      {FILTER_OPTIONS.map((opt) => {
+        const isActive = active === opt.value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onChange(opt.value)}
+            aria-pressed={isActive}
+            className="inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition"
+            style={{
+              borderColor: isActive ? "var(--primary)" : "var(--border)",
+              background: isActive ? "var(--primary)" : "var(--surface)",
+              color: isActive ? "var(--bg)" : "var(--text)",
+            }}
+          >
+            {opt.label}
+            <span
+              className="rounded-full px-1.5 text-xs"
+              style={{
+                background: isActive ? "color-mix(in srgb, var(--bg) 25%, transparent)" : "var(--bg)",
+                color: isActive ? "var(--bg)" : "var(--muted)",
+              }}
+            >
+              {counts[opt.value]}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function ProjectSection({
   status,
   projects,
@@ -503,6 +555,14 @@ export default function PortfolioClient(props: { projects: Project[] }) {
     }
     return grouped;
   }, [projects]);
+
+  const [filter, setFilter] = useState<FilterValue>("all");
+  const filterCounts: Record<FilterValue, number> = {
+    all: projects.length,
+    live: liveCount,
+    "business-demo": demoCount,
+    "in-development": inDevelopmentCount,
+  };
 
   const [activeId, setActiveId] = useState<string>("");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -558,10 +618,20 @@ export default function PortfolioClient(props: { projects: Project[] }) {
           </div>
         </div>
 
+        <FilterBar active={filter} counts={filterCounts} onChange={setFilter} />
+
         {/* Grouped project sections */}
-        {SECTION_ORDER.map((status) => (
-          <ProjectSection key={status} status={status} projects={byCategory[status]} onOpen={openProject} />
-        ))}
+        {filter === "all" ? (
+          SECTION_ORDER.map((status) => (
+            <ProjectSection key={status} status={status} projects={byCategory[status]} onOpen={openProject} />
+          ))
+        ) : byCategory[filter].length > 0 ? (
+          <ProjectSection status={filter} projects={byCategory[filter]} onOpen={openProject} />
+        ) : (
+          <p className="mb-10 text-sm" style={{ color: "var(--muted)" }}>
+            No builds in this category yet.
+          </p>
+        )}
 
         {/* Final CTA */}
         <div
