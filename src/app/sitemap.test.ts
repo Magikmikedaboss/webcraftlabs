@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from "vitest";
-import sitemap, { STATIC_ROUTE_LAST_MODIFIED } from "./sitemap";
+import sitemap, { STATIC_ROUTE_LAST_MODIFIED, parseValidDate } from "./sitemap";
 import { getAllArchivePosts } from "@/lib/mdx/archive";
 import { getAllPosts } from "@/lib/mdx/blog";
 import { getAllNews } from "@/lib/mdx/news";
@@ -175,5 +175,65 @@ describe("sitemap — deterministic lastModified, no Vercel API dependency", () 
 
     const distinctDates = new Set(staticDates);
     expect(distinctDates.size).toBeGreaterThan(1);
+  });
+});
+
+describe("parseValidDate — rejects silently-normalized invalid calendar dates", () => {
+  it("accepts a genuinely valid date-only value", () => {
+    const result = parseValidDate("2026-08-24");
+    expect(result).toBeInstanceOf(Date);
+    expect(result!.toISOString().slice(0, 10)).toBe("2026-08-24");
+  });
+
+  it("rejects a date-only value whose day overflows its month (e.g. Feb 30) instead of silently rolling over", () => {
+    // new Date("2026-02-30") does not throw — it silently normalizes to
+    // March 2nd. parseValidDate must catch that instead of accepting it.
+    expect(parseValidDate("2026-02-30")).toBeUndefined();
+  });
+
+  it("rejects a date-only value whose day overflows a 30-day month (e.g. Apr 31)", () => {
+    expect(parseValidDate("2026-04-31")).toBeUndefined();
+  });
+
+  it("rejects an invalid month", () => {
+    expect(parseValidDate("2026-13-01")).toBeUndefined();
+  });
+
+  it("returns undefined for missing input", () => {
+    expect(parseValidDate(undefined)).toBeUndefined();
+  });
+});
+
+describe("sitemap — index routes track their newest content, not just their template file", () => {
+  it("/blog reflects the newest published post date, not an older template-only date", async () => {
+    const entries = await sitemap();
+    const blogIndex = entries.find((e) => e.url === "https://www.webcraftlabz.com/blog");
+    expect(blogIndex).toBeDefined();
+
+    const newestPostDate = getAllPosts()
+      .map((p) => p.frontmatter.date)
+      .sort()
+      .at(-1);
+    expect(newestPostDate).toBeDefined();
+
+    const registryDate = STATIC_ROUTE_LAST_MODIFIED["/blog"];
+    const expectedDate = newestPostDate! > registryDate ? newestPostDate! : registryDate;
+    expect(new Date(blogIndex!.lastModified!).toISOString().slice(0, 10)).toBe(expectedDate);
+  });
+
+  it("/news and /archive entries are never older than their newest respective content item", async () => {
+    const entries = await sitemap();
+
+    const newsIndex = entries.find((e) => e.url === "https://www.webcraftlabz.com/news");
+    const newestNewsDate = getAllNews().map((p) => p.frontmatter.date).sort().at(-1);
+    if (newsIndex?.lastModified && newestNewsDate) {
+      expect(new Date(newsIndex.lastModified).toISOString().slice(0, 10) >= newestNewsDate).toBe(true);
+    }
+
+    const archiveIndex = entries.find((e) => e.url === "https://www.webcraftlabz.com/archive");
+    const newestArchiveDate = getAllArchivePosts().map((p) => p.frontmatter.date).sort().at(-1);
+    if (archiveIndex?.lastModified && newestArchiveDate) {
+      expect(new Date(archiveIndex.lastModified).toISOString().slice(0, 10) >= newestArchiveDate).toBe(true);
+    }
   });
 });
