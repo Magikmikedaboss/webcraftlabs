@@ -12,7 +12,12 @@ import { Metadata } from "next";
 import { getBaseUrl, SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Home",
+  // The root layout's title template ("%s | WebCraft Labz") does not apply
+  // to this page's own title, since page.tsx shares the same top-level
+  // segment as the root layout that defines the template — confirmed by
+  // checking the rendered <title> locally (it stayed as the bare string).
+  // Spelled out explicitly here so the final title is exactly right.
+  title: `Web Design, Software & AI Automation | ${SITE.name}`,
   description:
     "WebCraft Labz designs high-converting websites, custom software, and practical automation for growing businesses, startups, and organizations.",
   openGraph: {

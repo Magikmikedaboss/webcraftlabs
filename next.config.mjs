@@ -191,6 +191,12 @@ const nextConfig = withMDXConfig({
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // 7 days, not 30: these images are served from stable public paths, not
+    // filenames hashed by content, so a replaced file at the same path would
+    // stay stale in caches for however long this TTL is. If you replace a
+    // public image, give it a new filename instead of overwriting the old
+    // one, so callers naturally pick up a new optimized URL.
+    minimumCacheTTL: 604800,
   },
   // Optimize production builds
   compiler: {

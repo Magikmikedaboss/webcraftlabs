@@ -116,3 +116,14 @@ describe("next.config.mjs redirects", () => {
     }
   });
 });
+
+describe("next.config.mjs images", () => {
+  it("sets a 7-day minimumCacheTTL, not the framework default of effectively no cache", () => {
+    expect(nextConfig.images.minimumCacheTTL).toBe(604800);
+  });
+
+  it("keeps the existing image configuration alongside the new cache TTL", () => {
+    expect(nextConfig.images.formats).toEqual(["image/avif", "image/webp"]);
+    expect(nextConfig.images.dangerouslyAllowSVG).toBe(true);
+  });
+});
