@@ -6,7 +6,12 @@ import { PROJECTS } from "@/app/portfolio/projects";
 // No project imagery exists in the repo today (every entry in
 // PortfolioClient renders a labeled placeholder), so this is intentionally
 // a text-led layout rather than an image grid.
-const FEATURED_IDS = ["nelfuoco", "ayso", "ravehouse"] as const;
+export const FEATURED_IDS = ["nelfuoco", "leagueos", "ravehouse"] as const;
+
+const STATUS_LABEL: Record<(typeof PROJECTS)[number]["status"], string> = {
+  live: "Live",
+  "in-development": "In development",
+};
 
 export default function ProofHighlights() {
   const featured = FEATURED_IDS.map((id) => PROJECTS.find((p) => p.id === id)).filter(
@@ -37,8 +42,20 @@ export default function ProofHighlights() {
             key={project.id}
             className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm"
           >
-            <div className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
-              {project.phase}
+            <div className="flex items-center justify-between gap-2">
+              <div className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
+                {project.phase}
+              </div>
+              <span
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--bg)] px-2 py-0.5 text-[10px] font-semibold text-[var(--muted)]"
+              >
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{ background: project.status === "live" ? "var(--primary)" : "var(--muted)" }}
+                  aria-hidden="true"
+                />
+                {STATUS_LABEL[project.status]}
+              </span>
             </div>
             <h3 className="mt-2 text-lg font-semibold text-[var(--text)]">{project.title}</h3>
             <p className="mt-2 text-sm text-[var(--muted)]">{project.tagline}</p>

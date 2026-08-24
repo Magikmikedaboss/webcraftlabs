@@ -4,43 +4,114 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import SiteShell from "@/components/SiteShell";
 import type { Project } from "./projects";
 
-function classNames(...xs: Array<string | false | undefined | null>) {
-  return xs.filter(Boolean).join(" ");
+function initials(title: string): string {
+  const words = title.trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return "";
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
 }
 
-// Extract a numeric sort key from year strings like "2024-2025"
-function yearSortKey(y: string) {
-  const m = y.match(/\d{4}/);
-  return m ? Number(m[0]) : 9999;
+const STATUS_LABEL: Record<Project["status"], string> = {
+  live: "Live",
+  "in-development": "In development",
+};
+
+/**
+ * Deterministic per-project tint strength, derived only from the approved
+ * --primary/--surface tokens via color-mix() — no new colors introduced,
+ * just a distinct intensity per card so the grid doesn't look uniform.
+ */
+const TINT_STRENGTHS = ["14%", "20%", "26%", "18%", "24%", "30%"];
+function tintFor(index: number): string {
+  return TINT_STRENGTHS[index % TINT_STRENGTHS.length];
 }
 
-function PlaceholderImage(props: { label: string }) {
+function StatusBadge({ status }: { status: Project["status"] }) {
   return (
-    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-neutral-200 bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <div className="absolute inset-0" />
-      <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="mx-auto mb-2 h-10 w-10 rounded-lg border border-neutral-200 bg-white shadow-sm" />
-          <div className="text-sm font-medium text-neutral-800">{props.label}</div>
-          <div className="mt-1 text-xs text-neutral-500">Placeholder image (swap later)</div>
-        </div>
-      </div>
-    </div>
+    <span
+      className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold"
+      style={{
+        borderColor: "var(--border)",
+        background: "var(--surface)",
+        color: status === "live" ? "var(--primary)" : "var(--muted)",
+      }}
+    >
+      <span
+        className="h-1.5 w-1.5 rounded-full"
+        style={{ background: status === "live" ? "var(--primary)" : "var(--muted)" }}
+        aria-hidden="true"
+      />
+      {STATUS_LABEL[status]}
+    </span>
   );
 }
 
-function Chip(props: { children: React.ReactNode; tone?: "neutral" | "soft" }) {
-  const tone = props.tone ?? "neutral";
+function Chip({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className={classNames(
-        "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium",
-        tone === "neutral" && "border-neutral-200 bg-white text-neutral-700",
-        tone === "soft" && "border-neutral-200 bg-neutral-50 text-neutral-700"
-      )}
+      className="inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium"
+      style={{ borderColor: "var(--border)", background: "var(--surface)", color: "var(--text)" }}
     >
-      {props.children}
+      {children}
     </span>
+  );
+}
+
+/**
+ * Designed, screenshot-ready preview area. Renders a real image when one
+ * exists; otherwise a deliberately-designed placeholder (project initials,
+ * subtle window-chrome framing, status) — never a fabricated screenshot,
+ * and never the literal word "placeholder" repeated on screen.
+ */
+function ProjectPreview({ project, index }: { project: Project; index: number }) {
+  if (project.image) {
+    return (
+      <div
+        className="relative aspect-video w-full overflow-hidden rounded-xl border"
+        style={{ borderColor: "var(--border)" }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- real screenshots are added later via next/image once actual files exist; this branch is exercised only in tests today */}
+        <img src={project.image} alt={project.imageAlt ?? project.title} className="h-full w-full object-cover" />
+        <div className="absolute right-3 top-3">
+          <StatusBadge status={project.status} />
+        </div>
+      </div>
+    );
+  }
+
+  const tint = tintFor(index);
+
+  return (
+    <div
+      className="relative aspect-video w-full overflow-hidden rounded-xl border"
+      style={{
+        borderColor: "var(--border)",
+        background: `linear-gradient(135deg, color-mix(in srgb, var(--primary) ${tint}, var(--surface)), var(--surface))`,
+      }}
+      role="img"
+      aria-label={`${project.title} preview — ${STATUS_LABEL[project.status]}`}
+    >
+      <div className="absolute left-3 top-3 flex gap-1.5" aria-hidden="true">
+        <span className="h-2 w-2 rounded-full" style={{ background: "var(--border)" }} />
+        <span className="h-2 w-2 rounded-full" style={{ background: "var(--border)" }} />
+        <span className="h-2 w-2 rounded-full" style={{ background: "var(--border)" }} />
+      </div>
+      <div className="absolute right-3 top-3">
+        <StatusBadge status={project.status} />
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+        <div
+          className="flex h-14 w-14 items-center justify-center rounded-2xl text-lg font-bold"
+          style={{ background: "var(--primary)", color: "var(--bg)" }}
+          aria-hidden="true"
+        >
+          {initials(project.title)}
+        </div>
+        <span className="text-xs font-medium" style={{ color: "var(--muted)" }}>
+          Preview coming soon
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -101,47 +172,59 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
     };
   }, [open, onClose]);
 
+  // Hooks above must always run in the same order every render, so this
+  // early return — which unmounts the interactive backdrop, buttons, and
+  // links while closed — has to come after them, not before.
+  if (!open) return null;
+
+  const canVisit = !!p && p.status === "live" && !!p.publicUrl;
+
   return (
-    <div
-      aria-hidden={!open}
-      className={classNames("fixed inset-0 z-50", open ? "pointer-events-auto" : "pointer-events-none")}
-    >
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 pointer-events-auto">
       <button
         onClick={onClose}
-        className={classNames("absolute inset-0 transition-opacity", open ? "opacity-100" : "opacity-0")}
-        style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
-        aria-label="Close case study"
+        className="absolute inset-0 opacity-100 transition-opacity"
+        style={{ backgroundColor: "rgba(0,0,0,0.35)" }}
+        aria-label="Close project details"
       />
 
-      {/* Panel */}
       <aside
         ref={asideRef}
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
-        aria-label={p ? `${p.title} case study` : "Case study"}
-        className={classNames(
-          "absolute right-0 top-0 h-full w-full max-w-[560px] border-l border-neutral-200 bg-white shadow-2xl transition-transform",
-          open ? "translate-x-0" : "translate-x-full"
-        )}
+        aria-label={p ? `${p.title} project details` : "Project details"}
+        className="absolute right-0 top-0 h-full w-full max-w-[560px] translate-x-0 border-l shadow-2xl transition-transform"
+        style={{ borderColor: "var(--border)", background: "var(--bg)" }}
       >
         <div className="flex h-full flex-col">
-          <div className="flex items-start justify-between gap-4 border-b border-neutral-200 p-5">
+          <div
+            className="flex items-start justify-between gap-4 border-b p-5"
+            style={{ borderColor: "var(--border)" }}
+          >
             <div className="min-w-0">
-              <div className="text-xs font-medium tracking-wide text-neutral-500">
-                {p?.year} · {p?.phase}
-              </div>
-              <div className="mt-1 truncate text-lg font-semibold text-neutral-900">
+              {p && (
+                <div className="mb-1 flex items-center gap-2">
+                  <StatusBadge status={p.status} />
+                  <span className="text-xs" style={{ color: "var(--muted)" }}>
+                    {p.projectType}
+                  </span>
+                </div>
+              )}
+              <div className="mt-1 truncate text-lg font-semibold" style={{ color: "var(--text)" }}>
                 {p?.title ?? "Select a project"}
               </div>
-              {p?.tagline ? <div className="mt-1 text-sm text-neutral-600">{p.tagline}</div> : null}
-              {p?.role ? <div className="mt-2 text-xs text-neutral-500">{p.role}</div> : null}
+              {p?.tagline ? (
+                <div className="mt-1 text-sm" style={{ color: "var(--muted)" }}>
+                  {p.tagline}
+                </div>
+              ) : null}
             </div>
 
             <button
               onClick={onClose}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+              className="rounded-lg border px-3 py-2 text-sm font-medium"
+              style={{ borderColor: "var(--border)", background: "var(--surface)", color: "var(--text)" }}
             >
               Close
             </button>
@@ -150,49 +233,68 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
           <div className="flex-1 overflow-y-auto p-5">
             {p ? (
               <div className="space-y-6">
-                <PlaceholderImage label={`${p.title} screens`} />
-
                 <section className="space-y-2">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Problem</div>
-                  <p className="text-sm leading-relaxed text-neutral-700">{p.problem}</p>
+                  <div
+                    className="text-xs font-semibold uppercase tracking-wide"
+                    style={{ color: "var(--muted)" }}
+                  >
+                    Purpose
+                  </div>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text)" }}>
+                    {p.problem}
+                  </p>
                 </section>
 
                 <section className="space-y-2">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Build</div>
-                  <ul className="list-disc space-y-1 pl-5 text-sm text-neutral-700">
+                  <div
+                    className="text-xs font-semibold uppercase tracking-wide"
+                    style={{ color: "var(--muted)" }}
+                  >
+                    What&apos;s been built so far
+                  </div>
+                  <ul className="list-disc space-y-1 pl-5 text-sm" style={{ color: "var(--text)" }}>
                     {p.build.map((x) => (
                       <li key={x}>{x}</li>
                     ))}
                   </ul>
+                  {p.wins.length > 0 && (
+                    <ul className="mt-2 space-y-1 text-sm" style={{ color: "var(--text)" }}>
+                      {p.wins.map((x) => (
+                        <li key={x} className="flex gap-2">
+                          <span
+                            className="mt-[6px] h-1.5 w-1.5 flex-none rounded-full"
+                            style={{ background: "var(--primary)" }}
+                          />
+                          <span>{x}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </section>
 
                 <section className="space-y-2">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Stack</div>
+                  <div
+                    className="text-xs font-semibold uppercase tracking-wide"
+                    style={{ color: "var(--muted)" }}
+                  >
+                    Technology
+                  </div>
                   <div className="flex flex-wrap gap-2">
                     {p.stack.map((x) => (
-                      <Chip key={x} tone="soft">
-                        {x}
-                      </Chip>
+                      <Chip key={x}>{x}</Chip>
                     ))}
                   </div>
                 </section>
 
-                <section className="space-y-2">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Wins</div>
-                  <ul className="space-y-1 text-sm text-neutral-700">
-                    {p.wins.map((x) => (
-                      <li key={x} className="flex gap-2">
-                        <span className="mt-[6px] h-1.5 w-1.5 flex-none rounded-full bg-neutral-400" />
-                        <span>{x}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-
                 {p.next?.length ? (
                   <section className="space-y-2">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Next moves</div>
-                    <ul className="list-disc space-y-1 pl-5 text-sm text-neutral-700">
+                    <div
+                      className="text-xs font-semibold uppercase tracking-wide"
+                      style={{ color: "var(--muted)" }}
+                    >
+                      Planned / Next
+                    </div>
+                    <ul className="list-disc space-y-1 pl-5 text-sm" style={{ color: "var(--text)" }}>
                       {p.next.map((x) => (
                         <li key={x}>{x}</li>
                       ))}
@@ -200,51 +302,39 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
                   </section>
                 ) : null}
 
-                {p.links?.length ? (
+                {canVisit && (
                   <section className="space-y-2">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Links</div>
-                    <div className="flex flex-wrap gap-2">
-                      {p.links.map((l) =>
-                        l.href && l.href !== "#" ? (
-                          <a
-                            key={l.label}
-                            href={l.href}
-                            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                          >
-                            {l.label}
-                          </a>
-                        ) : (
-                          <span
-                            key={l.label}
-                            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700"
-                            aria-disabled="true"
-                            tabIndex={-1}
-                          >
-                            {l.label}
-                          </span>
-                        )
-                      )}
-                    </div>
+                    <a
+                      href={p.publicUrl}
+                      target={p.publicUrl === "/" ? undefined : "_blank"}
+                      rel={p.publicUrl === "/" ? undefined : "noopener noreferrer"}
+                      className="inline-flex items-center justify-center rounded-lg border px-3 py-2 text-sm font-medium"
+                      style={{ borderColor: "var(--border)", background: "var(--surface)", color: "var(--text)" }}
+                    >
+                      Visit website
+                    </a>
                   </section>
-                ) : null}
+                )}
               </div>
             ) : (
-              <div className="text-sm text-neutral-600">Pick a project to view the mini case study.</div>
+              <div className="text-sm" style={{ color: "var(--muted)" }}>
+                Pick a project to view details.
+              </div>
             )}
           </div>
 
-          <div className="border-t border-neutral-200 p-5">
+          <div className="border-t p-5" style={{ borderColor: "var(--border)" }}>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-sm font-medium text-neutral-900">Want something like this built?</div>
+              <div className="text-sm font-medium" style={{ color: "var(--text)" }}>
+                Want something like this built?
+              </div>
               <a
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-xl bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-neutral-800"
+                className="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold"
+                style={{ background: "var(--primary)", color: "var(--bg)" }}
               >
                 Request a build
               </a>
-            </div>
-            <div className="mt-2 text-xs text-neutral-500">
-              This drawer is reusable. Swap placeholder images with real screenshots anytime.
             </div>
           </div>
         </div>
@@ -253,23 +343,77 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
   );
 }
 
+function ProjectCard({
+  project,
+  index,
+  onOpen,
+}: {
+  project: Project;
+  index: number;
+  onOpen: (id: string) => void;
+}) {
+  const canVisit = project.status === "live" && !!project.publicUrl;
+
+  return (
+    <div
+      data-testid={`project-card-${project.id}`}
+      className="group flex flex-col rounded-2xl border p-4 shadow-sm transition"
+      style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+    >
+      <ProjectPreview project={project} index={index} />
+
+      <div className="mt-4 flex items-start justify-between gap-3">
+        <div>
+          <div className="text-xs font-medium" style={{ color: "var(--muted)" }}>
+            {project.projectType}
+          </div>
+          <div className="mt-1 text-base font-semibold" style={{ color: "var(--text)" }}>
+            {project.title}
+          </div>
+          <div className="mt-1 text-sm" style={{ color: "var(--muted)" }}>
+            {project.tagline}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        {project.stack.slice(0, 4).map((x) => (
+          <Chip key={x}>{x}</Chip>
+        ))}
+        {project.stack.length > 4 ? <Chip>+{project.stack.length - 4}</Chip> : null}
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <button
+          onClick={() => onOpen(project.id)}
+          className="inline-flex items-center justify-center rounded-lg border px-3 py-2 text-sm font-semibold transition"
+          style={{ borderColor: "var(--border)", background: "var(--bg)", color: "var(--text)" }}
+        >
+          View project details
+        </button>
+        {canVisit && (
+          <a
+            href={project.publicUrl}
+            target={project.publicUrl === "/" ? undefined : "_blank"}
+            rel={project.publicUrl === "/" ? undefined : "noopener noreferrer"}
+            className="text-sm font-semibold hover:underline"
+            style={{ color: "var(--primary)" }}
+          >
+            Visit website →
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function PortfolioClient(props: { projects: Project[] }) {
   const { projects } = props;
 
-  const phases = useMemo(() => {
-    const map = new Map<string, Project[]>();
-    for (const p of projects) {
-      if (!map.has(p.phase)) map.set(p.phase, []);
-      map.get(p.phase)!.push(p);
-    }
-    for (const [k, arr] of map.entries()) {
-      arr.sort((a, b) => yearSortKey(a.year) - yearSortKey(b.year));
-      map.set(k, arr);
-    }
-    return Array.from(map.entries());
-  }, [projects]);
+  const liveCount = useMemo(() => projects.filter((p) => p.status === "live").length, [projects]);
+  const inDevelopmentCount = projects.length - liveCount;
 
-  const [activeId, setActiveId] = useState<string>(projects[0]?.id ?? "");
+  const [activeId, setActiveId] = useState<string>("");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const activeProject = useMemo(() => projects.find((p) => p.id === activeId) ?? null, [projects, activeId]);
@@ -281,181 +425,70 @@ export default function PortfolioClient(props: { projects: Project[] }) {
 
   return (
     <SiteShell
-      background="surface"
-      breadcrumbs={[{ label: "Home", href: "/" }, { label: "Work" }]}
+      background="bg"
+      breadcrumbs={[{ label: "Home", href: "/" }, { label: "Selected Builds" }]}
     >
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Hero */}
-        <header className="mb-12 relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 p-8 md:p-12 shadow-xl">
-          <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-white border border-white/30">
-              <span className="h-2 w-2 rounded-full bg-cyan-200" />
-              Portfolio
-            </div>
-
-            <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
-              WebCraft LabZ
-              <span className="block mt-2 bg-gradient-to-r from-cyan-200 to-blue-200 bg-clip-text text-transparent">
-                Project Timeline
-              </span>
-            </h1>
-
-            <p className="mt-6 max-w-2xl text-lg md:text-xl leading-relaxed text-blue-50">
-              Scroll the timeline, click any project, and explore the problems solved, the stack used, and the wins delivered.
-            </p>
-          </div>
-
-          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl" />
+        <header className="mb-10 max-w-3xl">
+          <p
+            className="text-xs font-semibold uppercase tracking-[0.2em]"
+            style={{ color: "var(--primary)" }}
+          >
+            Selected Builds
+          </p>
+          <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl" style={{ color: "var(--text)" }}>
+            Products, platforms, and digital experiences we&apos;re building
+          </h1>
+          <p className="mt-5 text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
+            A mix of live work and products still taking shape — real problems, real stacks, and an
+            honest look at what&apos;s actually been built so far.
+          </p>
         </header>
 
-        {/* Stats */}
-        <div className="mb-12 grid gap-6 sm:grid-cols-3">
-          <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50 p-6 shadow-sm">
-            <div className="text-3xl font-extrabold text-blue-700">{projects.length}</div>
-            <div className="mt-1 text-sm font-semibold text-blue-600">Projects</div>
-            <div className="mt-2 text-xs text-gray-600">From concept to completion</div>
+        {/* Honest counts */}
+        <div className="mb-12 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+            <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{projects.length}</div>
+            <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Selected builds</div>
           </div>
-          <div className="rounded-2xl border border-cyan-200 bg-gradient-to-br from-cyan-50 to-blue-50 p-6 shadow-sm">
-            <div className="text-3xl font-extrabold text-cyan-700">2024-2026</div>
-            <div className="mt-1 text-sm font-semibold text-cyan-600">Timeline</div>
-            <div className="mt-2 text-xs text-gray-600">Building the future</div>
+          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+            <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{liveCount}</div>
+            <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Live</div>
           </div>
-          <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50 p-6 shadow-sm">
-            <div className="text-3xl font-extrabold text-blue-700">∞</div>
-            <div className="mt-1 text-sm font-semibold text-blue-600">Systems</div>
-            <div className="mt-2 text-xs text-gray-600">Web, content, admin, platform</div>
+          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+            <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{inDevelopmentCount}</div>
+            <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>In development</div>
           </div>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-          {/* Timeline rail */}
-          <aside className="lg:sticky lg:top-6 lg:self-start">
-            <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50 p-4 shadow-sm">
-              <div className="text-sm font-semibold text-blue-900">Timeline</div>
+        {/* Project grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((p, i) => (
+            <ProjectCard key={p.id} project={p} index={i} onOpen={openProject} />
+          ))}
+        </div>
 
-              <div className="mt-3 space-y-4">
-                {phases.map(([phase, items]) => (
-                  <div key={phase} className="space-y-2">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-blue-600">{phase}</div>
-
-                    <div className="space-y-1">
-                      {items.map((p) => {
-                        const active = p.id === activeId;
-                        return (
-                          <button
-                            key={p.id}
-                            onClick={() => openProject(p.id)}
-                            className={classNames(
-                              "group flex w-full items-start gap-3 rounded-xl border px-3 py-3 min-h-[48px] text-left transition-all duration-200",
-                              active
-                                ? "border-blue-400 bg-gradient-to-r from-blue-100 to-cyan-100 shadow-md"
-                                : "border-blue-200 bg-white hover:border-blue-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:shadow-sm"
-                            )}
-                          >
-                            <span
-                              className={classNames(
-                                "mt-1 h-2.5 w-2.5 flex-none rounded-full transition-all duration-200",
-                                active
-                                  ? "bg-gradient-to-r from-blue-600 to-cyan-600"
-                                  : "bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:from-cyan-500 group-hover:to-blue-500"
-                              )}
-                            />
-                            <span className="min-w-0">
-                              <span className="block text-xs font-medium text-blue-600">{p.year}</span>
-                              <span className="block truncate text-sm font-semibold text-blue-900 group-hover:text-cyan-700">
-                                {p.title}
-                              </span>
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-4 border-t border-blue-200 pt-4 text-xs text-blue-600">
-                Tip: Click any project to open the mini case study drawer.
-              </div>
-            </div>
-          </aside>
-
-          {/* Project list */}
-          <div className="space-y-8">
-            {phases.map(([phase, items]) => (
-              <div key={phase} className="space-y-3">
-                <div className="flex items-end justify-between gap-4 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 p-3">
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide text-blue-600">{phase}</div>
-                    <div className="mt-1 text-lg font-semibold text-blue-900">
-                      {items[0]?.year} – {items[items.length - 1]?.year}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {items.map((p) => (
-                    <button
-                      key={p.id}
-                      onClick={() => openProject(p.id)}
-                      className="group rounded-2xl border border-neutral-200 bg-white p-4 text-left shadow-sm transition hover:border-neutral-300 hover:bg-neutral-50"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <div className="text-xs font-medium text-neutral-500">{p.year}</div>
-                          <div className="mt-1 text-base font-semibold text-neutral-900">{p.title}</div>
-                          <div className="mt-1 text-sm text-neutral-600">{p.tagline}</div>
-                        </div>
-                        <span className="rounded-full border border-neutral-200 bg-white px-2.5 py-1 text-xs font-semibold text-neutral-700 group-hover:bg-neutral-50">
-                          Open
-                        </span>
-                      </div>
-
-                      <div className="mt-4">
-                        <PlaceholderImage label="Project preview" />
-                      </div>
-
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {p.stack.slice(0, 4).map((x) => (
-                          <Chip key={x} tone="neutral">
-                            {x}
-                          </Chip>
-                        ))}
-                        {p.stack.length > 4 ? <Chip tone="neutral">+{p.stack.length - 4}</Chip> : null}
-                      </div>
-
-                      <div className="mt-4 text-xs text-neutral-500">
-                        Click to view Problem → Build → Stack → Wins.
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            {/* CTA */}
-            <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-6">
-              <div className="text-lg font-semibold text-neutral-900">Want a build like this?</div>
-              <p className="mt-2 max-w-2xl text-sm text-neutral-600">
-                If you&apos;re turning a website into a lead system, admin system, or content engine, I can help you ship something clean, fast, and scalable.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-3">
-                <a
-                  href="/contact"
-                  className="inline-flex items-center justify-center rounded-xl bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-neutral-800"
-                >
-                  Contact
-                </a>
-                <span
-                  className="inline-flex items-center justify-center rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800"
-                  aria-disabled="true"
-                  tabIndex={-1}
-                >
-                  Download PDF (later)
-                </span>
-              </div>
-            </div>
+        {/* Final CTA */}
+        <div
+          className="mt-12 rounded-2xl border p-6"
+          style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+        >
+          <div className="text-lg font-semibold" style={{ color: "var(--text)" }}>
+            Want a build like this?
+          </div>
+          <p className="mt-2 max-w-2xl text-sm" style={{ color: "var(--muted)" }}>
+            If you&apos;re turning an idea into a website, admin system, or product, we can help you
+            ship something clean, fast, and scalable.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold"
+              style={{ background: "var(--primary)", color: "var(--bg)" }}
+            >
+              Contact
+            </a>
           </div>
         </div>
 
