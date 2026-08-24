@@ -66,7 +66,7 @@ Your WebCraft Labs website is **production-ready** and can be deployed. The buil
 ## ⚠️ Critical Issues to Address
 
 ### 1. **Environment Variables** 🔴 CRITICAL
-**Issue:** `NEXT_PUBLIC_SITE_URL` defaults to `https://webcraftlabz.com` but may not be set in production.
+**Issue:** `NEXT_PUBLIC_SITE_URL` defaults to `https://www.webcraftlabz.com` but may not be set in production.
 
 **Impact:** 
 - Sitemap URLs may be incorrect
@@ -76,7 +76,7 @@ Your WebCraft Labs website is **production-ready** and can be deployed. The buil
 **Fix Required:**
 ```bash
 # Add to your production environment (Vercel/hosting platform)
-NEXT_PUBLIC_SITE_URL=https://webcraftlabz.com
+NEXT_PUBLIC_SITE_URL=https://www.webcraftlabz.com
 ```
 
 **Location:** `src/lib/site.ts` line 11
@@ -300,7 +300,7 @@ const nextConfig = {
 
 ### Environment Variables to Set:
 ```bash
-NEXT_PUBLIC_SITE_URL=https://webcraftlabz.com
+NEXT_PUBLIC_SITE_URL=https://www.webcraftlabz.com
 # Add email service keys when implemented:
 # RESEND_API_KEY=your_key_here
 # Or database connection:

@@ -56,8 +56,8 @@ This project includes an IndexNow integration to submit URLs quickly after conte
 ```json
 {
   "urls": [
-	 "https://webcraftlabz.com/blog/example-post",
-	 "https://webcraftlabz.com/news/example-update"
+	 "https://www.webcraftlabz.com/blog/example-post",
+	 "https://www.webcraftlabz.com/news/example-update"
   ]
 }
 ```
@@ -70,7 +70,7 @@ This repo includes a [GitHub Actions workflow](.github/workflows/indexnow-submit
 
 Add these GitHub repository secrets to enable it:
 
-- `INDEXNOW_ENDPOINT` (example: `https://webcraftlabz.com/api/indexnow`)
+- `INDEXNOW_ENDPOINT` (example: `https://www.webcraftlabz.com/api/indexnow`)
 - `INDEXNOW_SUBMIT_TOKEN` (must match your app environment value)
 
 If either secret is missing, the workflow exits safely without failing your deployment.
