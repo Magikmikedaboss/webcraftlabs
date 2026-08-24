@@ -79,6 +79,8 @@ export const PROJECTS: Project[] = [
     status: "live",
     projectType: "Local-service website",
     publicUrl: "https://www.mikesprohandyman.com/",
+    image: "/images/portfolio/mikes-pro-handyman.webp",
+    imageAlt: "Mike's Pro Handyman homepage, showing service categories and online booking calls-to-action.",
     overview:
       "A live Las Vegas handyman website designed around local discovery, service presentation, useful content, trust, and fast online booking.",
     problem:
@@ -100,6 +102,8 @@ export const PROJECTS: Project[] = [
     status: "live",
     projectType: "Music and artist website",
     publicUrl: "https://nelfuoco.com",
+    image: "/images/portfolio/nelfuoco.webp",
+    imageAlt: "Nel Fuoco artist website homepage, showing music, tour, and media content.",
     overview:
       "A live artist website bringing music, media, booking, releases, and fan-facing content into one responsive experience.",
     problem:
@@ -146,6 +150,8 @@ export const PROJECTS: Project[] = [
     status: "business-demo",
     projectType: "Local-service website demo",
     publicUrl: "https://black-hat-welders.vercel.app/services",
+    image: "/images/portfolio/black-hat-welders.webp",
+    imageAlt: "Black Hat Welders mobile welding services page, showing service categories and dispatch coverage area.",
     overview:
       "A mobile-welding website demonstration created for a Las Vegas service company, combining conversion-focused service presentation with a content publishing system.",
     problem:
@@ -167,6 +173,8 @@ export const PROJECTS: Project[] = [
     status: "business-demo",
     projectType: "Beauty-service website demo",
     publicUrl: "https://haileyjade-website.vercel.app/",
+    image: "/images/portfolio/hailey-jade.webp",
+    imageAlt: "Hailey Jade eyelash artist website homepage, showing signature service tiers and booking calls-to-action.",
     overview:
       "A premium beauty-service website demonstration created for a custom eyelash artist, with a mobile-first service and booking journey.",
     problem:
@@ -188,6 +196,8 @@ export const PROJECTS: Project[] = [
     status: "business-demo",
     projectType: "Hospitality and booking website demo",
     publicUrl: "https://glamping-retreat-website.vercel.app/",
+    image: "/images/portfolio/glamping-retreat.webp",
+    imageAlt: "Canyon & Coast Retreats homepage, showing glamping and RV accommodation options.",
     overview:
       "A glamping and retreat website demonstration designed around destination discovery, accommodation presentation, and a clear reservation journey.",
     problem:

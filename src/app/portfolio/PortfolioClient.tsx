@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import SiteShell from "@/components/SiteShell";
 import { CATEGORY_LABEL, sortByCategoryOrder, type Project, type ProjectStatus } from "./projects";
 
@@ -92,8 +93,13 @@ function ProjectPreview({ project, index }: { project: Project; index: number })
         className="relative aspect-video w-full overflow-hidden rounded-xl border"
         style={{ borderColor: "var(--border)" }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element -- real screenshots are added later via next/image once actual files exist; this branch is exercised only in tests today */}
-        <img src={project.image} alt={project.imageAlt ?? project.title} className="h-full w-full object-cover" />
+        <Image
+          src={project.image}
+          alt={project.imageAlt ?? project.title}
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          className="object-cover"
+        />
         <div className="absolute right-3 top-3">
           <StatusBadge status={project.status} />
         </div>
