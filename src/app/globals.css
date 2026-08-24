@@ -42,9 +42,23 @@ body {
   --secondary: #0ea5a4;
   --accent: #7dd3fc;
 
+  /* Text that reads reliably directly on a --primary-colored surface
+     (e.g. a solid CTA banner). --primary itself flips from dark/saturated
+     in light theme to light/pastel in dark theme, so no existing neutral
+     token passes 4.5:1 against it in both themes at once — this one is
+     scoped to exactly that use. Verified 5.17:1 (light) / 7.21:1 (dark). */
+  --onPrimary: #ffffff;
+
+  /* Form/status feedback text on --surface. Did not exist before — status
+     messages hardcoded Tailwind green-600/red-600 directly. green-600
+     (#16a34a) only reached 3.30:1 on white, under AA; these values are
+     verified 5.02:1 (success) / 4.83:1 (error) against --surface. */
+  --success: #15803d;
+  --error: #dc2626;
+
   --hoverSurface: #e0e7ef;
   --focusSurface: #bae6fd;
-  
+
   /* Card-specific variables for stats cards */
   --card-border: #bfdbfe;
   --card-bg-start: #dbeafe;
@@ -60,11 +74,14 @@ body {
   --border: #1f2a38;
 
   --primary: #60a5fa;
+  --onPrimary: #10151c;
+  --success: #4ade80;
+  --error: #f87171;
   --hoverSurface: #1e293b;
   --focusSurface: #0ea5a4;
   --secondary: #2dd4bf;
   --accent: #38bdf8;
-  
+
   /* Card-specific variables for stats cards in dark mode */
   --card-border: #1e3a5f;
   --card-bg-start: #0f1f3a;
@@ -526,6 +543,13 @@ body {
   opacity: 0.85;
 }
 
+/* Was --rc-dark-slate on a near-transparent white background — that
+   pairing is only valid on the fixed-dark .rc-canvas-dark surface, but
+   this badge actually renders inside .rc-card, which always uses the
+   theme-reactive --rc-paper regardless of the section around it. Uses
+   --rc-slate/--rc-panel/--rc-border instead, which track the same
+   .rc-root light/dark switch --rc-paper does. Verified 7.69:1 (light)
+   and 6.48:1 (dark) against --rc-paper. */
 .rc-badge-muted {
   flex-shrink: 0;
   font-size: 0.68rem;
@@ -533,9 +557,9 @@ body {
   letter-spacing: 0.08em;
   border-radius: 999px;
   padding: 0.2rem 0.6rem;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--rc-dark-slate);
-  border: 1px solid var(--rc-dark-border);
+  background: var(--rc-panel);
+  color: var(--rc-slate);
+  border: 1px solid var(--rc-border);
 }
 
 .rc-cta-panel {

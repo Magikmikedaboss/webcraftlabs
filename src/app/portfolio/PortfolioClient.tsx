@@ -501,11 +501,15 @@ function FilterBar({
             }}
           >
             {opt.label}
+            {/* Explicit, theme-safe pairing instead of a color-mix/transparent
+                tint of --bg over the active button's --primary fill — that
+                nested pairing was fragile and failed AA. --text/--surface are
+                already high-contrast against each other in both themes. */}
             <span
               className="rounded-full px-1.5 text-xs"
               style={{
-                background: isActive ? "color-mix(in srgb, var(--bg) 25%, transparent)" : "var(--bg)",
-                color: isActive ? "var(--bg)" : "var(--muted)",
+                background: isActive ? "var(--text)" : "var(--bg)",
+                color: isActive ? "var(--surface)" : "var(--muted)",
               }}
             >
               {counts[opt.value]}
