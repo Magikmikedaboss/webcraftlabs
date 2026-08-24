@@ -176,6 +176,20 @@ describe("PortfolioClient — image fallback and accessibility", () => {
     expect(img).toBeInTheDocument();
     expect(img.tagName.toLowerCase()).toBe("img");
   });
+
+  it("keeps the status indicator visible on a card even when a real image is set", () => {
+    const withImage: Project[] = [
+      {
+        ...PROJECTS[0],
+        status: "in-development",
+        image: "/images/portfolio/example.png",
+        imageAlt: "Example project dashboard screenshot",
+      },
+    ];
+    renderPortfolio(withImage);
+    const card = screen.getByTestId(`project-card-${withImage[0].id}`);
+    expect(within(card).getByText("In development")).toBeInTheDocument();
+  });
 });
 
 describe("PortfolioClient — theme tokens", () => {
