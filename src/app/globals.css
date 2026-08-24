@@ -26,11 +26,17 @@ body {
    =========================== */
 
 :root {
-  --bg: #f8fbff;
+  /* Studio Contrast — verified light-theme surface hierarchy (see the
+     visual-system audit): the previous --bg/--surface pair was only a
+     1.038 contrast ratio apart (effectively indistinguishable), which is
+     why cards and borders read as flat/invisible against the page. This
+     set targets ~1.2 bg/surface separation while keeping --primary and
+     --secondary untouched. */
+  --bg: #e7ebf0;
   --surface: #ffffff;
-  --text: #0b1b2b;
-  --muted: #5b6b7a;
-  --border: #dbe5ee;
+  --text: #10151c;
+  --muted: #525c66;
+  --border: #c3ccd6;
 
   --primary: #2563eb;
   --secondary: #0ea5a4;
