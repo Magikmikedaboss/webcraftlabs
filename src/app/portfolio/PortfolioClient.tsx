@@ -600,19 +600,35 @@ export default function PortfolioClient(props: { projects: Project[] }) {
 
         {/* Honest counts */}
         <div className="mb-12 grid gap-4 sm:grid-cols-4">
-          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+          <div
+            data-testid="stat-total"
+            className="rounded-2xl border p-5"
+            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+          >
             <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{projects.length}</div>
             <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Selected builds</div>
           </div>
-          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+          <div
+            data-testid="stat-live"
+            className="rounded-2xl border p-5"
+            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+          >
             <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{liveCount}</div>
             <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Live websites</div>
           </div>
-          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+          <div
+            data-testid="stat-demo"
+            className="rounded-2xl border p-5"
+            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+          >
             <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{demoCount}</div>
             <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>Business demos</div>
           </div>
-          <div className="rounded-2xl border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+          <div
+            data-testid="stat-in-dev"
+            className="rounded-2xl border p-5"
+            style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+          >
             <div className="text-3xl font-bold" style={{ color: "var(--text)" }}>{inDevelopmentCount}</div>
             <div className="mt-1 text-sm font-semibold" style={{ color: "var(--muted)" }}>In development</div>
           </div>
