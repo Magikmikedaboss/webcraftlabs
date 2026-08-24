@@ -21,7 +21,7 @@ export const SITE = {
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ],
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcraftlabz.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.webcraftlabz.com",
 } as const;
 
 /**

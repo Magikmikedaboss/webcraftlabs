@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import sitemap from "./sitemap";
 import { getAllArchivePosts } from "@/lib/mdx/archive";
 
@@ -39,5 +39,30 @@ describe("sitemap — Archive canonical URLs", () => {
     const entries = await sitemap();
     const urls = entries.map((e) => e.url);
     expect(urls.some((u) => u.endsWith("/blog/synthetic-minds-series"))).toBe(true);
+  });
+});
+
+describe("sitemap — canonical domain", () => {
+  const ORIGINAL_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+
+  afterEach(() => {
+    if (ORIGINAL_SITE_URL === undefined) {
+      delete process.env.NEXT_PUBLIC_SITE_URL;
+    } else {
+      process.env.NEXT_PUBLIC_SITE_URL = ORIGINAL_SITE_URL;
+    }
+    vi.resetModules();
+  });
+
+  it("emits every URL on the canonical www origin, never the redirecting apex origin", async () => {
+    delete process.env.NEXT_PUBLIC_SITE_URL;
+    vi.resetModules();
+    const { default: freshSitemap } = await import("./sitemap");
+    const entries = await freshSitemap();
+    expect(entries.length).toBeGreaterThan(0);
+    for (const entry of entries) {
+      expect(entry.url.startsWith("https://www.webcraftlabz.com")).toBe(true);
+      expect(entry.url.startsWith("https://webcraftlabz.com/")).toBe(false);
+    }
   });
 });

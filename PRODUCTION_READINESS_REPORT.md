@@ -66,17 +66,17 @@ Your WebCraft Labs website is **production-ready** and can be deployed. The buil
 ## ⚠️ Critical Issues to Address
 
 ### 1. **Environment Variables** 🔴 CRITICAL
-**Issue:** `NEXT_PUBLIC_SITE_URL` defaults to `https://webcraftlabz.com` but may not be set in production.
+**Issue:** `SITE.url` already falls back to `https://www.webcraftlabz.com` when `NEXT_PUBLIC_SITE_URL` is unset, so an unset variable is safe. The remaining risk is explicit misconfiguration: if `NEXT_PUBLIC_SITE_URL` **is** set in production, it must use the `www` domain — setting it to the apex (`https://webcraftlabz.com`) reintroduces the canonical/redirect mismatch this variable exists to avoid.
 
-**Impact:** 
-- Sitemap URLs may be incorrect
-- CSRF protection may fail
-- Open Graph tags may point to wrong domain
+**Impact if misconfigured to the apex domain:**
+- Sitemap, canonical, and Open Graph URLs would point at a domain that only redirects, not the final destination
+- The `/api/contact` CSRF origin allowlist (`src/proxy.ts`) would reject legitimate submissions from the real `www` production origin
 
 **Fix Required:**
 ```bash
-# Add to your production environment (Vercel/hosting platform)
-NEXT_PUBLIC_SITE_URL=https://webcraftlabz.com
+# If explicitly setting this in your production environment (Vercel/hosting platform),
+# it must be the www domain:
+NEXT_PUBLIC_SITE_URL=https://www.webcraftlabz.com
 ```
 
 **Location:** `src/lib/site.ts` line 11
@@ -300,7 +300,7 @@ const nextConfig = {
 
 ### Environment Variables to Set:
 ```bash
-NEXT_PUBLIC_SITE_URL=https://webcraftlabz.com
+NEXT_PUBLIC_SITE_URL=https://www.webcraftlabz.com
 # Add email service keys when implemented:
 # RESEND_API_KEY=your_key_here
 # Or database connection:
