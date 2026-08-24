@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import ProofHighlights, { FEATURED_IDS } from "./ProofHighlights";
+import ProofHighlights, { FEATURED_IDS, STATUS_LABEL } from "./ProofHighlights";
 import { PROJECTS } from "@/app/portfolio/projects";
 
 describe("ProofHighlights — homepage compatibility with expanded status model", () => {
@@ -22,25 +22,32 @@ describe("ProofHighlights — homepage compatibility with expanded status model"
     }
   });
 
-  it("discloses accurate status for every featured project and never presents a business demo as a live website", () => {
+  it("discloses the correct status label on each featured project's own card", () => {
     render(<ProofHighlights />);
-    const STATUS_LABEL: Record<string, string> = {
-      live: "Live website",
-      "business-demo": "Business demo",
-      "in-development": "In development",
-    };
-    const counts: Record<string, number> = {};
     for (const id of FEATURED_IDS) {
-      const status = PROJECTS.find((p) => p.id === id)?.status;
-      if (!status) continue;
-      counts[status] = (counts[status] ?? 0) + 1;
+      const project = PROJECTS.find((p) => p.id === id);
+      if (!project) continue;
+      const card = screen.getByTestId(`proof-card-${id}`);
+      expect(within(card).getByText(STATUS_LABEL[project.status])).toBeInTheDocument();
     }
-    for (const [status, count] of Object.entries(counts)) {
-      expect(screen.getAllByText(STATUS_LABEL[status]).length).toBe(count);
+  });
+
+  it("never presents a business demo as a live website", () => {
+    render(<ProofHighlights />);
+    const hasFeaturedDemo = FEATURED_IDS.some(
+      (id) => PROJECTS.find((p) => p.id === id)?.status === "business-demo"
+    );
+    // No featured project is a business demo today, so the label must not appear.
+    if (!hasFeaturedDemo) {
+      expect(screen.queryByText(STATUS_LABEL["business-demo"])).not.toBeInTheDocument();
     }
-    // No featured project is a business demo today, so "Business demo" must not appear.
-    if (!counts["business-demo"]) {
-      expect(screen.queryByText("Business demo")).not.toBeInTheDocument();
-    }
+  });
+
+  it("maps every status to its correct user-facing label, including business-demo", () => {
+    // FEATURED_IDS currently has no business-demo entry, so this verifies the
+    // mapping directly rather than only through a rendered card.
+    expect(STATUS_LABEL.live).toBe("Live website");
+    expect(STATUS_LABEL["business-demo"]).toBe("Business demo");
+    expect(STATUS_LABEL["in-development"]).toBe("In development");
   });
 });
