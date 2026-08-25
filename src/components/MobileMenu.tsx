@@ -107,7 +107,7 @@ export default function MobileMenu() {
         <div
           ref={menuRef}
           id={menuId}
-          className="fixed top-[calc(var(--header-height)+1px)] left-0 right-0 w-full bg-[var(--surface)] border-t border-[var(--border)] shadow-lg z-50"
+          className="fixed top-[calc(var(--header-height)+1px)] left-0 right-0 w-full bg-[var(--surface)] border-t border-[var(--border)] shadow-lg z-[100]"
         >
           <nav className="flex flex-col gap-1 p-6">
             <details className="group">
