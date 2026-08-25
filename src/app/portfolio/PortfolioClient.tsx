@@ -131,7 +131,7 @@ function ProjectPreview({ project, index }: { project: Project; index: number })
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
         <div
           className="flex h-14 w-14 items-center justify-center rounded-2xl text-lg font-bold"
-          style={{ background: "var(--primary)", color: "var(--bg)" }}
+          style={{ background: "var(--primary)", color: "var(--onPrimary)" }}
           aria-hidden="true"
         >
           {initials(project.title)}
@@ -381,7 +381,7 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
               <a
                 href="/contact"
                 className="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold"
-                style={{ background: "var(--primary)", color: "var(--bg)" }}
+                style={{ background: "var(--primary)", color: "var(--onPrimary)" }}
               >
                 Request a build
               </a>
@@ -497,15 +497,19 @@ function FilterBar({
             style={{
               borderColor: isActive ? "var(--primary)" : "var(--border)",
               background: isActive ? "var(--primary)" : "var(--surface)",
-              color: isActive ? "var(--bg)" : "var(--text)",
+              color: isActive ? "var(--onPrimary)" : "var(--text)",
             }}
           >
             {opt.label}
+            {/* Explicit, theme-safe pairing instead of a color-mix/transparent
+                tint of --bg over the active button's --primary fill — that
+                nested pairing was fragile and failed AA. --text/--surface are
+                already high-contrast against each other in both themes. */}
             <span
               className="rounded-full px-1.5 text-xs"
               style={{
-                background: isActive ? "color-mix(in srgb, var(--bg) 25%, transparent)" : "var(--bg)",
-                color: isActive ? "var(--bg)" : "var(--muted)",
+                background: isActive ? "var(--text)" : "var(--bg)",
+                color: isActive ? "var(--surface)" : "var(--muted)",
               }}
             >
               {counts[opt.value]}
@@ -588,9 +592,13 @@ export default function PortfolioClient(props: { projects: Project[] }) {
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Hero */}
         <header className="mb-10 max-w-3xl">
+          {/* --text, not --primary: this eyebrow sits directly on the
+              page's --bg (SiteShell background="bg") with no card behind
+              it to move onto --surface — --primary only passes AA against
+              --surface, not the darker Studio Contrast --bg. */}
           <p
             className="text-xs font-semibold uppercase tracking-[0.2em]"
-            style={{ color: "var(--primary)" }}
+            style={{ color: "var(--text)" }}
           >
             Selected Builds
           </p>
@@ -671,7 +679,7 @@ export default function PortfolioClient(props: { projects: Project[] }) {
             <a
               href="/contact"
               className="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold"
-              style={{ background: "var(--primary)", color: "var(--bg)" }}
+              style={{ background: "var(--primary)", color: "var(--onPrimary)" }}
             >
               Contact
             </a>

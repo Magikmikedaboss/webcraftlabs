@@ -26,19 +26,39 @@ body {
    =========================== */
 
 :root {
-  --bg: #f8fbff;
+  /* Studio Contrast — verified light-theme surface hierarchy (see the
+     visual-system audit): the previous --bg/--surface pair was only a
+     1.038 contrast ratio apart (effectively indistinguishable), which is
+     why cards and borders read as flat/invisible against the page. This
+     set targets ~1.2 bg/surface separation while keeping --primary and
+     --secondary untouched. */
+  --bg: #e7ebf0;
   --surface: #ffffff;
-  --text: #0b1b2b;
-  --muted: #5b6b7a;
-  --border: #dbe5ee;
+  --text: #10151c;
+  --muted: #525c66;
+  --border: #c3ccd6;
 
   --primary: #2563eb;
   --secondary: #0ea5a4;
   --accent: #7dd3fc;
 
+  /* Text that reads reliably directly on a --primary-colored surface
+     (e.g. a solid CTA banner). --primary itself flips from dark/saturated
+     in light theme to light/pastel in dark theme, so no existing neutral
+     token passes 4.5:1 against it in both themes at once — this one is
+     scoped to exactly that use. Verified 5.17:1 (light) / 7.21:1 (dark). */
+  --onPrimary: #ffffff;
+
+  /* Form/status feedback text on --surface. Did not exist before — status
+     messages hardcoded Tailwind green-600/red-600 directly. green-600
+     (#16a34a) only reached 3.30:1 on white, under AA; these values are
+     verified 5.02:1 (success) / 4.83:1 (error) against --surface. */
+  --success: #15803d;
+  --error: #dc2626;
+
   --hoverSurface: #e0e7ef;
   --focusSurface: #bae6fd;
-  
+
   /* Card-specific variables for stats cards */
   --card-border: #bfdbfe;
   --card-bg-start: #dbeafe;
@@ -48,17 +68,29 @@ body {
 
 [data-theme="dark"] {
   --bg: #070b12;
-  --surface: #0d1420;
+  /* --surface/--border/--hoverSurface lightened from #0d1420/#1f2a38/#1e293b:
+     the old values put dark theme's bg/surface separation at a 1.068
+     contrast ratio — almost exactly the flat 1.038 ratio that was the
+     whole reason this file's light-theme tokens got the Studio Contrast
+     pass. --bg stays put (mirrors the light-theme move of adjusting only
+     one side of the pair); the new --surface hits the same ~1.2 target
+     ratio the light theme uses. --text/--muted/--primary/--secondary/
+     --accent/--onPrimary/--success/--error are unchanged and still clear
+     AA against the new --surface. */
+  --surface: #151f33;
   --text: #e5edf5;
   --muted: #9aa8b6;
-  --border: #1f2a38;
+  --border: #30415e;
 
   --primary: #60a5fa;
-  --hoverSurface: #1e293b;
+  --onPrimary: #10151c;
+  --success: #4ade80;
+  --error: #f87171;
+  --hoverSurface: #24314b;
   --focusSurface: #0ea5a4;
   --secondary: #2dd4bf;
   --accent: #38bdf8;
-  
+
   /* Card-specific variables for stats cards in dark mode */
   --card-border: #1e3a5f;
   --card-bg-start: #0f1f3a;
@@ -520,6 +552,13 @@ body {
   opacity: 0.85;
 }
 
+/* Was --rc-dark-slate on a near-transparent white background — that
+   pairing is only valid on the fixed-dark .rc-canvas-dark surface, but
+   this badge actually renders inside .rc-card, which always uses the
+   theme-reactive --rc-paper regardless of the section around it. Uses
+   --rc-slate/--rc-panel/--rc-border instead, which track the same
+   .rc-root light/dark switch --rc-paper does. Verified 7.69:1 (light)
+   and 6.48:1 (dark) against --rc-paper. */
 .rc-badge-muted {
   flex-shrink: 0;
   font-size: 0.68rem;
@@ -527,9 +566,9 @@ body {
   letter-spacing: 0.08em;
   border-radius: 999px;
   padding: 0.2rem 0.6rem;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--rc-dark-slate);
-  border: 1px solid var(--rc-dark-border);
+  background: var(--rc-panel);
+  color: var(--rc-slate);
+  border: 1px solid var(--rc-border);
 }
 
 .rc-cta-panel {

@@ -90,12 +90,17 @@ export default function BlogIndexPage() {
         ========================= */}
         <div className="mt-24 relative overflow-hidden rounded-3xl p-10 md:p-14 text-center bg-[var(--surface)] shadow-xl">
 
+          {/* This card sits on the theme-reactive --surface, not a fixed
+              dark background — the old hardcoded white/light-gray copy
+              read fine in dark theme (dark --surface) but was invisible or
+              near-invisible in light theme (white --surface). Swapped to
+              --text/--muted/--border, which track the same surface. */}
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text)]">
               Need a High-Performance Website?
             </h2>
 
-            <p className="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-[var(--muted)] max-w-2xl mx-auto">
               We build fast, scalable, AI-powered web experiences that convert.
             </p>
 
@@ -109,7 +114,7 @@ export default function BlogIndexPage() {
 
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-xl border border-white/20 px-6 py-3 font-semibold text-white hover:bg-white/10 transition"
+                className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-6 py-3 font-semibold text-[var(--text)] hover:bg-[var(--hoverSurface)] transition"
               >
                 Let’s Talk
               </Link>            </div>

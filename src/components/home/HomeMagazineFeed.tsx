@@ -43,7 +43,9 @@ export default function HomeMagazineFeed({ featured, latest }: HomeMagazineFeedP
             className="group rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 transition hover:-translate-y-0.5 hover:shadow-md"
           >
             <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-              <span className="rounded bg-[var(--primary)]/10 px-2 py-0.5 font-semibold text-[var(--primary)]">
+              {/* /8 not /10: at /10 this failed AA in light theme (4.49:1, needs 4.5) —
+                  verified 4.65:1 light / 6.45:1 dark at /8. */}
+              <span className="rounded bg-[var(--primary)]/8 px-2 py-0.5 font-semibold text-[var(--primary)]">
                 {item.type === "blog" ? "Blog" : "News"}
               </span>
               {item.date ? <span>{item.date}</span> : null}

@@ -134,13 +134,13 @@ export default function ContactForm() {
       />
       <button
         type="submit"
-        className="min-h-[44px] rounded-md bg-[var(--primary)] px-4 sm:px-5 py-4 font-semibold text-white text-base hover:opacity-90 hover:shadow-lg transition-all duration-200 active:scale-[0.98] w-full sm:w-auto"
+        className="min-h-[44px] rounded-md bg-[var(--primary)] px-4 sm:px-5 py-4 font-semibold text-[var(--onPrimary)] text-base hover:opacity-90 hover:shadow-lg transition-all duration-200 active:scale-[0.98] w-full sm:w-auto"
         disabled={loading}
       >
         {loading ? "Sending..." : "Send request"}
       </button>
-      {error && <div className="text-red-600 text-sm mt-2" role="status" aria-live="polite">{error}</div>}
-      {success && <div className="text-green-600 text-sm mt-2" role="status" aria-live="polite">{success}</div>}
+      {error && <div className="text-[var(--error)] text-sm mt-2" role="status" aria-live="polite">{error}</div>}
+      {success && <div className="text-[var(--success)] text-sm mt-2" role="status" aria-live="polite">{success}</div>}
     </form>
   );
 }

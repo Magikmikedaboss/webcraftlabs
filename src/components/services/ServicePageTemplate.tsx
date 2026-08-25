@@ -195,7 +195,7 @@ export default function ServicePageTemplate({ config: c }: { config: ServicePage
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/build"
-                className="rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+                className="rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90"
               >
                 Start your build
               </Link>
@@ -347,10 +347,15 @@ export default function ServicePageTemplate({ config: c }: { config: ServicePage
           </section>
         )}
 
-        {/* CTA banner */}
-        <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--primary)] p-8 text-white">
+        {/* CTA banner uses --onPrimary, not a fixed white-at-85%-opacity
+            body color: --primary flips from dark/saturated (light theme)
+            to light/pastel (dark theme), so that fixed opacity only passed
+            in light theme (4.20:1, still under AA) and failed badly in
+            dark (2.24:1). --onPrimary is tuned per theme against --primary
+            specifically. */}
+        <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--primary)] p-8 text-[var(--onPrimary)]">
           <h2 className="text-3xl font-bold">{c.cta.title}</h2>
-          <p className="mt-4 max-w-3xl text-white/85">{c.cta.body}</p>
+          <p className="mt-4 max-w-3xl">{c.cta.body}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/contact"
@@ -358,9 +363,14 @@ export default function ServicePageTemplate({ config: c }: { config: ServicePage
             >
               {c.cta.primaryCtaLabel ?? "Request a free consultation"}
             </Link>
+            {/* --onPrimary, not hardcoded white: this link sits in the same
+                --primary banner as the CTA body above, so it needs the same
+                per-theme text color (white in light theme, near-black in
+                dark) instead of a color that only reads against the
+                dark/saturated light-theme --primary. */}
             <Link
               href="/build"
-              className="rounded-xl border border-white/30 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
+              className="rounded-xl border border-[var(--onPrimary)]/30 px-5 py-3 text-sm font-semibold text-[var(--onPrimary)] hover:bg-[var(--onPrimary)]/10"
             >
               Start your build
             </Link>

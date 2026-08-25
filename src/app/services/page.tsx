@@ -232,7 +232,7 @@ export default function ServicesPage() {
               <li>• Responsive, accessible design</li>
             </ul>
             <div className="text-xs opacity-80 mb-2">Best for: businesses ready to scale with custom tech</div>
-            <Link href="/contact" className="inline-block rounded-xl bg-[var(--primary)] px-5 py-2 text-sm font-semibold text-white hover:opacity-90">Get started</Link>
+            <Link href="/contact" className="inline-block rounded-xl bg-[var(--primary)] px-5 py-2 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90">Get started</Link>
           </div>
         </div>
       </section>
@@ -293,7 +293,7 @@ export default function ServicesPage() {
         <div className="mt-8 text-center">
           <Link
             href="/contact"
-            className="inline-flex items-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+            className="inline-flex items-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90"
           >
             Book a consult →
           </Link>

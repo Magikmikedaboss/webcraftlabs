@@ -13,7 +13,7 @@ export default function Hero() {
         <div className="mt-8 flex flex-wrap gap-4">
           <Link
             href="/build"
-            className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-6 py-3 text-base font-semibold text-white shadow-md transition hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-6 py-3 text-base font-semibold text-[var(--onPrimary)] shadow-md transition hover:opacity-90"
           >
             Start Your Project
           </Link>

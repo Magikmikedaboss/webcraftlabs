@@ -101,7 +101,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
   if (posts.length === 0) {
     return (
       <section className="mx-auto max-w-5xl px-6 py-24 text-center">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-[var(--primary)]">
           {kindLabel}
         </p>
 
@@ -122,7 +122,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
       {/* Header */}
       <header className="mb-14 border-b border-white/10 pb-10">
         <div className="mb-5 flex flex-wrap items-center gap-3">
-          <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+          <span className="rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
             WebCraft Labs
           </span>
 
@@ -146,7 +146,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 
           <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
             <p className="text-sm leading-7 text-[var(--muted)]">
-              <span className="block text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+              <span className="block text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
                 Index
               </span>
               <span className="mt-3 block">
@@ -210,7 +210,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 
             <div className="relative grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
               <div>
-                <p className="mb-6 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">
+                <p className="mb-6 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">
                   Featured Entry
                 </p>
 
@@ -238,7 +238,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
                 <div className="mt-8 flex items-center gap-5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
                   <span>{formatDate(featuredPost.date)}</span>
                   <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-                  <span className="text-cyan-300 transition group-hover:translate-x-1">
+                  <span className="text-[var(--primary)] transition group-hover:translate-x-1">
                     Read Article →
                   </span>
                 </div>
@@ -278,7 +278,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
               </div>
 
               <div className="text-left sm:text-right">
-                <span className="inline-flex text-sm font-semibold text-cyan-300 transition group-hover:translate-x-1">
+                <span className="inline-flex text-sm font-semibold text-[var(--primary)] transition group-hover:translate-x-1">
                   Read →
                 </span>
               </div>
@@ -297,7 +297,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 
           <button
             onClick={() => setSelectedTag(null)}
-            className="mt-5 text-sm font-semibold text-cyan-300 hover:underline"
+            className="mt-5 text-sm font-semibold text-[var(--primary)] hover:underline"
           >
             Clear filter
           </button>
