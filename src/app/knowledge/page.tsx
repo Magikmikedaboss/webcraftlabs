@@ -108,7 +108,11 @@ export default function KnowledgePage() {
           </div>
 
           <div className="mb-6 grid gap-4 lg:grid-cols-[1fr_auto] items-start">
-            <div>
+            {/* min-w-0: grid items default to min-width:auto, which floors
+                this column at the canvas's intrinsic content width and
+                blows out the whole row past its container on narrow
+                viewports — this override is what lets it actually shrink. */}
+            <div className="min-w-0">
               <KnowledgeConstellation resources={constellationResources} />
             </div>
 
