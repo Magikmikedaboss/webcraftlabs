@@ -2,7 +2,13 @@
   --header-height: 4rem;
   position: sticky;
   top: 0;
-  z-index: 50;
+  /* Page content (e.g. LabNotebookTemplate's own sticky faux-browser
+     header) also uses z-50 for its own internal layering. Same z-index
+     falls back to DOM order, and page content renders after this header,
+     so it was winning the tie and painting over the real nav dropdown/
+     mobile menu. Site chrome needs to unconditionally out-rank anything
+     a single page can do with its own z-50. */
+  z-index: 100;
   border-bottom: 1px solid rgba(226, 232, 240, 0.8);
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px) saturate(180%);
