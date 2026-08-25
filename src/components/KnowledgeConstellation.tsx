@@ -29,6 +29,10 @@ type GraphNode = {
   val: number;
   x?: number;
   y?: number;
+  vx?: number;
+  vy?: number;
+  anchorX: number;
+  anchorY: number;
   __labelOpacity?: number;
 };
 
@@ -117,6 +121,8 @@ export default function KnowledgeConstellation({
         val: 3 + r.audience.length,
         x: anchor.x + (Math.random() - 0.5) * 60,
         y: anchor.y + (Math.random() - 0.5) * 60,
+        anchorX: anchor.x,
+        anchorY: anchor.y,
       };
     });
 
@@ -177,6 +183,22 @@ export default function KnowledgeConstellation({
         link.distance((l: any) => (l.bridge ? 260 : 45));
         link.strength((l: any) => (l.bridge ? 0.02 : 0.35));
       }
+
+      // Paths with only one resource (or whose lone resource shares fewer
+      // than 2 audience tags with anything) get zero links — nothing but
+      // charge repulsion acts on them, so they drift arbitrarily far from
+      // the rest of the graph with nothing to pull them back. A gentle,
+      // uniform pull toward each node's own seeded cluster anchor fixes
+      // that: negligible for already-linked nodes (their link forces are
+      // 10x+ stronger), but it's the only restoring force an isolated
+      // node has, keeping it a visible, but not orphaned, distance away.
+      fg.d3Force("anchor", (alpha: number) => {
+        for (const n of data.nodes) {
+          if (n.x == null || n.y == null) continue;
+          n.vx = (n.vx ?? 0) + (n.anchorX - n.x) * 0.03 * alpha;
+          n.vy = (n.vy ?? 0) + (n.anchorY - n.y) * 0.03 * alpha;
+        }
+      });
 
       fg.d3ReheatSimulation?.();
     };
