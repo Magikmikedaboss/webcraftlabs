@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
-import KnowledgeConstellation from "@/components/KnowledgeConstellation";
+import KnowledgeConstellation, { type ConstellationResource } from "@/components/KnowledgeConstellation";
 import ResourceHero from "@/components/resources/ResourceHero";
 import AudienceEntryPoints from "@/components/resources/AudienceEntryPoints";
 import LearningPaths from "@/components/resources/LearningPaths";
@@ -9,37 +9,60 @@ import FeaturedTool from "@/components/resources/FeaturedTool";
 import FromTheLab from "@/components/resources/FromTheLab";
 import ProjectsAndExperiments from "@/components/resources/ProjectsAndExperiments";
 import { SITE, getBaseUrl } from "@/lib/site";
-import { ACTIVE_LEARNING_PATHS, getResourcesByPath } from "@/lib/resources";
+import { ACTIVE_LEARNING_PATHS, getResourcesByPath, resourceHref } from "@/lib/resources";
 import { LEARNING_PATH_META } from "@/lib/resourcePathMeta";
 
 /**
- * Topic map nodes are now derived directly from the real learning paths —
- * previously this was a hand-maintained list that pointed two of its five
- * entries at News announcements framed as evergreen topics, and one at the
- * 92-word what-is-synthetic-minds stub. Every node here links to a real,
- * server-rendered path page with a real resource count.
+ * One graph node per real, published resource (not one per path) — every
+ * node links straight to its actual article. Grouped/colored by path;
+ * cross-path links come from real, already-tagged audience overlap. See
+ * KnowledgeConstellation for the graph itself.
  */
-const topicMap = ACTIVE_LEARNING_PATHS.map((path) => {
-  const meta = LEARNING_PATH_META[path];
-  const count = getResourcesByPath(path).length;
-  return {
-    title: meta.label,
-    description: meta.description,
-    href: `/knowledge/paths/${path}`,
-    chips: [`${count} ${count === 1 ? "resource" : "resources"}`],
-  };
-});
+const constellationResources: ConstellationResource[] = ACTIVE_LEARNING_PATHS.flatMap((path) =>
+  getResourcesByPath(path).map((r) => ({
+    id: resourceHref(r),
+    title: r.frontmatter.title,
+    href: resourceHref(r),
+    path,
+    audience: r.frontmatter.audience ?? [],
+  }))
+);
 
+/**
+ * Grouped by path so this stays an honest, identical-in-substance parallel
+ * to what the graph now shows (every resource, not just the 5 paths).
+ */
 function TopicListItems() {
   return (
     <>
-      {topicMap.map((t) => (
-        <li key={t.title}>
-          <Link href={t.href} className="rc-inline-link block rounded px-2 py-1 text-sm no-underline">
-            {t.title}
-          </Link>
-        </li>
-      ))}
+      {ACTIVE_LEARNING_PATHS.map((path) => {
+        const meta = LEARNING_PATH_META[path];
+        const resources = getResourcesByPath(path);
+        return (
+          <li key={path}>
+            <Link href={`/knowledge/paths/${path}`} className="rc-inline-link block rounded px-2 py-1 text-sm no-underline">
+              {meta.label}
+            </Link>
+            {resources.length > 0 && (
+              <ul
+                className="mt-1 ml-3 flex flex-col gap-1 border-l pl-3"
+                style={{ borderColor: "var(--rc-border)" }}
+              >
+                {resources.map((r) => (
+                  <li key={r.slug}>
+                    <Link
+                      href={resourceHref(r)}
+                      className="rc-inline-link block rounded px-2 py-1 text-xs no-underline opacity-90"
+                    >
+                      {r.frontmatter.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })}
     </>
   );
 }
@@ -79,14 +102,18 @@ export default function KnowledgePage() {
             <span className="rc-eyebrow">Topic Map</span>
             <h2 className="rc-h2 mt-4">Browse by topic</h2>
             <p className="rc-body mt-3">
-              Every path below is also a real, server-rendered page — the visual map is an optional
-              way to browse the same links, not the only way to find them.
+              Every resource below is also a real, server-rendered page — the visual map is an
+              optional way to browse the same links, not the only way to find them.
             </p>
           </div>
 
           <div className="mb-6 grid gap-4 lg:grid-cols-[1fr_auto] items-start">
-            <div>
-              <KnowledgeConstellation topics={topicMap} />
+            {/* min-w-0: grid items default to min-width:auto, which floors
+                this column at the canvas's intrinsic content width and
+                blows out the whole row past its container on narrow
+                viewports — this override is what lets it actually shrink. */}
+            <div className="min-w-0">
+              <KnowledgeConstellation resources={constellationResources} />
             </div>
 
             <div className="flex flex-col gap-3">
