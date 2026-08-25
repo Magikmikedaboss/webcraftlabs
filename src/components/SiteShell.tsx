@@ -177,7 +177,11 @@ export default function SiteShell({
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-lg p-4 sm:p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6 md:gap-8">
             <div className="flex items-center gap-4 mb-6 md:mb-0">
-              <span className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] rounded-full flex items-center justify-center text-[var(--onPrimary)] text-xl sm:text-2xl shadow-md" aria-label={SITE.name} title={SITE.name}>
+              {/* Solid --primary, not a --primary-to-secondary gradient:
+                  --onPrimary is tuned against --primary specifically and
+                  only reaches 3.03:1 (fails AA) at the --secondary end of
+                  the old gradient in light theme. */}
+              <span className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-[var(--primary)] rounded-full flex items-center justify-center text-[var(--onPrimary)] text-xl sm:text-2xl shadow-md" aria-label={SITE.name} title={SITE.name}>
                 {/* Branding visual: fallback to initials */}
                 {SITE.name?.[0] || "W"}
               </span>

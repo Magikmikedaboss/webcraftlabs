@@ -59,6 +59,15 @@ body {
   --hoverSurface: #e0e7ef;
   --focusSurface: #bae6fd;
 
+  /* WCAG 1.4.11 (non-text contrast) needs 3:1 for UI component
+     boundaries — --border itself is only ~1.4-1.6:1 against --bg/
+     --surface (fine for purely decorative dividers/card edges, but not
+     for input/textarea borders users need to actually see). A separate
+     token instead of darkening --border everywhere, which would ripple
+     into every card/divider sitewide. Verified 3.60:1 (--bg) / 4.31:1
+     (--surface). */
+  --controlBorder: #707b88;
+
   /* Card-specific variables for stats cards */
   --card-border: #bfdbfe;
   --card-bg-start: #dbeafe;
@@ -88,6 +97,9 @@ body {
   --error: #f87171;
   --hoverSurface: #24314b;
   --focusSurface: #0ea5a4;
+  /* Verified 4.56:1 (--bg) / 3.81:1 (--surface) — see the light-theme
+     --controlBorder comment above. */
+  --controlBorder: #6b7b90;
   --secondary: #2dd4bf;
   --accent: #38bdf8;
 

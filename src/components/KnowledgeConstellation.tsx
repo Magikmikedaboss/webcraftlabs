@@ -70,6 +70,7 @@ export default function KnowledgeConstellation({
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
   const reduceMotionRef = useRef(false);
   const hoveredIdRef = useRef<string | null>(null);
+  const userInteractedRef = useRef(false);
 
   // react-force-graph-2d's own auto-sizing can measure the container
   // before its CSS height (h-[360px]/sm:h-[420px]) has actually applied,
@@ -91,6 +92,24 @@ export default function KnowledgeConstellation({
     });
     observer.observe(el);
     return () => observer.disconnect();
+  }, [mounted]);
+
+  // Marks the graph as user-driven so the auto-fit loop below stops
+  // touching the camera the moment someone tries to pan, zoom, or drag —
+  // same "runs on the pre-mounted commit" reasoning as the ResizeObserver
+  // effect above.
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const markInteracted = () => {
+      userInteractedRef.current = true;
+    };
+    el.addEventListener("pointerdown", markInteracted);
+    el.addEventListener("wheel", markInteracted, { passive: true });
+    return () => {
+      el.removeEventListener("pointerdown", markInteracted);
+      el.removeEventListener("wheel", markInteracted);
+    };
   }, [mounted]);
 
   useEffect(() => {
@@ -224,6 +243,12 @@ export default function KnowledgeConstellation({
     let raf = 0;
 
     const fitToData = () => {
+      // Stop the moment the user pans/zooms/drags — without this, a fit
+      // firing on the very next frame after their input made the graph
+      // feel unresponsive, snapping the camera back to the auto-fit
+      // position every ~16ms for the whole 8s settling window.
+      if (userInteractedRef.current) return;
+
       const fg = fgRef.current;
       if (fg && size?.width && size?.height) {
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;

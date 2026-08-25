@@ -102,7 +102,7 @@ export default function ContactForm() {
         name="name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+        className="w-full rounded-md border border-[var(--controlBorder)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Your name (or company)"
         autoComplete="name"
         minLength={2}
@@ -115,7 +115,7 @@ export default function ContactForm() {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+        className="w-full rounded-md border border-[var(--controlBorder)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Your email address"
         autoComplete="email"
         inputMode="email"
@@ -127,7 +127,7 @@ export default function ContactForm() {
         name="project"
         value={project}
         onChange={(e) => setProject(e.target.value)}
-        className="min-h-[160px] w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+        className="min-h-[160px] w-full rounded-md border border-[var(--controlBorder)] bg-[var(--bg)] px-4 py-4 text-base outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         placeholder="Tell us about your project, goals, or paste your configurator output."
         autoComplete="off"
         required

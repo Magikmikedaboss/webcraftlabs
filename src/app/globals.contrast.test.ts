@@ -307,3 +307,30 @@ describe("regression — About page's three hardcoded light-blue cards no longer
     expect(src).toContain("from-blue-600 to-cyan-600");
   });
 });
+
+describe("regression — code review findings (post-merge)", () => {
+  it("new --controlBorder token passes 3:1 (WCAG 1.4.11 non-text contrast) against --bg and --surface in both themes", () => {
+    const light = rootBlock();
+    const dark = darkThemeBlock();
+    expect(contrast(tokenFrom(light, "--controlBorder"), tokenFrom(light, "--bg"))).toBeGreaterThanOrEqual(3);
+    expect(contrast(tokenFrom(light, "--controlBorder"), tokenFrom(light, "--surface"))).toBeGreaterThanOrEqual(3);
+    expect(contrast(tokenFrom(dark, "--controlBorder"), tokenFrom(dark, "--bg"))).toBeGreaterThanOrEqual(3);
+    expect(contrast(tokenFrom(dark, "--controlBorder"), tokenFrom(dark, "--surface"))).toBeGreaterThanOrEqual(3);
+  });
+
+  it("ContactForm's inputs/textarea use --controlBorder, not the plain --border (only ~1.4-1.6:1)", () => {
+    const src = readFileSync(join(__dirname, "contact", "ContactForm.tsx"), "utf8");
+    expect(src).not.toMatch(/border-\[var\(--border\)\]/);
+    expect((src.match(/border-\[var\(--controlBorder\)\]/g) || []).length).toBe(3);
+  });
+
+  it("SiteShell's footer avatar no longer gradients into --secondary, where --onPrimary drops to 3.03:1 in light theme", () => {
+    const src = readFileSync(join(__dirname, "..", "components", "SiteShell.tsx"), "utf8");
+    expect(src).not.toMatch(/from-\[var\(--primary\)\]\s+to-\[var\(--secondary\)\]/);
+  });
+
+  it("Portfolio's project drawer sits above SiteShell's header (z-100) instead of tied with it at z-50", () => {
+    const src = readFileSync(join(__dirname, "portfolio", "PortfolioClient.tsx"), "utf8");
+    expect(src).toMatch(/fixed inset-0 z-\[110\] pointer-events-auto/);
+  });
+});
