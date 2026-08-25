@@ -71,7 +71,7 @@ export default function ErrorBoundary({
         </p>
         <button
           onClick={() => reset()}
-          className="rounded-xl bg-[var(--primary)] px-6 py-3 font-semibold text-white hover:opacity-90"
+          className="rounded-xl bg-[var(--primary)] px-6 py-3 font-semibold text-[var(--onPrimary)] hover:opacity-90"
         >
           Try again
         </button>

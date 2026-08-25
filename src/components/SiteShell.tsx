@@ -127,7 +127,7 @@ export default function SiteShell({
             <NavLink href={HEADER_NAV.about.href} label={HEADER_NAV.about.label} />
             <Link
               href={HEADER_NAV.cta.href}
-              className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-white shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
+              className="ml-3 rounded-lg bg-[var(--primary)] px-3.5 py-1.5 text-xs font-semibold text-[var(--onPrimary)] shadow-md transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
             >
               {HEADER_NAV.cta.label}
             </Link>
@@ -177,7 +177,7 @@ export default function SiteShell({
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-lg p-4 sm:p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6 md:gap-8">
             <div className="flex items-center gap-4 mb-6 md:mb-0">
-              <span className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] rounded-full flex items-center justify-center text-white text-xl sm:text-2xl shadow-md" aria-label={SITE.name} title={SITE.name}>
+              <span className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] rounded-full flex items-center justify-center text-[var(--onPrimary)] text-xl sm:text-2xl shadow-md" aria-label={SITE.name} title={SITE.name}>
                 {/* Branding visual: fallback to initials */}
                 {SITE.name?.[0] || "W"}
               </span>
@@ -210,7 +210,11 @@ export default function SiteShell({
           </div>
           <div className="mt-6 sm:mt-8 flex flex-col items-center gap-4">
             <div className="text-center text-[10px] sm:text-xs text-[var(--muted)]">
-              <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in {SITE.address.label}. <span className="text-[var(--primary)]">Websites that mean business.</span></span>
+              {/* --primary text only passes AA against --surface, not the
+                  darker Studio Contrast --bg — so on pages that set
+                  background="bg" this falls back to --text (kept bold for
+                  the same visual emphasis) instead of the brand color. */}
+              <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in {SITE.address.label}. <span className={background === 'bg' ? 'font-semibold text-[var(--text)]' : 'text-[var(--primary)]'}>Websites that mean business.</span></span>
             </div>
             {/* Example of PoweredBy badge - you can remove this from your own site and give to clients */}
             <PoweredBy variant="light" size="sm" />

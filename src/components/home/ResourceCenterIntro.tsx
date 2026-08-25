@@ -22,7 +22,7 @@ export default function ResourceCenterIntro() {
           <div className="mt-6">
             <Link
               href="/knowledge"
-              className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+              className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-[var(--onPrimary)] transition hover:opacity-90"
             >
               Visit the Resource Center →
             </Link>

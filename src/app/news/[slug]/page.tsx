@@ -191,7 +191,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
                 </p>
                 <a
                   href="/contact"
-                  className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+                  className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90"
                 >
                   Talk to me
                 </a>

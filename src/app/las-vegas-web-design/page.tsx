@@ -243,7 +243,7 @@ export default function LasVegasWebDesignPage() {
               <li>• Local SEO foundations from the first line of code</li>
               <li>• Mobile-first performance and Core Web Vitals attention</li>
             </ul>
-            <Link href="/contact" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+            <Link href="/contact" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90">
               Talk about your website →
             </Link>
           </div>
@@ -263,7 +263,7 @@ export default function LasVegasWebDesignPage() {
               <li>• Form and CRM integration for lead capture</li>
               <li>• Clean tracking so you can see what&apos;s actually working</li>
             </ul>
-            <Link href="/contact" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+            <Link href="/contact" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90">
               Talk about your campaign →
             </Link>
           </div>
@@ -283,7 +283,7 @@ export default function LasVegasWebDesignPage() {
               <li>• User authentication, dashboards, and subscription billing</li>
               <li>• A foundation built to scale past launch</li>
             </ul>
-            <Link href="/services/saas-platform-development" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+            <Link href="/services/saas-platform-development" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90">
               See full SaaS platform details →
             </Link>
           </div>
@@ -303,7 +303,7 @@ export default function LasVegasWebDesignPage() {
               <li>• Internal linking built around real search intent</li>
               <li>• Core Web Vitals and page-speed improvements</li>
             </ul>
-            <Link href="/services/seo-technical-optimization" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+            <Link href="/services/seo-technical-optimization" className="mt-6 inline-flex items-center rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90">
               See full SEO service details →
             </Link>
           </div>

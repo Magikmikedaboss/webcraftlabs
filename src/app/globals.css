@@ -68,16 +68,25 @@ body {
 
 [data-theme="dark"] {
   --bg: #070b12;
-  --surface: #0d1420;
+  /* --surface/--border/--hoverSurface lightened from #0d1420/#1f2a38/#1e293b:
+     the old values put dark theme's bg/surface separation at a 1.068
+     contrast ratio — almost exactly the flat 1.038 ratio that was the
+     whole reason this file's light-theme tokens got the Studio Contrast
+     pass. --bg stays put (mirrors the light-theme move of adjusting only
+     one side of the pair); the new --surface hits the same ~1.2 target
+     ratio the light theme uses. --text/--muted/--primary/--secondary/
+     --accent/--onPrimary/--success/--error are unchanged and still clear
+     AA against the new --surface. */
+  --surface: #151f33;
   --text: #e5edf5;
   --muted: #9aa8b6;
-  --border: #1f2a38;
+  --border: #30415e;
 
   --primary: #60a5fa;
   --onPrimary: #10151c;
   --success: #4ade80;
   --error: #f87171;
-  --hoverSurface: #1e293b;
+  --hoverSurface: #24314b;
   --focusSurface: #0ea5a4;
   --secondary: #2dd4bf;
   --accent: #38bdf8;

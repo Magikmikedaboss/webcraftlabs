@@ -148,8 +148,13 @@ export default function AboutPage() {
       </section>
 
       {/* Who We Serve */}
-      <section className="mx-auto max-w-7xl px-6 py-16 bg-gradient-to-br from-blue-50/40 to-cyan-50/30">
-        <div className="rounded-3xl border border-[var(--border)] bg-white/60 backdrop-blur-sm p-8 md:p-12 shadow-xl">
+      {/* The section tint and card background were hardcoded light blue/
+          white — invisible against themselves in dark mode since the
+          heading/list text here is unstyled (inherits --text, which is
+          near-white in dark theme). --bg gives the same card-on-page
+          contrast used elsewhere on this page. */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg)] p-8 md:p-12 shadow-xl">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <h2 className="text-3xl font-bold mb-4">Who We Work Best With</h2>
@@ -184,7 +189,7 @@ export default function AboutPage() {
               </ul>
               <Link
                 href="/services"
-                className="inline-flex items-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white hover:opacity-90 transition"
+                className="inline-flex items-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90 transition"
               >
                 View Our Services →
               </Link>
@@ -203,8 +208,13 @@ export default function AboutPage() {
       </section>
 
       {/* Looking Ahead */}
+      {/* Same hardcoded light-blue/white bug as "Who We Serve" above — the
+          four nested cards' unstyled h3 headings inherit --text (near-white
+          in dark theme) and were rendering on a translucent-white card. --bg (outer) /
+          --surface (nested cards) tracks the theme like the rest of the
+          page. */}
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="rounded-3xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-blue-50/60 to-cyan-50/40 p-8 md:p-12 shadow-xl">
+        <div className="rounded-3xl border-2 border-[var(--primary)]/20 bg-[var(--bg)] p-8 md:p-12 shadow-xl">
           <div className="max-w-4xl mb-10">
             <span className="inline-block px-3 py-1 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 text-xs font-semibold uppercase tracking-wide text-[var(--primary)] mb-4">
               Looking Ahead
@@ -219,25 +229,25 @@ export default function AboutPage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-[var(--border)] bg-white/70 p-6">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <h3 className="text-xl font-semibold mb-2">AI-Powered Research Systems</h3>
               <p className="text-sm text-[var(--muted)]">
                 Turning information overload into actionable knowledge.
               </p>
             </div>
-            <div className="rounded-2xl border border-[var(--border)] bg-white/70 p-6">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <h3 className="text-xl font-semibold mb-2">Enterprise Intelligence Platforms</h3>
               <p className="text-sm text-[var(--muted)]">
                 Helping organizations see patterns, opportunities, and risks faster.
               </p>
             </div>
-            <div className="rounded-2xl border border-[var(--border)] bg-white/70 p-6">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <h3 className="text-xl font-semibold mb-2">Autonomous Workflows</h3>
               <p className="text-sm text-[var(--muted)]">
                 Reducing operational complexity through intelligent automation.
               </p>
             </div>
-            <div className="rounded-2xl border border-[var(--border)] bg-white/70 p-6">
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <h3 className="text-xl font-semibold mb-2">Human-AI Collaboration</h3>
               <p className="text-sm text-[var(--muted)]">
                 Designing systems that amplify people rather than replace them.
@@ -248,11 +258,17 @@ export default function AboutPage() {
       </section>
 
       {/* Resource Center Teaser */}
+      {/* Was a hardcoded near-white rgba() gradient plus translucent-white chips —
+          none of it theme-reactive, so --text/--muted/--primary (light-
+          colored in dark theme) rendered almost invisible on top of it in
+          dark mode. Swapped to --bg/--surface, which give the same
+          card-on-page relationship the rest of the site uses and actually
+          flip with the theme. */}
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.12),_transparent_35%),linear-gradient(135deg,_rgba(255,255,255,0.96),_rgba(240,249,255,0.72))] p-8 md:p-12 shadow-xl">
+        <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--bg)] p-8 md:p-12 shadow-xl">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
-              <span className="inline-flex items-center rounded-full border border-[var(--primary)]/20 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">
+              <span className="inline-flex items-center rounded-full border border-[var(--primary)]/20 bg-[var(--surface)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">
                 Explore our thinking
               </span>
               <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text)]">
@@ -262,20 +278,20 @@ export default function AboutPage() {
                 Practical guides, learning paths, and project breakdowns covering web development, software, and AI automation — organized so you can actually find what&apos;s useful.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <span className="rounded-full border border-[var(--border)] bg-white/80 px-4 py-2 text-sm font-medium text-[var(--text)]">Synthetic Minds</span>
-                <span className="rounded-full border border-[var(--border)] bg-white/80 px-4 py-2 text-sm font-medium text-[var(--text)]">Axon Research Intelligence</span>
-                <span className="rounded-full border border-[var(--border)] bg-white/80 px-4 py-2 text-sm font-medium text-[var(--text)]">Enterprise AI</span>
+                <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text)]">Synthetic Minds</span>
+                <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text)]">Axon Research Intelligence</span>
+                <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text)]">Enterprise AI</span>
               </div>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/knowledge"
-                  className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-[1.02] hover:opacity-95"
+                  className="inline-flex items-center justify-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-[var(--onPrimary)] shadow-lg transition-all hover:scale-[1.02] hover:opacity-95"
                 >
                   Explore the Resource Center →
                 </Link>
                 <Link
                   href="/blog/synthetic-minds-series"
-                  className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-white/80 px-6 py-3 text-sm font-semibold text-[var(--text)] transition-all hover:border-[var(--primary)] hover:text-[var(--primary)]"
+                  className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-6 py-3 text-sm font-semibold text-[var(--text)] transition-all hover:border-[var(--primary)] hover:text-[var(--primary)]"
                 >
                   Start with Synthetic Minds
                 </Link>
@@ -283,11 +299,11 @@ export default function AboutPage() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              <div className="rounded-2xl border border-[var(--border)] bg-white/85 p-5 shadow-sm">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
                 <div className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">Full map</div>
                 <div className="mt-2 text-lg font-semibold text-[var(--text)]">Clickable topic cards, learning paths, and featured articles.</div>
               </div>
-              <div className="rounded-2xl border border-[var(--border)] bg-white/85 p-5 shadow-sm">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
                 <div className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">Why it exists</div>
                 <div className="mt-2 text-lg font-semibold text-[var(--text)]">A cleaner way to connect research, products, and future-facing ideas.</div>
               </div>
@@ -341,8 +357,10 @@ export default function AboutPage() {
       </section>
 
       {/* Customer Service & Support */}
+      {/* Same hardcoded light-blue gradient bug as the two sections above —
+          the unstyled h3/h4 headings here inherit --text. */}
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="rounded-3xl border-2 border-[var(--primary)]/20 bg-gradient-to-br from-blue-50/60 to-cyan-50/40 p-8 md:p-12 shadow-xl">
+        <div className="rounded-3xl border-2 border-[var(--primary)]/20 bg-[var(--bg)] p-8 md:p-12 shadow-xl">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg order-2 md:order-1">
               <Image
@@ -412,7 +430,7 @@ export default function AboutPage() {
               </p>
               <Link
                 href="/contact"
-                className="inline-flex items-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white hover:opacity-90 transition"
+                className="inline-flex items-center rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-[var(--onPrimary)] hover:opacity-90 transition"
               >
                 Let&apos;s Talk About Your Project →
               </Link>
