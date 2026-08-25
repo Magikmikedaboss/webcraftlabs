@@ -75,10 +75,8 @@ describe("Studio Contrast — light-theme surface hierarchy", () => {
     expect(tokenFrom(dark, "--secondary")).toBe("2dd4bf");
   });
 
-  it("kept dark theme's --bg/--surface/--border/--text/--muted unchanged", () => {
+  it("kept dark theme's --bg/--text/--muted unchanged", () => {
     expect(tokenFrom(dark, "--bg")).toBe("070b12");
-    expect(tokenFrom(dark, "--surface")).toBe("0d1420");
-    expect(tokenFrom(dark, "--border")).toBe("1f2a38");
     expect(tokenFrom(dark, "--text")).toBe("e5edf5");
     expect(tokenFrom(dark, "--muted")).toBe("9aa8b6");
   });
@@ -98,6 +96,64 @@ describe("Studio Contrast — light-theme surface hierarchy", () => {
     expect(contrast(tokenFrom(light, "--text"), tokenFrom(light, "--surface"))).toBeGreaterThanOrEqual(4.5);
     expect(contrast(tokenFrom(light, "--muted"), tokenFrom(light, "--bg"))).toBeGreaterThanOrEqual(4.5);
     expect(contrast(tokenFrom(light, "--muted"), tokenFrom(light, "--surface"))).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe("dark theme — surface hierarchy fix (same flatness the light theme had)", () => {
+  const dark = darkThemeBlock();
+
+  it("adopted the new dark-theme --surface/--border/--hoverSurface values", () => {
+    expect(tokenFrom(dark, "--surface")).toBe("151f33");
+    expect(tokenFrom(dark, "--border")).toBe("30415e");
+    expect(tokenFrom(dark, "--hoverSurface")).toBe("24314b");
+  });
+
+  it("dark theme --bg/--surface separation meaningfully improved over the old 1.068 baseline", () => {
+    const ratio = contrast(tokenFrom(dark, "--bg"), tokenFrom(dark, "--surface"));
+    expect(ratio).toBeGreaterThan(1.15);
+  });
+
+  it("dark theme --border is clearly visible against both --surface and --bg", () => {
+    expect(contrast(tokenFrom(dark, "--border"), tokenFrom(dark, "--surface"))).toBeGreaterThan(1.5);
+    expect(contrast(tokenFrom(dark, "--border"), tokenFrom(dark, "--bg"))).toBeGreaterThan(1.5);
+  });
+
+  it("dark theme --text/--muted/--primary/--success/--error still pass AA against the new --surface", () => {
+    expect(contrast(tokenFrom(dark, "--text"), tokenFrom(dark, "--surface"))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(tokenFrom(dark, "--muted"), tokenFrom(dark, "--surface"))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(tokenFrom(dark, "--primary"), tokenFrom(dark, "--surface"))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(tokenFrom(dark, "--success"), tokenFrom(dark, "--surface"))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(tokenFrom(dark, "--error"), tokenFrom(dark, "--surface"))).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe("regression — sitewide bg-[var(--primary)] CTAs no longer hardcode white text", () => {
+  // white on dark theme's --primary (#60a5fa) is 2.54:1, well under AA —
+  // every solid-primary CTA must use --onPrimary, which is tuned per theme.
+  const files = [
+    ["components", "SiteShell.tsx"],
+    ["components", "services", "ServicePageTemplate.tsx"],
+    ["components", "home", "ResourceCenterIntro.tsx"],
+    ["components", "home", "Hero.tsx"],
+    ["app", "contact", "ContactForm.tsx"],
+    ["app", "error.tsx"],
+    ["app", "not-found.tsx"],
+    ["app", "about", "page.tsx"],
+    ["app", "services", "page.tsx"],
+    ["app", "las-vegas-web-design", "page.tsx"],
+    ["app", "news", "[slug]", "page.tsx"],
+  ];
+
+  it.each(files)("%s/%s has no bg-[var(--primary)] (or gradient-from-primary) element with hardcoded text-white", (...parts) => {
+    const src = readFileSync(join(__dirname, "..", ...parts), "utf8");
+    expect(src).not.toMatch(/(?:bg-\[var\(--primary\)\]|from-\[var\(--primary\)\])[^"]*text-white\b/);
+    expect(src).not.toMatch(/text-white\b[^"]*bg-\[var\(--primary\)\]/);
+  });
+
+  it("ServicePageTemplate's CTA banner secondary link no longer hardcodes border-white/text-white", () => {
+    const src = readFileSync(join(__dirname, "..", "components", "services", "ServicePageTemplate.tsx"), "utf8");
+    expect(src).not.toMatch(/border-white\/30/);
+    expect(src).not.toMatch(/hover:bg-white\/10/);
   });
 });
 
@@ -189,5 +245,65 @@ describe("regression — Studio Contrast's darker --bg did not break existing --
     expect(contrast(primary, bg)).toBeLessThan(4.5);
     expect(contrast(secondary, bg)).toBeLessThan(4.5);
     expect(contrast(accent, bg)).toBeLessThan(4.5);
+  });
+
+  it("PortfolioClient no longer pairs --primary backgrounds with --bg text (button, initials circles, CTA links)", () => {
+    const src = readFileSync(join(__dirname, "portfolio", "PortfolioClient.tsx"), "utf8");
+    expect(src).not.toMatch(/background:\s*(?:isActive\s*\?\s*)?"var\(--primary\)"[^}]*color:\s*(?:isActive\s*\?\s*)?"var\(--bg\)"/);
+    expect((src.match(/color:\s*(?:isActive\s*\?\s*)?"var\(--onPrimary\)"/g) || []).length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("PortfolioClient's 'Selected Builds' eyebrow no longer pairs --primary text with the page's --bg", () => {
+    const src = readFileSync(join(__dirname, "portfolio", "PortfolioClient.tsx"), "utf8");
+    const eyebrowMatch = /tracking-\[0\.2em\][\s\S]{0,80}Selected Builds/.exec(src);
+    expect(eyebrowMatch).not.toBeNull();
+    expect(src).not.toMatch(/color:\s*"var\(--primary\)"\s*\}\}\s*>\s*Selected Builds/);
+  });
+
+  it("SiteShell's footer credit line falls back off --primary when the page uses a --bg background", () => {
+    const src = readFileSync(join(__dirname, "..", "components", "SiteShell.tsx"), "utf8");
+    expect(src).toMatch(/background === 'bg'[^:]*\?\s*'font-semibold text-\[var\(--text\)\]'\s*:\s*'text-\[var\(--primary\)\]'/);
+  });
+
+  it("blog CTA card no longer hardcodes white/gray-300 text on the theme-reactive --surface", () => {
+    const src = readFileSync(join(__dirname, "blog", "page.tsx"), "utf8");
+    // Scoped to the CTA card block, not the page's separate fixed-dark hero
+    // (which legitimately uses white text on a genuinely dark background).
+    const ctaMatch = /CTA \(UPGRADED\)[\s\S]*?Need a High-Performance Website[\s\S]*?Let.s Talk[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/.exec(src);
+    expect(ctaMatch).not.toBeNull();
+    const cta = ctaMatch![0];
+    expect(cta).not.toContain("text-gray-300");
+    expect(cta).not.toMatch(/border-white\/20/);
+    // The "Explore Services" link keeps its own fixed gradient background
+    // (cyan-500 to blue-600) with legitimate white text — only the heading
+    // and "Let's Talk" link, which sit directly on --surface, are checked.
+    expect(cta).toMatch(/text-\[var\(--text\)\]">\s*\n\s*Need a High-Performance Website/);
+    expect(cta).toMatch(/font-semibold text-\[var\(--text\)\] hover:bg-\[var\(--hoverSurface\)\]/);
+  });
+});
+
+describe("regression — About page's three hardcoded light-blue cards no longer break dark theme", () => {
+  const src = readFileSync(join(__dirname, "about", "page.tsx"), "utf8");
+
+  it("no longer uses hardcoded rgba()/blue-50/cyan-50 gradients or translucent-white chips", () => {
+    expect(src).not.toMatch(/rgba\(255,\s*255,\s*255/);
+    expect(src).not.toMatch(/from-blue-50|to-cyan-50/);
+    // Scoped to before the CTA Section, which intentionally keeps its own
+    // fixed, saturated (non-pastel) gradient and legitimate white text —
+    // see the "kept ... untouched" test below.
+    const beforeCta = src.slice(0, src.indexOf("{/* CTA Section */}"));
+    expect(beforeCta).not.toMatch(/bg-white\/(5|6|7|8|9)\d?\b/);
+  });
+
+  it("the Resource Center Teaser, Who We Serve, Looking Ahead, and Customer Service cards use theme tokens", () => {
+    const matches = src.match(/bg-\[var\(--bg\)\] p-8 md:p-12 shadow-xl/g) || [];
+    // Resource Center Teaser, Who We Serve, and Looking Ahead/Customer
+    // Service all share this exact outer-card shape.
+    expect(matches.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("kept the fixed-dark hero photo overlay and saturated CTA gradient untouched (theme-invariant, not a dark-mode bug)", () => {
+    expect(src).toContain("from-blue-900/80 via-blue-900/60 to-transparent");
+    expect(src).toContain("from-blue-600 to-cyan-600");
   });
 });
