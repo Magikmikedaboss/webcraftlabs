@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import Callout from '@/components/mdx/Callout';
 import Checklist from '@/components/mdx/Checklist';
+import DiagnosticScore from '@/components/mdx/DiagnosticScore';
 import PullQuote from '@/components/mdx/PullQuote';
 import Stat from '@/components/mdx/Stat';
 import MDXTakeaways, { Takeaways as TypedTakeaways } from '@/components/mdx/Takeaways';
@@ -56,6 +57,7 @@ const mdxComponents = {
   Callout,
   Stat,
   Checklist,
+  DiagnosticScore,
   PullQuote,
   // Use the MDX-friendly wrapper at runtime for MDX rendering
   Takeaways: MDXTakeaways,
