@@ -5,6 +5,7 @@ import SiteShell from "@/components/SiteShell";
 import type { Metadata } from "next";
 
 import mdxComponents from '@/lib/mdxComponents';
+import { TRUSTED_MDX_OPTIONS } from '@/lib/mdxOptions';
 // Editorial subcomponents are provided via `mdxComponents`.
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
@@ -169,7 +170,11 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
               </div>
             </header>
             <div className="prose prose-custom max-w-none">
-              <MDXRemote source={post.content} components={mdxComponents} />
+              <MDXRemote
+                source={post.content}
+                components={mdxComponents}
+                options={TRUSTED_MDX_OPTIONS}
+              />
             </div>
             <PrevNext
               kind="news"

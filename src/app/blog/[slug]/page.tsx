@@ -11,6 +11,7 @@ import { getPostBySlug, getAllPosts } from "@/lib/mdx/blog";
 const getCachedPost = cache(getPostBySlug);
 
 import mdxComponents from '@/lib/mdxComponents';
+import { TRUSTED_MDX_OPTIONS } from '@/lib/mdxOptions';
 import SiteShell from "@/components/SiteShell";
 import EditorialTemplateV2 from "@/components/blog/EditorialTemplateV2";
 import LabNotebookTemplate from "@/components/blog/LabNotebookTemplate";
@@ -198,6 +199,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <MDXRemote
             source={post.content}
             components={mdxComponents}
+            options={TRUSTED_MDX_OPTIONS}
           />
         </LabNotebookTemplate>
       ) : (
@@ -227,6 +229,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <MDXRemote
             source={post.content}
             components={mdxComponents}
+            options={TRUSTED_MDX_OPTIONS}
           />
         </EditorialTemplateV2>
       )}
