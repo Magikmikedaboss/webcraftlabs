@@ -15,8 +15,11 @@ const src = readFileSync(join(__dirname, "KnowledgeConstellation.tsx"), "utf8");
 describe("KnowledgeConstellation — auto-fit stops once the user interacts", () => {
   it("tracks user interaction via a ref set on pointerdown/wheel", () => {
     expect(src).toMatch(/const userInteractedRef = useRef\(false\)/);
-    expect(src).toMatch(/addEventListener\(\s*["']pointerdown["']/);
-    expect(src).toMatch(/addEventListener\(\s*["']wheel["']/);
+    // Ensure there's a markInteracted callback that sets the ref to true
+    expect(src).toMatch(/const\s+markInteracted\s*=\s*\(\)\s*=>\s*\{[\s\S]*?userInteractedRef\.current\s*=\s*true[\s\S]*?\}/);
+    // Verify both pointerdown and wheel listeners use the markInteracted callback
+    expect(src).toMatch(/addEventListener\(\s*["']pointerdown["']\s*,\s*markInteracted/);
+    expect(src).toMatch(/addEventListener\(\s*["']wheel["']\s*,\s*markInteracted/);
   });
 
   it("the auto-fit loop bails out before touching the camera once that ref is set", () => {
@@ -26,9 +29,15 @@ describe("KnowledgeConstellation — auto-fit stops once the user interacts", ()
     // The interaction check must come before any centerAt/zoom call, not
     // after — otherwise one more fit still lands after the user's input.
     const guardIndex = body.indexOf("userInteractedRef.current");
-    const centerAtIndex = body.indexOf("centerAt");
+    // Look for the actual ref method calls to avoid accidental matches
+    // inside surrounding comments or other helpers.
+    const centerAtIndex = body.indexOf("fg.centerAt");
+    const zoomIndex = body.indexOf("fg.zoom");
     expect(guardIndex).toBeGreaterThan(-1);
     expect(centerAtIndex).toBeGreaterThan(-1);
+    expect(zoomIndex).toBeGreaterThan(-1);
+    // The guard must come before both camera-manipulating calls.
     expect(guardIndex).toBeLessThan(centerAtIndex);
+    expect(guardIndex).toBeLessThan(zoomIndex);
   });
 });
