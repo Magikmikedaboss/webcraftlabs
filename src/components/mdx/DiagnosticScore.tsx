@@ -63,8 +63,12 @@ export default function DiagnosticScore({
   const safeCategory = typeof category === "string" ? category.trim() : "";
   if (safeCategory.length === 0) return null;
 
-  const safeMax =
-    typeof max === "number" && Number.isFinite(max) && max > 0 ? Math.floor(max) : 5;
+  // Normalize before validating, not after: `max={0.5}` passes a naive `> 0`
+  // check but floors to 0, which would collapse the scale to zero length and
+  // clamp every anchor to 0. Validate the normalized integer instead.
+  const flooredMax =
+    typeof max === "number" && Number.isFinite(max) ? Math.floor(max) : 0;
+  const safeMax = flooredMax >= 1 ? flooredMax : 5;
 
   const validAnchors = (Array.isArray(anchors) ? anchors : [])
     .filter(isValidAnchor)
