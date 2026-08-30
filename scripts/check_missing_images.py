@@ -7,6 +7,7 @@ exist. Writes nothing and deletes nothing. Run from anywhere:
 """
 
 from pathlib import Path
+from urllib.parse import unquote
 import re
 
 root = Path(__file__).resolve().parent.parent
@@ -23,7 +24,9 @@ for sub in content_dirs:
     d = content_root / sub
     if not d.is_dir():
         continue
-    for p in sorted(d.glob('*.mdx')):
+    # The loaders in src/lib/mdx/* accept .md as well as .mdx, so a .md post
+    # would publish and reference images just like any other.
+    for p in sorted(q for ext in ('*.mdx', '*.md') for q in d.glob(ext)):
         # Label by collection so the same filename in two dirs stays distinct.
         name = f'{sub}/{p.name}'
         all_content_files.append(name)
@@ -32,7 +35,11 @@ for sub in content_dirs:
         if imgs:
             refs[name] = imgs
             for img in imgs:
-                img_path = public_images / img
+                # Resolve percent-escapes before hitting the filesystem: at
+                # least one image in public/images has a space in its name, so
+                # a correctly-encoded "%20" reference would otherwise be
+                # reported as missing. Report the reference as authored.
+                img_path = public_images / unquote(img)
                 if not img_path.exists():
                     missing.setdefault(name, []).append(img)
 
