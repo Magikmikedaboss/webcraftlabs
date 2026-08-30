@@ -210,7 +210,11 @@ function Drawer(props: { open: boolean; onClose: () => void; project: Project | 
   const canVisit = !!p && !!linkLabel && !!p.publicUrl;
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-auto">
+    // z-[110]: above SiteShell's sticky header (z-100) — a modal dialog
+    // must always outrank site chrome, or the header paints over this
+    // drawer's own close button wherever they overlap at the top of the
+    // viewport.
+    <div className="fixed inset-0 z-[110] pointer-events-auto">
       <button
         onClick={onClose}
         className="absolute inset-0 opacity-100 transition-opacity"
