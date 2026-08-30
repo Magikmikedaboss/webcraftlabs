@@ -13,6 +13,7 @@ import ArchiveNav from "@/components/archive/ArchiveNav";
 const getCachedPost = cache(getArchivePostBySlug);
 
 import mdxComponents from '@/lib/mdxComponents';
+import { TRUSTED_MDX_OPTIONS } from '@/lib/mdxOptions';
 import SiteShell from "@/components/SiteShell";
 import EditorialTemplateV2 from "@/components/blog/EditorialTemplateV2";
 // Lab and editorial subcomponents are provided via `mdxComponents`.
@@ -229,7 +230,11 @@ export default async function ArchiveDocPage({
         backHref="/archive"
         backLabel="← Back to Archive"
       >
-        <MDXRemote source={contentForMdx} components={mdxComponents} />
+        <MDXRemote
+          source={contentForMdx}
+          components={mdxComponents}
+          options={TRUSTED_MDX_OPTIONS}
+        />
       </EditorialTemplateV2>
       <ArchiveNav
         slug={post.slug as import('@/lib/archive').ArchiveDoc['slug']}
