@@ -9,12 +9,14 @@ import styles from "./build.module.css";
 import type {
   ContentReadiness,
   DesignLevel,
+  FeatureId,
   QuoteDetails,
   Timeline,
 } from "../../lib/estimator/types";
 
 import { formatPrice } from "../../lib/formatPrice";
 import { ADDONS, MAINTENANCE_PLANS } from "../../lib/estimator/config";
+import { estimate } from "../../lib/estimator/engine";
 import { trackEvent } from "../../lib/analytics";
 
 export default function BuildCalculatorClient() {
@@ -49,56 +51,23 @@ export default function BuildCalculatorClient() {
   }
 
 
-  // --- Estimation (placeholder/dummy) ---
-  // Swap this for your real estimator when ready.
+  // --- Estimation ---
+  // All pricing comes from the LOCKED v1 model in lib/estimator/config.ts via
+  // the shared engine. Do not reintroduce pricing constants here: the engine is
+  // the single source of truth, and the published pricing guide is written
+  // against it.
   const est = useMemo(() => {
-    const addons = ADDONS.filter((a) => features.includes(a.id));
-    const addonPrice = addons.reduce((sum, a) => sum + (a.price || 0), 0);
-    const addonHours = addons.reduce((sum, a) => sum + (a.hours || 0), 0);
-
-    const baseLow = 1000;
-    const baseHigh = 2000;
-
-    const pageFactor = Math.max(1, pages / 5);
-    const designFactor = design === "custom" ? 1.4 : 1.0;
-    const contentFactor = content === "full" ? 1.35 : content === "assist" ? 1.15 : 1.0;
-    const rushFactor = (timeline === "rush" ? 1.25 : 1.0);
-
-    const mult = pageFactor * designFactor * contentFactor * rushFactor;
-
-    const priceLow = Math.round((baseLow * mult + addonPrice) / 25) * 25;
-    const priceHigh = Math.round((baseHigh * mult + addonPrice) / 25) * 25;
-
-    const hours = Math.max(12, 40 * mult + addonHours);
-
-    const weeksLow = (timeline === "rush" ? 2 : 4);
-    const weeksHigh = 8;
-
-    return {
-      priceLow,
-      priceHigh,
-      hours,
-      weeksLow,
-      weeksHigh,
-      tier: { label: design === "custom" ? "Custom" : "Standard" },
-      normalizedPages: pages,
-      reasons: [] as string[],
-      buildSheetText: buildSheetText({
+    return estimate(
+      {
         pages,
         design,
         content,
         timeline,
-        features,
-        maintenance,
-        q,
-        priceLow,
-        priceHigh,
-        hours,
-        weeksLow,
-        weeksHigh,
-      }),
-    };
-  }, [pages, design, content, timeline, features, maintenance, q]);
+        features: features as FeatureId[],
+      },
+      q,
+    );
+  }, [pages, design, content, timeline, features, q]);
 
   const sliderPct = ((pages - 1) / 9) * 100;
 
@@ -391,42 +360,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function buildSheetText(args: {
-  pages: number;
-  design: string;
-  content: string;
-  timeline: string;
-  features: string[];
-  maintenance: { monthly?: number };
-  q: QuoteDetails;
-  priceLow: number;
-  priceHigh: number;
-  hours: number;
-  weeksLow: number;
-  weeksHigh: number;
-}) {
-  const lines = [
-    `WebCraft Labz - Build Sheet`,
-    ``,
-    `Estimate: ${formatPrice(args.priceLow)} - ${formatPrice(args.priceHigh)}`,
-    `Timeline: ${args.weeksLow}-${args.weeksHigh} weeks`,
-    `Effort: ${args.hours.toFixed(1)} hours`,
-    ``,
-    `Pages: ${args.pages}`,
-    `Design: ${args.design}`,
-    `Content: ${args.content}`,
-    `Timeline preference: ${args.timeline}`,
-    `Add-ons: ${args.features.length ? args.features.map(id => (ADDONS.find(a => a.id === id)?.label || id)).join(", ") : "None"}`,
-    `Maintenance: ${args.maintenance.monthly ? `$${args.maintenance.monthly}/mo` : "None"}`,
-    ``,
-    `Contact`,
-    `Name: ${args.q.name || "-"}`,
-    `Email: ${args.q.email || "-"}`,
-    `Business: ${args.q.business || "-"}`,
-    `Website: ${args.q.website || "-"}`,
-    `Framework: ${args.q.frameworkPref || "-"}`,
-    ...(args.q.frameworkPref === "other" && args.q.frameworkOther ? [`Other framework: ${args.q.frameworkOther}`] : []),
-  ];
-
-  return lines.join("\n");
-}
