@@ -64,3 +64,73 @@ describe("BlogFrontmatterSchema — updated date", () => {
     expect(BlogFrontmatterSchema.safeParse({ ...base, date: "not-a-date" }).success).toBe(false);
   });
 });
+
+describe("BlogFrontmatterSchema — updated must not predate date", () => {
+  it("passes when `updated` is absent", () => {
+    expect(BlogFrontmatterSchema.safeParse(base).success).toBe(true);
+  });
+
+  it("passes when `updated` equals `date`", () => {
+    const parsed = BlogFrontmatterSchema.safeParse({ ...base, updated: "2026-04-07" });
+    expect(parsed.success).toBe(true);
+  });
+
+  it("passes when `updated` is after `date`", () => {
+    expect(BlogFrontmatterSchema.safeParse({ ...base, updated: "2026-04-08" }).success).toBe(true);
+    expect(BlogFrontmatterSchema.safeParse({ ...base, updated: "2027-01-01" }).success).toBe(true);
+  });
+
+  it("rejects an `updated` date earlier than `date`", () => {
+    const parsed = BlogFrontmatterSchema.safeParse({ ...base, updated: "2026-01-01" });
+    expect(parsed.success).toBe(false);
+  });
+
+  it("attaches the ordering error to the `updated` field with a clear message", () => {
+    const parsed = BlogFrontmatterSchema.safeParse({ ...base, updated: "2026-01-01" });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      const issue = parsed.error.issues.find(i => i.path.join(".") === "updated");
+      expect(issue).toBeDefined();
+      expect(issue?.message).toContain("cannot be earlier than the publication date");
+    }
+  });
+
+  it("rejects an earlier `updated` even by a single day", () => {
+    expect(BlogFrontmatterSchema.safeParse({ ...base, updated: "2026-04-06" }).success).toBe(false);
+  });
+
+  it("keeps rejecting malformed and impossible `updated` dates", () => {
+    // The ordering check must not weaken the per-field ISO/calendar validation.
+    expect(BlogFrontmatterSchema.safeParse({ ...base, updated: "08/30/2026" }).success).toBe(false);
+    expect(BlogFrontmatterSchema.safeParse({ ...base, updated: "2026-02-30" }).success).toBe(false);
+  });
+
+  it("accepts the live conversion guide's real date pair", () => {
+    const parsed = BlogFrontmatterSchema.safeParse({
+      ...base,
+      title: "Why Your Website Isn’t Converting: The WebCraft Conversion Diagnostic",
+      date: "2026-04-07",
+      updated: "2026-08-30",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.date).toBe("2026-04-07");
+      expect(parsed.data.updated).toBe("2026-08-30");
+    }
+  });
+
+  it("does not interfere with archive posts, which run the same superRefine", () => {
+    const archive = {
+      title: "Episode 1",
+      description: "d",
+      date: "2026-03-01",
+      collection: "webcraft-archive" as const,
+      archiveCollection: "synthetic-minds" as const,
+      series: "Synthetic Minds",
+      seriesOrder: 1,
+      workType: "series-episode" as const,
+    };
+    expect(BlogFrontmatterSchema.safeParse(archive).success).toBe(true);
+    expect(BlogFrontmatterSchema.safeParse({ ...archive, updated: "2026-02-01" }).success).toBe(false);
+  });
+});
