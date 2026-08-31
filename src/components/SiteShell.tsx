@@ -190,7 +190,15 @@ export default function SiteShell({
                 <div className="text-xs sm:text-sm text-[var(--muted)]">{SITE.tagline}</div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 md:flex-row md:gap-6 items-start md:items-center">
+            {/* md:flex-wrap matters: at md the footer card becomes a three-column
+                row, but brand + nav + contact need ~847px of content box. Between
+                768px and ~871px that doesn't fit, and flex items (min-width: auto)
+                refuse to shrink below min-content, so the contact column used to be
+                pushed past the viewport — a ~104px horizontal page scroll at 768px.
+                Letting this nav row wrap drops its min-content from the full link
+                row to a single link, which is enough for the card to fit. Above
+                ~900px there is room for one line and the layout is unchanged. */}
+            <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:gap-6 items-start md:items-center">
               {SITE.nav.map((n) => (
                 <Link key={n.href} href={n.href} className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--primary)] transition">
                   {n.label}
