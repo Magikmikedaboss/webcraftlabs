@@ -11,6 +11,8 @@ interface PostProps {
   deck?: string;
   published?: string;
   date?: string;
+  /** Last-revision date. Renders an extra "Updated …" stamp when present. */
+  updated?: string;
   author?: string;
   image?: string;
   badge?: string;
@@ -335,6 +337,22 @@ export default function EditorialTemplateV2({
                     timeZone: "UTC",
                   })}
                 </time>
+              </>
+            )}
+            {post.updated && post.updated !== date && (
+              <>
+                <span>·</span>
+                <span>
+                  Updated{" "}
+                  <time dateTime={post.updated} suppressHydrationWarning>
+                    {new Date(post.updated).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      timeZone: "UTC",
+                    })}
+                  </time>
+                </span>
               </>
             )}
           </div>
