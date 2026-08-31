@@ -227,3 +227,71 @@ describe("build sheet", () => {
     expect(e.buildSheetText).toContain("No maintenance");
   });
 });
+
+/**
+ * Add-on price disclosure.
+ *
+ * The /build feature cards label each add-on "+$N base". These tests pin why
+ * that wording is required: the engine adds N to the subtotal *before* the
+ * design, rush and range multipliers, so the final total never moves by
+ * exactly N once any modifier is active — and page-affecting features can also
+ * push the build into a higher tier.
+ *
+ * These assert the CURRENT LOCKED v1 behaviour. They must not be "fixed" by
+ * moving add-ons after the multipliers; that would change every quoted price.
+ */
+describe("add-on price is a base amount, not the final increment", () => {
+  const delta = (over: Partial<BuildSpec>, feature: FeatureId) => {
+    const a = estimate(spec(over));
+    const b = estimate(spec({ ...over, features: [feature] }));
+    return { low: b.priceLow - a.priceLow, high: b.priceHigh - a.priceHigh, before: a, after: b };
+  };
+
+  it("configured add-on prices are unchanged", () => {
+    expect(ADDONS.find(a => a.id === "seo")?.price).toBe(450);
+    expect(ADDONS.find(a => a.id === "blog")?.price).toBe(650);
+  });
+
+  it("A — template/standard: $450 add-on moves the range by ~$405–$518", () => {
+    const d = delta({ pages: 5 }, "seo");
+    expect(d.low).toBeCloseTo(405, 2);
+    expect(d.high).toBeCloseTo(517.5, 2);
+    expect(d.low).not.toBeCloseTo(450, 2); // the card's figure is not the increment
+  });
+
+  it("B — custom/standard: the same add-on moves it by ~$547–$699", () => {
+    const d = delta({ pages: 5, design: "custom" }, "seo");
+    expect(d.low).toBeCloseTo(546.75, 2);
+    expect(d.high).toBeCloseTo(698.625, 2);
+  });
+
+  it("C — custom/rush: the same add-on moves it by ~$683–$873", () => {
+    const d = delta({ pages: 5, design: "custom", timeline: "rush" }, "seo");
+    expect(d.low).toBeCloseTo(683.4375, 2);
+    expect(d.high).toBeCloseTo(873.28125, 2);
+  });
+
+  it("D — blog at 6 pages crosses Growth → Full, moving the range far beyond $650", () => {
+    const d = delta({ pages: 6, design: "custom" }, "blog");
+    expect(d.before.tier.id).toBe("growth");
+    expect(d.after.tier.id).toBe("full");
+    expect(d.before.normalizedPages).toBe(6);
+    expect(d.after.normalizedPages).toBe(8);
+    expect(d.low).toBeCloseTo(3098.25, 2);
+    // ~4.8x the base price — this is what the reasons[] panel exists to explain
+    expect(d.low).toBeGreaterThan(650 * 4);
+  });
+
+  it("supplies customer-readable reasons whenever the page count is adjusted", () => {
+    const e = estimate(spec({ pages: 6, design: "custom", features: ["blog"] }));
+    expect(e.normalizedPages).toBeGreaterThan(6);
+    expect(e.reasons.length).toBeGreaterThan(0);
+    expect(e.reasons.join(" ")).toContain("Blog");
+  });
+
+  it("stays quiet for ordinary selections that do not change the page count", () => {
+    // seo has no page impact, so there is nothing to explain and the panel hides.
+    expect(estimate(spec({ pages: 5, features: ["seo"] })).reasons).toHaveLength(0);
+    expect(estimate(spec({ pages: 5 })).reasons).toHaveLength(0);
+  });
+});

@@ -158,7 +158,11 @@ export default function BuildCalculatorClient() {
                 <h2 className="text-xl font-bold text-[var(--text)] mb-2">
                   Features <span className="font-normal text-[var(--muted)] text-base">(optional)</span>
                 </h2>
-                <p className="text-sm text-[var(--muted)]">Add functionality to your estimate.</p>
+                <p className="text-sm text-[var(--muted)]">
+                  Add functionality to your estimate. The prices below are base amounts.
+                  Your design level, timeline, and any extra pages a feature needs can
+                  change what it adds to the final range.
+                </p>
               </div>
 
               <div className="grid gap-2 sm:gap-3 md:grid-cols-2">
@@ -175,8 +179,13 @@ export default function BuildCalculatorClient() {
                     />
                     <span>
                       <span className="block font-medium text-[var(--text)]">{a.label}</span>
+                      {/* "base" is load-bearing: the engine adds this amount to the
+                          subtotal before the design level, rush timing and estimate
+                          range are applied, and page-affecting features can also move
+                          the build into a higher tier. The final total therefore moves
+                          by more (or less) than this figure. */}
                       <span className="block text-xs text-[var(--muted)]">
-                        +${a.price} · +{a.hours} hrs
+                        +${a.price} base · +{a.hours} hrs
                       </span>
                     </span>
                   </label>
@@ -213,7 +222,11 @@ export default function BuildCalculatorClient() {
                 </div>
                 <div className="flex flex-col items-start">
                   <span className="font-bold text-[var(--muted)]">Pages</span>
-                  <span className="text-[var(--text)]">{est.normalizedPages}</span>
+                  <span className="text-[var(--text)]">
+                    {est.normalizedPages === pages
+                      ? est.normalizedPages
+                      : `${pages} → ${est.normalizedPages}`}
+                  </span>
                 </div>
                 <div className="flex flex-col items-start">
                   <span className="font-bold text-[var(--muted)]">Timeline</span>
@@ -228,6 +241,23 @@ export default function BuildCalculatorClient() {
                   </span>
                 </div>
               </div>
+
+              {/* Explains why toggling a feature can move the total by more than its
+                  base price: some features need their own pages, which can push the
+                  build into a higher tier. These strings come straight from the
+                  engine's reasons[] — no pricing logic is duplicated here. */}
+              {est.reasons.length > 0 && (
+                <div className="mt-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+                  <span className="block text-xs font-bold text-[var(--muted)] mb-1">
+                    Why your page count changed
+                  </span>
+                  <ul className="list-disc space-y-1 pl-4 text-xs text-[var(--text)]">
+                    {est.reasons.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               <div className="mt-6">
                 <label htmlFor="build-sheet-textarea" className="text-sm font-semibold text-[var(--text)] mb-1 block">Build sheet</label>
