@@ -100,20 +100,32 @@ To see your own combination, use the [build calculator](/build). It runs the sam
 Most pricing articles give you a list of factors. A list doesn't explain why adding one feature sometimes changes a quote by four times its listed price. This does:
 
 ```
-(Base Build × Design Depth)
-  + Content
-  + Functionality
-  + Integrations
-  + Required Page Expansion
-  + QA / Performance
-  + Timeline Adjustment
-  ─────────────────────────
-  = Project Estimate
+Page count ─────► selects your base tier
+                  $900   ·   $3,100   ·   $5,000
 
-  + Ongoing Operations   (monthly, separate)
+      Base tier
+    + Content
+    + Features & integrations
+  ──────────────────────────────  subtotal
+        × Design depth
+        × Timeline
+  ──────────────────────────────
+        × 0.9   and   × 1.15
+  ══════════════════════════════
+    = the low–high range you see
+
+    + Ongoing operations   (monthly, separate)
 ```
 
-The important part is the **parentheses**. Design depth isn't a line item added at the end — it multiplies the work underneath it. A custom design means every page, component and state is drawn and built for you rather than filled in, so it scales with how much site there is.
+Three things about that shape matter more than the arithmetic.
+
+**Page count picks the base; it isn't a line item.** Going from seven pages to eight doesn't add a page's worth of cost — it moves you to a different base tier. That's why page count is a blunt instrument for predicting price.
+
+**Everything is added before anything is multiplied.** Content and features join the base to form a subtotal, and *then* design depth and timing scale the whole thing. Design isn't a line at the bottom of the invoice — a custom design means every page, component and state is drawn and built for you, so it scales with how much site there is.
+
+**The output is a range, not a number.** The final low and high come from applying a spread to the same subtotal, which is why any honest estimate at this stage is a band.
+
+Quality assurance, deployment and performance work don't appear as separate lines because they're inside the base tier — they're not optional extras you can decline.
 
 Concretely, on a six-page build with your content ready:
 
@@ -421,12 +433,12 @@ A growing company that needs the site to generate enquiries. Nine pages, custom 
 
 ### D — Where "website" stops being the right word
 
-The same company adds member logins, a payment flow, and a rushed deadline.
+Scenario C exactly as above — nine pages, custom design, full copywriting, blog, SEO, analytics and CRM — plus member logins, a payment flow, and a deadline that can't move.
 
-- **Tier:** Full Site (at the ceiling) · **Pages:** 10
-- **Estimate: $14,732 – $18,824** · roughly 131 hours · 3–5 weeks
+- **Tier:** Full Site (at the ten-page ceiling) · **Pages:** 10
+- **Estimate: $15,112 – $19,309** · roughly 132 hours · 3–5 weeks
 
-**Why it lands there:** membership means authentication and protected areas; payments mean a checkout flow and confirmations; rush timing adds a quarter across everything.
+**Why it lands there:** membership means authentication and protected areas; payments mean a checkout flow and confirmations; and rush timing multiplies the whole subtotal. Note the jump from C is only about $5,200 despite adding two substantial features — the build was already at the Full Site tier and the page ceiling, so there was nowhere further for scope to push it.
 
 More useful than the number is what it signals. Accounts, permissions and payment flows are **application** features. At this point you're commissioning software with a marketing site attached, and it should be scoped that way — see the [SaaS MVP cost guide](/blog/what-drives-the-cost-of-a-saas-mvp-in-2026). Our estimator caps at ten pages for exactly this reason: past here, a page-based model stops describing the work.
 
