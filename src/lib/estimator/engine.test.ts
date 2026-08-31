@@ -173,18 +173,22 @@ describe("realistic end-to-end scenarios", () => {
     expect(Math.round(e.priceHigh)).toBe(12653);
   });
 
-  it("4 — advanced build: 10 pages, custom, full copy, 5 add-ons, rush", () => {
-    const features: FeatureId[] = ["membership", "payments", "crm", "booking", "blog"];
+  it("4 — scenario 3 plus membership, payments and rush timing", () => {
+    // Deliberately scenario 3's feature set *plus* the additions, because the
+    // guide presents this as "the same company" adding to the previous build.
+    // A reader must be able to reproduce it from the stated scope.
+    const features: FeatureId[] = ["blog", "seo", "analytics", "crm", "membership", "payments"];
     const e = estimate(spec({ pages: 10, design: "custom", content: "full", timeline: "rush", features }));
-    expect(Math.round(e.priceLow)).toBe(14732);
-    expect(Math.round(e.priceHigh)).toBe(18824);
+    expect(Math.round(e.priceLow)).toBe(15112);
+    expect(Math.round(e.priceHigh)).toBe(19309);
+    expect(e.hours).toBeCloseTo(132, 1);
   });
 
   it("prices increase monotonically across the four scenarios", () => {
     const a = estimate(spec({ pages: 3 }));
     const b = estimate(spec({ pages: 6, design: "custom" }));
     const c = estimate(spec({ pages: 9, design: "custom", content: "full", features: ["blog", "seo", "analytics", "crm"] }));
-    const d = estimate(spec({ pages: 10, design: "custom", content: "full", timeline: "rush", features: ["membership", "payments", "crm", "booking", "blog"] }));
+    const d = estimate(spec({ pages: 10, design: "custom", content: "full", timeline: "rush", features: ["blog", "seo", "analytics", "crm", "membership", "payments"] }));
     expect(a.priceLow).toBeLessThan(b.priceLow);
     expect(b.priceLow).toBeLessThan(c.priceLow);
     expect(c.priceLow).toBeLessThan(d.priceLow);
