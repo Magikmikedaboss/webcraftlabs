@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
 import { laPublishCutoff } from "./publishCutoff";
+import { assertAffiliateInvariant } from "./affiliateInvariant";
 
 function sanitizeSlug(slug: string): string {
   // Decode and allow [A-Za-z0-9-_], normalize to lowercase for consistency
@@ -47,6 +48,13 @@ export function getNewsBySlug(slug: string): { slug: string; content: string; fr
   if (!parsed.success) {
     throw new Error(`Invalid frontmatter for slug '${safeSlug}': ${parsed.error.message}`);
   }
+  assertAffiliateInvariant({
+    collection: "news",
+    slug: safeSlug,
+    filePath: fullPath,
+    source: content,
+    frontmatter: parsed.data,
+  });
   return {
     slug: safeSlug,
     content,

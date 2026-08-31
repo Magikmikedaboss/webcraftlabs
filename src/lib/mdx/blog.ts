@@ -6,6 +6,7 @@ import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
 import { BLOG_DIR } from "../blog";
 import { laPublishCutoff } from "./publishCutoff";
+import { assertAffiliateInvariant } from "./affiliateInvariant";
 
 function sanitizeSlug(slug: string): string {
   // Decode and allow [a-zA-Z0-9-_]
@@ -55,6 +56,13 @@ export function getPostBySlug(slug: string): { slug: string; content: string; fr
     console.error(`[getPostBySlug] Invalid frontmatter for slug '${safeSlug}': ${parsed.error.message}`);
     throw new Error(`Invalid frontmatter for slug '${safeSlug}': ${parsed.error.message}`);
   }
+  assertAffiliateInvariant({
+    collection: "blog",
+    slug: safeSlug,
+    filePath: fullPath,
+    source: content,
+    frontmatter: parsed.data,
+  });
   return {
     slug: safeSlug,
     content,
