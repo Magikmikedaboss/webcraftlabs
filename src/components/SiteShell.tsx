@@ -228,6 +228,16 @@ export default function SiteShell({
                   the same visual emphasis) instead of the brand color. */}
               <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Made in {SITE.address.label}. <span className={background === 'bg' ? 'font-semibold text-[var(--text)]' : 'text-[var(--primary)]'}>Websites that mean business.</span></span>
             </div>
+            {/* Site-wide legal links. Kept in the existing centered stack
+                under the copyright line rather than added to SITE.nav —
+                these belong with the copyright, not with the primary
+                footer navigation. */}
+            <Link
+              href="/disclosure"
+              className="text-[10px] sm:text-xs text-[var(--muted)] hover:text-[var(--primary)] transition"
+            >
+              Affiliate Disclosure
+            </Link>
             {/* Example of PoweredBy badge - you can remove this from your own site and give to clients */}
             <PoweredBy variant="light" size="sm" />
             {/* Archive is deliberately not part of primary navigation or SITE.nav —

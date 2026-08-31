@@ -107,6 +107,16 @@ export const BlogFrontmatterSchema = z.object({
   audience: z.array(z.enum(AUDIENCES)).optional(),
   learningPath: z.enum(LEARNING_PATHS).optional(),
   difficulty: z.enum(DIFFICULTIES).optional(),
+  /**
+   * Opt-in flag for articles that contain affiliate links. Setting it to
+   * true is the *only* thing an author does to get a disclosure: the
+   * article template renders <AffiliateDisclosure /> above the fold on its
+   * own (see EditorialTemplateV2), so the wording stays identical
+   * everywhere and can never be forgotten on an individual article.
+   * Optional and absent everywhere today — omitting it, or setting it to
+   * false, renders exactly as before.
+   */
+  affiliate: z.boolean().optional(),
   /** Internal path only (e.g. "/services/ai-automation") — never an external/arbitrary URL. */
   relatedService: z.string().trim().optional().transform(v => (v === "" ? undefined : v))
     .refine(v => v === undefined || /^\/[a-z0-9-]+(?:\/[a-z0-9-]+)*$/.test(v), {

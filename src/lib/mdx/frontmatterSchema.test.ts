@@ -262,6 +262,43 @@ describe("BlogFrontmatterSchema — conditional Archive taxonomy (Phase 3.5)", (
     });
   });
 
+  describe("affiliate", () => {
+    it("accepts affiliate: true", () => {
+      const result = BlogFrontmatterSchema.safeParse({ ...base, affiliate: true });
+      expect(result.success).toBe(true);
+      expect(result.success && result.data.affiliate).toBe(true);
+    });
+
+    it("accepts affiliate: false", () => {
+      const result = BlogFrontmatterSchema.safeParse({ ...base, affiliate: false });
+      expect(result.success).toBe(true);
+      expect(result.success && result.data.affiliate).toBe(false);
+    });
+
+    it("stays optional — frontmatter without it parses and leaves it undefined", () => {
+      const result = BlogFrontmatterSchema.safeParse(base);
+      expect(result.success).toBe(true);
+      expect(result.success && result.data.affiliate).toBeUndefined();
+    });
+
+    it("rejects a string, so a stray 'true' in YAML can't silently disable the disclosure", () => {
+      expect(BlogFrontmatterSchema.safeParse({ ...base, affiliate: "true" }).success).toBe(false);
+      expect(BlogFrontmatterSchema.safeParse({ ...base, affiliate: "yes" }).success).toBe(false);
+    });
+
+    it("composes with the rest of the Resource Center taxonomy", () => {
+      const result = BlogFrontmatterSchema.safeParse({
+        ...base,
+        resourceType: "guide",
+        audience: ["developers"],
+        learningPath: "modern-web-development",
+        difficulty: "intermediate",
+        affiliate: true,
+      });
+      expect(result.success).toBe(true);
+    });
+  });
+
   describe("contentWarnings", () => {
     it("accepts an array of trimmed, non-empty strings", () => {
       const result = BlogFrontmatterSchema.safeParse({ ...base, contentWarnings: ["mild peril"] });

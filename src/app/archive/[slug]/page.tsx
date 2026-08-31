@@ -207,6 +207,10 @@ export default async function ArchiveDocPage({
           __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      {/* `affiliate` is deliberately not threaded through here. The Archive
+          is a creative/fiction collection with no commercial links, so the
+          disclosure band has nothing to disclose on these pages — only
+          /blog/[slug] passes it. */}
       <EditorialTemplateV2
         post={{
           title: post.frontmatter.title as string,

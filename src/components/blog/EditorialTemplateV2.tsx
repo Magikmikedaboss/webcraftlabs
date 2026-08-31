@@ -1,6 +1,7 @@
 ﻿﻿import Image from "next/image";
 import Link from "next/link";
 import ShareBarClient from "../ShareBarClient";
+import AffiliateDisclosure from "../mdx/AffiliateDisclosure";
 import { BLUR_DATA_URL as BLUR } from "./constants";
 
 interface PostProps {
@@ -19,6 +20,12 @@ interface PostProps {
   topic?: string;
   tags?: string[];
   pullQuote?: string;
+  /**
+   * When true, the header renders <AffiliateDisclosure /> directly under
+   * the byline. Authors set `affiliate: true` in frontmatter and never
+   * write disclosure copy themselves — see AffiliateDisclosure.
+   */
+  affiliate?: boolean;
   ctaEyebrow?: string;
   ctaTitle?: string;
   ctaText?: string;
@@ -356,6 +363,9 @@ export default function EditorialTemplateV2({
               </>
             )}
           </div>
+          {/* Above the cover image, so the disclosure is visible before any
+              affiliate link in the body — not after it. */}
+          {post.affiliate === true && <AffiliateDisclosure />}
           <CoverImage src={cover || post.image} alt={post.title} />
         </header>
         <div className="border-t border-slate-200 px-5 py-8 sm:px-10 sm:py-12 lg:px-16">

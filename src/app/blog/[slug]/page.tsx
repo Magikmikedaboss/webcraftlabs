@@ -220,6 +220,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             badge: post.frontmatter.badge as string | undefined,
             pullQuote: post.frontmatter.pullQuote as string | undefined,
             tags: post.frontmatter.tags as string[] | undefined,
+            affiliate: post.frontmatter.affiliate as boolean | undefined,
           }}
           readMins={readMins}
           pageUrl={url}

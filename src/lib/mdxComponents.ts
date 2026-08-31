@@ -9,6 +9,9 @@ import MDXTakeaways, { Takeaways as TypedTakeaways } from '@/components/mdx/Take
 import MdxImage from '@/components/mdx/MdxImage';
 import SafeMdxImage from '@/components/mdx/SafeMdxImage';
 import ArticleImage from '@/components/mdx/ArticleImage';
+import MdxLink from '@/components/mdx/MdxLink';
+import AffiliateDisclosure from '@/components/mdx/AffiliateDisclosure';
+import AffiliateLink from '@/components/analytics/AffiliateLink';
 
 import {
   BigQuote,
@@ -99,9 +102,18 @@ const mdxComponents = {
   QuestionCard,
   ThoughtExperiment,
   ScholarlyExample,
+  // affiliate — AffiliateLink is the only component that marks a link
+  // sponsored. AffiliateDisclosure is registered so a one-off article can
+  // place it inline, but articles should normally set `affiliate: true` in
+  // frontmatter and let the template render it above the fold instead.
+  AffiliateLink,
+  AffiliateDisclosure,
   // media
   img: MdxImage,
   Image: SafeMdxImage,
+  // Adds rel="noopener noreferrer" to external markdown links; never
+  // sponsored/nofollow, and never target="_blank". See MdxLink.
+  a: MdxLink,
 };
 
 export default mdxComponents;
