@@ -295,3 +295,40 @@ describe("add-on price is a base amount, not the final increment", () => {
     expect(estimate(spec({ pages: 5 })).reasons).toHaveLength(0);
   });
 });
+
+/**
+ * Page normalisation is clamped at 10. At that ceiling a page-affecting feature
+ * still reports its requirement, but the count cannot move — so reasons[] is
+ * non-empty while normalizedPages equals the requested pages. The /build panel
+ * keys its heading off exactly this condition, so it is pinned here.
+ */
+describe("page requirements at the 10-page ceiling", () => {
+  it("reports a reason for blog at 10 pages without changing the count", () => {
+    const e = estimate(spec({ pages: 10, features: ["blog"] }));
+    expect(e.normalizedPages).toBe(10);
+    expect(e.normalizedPages).toBe(10); // requested === normalized: no change to explain
+    expect(e.reasons.length).toBeGreaterThan(0);
+    expect(e.reasons.join(" ")).toContain("Blog");
+  });
+
+  it("does the same for every page-affecting feature at the ceiling", () => {
+    const pageAffecting: FeatureId[] = ["blog", "news", "booking", "payments", "membership", "funnel"];
+    for (const f of pageAffecting) {
+      const e = estimate(spec({ pages: 10, features: [f] }));
+      expect(e.normalizedPages, `${f} should stay clamped at 10`).toBe(10);
+      expect(e.reasons.length, `${f} should still explain its page requirement`).toBeGreaterThan(0);
+    }
+  });
+
+  it("still moves the count when there is headroom below the ceiling", () => {
+    const e = estimate(spec({ pages: 9, features: ["blog"] }));
+    expect(e.normalizedPages).toBe(10); // 9 + 2 = 11, clamped
+    expect(e.normalizedPages).toBeGreaterThan(9);
+    expect(e.reasons.length).toBeGreaterThan(0);
+  });
+
+  it("never exceeds the ceiling even with several page-affecting features", () => {
+    const e = estimate(spec({ pages: 10, features: ["blog", "news", "membership", "payments"] }));
+    expect(e.normalizedPages).toBe(10);
+  });
+});

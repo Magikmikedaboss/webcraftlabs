@@ -245,11 +245,18 @@ export default function BuildCalculatorClient() {
               {/* Explains why toggling a feature can move the total by more than its
                   base price: some features need their own pages, which can push the
                   build into a higher tier. These strings come straight from the
-                  engine's reasons[] — no pricing logic is duplicated here. */}
+                  engine's reasons[] — no pricing logic is duplicated here.
+
+                  The heading is conditional because the engine clamps pages at 10:
+                  at the slider's maximum a page-affecting feature still reports its
+                  requirement, but the count cannot move. Claiming it changed would
+                  contradict the Pages field sitting directly above. */}
               {est.reasons.length > 0 && (
                 <div className="mt-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
                   <span className="block text-xs font-bold text-[var(--muted)] mb-1">
-                    Why your page count changed
+                    {est.normalizedPages === pages
+                      ? "Page requirements for selected features"
+                      : "Why your page count changed"}
                   </span>
                   <ul className="list-disc space-y-1 pl-4 text-xs text-[var(--text)]">
                     {est.reasons.map((r) => (
