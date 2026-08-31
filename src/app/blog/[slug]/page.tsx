@@ -175,6 +175,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     .split(/\s+/).filter(Boolean).length;
   const readMins = Math.max(1, Math.ceil(wordCount / 200));
   const isLab = post.frontmatter.template === "lab";
+  // Resolved once and passed to whichever template renders, so the two
+  // branches can't drift. Both templates render MDX through the same
+  // component map, so both can contain <AffiliateLink> and both must be
+  // able to disclose it. The loader's assertAffiliateInvariant() is the
+  // backstop: a document using <AffiliateLink> without `affiliate: true`
+  // fails the build rather than rendering an undisclosed link.
+  const isAffiliate = post.frontmatter.affiliate === true;
 
   // Use shared MDX components mapping
   // (imported earlier as `mdxComponents`)
@@ -194,6 +201,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               date: post.frontmatter.date as string | undefined,
               published: publishedString as string | undefined,
               author: post.frontmatter.author as string | undefined,
+              affiliate: isAffiliate,
             }}
           readMins={readMins}
           pageUrl={url}
@@ -220,6 +228,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             badge: post.frontmatter.badge as string | undefined,
             pullQuote: post.frontmatter.pullQuote as string | undefined,
             tags: post.frontmatter.tags as string[] | undefined,
+            affiliate: isAffiliate,
           }}
           readMins={readMins}
           pageUrl={url}

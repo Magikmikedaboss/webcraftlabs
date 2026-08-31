@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import { BlogFrontmatterSchema } from "./frontmatterSchema";
 import { z } from "zod";
 import { laPublishCutoff } from "./publishCutoff";
+import { assertAffiliateInvariant } from "./affiliateInvariant";
 
 /**
  * Shared Archive collection loader — mirrors src/lib/mdx/blog.ts and
@@ -62,6 +63,13 @@ export function getArchivePostBySlug(slug: string): {
       `Refusing to load '${safeSlug}' from ${ARCHIVE_DIR}: collection must be "webcraft-archive", got '${parsed.data.collection}'`
     );
   }
+  assertAffiliateInvariant({
+    collection: "webcraft-archive",
+    slug: safeSlug,
+    filePath: fullPath,
+    source: content,
+    frontmatter: parsed.data,
+  });
   return {
     slug: safeSlug,
     content,

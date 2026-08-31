@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ShareBarClient from "../ShareBarClient";
+import AffiliateDisclosure from "../mdx/AffiliateDisclosure";
 import { SITE } from "@/lib/site";
 
 interface PostProps {
@@ -10,6 +11,13 @@ interface PostProps {
   published?: string;
   author?: string;
   badge?: string;
+  /**
+   * Mirrors EditorialTemplateV2. Both article templates must honour this,
+   * because both render MDX through the shared component map and can
+   * therefore contain <AffiliateLink>. Copy lives in AffiliateDisclosure —
+   * never duplicated here.
+   */
+  affiliate?: boolean;
 }
 
 export default function LabNotebookTemplate({
@@ -41,6 +49,13 @@ export default function LabNotebookTemplate({
           {pageUrl && (
             <div className="px-5 sm:px-8 lg:px-16 xl:px-20 pt-5 lg:pt-8">
               <ShareBarClient title={post.title} url={pageUrl} />
+            </div>
+          )}
+          {/* Ahead of {children}, which is the whole MDX body — so the
+              disclosure precedes any <AffiliateLink> the body renders. */}
+          {post.affiliate === true && (
+            <div className="px-5 sm:px-8 lg:px-16 xl:px-20 pt-5 lg:pt-8">
+              <AffiliateDisclosure className="mt-0 sm:mt-0" />
             </div>
           )}
           {children}
