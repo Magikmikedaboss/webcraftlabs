@@ -237,3 +237,16 @@
     transform: none !important;
   }
 }
+
+/* Wide tables scroll inside their own container rather than being clipped.
+   The article shell sets `overflow-hidden` for its rounded corners, so a table
+   wider than the prose column loses its right-hand columns instead of becoming
+   reachable — at 375px a four-column table was cutting text off mid-word. Making
+   the table a block with `max-content` width keeps narrow tables exactly as they
+   were and gives only the wide ones a local scrollbar. */
+.editorial .prose table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
