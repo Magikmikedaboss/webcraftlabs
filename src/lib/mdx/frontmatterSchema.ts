@@ -113,6 +113,22 @@ export const BlogFrontmatterSchema = z.object({
       message: 'relatedService must be a relative internal path, e.g. "/services/ai-automation"',
     }),
 }).superRefine((data, ctx) => {
+  // A revision cannot predate publication. Both fields are already validated
+  // as ISO YYYY-MM-DD, so a lexicographic compare is also a chronological one.
+  // Guarded on both being strings because superRefine still runs when an
+  // individual field failed its own validation.
+  if (
+    typeof data.date === 'string' &&
+    typeof data.updated === 'string' &&
+    data.updated < data.date
+  ) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Updated date (${data.updated}) cannot be earlier than the publication date (${data.date})`,
+      path: ['updated'],
+    });
+  }
+
   if (data.collection !== 'webcraft-archive') return;
 
   if (!data.archiveCollection) {
