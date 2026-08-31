@@ -12,6 +12,7 @@ const getCachedPost = cache(getPostBySlug);
 
 import mdxComponents from '@/lib/mdxComponents';
 import { TRUSTED_MDX_OPTIONS } from '@/lib/mdxOptions';
+import { resolveArticleDates } from '@/lib/articleDates';
 import SiteShell from "@/components/SiteShell";
 import EditorialTemplateV2 from "@/components/blog/EditorialTemplateV2";
 import LabNotebookTemplate from "@/components/blog/LabNotebookTemplate";
@@ -51,6 +52,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         type: "article",
         url,
         publishedTime: post.frontmatter.date,
+        // Omitted entirely when the post has no `updated` date.
+        modifiedTime: post.frontmatter.updated,
         authors: [post.frontmatter.author || SITE.name],
         tags: post.frontmatter.tags || [],
         images: [
@@ -105,8 +108,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     '@type': 'BlogPosting',
     headline: post.frontmatter.title,
     description: post.frontmatter.description,
-    datePublished: post.frontmatter.date,
-    dateModified: post.frontmatter.date,
+    ...resolveArticleDates(post.frontmatter),
     author: {
       '@type': 'Organization',
       name: post.frontmatter.author || SITE.name,
@@ -211,6 +213,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             // Use `date` for rendered publication text and only keep
             // `published` when it is a string token.
             date: post.frontmatter.date as string | undefined,
+            updated: post.frontmatter.updated as string | undefined,
             published: publishedString as string | undefined,
             author: post.frontmatter.author as string | undefined,
             image: post.frontmatter.image as string | undefined,

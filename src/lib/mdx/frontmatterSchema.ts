@@ -24,15 +24,14 @@ export const LEARNING_PATHS = [
   'building-software-products',
 ] as const;
 
-export const BlogFrontmatterSchema = z.object({
-  title: z.string().trim().min(1, 'Title is required'),
-  description: z.string().trim().min(1, 'Description is required'),
-  summary: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
-  author: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
-  image: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
-  // Enforce ISO date format YYYY-MM-DD and valid calendar date
-  date: z.string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, { message: 'Date must be in YYYY-MM-DD format' })
+/**
+ * ISO `YYYY-MM-DD` string that must also be a real calendar date, so
+ * "2026-02-30" is rejected rather than silently rolling over to March.
+ * Shared by `date` and `updated` so both validate identically.
+ */
+const isoCalendarDate = (label: string) =>
+  z.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, { message: `${label} must be in YYYY-MM-DD format` })
     .refine(dateStr => {
       const [y, m, d] = dateStr.split('-').map(Number);
       const dt = new Date(Date.UTC(y, m - 1, d));
@@ -41,7 +40,23 @@ export const BlogFrontmatterSchema = z.object({
         dt.getUTCMonth() === m - 1 &&
         dt.getUTCDate() === d
       );
-    }, { message: 'Date must be a valid calendar date in YYYY-MM-DD format' }),
+    }, { message: `${label} must be a valid calendar date in YYYY-MM-DD format` });
+
+export const BlogFrontmatterSchema = z.object({
+  title: z.string().trim().min(1, 'Title is required'),
+  description: z.string().trim().min(1, 'Description is required'),
+  summary: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  author: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  image: z.string().trim().optional().transform(v => (v === "" ? undefined : v)),
+  // Enforce ISO date format YYYY-MM-DD and valid calendar date
+  date: isoCalendarDate('Date'),
+  /**
+   * Optional last-modified date. `date` always stays the original
+   * publication date; this drives `dateModified` in the BlogPosting
+   * JSON-LD and `modifiedTime` in the Open Graph article metadata.
+   * Omit it and both fall back to `date` (see resolveArticleDates).
+   */
+  updated: isoCalendarDate('Updated date').optional(),
   tags: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
   template: z.enum(["lab", "editorial"]).optional(),
