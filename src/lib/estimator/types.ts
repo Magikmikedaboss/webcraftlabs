@@ -44,8 +44,13 @@ export type Tier = {
 };
 
 export type BuildSpec = {
-  projectType: ProjectType;
-  goal: Goal;
+  /**
+   * Optional qualifying context. Neither affects pricing — they only enrich
+   * the build sheet. The /build calculator does not collect them, so they are
+   * omitted from the sheet rather than defaulted to a fabricated value.
+   */
+  projectType?: ProjectType;
+  goal?: Goal;
   pages: number; // user input 1–10
   design: DesignLevel;
   timeline: Timeline;

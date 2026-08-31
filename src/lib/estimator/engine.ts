@@ -120,8 +120,8 @@ export function estimate(spec: BuildSpec, quote?: QuoteDetails): Estimate {
   const lines: string[] = [];
   lines.push("WEBCRAFT LABZ — BUILD SHEET");
   lines.push("====================================");
-  lines.push(`Business type: ${spec.projectType}`);
-  lines.push(`Goal: ${spec.goal}`);
+  if (spec.projectType) lines.push(`Business type: ${spec.projectType}`);
+  if (spec.goal) lines.push(`Goal: ${spec.goal}`);
   lines.push(`Tier: ${tier.label}`);
   lines.push(`Pages (requested → normalized): ${spec.pages} → ${normalizedPages}`);
   lines.push(`Design: ${spec.design}`);

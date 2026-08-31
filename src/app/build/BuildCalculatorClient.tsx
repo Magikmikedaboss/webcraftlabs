@@ -9,12 +9,14 @@ import styles from "./build.module.css";
 import type {
   ContentReadiness,
   DesignLevel,
+  FeatureId,
   QuoteDetails,
   Timeline,
 } from "../../lib/estimator/types";
 
 import { formatPrice } from "../../lib/formatPrice";
 import { ADDONS, MAINTENANCE_PLANS } from "../../lib/estimator/config";
+import { estimate } from "../../lib/estimator/engine";
 import { trackEvent } from "../../lib/analytics";
 
 export default function BuildCalculatorClient() {
@@ -49,56 +51,23 @@ export default function BuildCalculatorClient() {
   }
 
 
-  // --- Estimation (placeholder/dummy) ---
-  // Swap this for your real estimator when ready.
+  // --- Estimation ---
+  // All pricing comes from the LOCKED v1 model in lib/estimator/config.ts via
+  // the shared engine. Do not reintroduce pricing constants here: the engine is
+  // the single source of truth, and the published pricing guide is written
+  // against it.
   const est = useMemo(() => {
-    const addons = ADDONS.filter((a) => features.includes(a.id));
-    const addonPrice = addons.reduce((sum, a) => sum + (a.price || 0), 0);
-    const addonHours = addons.reduce((sum, a) => sum + (a.hours || 0), 0);
-
-    const baseLow = 1000;
-    const baseHigh = 2000;
-
-    const pageFactor = Math.max(1, pages / 5);
-    const designFactor = design === "custom" ? 1.4 : 1.0;
-    const contentFactor = content === "full" ? 1.35 : content === "assist" ? 1.15 : 1.0;
-    const rushFactor = (timeline === "rush" ? 1.25 : 1.0);
-
-    const mult = pageFactor * designFactor * contentFactor * rushFactor;
-
-    const priceLow = Math.round((baseLow * mult + addonPrice) / 25) * 25;
-    const priceHigh = Math.round((baseHigh * mult + addonPrice) / 25) * 25;
-
-    const hours = Math.max(12, 40 * mult + addonHours);
-
-    const weeksLow = (timeline === "rush" ? 2 : 4);
-    const weeksHigh = 8;
-
-    return {
-      priceLow,
-      priceHigh,
-      hours,
-      weeksLow,
-      weeksHigh,
-      tier: { label: design === "custom" ? "Custom" : "Standard" },
-      normalizedPages: pages,
-      reasons: [] as string[],
-      buildSheetText: buildSheetText({
+    return estimate(
+      {
         pages,
         design,
         content,
         timeline,
-        features,
-        maintenance,
-        q,
-        priceLow,
-        priceHigh,
-        hours,
-        weeksLow,
-        weeksHigh,
-      }),
-    };
-  }, [pages, design, content, timeline, features, maintenance, q]);
+        features: features as FeatureId[],
+      },
+      q,
+    );
+  }, [pages, design, content, timeline, features, q]);
 
   const sliderPct = ((pages - 1) / 9) * 100;
 
@@ -189,7 +158,11 @@ export default function BuildCalculatorClient() {
                 <h2 className="text-xl font-bold text-[var(--text)] mb-2">
                   Features <span className="font-normal text-[var(--muted)] text-base">(optional)</span>
                 </h2>
-                <p className="text-sm text-[var(--muted)]">Add functionality to your estimate.</p>
+                <p className="text-sm text-[var(--muted)]">
+                  Add functionality to your estimate. The prices below are base amounts.
+                  Your design level, timeline, and any extra pages a feature needs can
+                  change what it adds to the final range.
+                </p>
               </div>
 
               <div className="grid gap-2 sm:gap-3 md:grid-cols-2">
@@ -206,8 +179,13 @@ export default function BuildCalculatorClient() {
                     />
                     <span>
                       <span className="block font-medium text-[var(--text)]">{a.label}</span>
+                      {/* "base" is load-bearing: the engine adds this amount to the
+                          subtotal before the design level, rush timing and estimate
+                          range are applied, and page-affecting features can also move
+                          the build into a higher tier. The final total therefore moves
+                          by more (or less) than this figure. */}
                       <span className="block text-xs text-[var(--muted)]">
-                        +${a.price} · +{a.hours} hrs
+                        +${a.price} base · +{a.hours} hrs
                       </span>
                     </span>
                   </label>
@@ -244,7 +222,11 @@ export default function BuildCalculatorClient() {
                 </div>
                 <div className="flex flex-col items-start">
                   <span className="font-bold text-[var(--muted)]">Pages</span>
-                  <span className="text-[var(--text)]">{est.normalizedPages}</span>
+                  <span className="text-[var(--text)]">
+                    {est.normalizedPages === pages
+                      ? est.normalizedPages
+                      : `${pages} → ${est.normalizedPages}`}
+                  </span>
                 </div>
                 <div className="flex flex-col items-start">
                   <span className="font-bold text-[var(--muted)]">Timeline</span>
@@ -259,6 +241,30 @@ export default function BuildCalculatorClient() {
                   </span>
                 </div>
               </div>
+
+              {/* Explains why toggling a feature can move the total by more than its
+                  base price: some features need their own pages, which can push the
+                  build into a higher tier. These strings come straight from the
+                  engine's reasons[] — no pricing logic is duplicated here.
+
+                  The heading is conditional because the engine clamps pages at 10:
+                  at the slider's maximum a page-affecting feature still reports its
+                  requirement, but the count cannot move. Claiming it changed would
+                  contradict the Pages field sitting directly above. */}
+              {est.reasons.length > 0 && (
+                <div className="mt-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+                  <span className="block text-xs font-bold text-[var(--muted)] mb-1">
+                    {est.normalizedPages === pages
+                      ? "Page requirements for selected features"
+                      : "Why your page count changed"}
+                  </span>
+                  <ul className="list-disc space-y-1 pl-4 text-xs text-[var(--text)]">
+                    {est.reasons.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               <div className="mt-6">
                 <label htmlFor="build-sheet-textarea" className="text-sm font-semibold text-[var(--text)] mb-1 block">Build sheet</label>
@@ -391,42 +397,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function buildSheetText(args: {
-  pages: number;
-  design: string;
-  content: string;
-  timeline: string;
-  features: string[];
-  maintenance: { monthly?: number };
-  q: QuoteDetails;
-  priceLow: number;
-  priceHigh: number;
-  hours: number;
-  weeksLow: number;
-  weeksHigh: number;
-}) {
-  const lines = [
-    `WebCraft Labz - Build Sheet`,
-    ``,
-    `Estimate: ${formatPrice(args.priceLow)} - ${formatPrice(args.priceHigh)}`,
-    `Timeline: ${args.weeksLow}-${args.weeksHigh} weeks`,
-    `Effort: ${args.hours.toFixed(1)} hours`,
-    ``,
-    `Pages: ${args.pages}`,
-    `Design: ${args.design}`,
-    `Content: ${args.content}`,
-    `Timeline preference: ${args.timeline}`,
-    `Add-ons: ${args.features.length ? args.features.map(id => (ADDONS.find(a => a.id === id)?.label || id)).join(", ") : "None"}`,
-    `Maintenance: ${args.maintenance.monthly ? `$${args.maintenance.monthly}/mo` : "None"}`,
-    ``,
-    `Contact`,
-    `Name: ${args.q.name || "-"}`,
-    `Email: ${args.q.email || "-"}`,
-    `Business: ${args.q.business || "-"}`,
-    `Website: ${args.q.website || "-"}`,
-    `Framework: ${args.q.frameworkPref || "-"}`,
-    ...(args.q.frameworkPref === "other" && args.q.frameworkOther ? [`Other framework: ${args.q.frameworkOther}`] : []),
-  ];
-
-  return lines.join("\n");
-}
