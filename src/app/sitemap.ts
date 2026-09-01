@@ -45,6 +45,7 @@ export const STATIC_ROUTE_LAST_MODIFIED: Record<string, string> = {
   '/archive/catalog': '2026-08-23',
   '/about': '2026-08-23',
   '/disclosure': '2026-08-31',
+  '/privacy': '2026-08-31',
   '/news': '2026-06-30',
   '/services/custom-website-development': '2026-08-22',
   '/services/landing-pages-funnels': '2026-08-22',
@@ -166,8 +167,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     staticEntry(baseUrl, '/archive', 'weekly', 0.8, { newestContentDate: newestArchiveDate }),
     staticEntry(baseUrl, '/archive/catalog', 'weekly', 0.75, { newestContentDate: newestArchiveDate }),
     staticEntry(baseUrl, '/about', 'monthly', 0.7),
-    // Low priority and rarely revised, but it must be indexable: an
-    // affiliate disclosure that search engines can't reach isn't one.
+    // Low priority and rarely revised, but both must be indexable: a
+    // policy page search engines can't reach isn't one.
+    staticEntry(baseUrl, '/privacy', 'yearly', 0.3),
     staticEntry(baseUrl, '/disclosure', 'yearly', 0.3),
     staticEntry(baseUrl, '/news', 'weekly', 0.7, { newestContentDate: newestNewsDate }),
     staticEntry(baseUrl, '/services/custom-website-development', 'monthly', 0.8),
