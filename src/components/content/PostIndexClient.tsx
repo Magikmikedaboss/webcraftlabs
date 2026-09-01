@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef, useId } from "react";
 
 type Post = {
   slug: string;
@@ -46,6 +46,9 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const id = useId();
+  const inputId = `${id}-post-search`;
+  const suggestionListId = `${inputId}-list`;
 
   const kindLabel = kind === "blog" ? "Journal" : "Newsroom";
 
@@ -120,7 +123,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
   return (
     <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
       {/* Header */}
-      <header className="mb-14 border-b border-white/10 pb-10">
+      <header className="mb-14 border-b border-[var(--border)] pb-10">
         <div className="mb-5 flex flex-wrap items-center gap-3">
           <span className="rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
             WebCraft Labs
@@ -144,7 +147,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+          <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg)] p-6">
             <p className="text-sm leading-7 text-[var(--muted)]">
               <span className="block text-xs font-semibold uppercase tracking-[0.22em] text-[var(--primary)]">
                 Index
@@ -161,9 +164,13 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
       {/* Search bar with autocomplete suggestions */}
       <div className="mb-12">
         <div className="relative max-w-xl">
-          <label className="sr-only">Search posts</label>
+          <label htmlFor={inputId} className="sr-only">Search posts</label>
           <input
             ref={inputRef}
+            id={inputId}
+            role="combobox"
+            aria-expanded={Boolean(showSuggestions && suggestions.length > 0)}
+            aria-controls={suggestionListId}
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -173,14 +180,14 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             onFocus={() => setShowSuggestions(true)}
             onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
             placeholder="Search posts, tags, and titles"
-            className="w-full rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="w-full rounded-2xl border border-[var(--controlBorder)] bg-[var(--surface)] px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
             aria-autocomplete="list"
           />
 
           {showSuggestions && suggestions.length > 0 && (
-            <ul className="absolute left-0 right-0 z-20 mt-2 max-h-64 overflow-auto rounded-xl border border-white/10 bg-[var(--surface)] p-2 shadow-lg">
+            <ul id={suggestionListId} role="listbox" className="absolute left-0 right-0 z-20 mt-2 max-h-64 overflow-auto rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-lg">
               {suggestions.map((s) => (
-                <li
+                <li role="option"
                   key={s}
                   onMouseDown={() => {
                     // Use onMouseDown to prevent blur-before-click issues
@@ -189,7 +196,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
                     setShowSuggestions(false);
                     inputRef.current?.focus();
                   }}
-                  className="cursor-pointer rounded-md px-3 py-2 text-sm text-[var(--text)] hover:bg-white/[0.03]"
+                  className="cursor-pointer rounded-md px-3 py-2 text-sm text-[var(--text)] hover:bg-[var(--hoverSurface)]"
                 >
                   {s}
                 </li>
@@ -203,10 +210,10 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
       {featuredPost && (
         <Link
           href={featuredPost.href ?? `/${kind}/${featuredPost.slug}`}
-          className="group mb-16 block overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.08] via-white/[0.035] to-cyan-400/[0.06] p-1 transition hover:border-cyan-300/30"
+          className="group mb-16 block overflow-hidden rounded-[2rem] border border-[var(--border)] bg-gradient-to-br from-[var(--bg)] via-[var(--bg)] to-[var(--accent)] p-1 transition hover:border-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
         >
           <article className="relative overflow-hidden rounded-[1.75rem] bg-[var(--surface)] p-8 sm:p-10 lg:p-12">
-            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl transition group-hover:bg-cyan-400/20" />
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[var(--accent)]/25 blur-3xl transition group-hover:bg-[var(--accent)]/40" />
 
             <div className="relative grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
               <div>
@@ -218,7 +225,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
                   {featuredPost.tags.slice(0, 3).map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-[var(--muted)]"
+                      className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs text-[var(--muted)]"
                     >
                       {tag}
                     </span>
@@ -254,7 +261,7 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
           <Link
             key={post.slug}
             href={post.href ?? `/${kind}/${post.slug}`}
-            className="group block border-t border-white/10 py-7 transition hover:border-cyan-300/30"
+            className="group block rounded-2xl border border-[var(--border)] bg-[var(--bg)] px-5 py-6 transition hover:border-[var(--primary)] hover:bg-[var(--hoverSurface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:px-6"
           >
             <article className="grid gap-5 sm:grid-cols-[0.8fr_1.6fr_0.4fr] sm:items-start">
               <div>

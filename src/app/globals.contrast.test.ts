@@ -334,3 +334,61 @@ describe("regression — code review findings (post-merge)", () => {
     expect(src).toMatch(/fixed inset-0 z-\[110\] pointer-events-auto/);
   });
 });
+
+/**
+ * PostIndexClient (the /blog and /news index) was authored dark-theme-first:
+ * every border and surface was a literal `white/α`. Those flatten to the page
+ * colour on the light theme's white --surface, so the regular post rows had a
+ * measured 1.00:1 boundary — structure only appeared on :hover, from a
+ * hardcoded cyan-300/30. These lock in a perceivable resting state.
+ */
+describe("regression — /blog and /news index rows are perceivable before hover", () => {
+  const src = readFileSync(
+    join(__dirname, "..", "components", "content", "PostIndexClient.tsx"),
+    "utf8"
+  );
+  const rowClass = () => /className="group block[^"]*"/.exec(src)?.[0] ?? "";
+  const featuredClass = () => /className="group mb-16[^"]*"/.exec(src)?.[0] ?? "";
+  const searchInputClass = () => /className="w-full[^"]*"/.exec(src)?.[0] ?? "";
+
+  it("no longer builds structure from dark-theme-only white/alpha utilities", () => {
+    expect(src).not.toMatch(/border-white\//);
+    expect(src).not.toMatch(/bg-white\//);
+  });
+
+  it("no longer hardcodes cyan-* for borders, surfaces, gradients, or rings", () => {
+    expect(src).not.toMatch(/(?:border|bg|ring|from|via|to)-cyan-/);
+  });
+
+  it("a regular row carries both a resting border and a resting surface", () => {
+    const row = rowClass();
+    expect(row).not.toBe("");
+    expect(row).toMatch(/(?<!hover:)border-\[var\(--border\)\]/);
+    expect(row).toMatch(/(?<!hover:)bg-\[var\(--bg\)\]/);
+  });
+
+  it("row hover is additive emphasis, not the first appearance of structure", () => {
+    const row = rowClass();
+    expect(row).toContain("hover:border-[var(--primary)]");
+    expect(row).toContain("hover:bg-[var(--hoverSurface)]");
+  });
+
+  it("rows and the featured entry both expose a keyboard focus ring", () => {
+    const matches = src.match(/focus-visible:outline-\[var\(--primary\)\]/g) || [];
+    expect(matches.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("the featured entry keeps an accent treatment the regular rows do not get", () => {
+    const featured = featuredClass();
+    expect(featured).toContain("bg-gradient-to-br");
+    expect(featured).toContain("var(--accent)");
+    expect(rowClass()).not.toContain("bg-gradient-to-br");
+    expect(rowClass()).not.toContain("var(--accent)");
+  });
+
+  it("the search input uses --controlBorder, the token tuned for 3:1 non-text contrast", () => {
+    const search = searchInputClass();
+    expect(search).not.toBe("");
+    expect(search).toContain("border-[var(--controlBorder)]");
+  });
+});
