@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, useRef, useId } from "react";
+import { useMemo, useState, useRef, useId, useEffect } from "react";
 
 type Post = {
   slug: string;
@@ -49,6 +49,21 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
   const id = useId();
   const inputId = `${id}-post-search`;
   const suggestionListId = `${inputId}-list`;
+  /**
+   * The active option is tracked by value rather than by index. A changing
+   * result set then cannot leave a stale row highlighted — indexOf simply
+   * stops finding it — so no synchronising effect is needed.
+   */
+  const [activeValue, setActiveValue] = useState<string | null>(null);
+  const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /**
+   * Accepting a suggestion restores focus to the input, and that focus event
+   * would otherwise re-open the popup we just closed. This suppresses exactly
+   * that one programmatic focus, never a real one from the user.
+   */
+  const suppressFocusOpen = useRef(false);
+  /** Points at the currently-active <li>, and only at that one. */
+  const activeOptionRef = useRef<HTMLLIElement | null>(null);
 
   const kindLabel = kind === "blog" ? "Journal" : "Newsroom";
 
@@ -100,6 +115,126 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 
   const featuredPost = filteredPosts[0];
   const remainingPosts = filteredPosts.slice(1);
+
+  /**
+   * The popup only exists when there is something in it, so every ARIA
+   * attribute that describes the popup keys off this one value rather than
+   * off `showSuggestions` alone.
+   */
+  const isOpen = showSuggestions && suggestions.length > 0;
+  const activeIndex = activeValue === null ? -1 : suggestions.indexOf(activeValue);
+  const optionId = (index: number) => `${suggestionListId}-option-${index}`;
+  // Undefined whenever the popup is closed or nothing is active, so
+  // aria-activedescendant can never name a node that isn't rendered.
+  const activeOptionId = isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined;
+  const moveActiveTo = (index: number) => setActiveValue(suggestions[index] ?? null);
+
+  useEffect(() => {
+    return () => {
+      if (blurTimer.current) clearTimeout(blurTimer.current);
+    };
+  }, []);
+
+  /**
+   * Keeps the active option visible inside the capped (max-h-64) list. Purely
+   * imperative — it reads a ref and scrolls, and never touches React state.
+   *
+   * Keyed on activeOptionId, the same value aria-activedescendant uses, so the
+   * visual and the announced option can never disagree. "nearest" scrolls the
+   * smallest amount needed and does nothing at all when the option is already
+   * visible, which is why pointer hover (where the option is visible by
+   * definition) stays a no-op and the page itself never jumps.
+   */
+  useEffect(() => {
+    if (!activeOptionId) return;
+    activeOptionRef.current?.scrollIntoView({ block: "nearest" });
+  }, [activeOptionId]);
+
+  /**
+   * The single path for accepting a suggestion. Both Enter and pointer
+   * selection route through here, so the two can never drift apart.
+   */
+  const commitSuggestion = (value: string) => {
+    setSearchTerm(value);
+    setSelectedTag(allTags.includes(value) ? value : null);
+    setShowSuggestions(false);
+    setActiveValue(null);
+    suppressFocusOpen.current = true;
+    inputRef.current?.focus();
+    // If focus() was a no-op because the input already had focus, release the
+    // guard so it can't swallow the user's next genuine focus.
+    queueMicrotask(() => {
+      suppressFocusOpen.current = false;
+    });
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // Tab is never trapped — it just dismisses the popup on the way out.
+    if (event.key === "Tab") {
+      setShowSuggestions(false);
+      return;
+    }
+
+    if (event.key === "Escape") {
+      if (isOpen) event.preventDefault();
+      // Closes the list and drops the active option, but deliberately keeps
+      // whatever the user typed.
+      setShowSuggestions(false);
+      setActiveValue(null);
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (suggestions.length === 0) return;
+      if (!isOpen) {
+        setShowSuggestions(true);
+        moveActiveTo(0);
+        return;
+      }
+      moveActiveTo(activeIndex < 0 ? 0 : (activeIndex + 1) % suggestions.length);
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (suggestions.length === 0) return;
+      if (!isOpen) {
+        setShowSuggestions(true);
+        moveActiveTo(suggestions.length - 1);
+        return;
+      }
+      moveActiveTo(
+        activeIndex < 0
+          ? suggestions.length - 1
+          : (activeIndex - 1 + suggestions.length) % suggestions.length
+      );
+      return;
+    }
+
+    // Everything below only means anything while the popup is open.
+    if (!isOpen) return;
+
+    if (event.key === "Enter") {
+      // With no active option, Enter belongs to the form/input, not to us.
+      if (activeIndex >= 0) {
+        event.preventDefault();
+        commitSuggestion(suggestions[activeIndex]);
+      }
+      return;
+    }
+
+    if (event.key === "Home") {
+      event.preventDefault();
+      moveActiveTo(0);
+      return;
+    }
+
+    if (event.key === "End") {
+      event.preventDefault();
+      moveActiveTo(suggestions.length - 1);
+    }
+  };
 
   if (posts.length === 0) {
     return (
@@ -169,34 +304,67 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
             ref={inputRef}
             id={inputId}
             role="combobox"
-            aria-expanded={Boolean(showSuggestions && suggestions.length > 0)}
-            aria-controls={suggestionListId}
+            aria-expanded={isOpen}
+            aria-controls={isOpen ? suggestionListId : undefined}
+            aria-activedescendant={activeOptionId}
+            aria-autocomplete="list"
+            autoComplete="off"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
               setSelectedTag(null);
               setShowSuggestions(true);
+              // New results mean the previous highlight no longer applies.
+              setActiveValue(null);
             }}
-            onFocus={() => setShowSuggestions(true)}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            onKeyDown={handleKeyDown}
+            onFocus={() => {
+              if (blurTimer.current) clearTimeout(blurTimer.current);
+              if (suppressFocusOpen.current) {
+                suppressFocusOpen.current = false;
+                return;
+              }
+              setShowSuggestions(true);
+            }}
+            onBlur={() => {
+              // Deferred so a pointer selection lands before the list unmounts.
+              if (blurTimer.current) clearTimeout(blurTimer.current);
+              blurTimer.current = setTimeout(() => {
+                setShowSuggestions(false);
+                setActiveValue(null);
+              }, 150);
+            }}
             placeholder="Search posts, tags, and titles"
             className="w-full rounded-2xl border border-[var(--controlBorder)] bg-[var(--surface)] px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
-            aria-autocomplete="list"
           />
 
-          {showSuggestions && suggestions.length > 0 && (
-            <ul id={suggestionListId} role="listbox" className="absolute left-0 right-0 z-20 mt-2 max-h-64 overflow-auto rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-lg">
-              {suggestions.map((s) => (
-                <li role="option"
+          {isOpen && (
+            <ul
+              id={suggestionListId}
+              role="listbox"
+              aria-label="Search suggestions"
+              className="absolute left-0 right-0 z-20 mt-2 max-h-64 overflow-auto rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-lg"
+            >
+              {suggestions.map((s, i) => (
+                <li
                   key={s}
-                  onMouseDown={() => {
-                    // Use onMouseDown to prevent blur-before-click issues
-                    setSearchTerm(s);
-                    setSelectedTag(allTags.includes(s) ? s : null);
-                    setShowSuggestions(false);
-                    inputRef.current?.focus();
+                  id={optionId(i)}
+                  // Only the active row holds the ref. React detaches every
+                  // stale ref before attaching the new one, so this always
+                  // ends up pointing at the current option.
+                  ref={activeIndex === i ? activeOptionRef : null}
+                  role="option"
+                  aria-selected={activeIndex === i}
+                  onMouseEnter={() => setActiveValue(s)}
+                  onMouseDown={(e) => {
+                    // preventDefault keeps focus on the input, so the blur
+                    // timer never races the selection.
+                    e.preventDefault();
+                    commitSuggestion(s);
                   }}
-                  className="cursor-pointer rounded-md px-3 py-2 text-sm text-[var(--text)] hover:bg-[var(--hoverSurface)]"
+                  className={`cursor-pointer rounded-md px-3 py-2 text-sm text-[var(--text)] hover:bg-[var(--hoverSurface)]${
+                    activeIndex === i ? " bg-[var(--hoverSurface)]" : ""
+                  }`}
                 >
                   {s}
                 </li>
