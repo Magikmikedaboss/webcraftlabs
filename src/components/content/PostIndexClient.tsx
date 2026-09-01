@@ -282,9 +282,13 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
           <div>
-            <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-[var(--text)] sm:text-6xl">
+            {/* h2, not h1: this is a subsection of a page that already owns an
+                h1 in its hero. Rendered on both /blog and /news, so an h1 here
+                gave each of those routes two. Typography classes are unchanged
+                — the level is semantic only. */}
+            <h2 className="max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-[var(--text)] sm:text-6xl">
               Ideas for the next internet.
-            </h1>
+            </h2>
 
             <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
               Essays, field notes, and research from the edge of AI, software,
