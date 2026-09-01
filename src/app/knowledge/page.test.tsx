@@ -289,6 +289,38 @@ describe("removed sections stay removed", () => {
     expect(container.querySelector("#all-resources")!.contains(links[0])).toBe(true);
   });
 
+  it("renders Browse by Goal, not the old Learning Paths heading", () => {
+    const { container } = renderPage();
+    expect(container.querySelector("#goals")).not.toBeNull();
+    expect(container.querySelector("#paths")).toBeNull();
+    expect(container.textContent).toContain("Browse by Goal");
+    expect(container.textContent).not.toContain("Learning Paths");
+    expect(container.textContent).not.toContain("Follow a path that matches");
+  });
+
+  it("shows exactly three goal lanes, and none for unpromoted paths", () => {
+    const { container } = renderPage();
+    const goals = container.querySelector("#goals") as HTMLElement;
+    expect(within(goals).getAllByRole("link")).toHaveLength(3);
+
+    const hrefs = within(goals)
+      .getAllByRole("link")
+      .map((a) => a.getAttribute("href"));
+    expect(hrefs).toContain("/knowledge/paths/websites-that-grow-businesses");
+    expect(hrefs).toContain("/knowledge/paths/building-software-products");
+    expect(hrefs).toContain("/knowledge/paths/ai-workflow-automation");
+    expect(hrefs).not.toContain("/knowledge/paths/modern-web-development");
+    expect(hrefs).not.toContain("/knowledge/paths/experiments-emerging-ideas");
+  });
+
+  it("drops the learning-paths stat from the hero without replacing it", () => {
+    const { container } = renderPage();
+    const stats = Array.from(container.querySelectorAll(".rc-stat-card"));
+    expect(stats).toHaveLength(1);
+    expect(stats[0].textContent).toContain("Published resources");
+    expect(container.textContent).not.toContain("Learning paths");
+  });
+
   it("hero jump links point only at sections that exist", () => {
     const { container } = renderPage();
     const anchors = Array.from(container.querySelectorAll('a[href^="#"]')).map((a) =>
