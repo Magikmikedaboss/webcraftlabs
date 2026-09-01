@@ -3,8 +3,6 @@ import { ACTIVE_LEARNING_PATHS, getResourcesByPath } from "@/lib/resources";
 import { LEARNING_PATH_META } from "@/lib/resourcePathMeta";
 
 export default function LearningPaths() {
-  const comingSoon = LEARNING_PATH_META["building-software-products"];
-  const isComingSoonHeldBack = comingSoon.status !== "active";
   const pathCount: number = ACTIVE_LEARNING_PATHS.length;
   const pathCountLabel = pathCount === 1 ? "One active path" : `${pathCount} active paths`;
 
@@ -35,17 +33,6 @@ export default function LearningPaths() {
         })}
       </div>
 
-      {/* Held-back path teaser — honest "coming soon" only, no fake count,
-          no active CTA, no link to a detail page. Renders only while the
-          path's own status is still "coming-soon"; disappears automatically
-          once it's activated, so this never duplicates an active card. */}
-      {isComingSoonHeldBack && (
-        <div className="rc-panel-muted mt-6">
-          <span className="rc-eyebrow-muted">Growing next</span>
-          <h3 className="rc-panel-title mt-2">{comingSoon.label}</h3>
-          <p className="rc-body-muted mt-2">{comingSoon.description}</p>
-        </div>
-      )}
     </section>
   );
 }

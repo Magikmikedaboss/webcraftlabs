@@ -623,10 +623,4 @@ body {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* Topic map canvas wrapper — deliberately dark in either site theme,
-   matching Projects & Experiments (see .rc-canvas-dark above). */
-.rc-map-frame {
-  background: var(--rc-dark-bg);
-  border: 1px solid var(--rc-dark-border);
-}
 
