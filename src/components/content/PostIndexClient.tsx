@@ -417,9 +417,13 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
               </div>
 
               <div>
-                <h2 className="max-w-3xl text-3xl font-semibold tracking-[-0.035em] text-[var(--text)] sm:text-5xl">
+                {/* h3, level with the list rows below: both are post entries
+                    inside this section. At h2 it was a sibling of the section
+                    heading, which read as though the rows were subsections of
+                    the featured article. Typography classes are unchanged. */}
+                <h3 className="max-w-3xl text-3xl font-semibold tracking-[-0.035em] text-[var(--text)] sm:text-5xl">
                   {featuredPost.title}
-                </h2>
+                </h3>
 
                 <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
                   {featuredPost.description}

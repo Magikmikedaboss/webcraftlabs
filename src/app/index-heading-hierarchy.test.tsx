@@ -17,6 +17,10 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 const SECTION_HEADING_CLASS =
   "max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-[var(--text)] sm:text-6xl";
 
+/** The exact utility string on the featured entry's title. */
+const FEATURED_HEADING_CLASS =
+  "max-w-3xl text-3xl font-semibold tracking-[-0.035em] text-[var(--text)] sm:text-5xl";
+
 const renderBlog = () => render(<ThemeProvider>{BlogIndexPage()}</ThemeProvider>);
 const renderNews = async () =>
   render(<ThemeProvider>{await NewsIndexPage()}</ThemeProvider>);
@@ -57,14 +61,20 @@ describe("the index section heading is an h2, not a second h1", () => {
   });
 });
 
-describe("no other heading level was changed", () => {
-  it("keeps the featured entry at h2 and the list rows at h3", () => {
+describe("post entries sit beneath the section heading, not beside it", () => {
+  /**
+   * The featured entry and the list rows are peers — both are posts within the
+   * index section. Leaving the featured entry at h2 made it a sibling of the
+   * section heading, which reads as though the 14 rows were subsections of the
+   * featured article rather than of the index.
+   */
+  it("renders the featured entry title as an h3, level with the rows", () => {
     const { container } = renderBlog();
 
     const featured = container.querySelector("a.group.mb-16");
     expect(featured).not.toBeNull();
-    expect(featured!.querySelector("h2")).not.toBeNull();
-    expect(featured!.querySelector("h1, h3")).toBeNull();
+    expect(featured!.querySelector("h3")).not.toBeNull();
+    expect(featured!.querySelector("h1, h2")).toBeNull();
 
     const rows = container.querySelectorAll("div.space-y-4 > a.group");
     expect(rows.length).toBeGreaterThan(0);
@@ -72,6 +82,23 @@ describe("no other heading level was changed", () => {
       expect(row.querySelector("h3")).not.toBeNull();
       expect(row.querySelector("h1, h2")).toBeNull();
     }
+  });
+
+  it("keeps the featured entry's visual class string byte-identical", () => {
+    const { container } = renderBlog();
+    const featuredTitle = container.querySelector("a.group.mb-16 h3");
+    expect(featuredTitle).not.toBeNull();
+    expect(featuredTitle!.getAttribute("class")).toBe(FEATURED_HEADING_CLASS);
+  });
+
+  it("gives /news the same outline: one h1, an h2 section, then h3 entries", async () => {
+    const { container } = await renderNews();
+    const levels = [...container.querySelectorAll("h1,h2,h3")].map((h) =>
+      Number(h.tagName[1])
+    );
+    expect(levels[0]).toBe(1);
+    expect(levels[1]).toBe(2);
+    expect(levels[2]).toBe(3);
   });
 
   it("never skips a heading level on /blog", () => {
