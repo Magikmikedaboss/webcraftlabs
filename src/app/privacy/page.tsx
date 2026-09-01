@@ -291,17 +291,18 @@ export default function PrivacyPage() {
             </p>
             <p>
               <strong className="text-[var(--text)]">About analytics.</strong> To actually stay out
-              of our analytics, you need to stop the tracking rather than clean up after it:
-              blocking cookies or scripts for this site in your browser settings, turning on your
-              browser&apos;s tracking protection, or installing Google&apos;s official Google
+              of our analytics you have to stop the Google Analytics script itself from running:
+              block that script for this site in your browser or content-blocker settings, turn on
+              your browser&apos;s tracking protection, or install Google&apos;s official Google
               Analytics opt-out browser add-on. Any of those works, and none of them will stop the
               site from working.
             </p>
             <p>
-              Deleting cookies is worth knowing about but is a different thing: it clears the
-              identifiers already stored on your device, and it does not prevent Google Analytics
-              from loading on your next visit and setting new ones. We do not offer an opt-out
-              toggle on the site itself.
+              Cookie controls are a different thing, and they do less here than people usually
+              expect. Deleting cookies clears identifiers already stored on your device, and
+              blocking cookies stops new ones being stored — but neither prevents the Google
+              Analytics script from loading and still sending measurement requests, which it can do
+              without cookies. We do not offer an opt-out toggle on the site itself.
             </p>
             <p>
               <strong className="text-[var(--text)]">About browser storage.</strong> Clearing site

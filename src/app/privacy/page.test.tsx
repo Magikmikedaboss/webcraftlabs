@@ -250,14 +250,30 @@ describe("policy claims match actual site behavior", () => {
    * cookie state — so deleting cookies clears stored identifiers but does not
    * stop GA4 loading again and setting new ones.
    */
-  it("does not present deleting cookies as an analytics opt-out", () => {
+  /**
+   * GoogleAnalytics loads and initializes the tag in production without
+   * consulting cookie or consent state, and GA4 can send measurement
+   * requests without cookies at all. So neither deleting nor blocking
+   * cookies is a complete opt-out — only stopping the script is.
+   */
+  it("does not present any cookie control as an analytics opt-out", () => {
     const ga = src("components/GoogleAnalytics.tsx");
     // No gate on existing cookies/consent anywhere in the component.
-    expect(ga).not.toMatch(/document\.cookie|consent|opt[-_ ]?out/i);
+    expect(ga).not.toMatch(/document\.cookie|consent|opt[-_ ]?out|ga-disable/i);
     const text = policyText();
-    expect(text).toContain("does not prevent google analytics from loading on your next visit");
-    // Blocking-style mechanisms are what's offered as actually effective.
-    expect(text).toContain("blocking cookies or scripts");
+    // Cookie controls are described for what they do, and explicitly not as
+    // something that stops measurement.
+    expect(text).toContain("deleting cookies clears identifiers already stored");
+    expect(text).toContain("blocking cookies stops new ones being stored");
+    expect(text).toContain("still sending measurement requests, which it can do");
+    expect(text).toContain("without cookies");
+    // And cookie-blocking is never offered as the way to stay out.
+    expect(text).not.toContain("blocking cookies or scripts");
+  });
+
+  it("offers stopping the script — not cookie controls — as what actually works", () => {
+    const text = policyText();
+    expect(text).toContain("stop the google analytics script itself from running");
     expect(text).toContain("tracking protection");
     expect(text).toContain("opt-out browser add-on");
   });
