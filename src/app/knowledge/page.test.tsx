@@ -298,10 +298,10 @@ describe("removed sections stay removed", () => {
     expect(container.textContent).not.toContain("Follow a path that matches");
   });
 
-  it("shows exactly three goal lanes, and none for unpromoted paths", () => {
+  it("shows exactly four goal lanes, and none for unpromoted paths", () => {
     const { container } = renderPage();
     const goals = container.querySelector("#goals") as HTMLElement;
-    expect(within(goals).getAllByRole("link")).toHaveLength(3);
+    expect(within(goals).getAllByRole("link")).toHaveLength(4);
 
     const hrefs = within(goals)
       .getAllByRole("link")
@@ -309,8 +309,21 @@ describe("removed sections stay removed", () => {
     expect(hrefs).toContain("/knowledge/paths/websites-that-grow-businesses");
     expect(hrefs).toContain("/knowledge/paths/building-software-products");
     expect(hrefs).toContain("/knowledge/paths/ai-workflow-automation");
+    expect(hrefs).toContain("/knowledge/developer-stacks");
     expect(hrefs).not.toContain("/knowledge/paths/modern-web-development");
     expect(hrefs).not.toContain("/knowledge/paths/experiments-emerging-ideas");
+    // The hub is the one canonical Developer Stack destination.
+    expect(hrefs).not.toContain("/knowledge/paths/developer-stacks");
+  });
+
+  it("keeps All Resources unchanged by the Developer Stack hub", () => {
+    const { container } = renderPage();
+    // The hub publishes no resources, so the canonical listing is untouched.
+    const rows = rowsOf(allResourcesList(container));
+    expect(rows.length).toBe(getAllResources().length);
+    const hrefs = rows.map((li) => li.querySelector("a")?.getAttribute("href"));
+    expect(new Set(hrefs).size).toBe(hrefs.length);
+    expect(hrefs).not.toContain("/knowledge/developer-stacks");
   });
 
   it("drops the learning-paths stat from the hero without replacing it", () => {

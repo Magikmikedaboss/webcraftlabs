@@ -47,6 +47,8 @@ featured: true            # optional — keep this to a small, genuinely strong 
 - `websites-that-grow-businesses`
 - `experiments-emerging-ideas`
 - `building-software-products` — **active as of Phase 4.**
+- `developer-stacks` — backs the Developer Stack Library. **Hub-backed: it has
+  no `/knowledge/paths/` route.** See below.
 
 ## Where each field is consumed
 
@@ -117,6 +119,61 @@ because including it would make the lane less coherent.
 
 The recommended starting point is always `sequence[0]` — derived, never
 configured twice.
+
+## Developer Stacks: a hub-backed goal lane
+
+The Developer Stack Library is the one lane whose canonical destination is a
+dedicated page rather than a path listing.
+
+| | |
+|---|---|
+| Canonical hub | `/knowledge/developer-stacks` |
+| Taxonomy value | `learningPath: developer-stacks` |
+| Path route | **none — deliberately** |
+| Guides publish at | `/blog/<slug>`, like every other resource |
+
+**Do not add `developer-stacks` to `ACTIVE_LEARNING_PATHS`.** Doing so would
+generate `/knowledge/paths/developer-stacks`, a second listing competing with
+the hub for the same content. One canonical destination, not two.
+
+`RESOURCE_GOALS` models this with a discriminated union: a `destination: "path"`
+goal resolves to its path page and must declare a `sequence`; a
+`destination: "hub"` goal carries its own `href` and has no sequence, because
+no stack guide is published yet. Components call `goalDestination(goal)` — no
+component special-cases a lane.
+
+### Publishing a stack guide
+
+1. Write it as an ordinary blog post at `/blog/<slug>`.
+2. Set `resourceType: guide` (there is no stack-specific resourceType) and
+   `learningPath: developer-stacks`.
+3. Set `audience` to `developers`, `founders`, or both.
+4. Use `tags` for tool-level concepts — `next-js`, `supabase`, `neon`,
+   `postgres`, `vercel`, `stripe`, `resend`, `sentry`, `posthog`. Tags are the
+   tool-level discovery layer; **do not add tool-specific frontmatter fields.**
+5. In `src/lib/stacks/config.ts`, flip that track's `status` to `"published"`
+   and add its `href`. Nothing else changes.
+
+**All Resources picks the guide up automatically** — it derives from the
+content collections, never from the stack config.
+
+### Unpublished tracks are never represented as live resources
+
+`STACK_TRACKS` uses the same published/planned discipline as everything else,
+enforced by types: a `planned` track has `href?: undefined`, so it is
+impossible to give one a destination. Planned tracks render as non-clickable
+cards marked "Guide coming next", and the hub's `CollectionPage` JSON-LD
+carries **no `ItemList`** until real guides exist — advertising URLs that
+don't resolve is worse than an empty section.
+
+### Affiliate participation is optional and never editorial
+
+Stack guides may eventually carry affiliate links via `<AffiliateLink>` and
+`affiliate: true` (see the affiliate disclosure infrastructure). If they do:
+**affiliate status must never influence which stack or tool is recommended.**
+A vendor with no affiliate program is assessed on exactly the same terms as
+one with a generous program. The hub publishes its evaluation criteria for
+this reason — so a reader can check the reasoning rather than trust a verdict.
 
 ## Creative and speculative work
 

@@ -22,6 +22,15 @@ export const LEARNING_PATHS = [
   'websites-that-grow-businesses',
   'experiments-emerging-ideas',
   'building-software-products',
+  /**
+   * Backs the Developer Stack Library. Deliberately NOT in
+   * ACTIVE_LEARNING_PATHS: its canonical destination is the hub at
+   * /knowledge/developer-stacks, and adding it there would generate a
+   * second, competing /knowledge/paths/developer-stacks listing.
+   * Stack guides still publish at /blog/<slug> and are picked up by All
+   * Resources automatically.
+   */
+  'developer-stacks',
 ] as const;
 
 /**

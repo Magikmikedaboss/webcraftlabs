@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { getResourcesByPath } from "@/lib/resources";
-import { RESOURCE_GOALS, recommendedStartFor } from "@/lib/resourceGoals";
+import {
+  RESOURCE_GOALS,
+  goalDestination,
+  isPathBacked,
+  recommendedStartFor,
+} from "@/lib/resourceGoals";
 
 /**
  * Browse by Goal — the single primary navigation system above All Resources.
@@ -17,10 +22,15 @@ import { RESOURCE_GOALS, recommendedStartFor } from "@/lib/resourceGoals";
  */
 export default function BrowseByGoal() {
   const goals = RESOURCE_GOALS.map((goal) => {
-    const onPath = getResourcesByPath(goal.path);
+    if (!isPathBacked(goal)) {
+      // Hub-backed lane: no published guides to sequence yet, so it shows a
+      // factual descriptor instead of a resource count it can't honour.
+      return { goal, meta: goal.meta, start: undefined };
+    }
     const startSlug = recommendedStartFor(goal);
-    const start = onPath.find((r) => r.slug === startSlug);
-    return { goal, count: goal.sequence.length, start };
+    const start = getResourcesByPath(goal.path).find((r) => r.slug === startSlug);
+    const count = goal.sequence.length;
+    return { goal, meta: `${count} ${count === 1 ? "resource" : "resources"}, in order`, start };
   });
 
   if (goals.length === 0) return null;
@@ -31,24 +41,22 @@ export default function BrowseByGoal() {
         <span className="rc-eyebrow">Browse by Goal</span>
         <h2 className="rc-h2 mt-4">Start from what you&apos;re trying to do</h2>
         <p className="rc-body mt-3">
-          Each goal is a short, ordered sequence — read top to bottom and the pieces build on each
-          other. Looking for something specific instead? Every resource is listed below.
+          Most goals are a short, ordered sequence — read top to bottom and the pieces build on
+          each other. Looking for something specific instead? Every resource is listed below.
         </p>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {goals.map(({ goal, count, start }) => (
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        {goals.map(({ goal, meta, start }) => (
           <Link
             key={goal.id}
-            href={`/knowledge/paths/${goal.path}`}
+            href={goalDestination(goal)}
             className="rc-card rc-card-link flex h-full flex-col"
           >
             <h3 className="rc-card-title">{goal.title}</h3>
             <p className="rc-card-body mt-2">{goal.description}</p>
 
-            <div className="rc-card-count mt-4">
-              {count} {count === 1 ? "resource" : "resources"}, in order
-            </div>
+            <div className="rc-card-count mt-4">{meta}</div>
 
             {start && (
               <p className="rc-card-body mt-2">
@@ -65,10 +73,4 @@ export default function BrowseByGoal() {
   );
 }
 
-/**
- * Exported for tests: the canonical href a goal card points at. Keeps the
- * test from re-deriving the URL shape independently.
- */
-export function goalHref(path: string): string {
-  return `/knowledge/paths/${path}`;
-}
+
