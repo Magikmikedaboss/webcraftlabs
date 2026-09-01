@@ -17,15 +17,21 @@ export default function ResourceHero() {
           business owners, and teams exploring AI automation.
         </p>
 
+        {/* Jump links point only at sections that exist on the page. The
+            former Topic Map (#discover) and audience (#for-you) targets
+            were removed along with those sections. */}
         <div className="mt-8 flex flex-wrap gap-3">
+          <Link href="#start-here" className="rc-pill-link">
+            Start here
+          </Link>
           <Link href="#paths" className="rc-pill-link">
             Learning Paths
           </Link>
-          <Link href="#discover" className="rc-pill-link">
-            Topic Map
+          <Link href="#all-resources" className="rc-pill-link">
+            All Resources
           </Link>
-          <Link href="#for-you" className="rc-pill-link">
-            Find Resources For You
+          <Link href="#tools" className="rc-pill-link">
+            Tools
           </Link>
         </div>
 
