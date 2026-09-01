@@ -85,6 +85,27 @@ describe("unpromoted paths are hidden from navigation but stay routable", () => 
     expect(ACTIVE_LEARNING_PATHS).toContain(path);
   });
 
+  it("every path-backed lane points at a route that actually exists", () => {
+    // The type now enforces this — PathBackedGoal.path is ActiveLearningPath,
+    // so a lane cannot be declared against a routeless value like
+    // `developer-stacks` and render a card pointing at a 404. Asserted at
+    // runtime too, since ACTIVE_LEARNING_PATHS can shrink independently.
+    for (const goal of PATH_GOALS) {
+      expect(ACTIVE_LEARNING_PATHS as readonly string[]).toContain(goal.path);
+      expect(goalDestination(goal)).toBe(`/knowledge/paths/${goal.path}`);
+    }
+  });
+
+  it("lets a hub-backed lane use a routeless taxonomy value", () => {
+    // The inverse: developer-stacks has no path route by design, which is
+    // exactly why the hub-backed variant keeps the looser LearningPath type.
+    const stacks = RESOURCE_GOALS.find((g) => g.id === "stacks")!;
+    expect(isPathBacked(stacks)).toBe(false);
+    expect(stacks.path).toBe("developer-stacks");
+    expect(ACTIVE_LEARNING_PATHS as readonly string[]).not.toContain(stacks.path);
+    expect(goalDestination(stacks)).not.toMatch(/^\/knowledge\/paths\//);
+  });
+
   it("keeps route support decoupled from visible promotion", () => {
     // The whole point of the split: more routes than lanes.
     expect(ACTIVE_LEARNING_PATHS.length).toBeGreaterThan(PATH_GOALS.length);

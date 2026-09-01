@@ -1,4 +1,4 @@
-import type { LearningPath } from "./resources";
+import type { ActiveLearningPath, LearningPath } from "./resources";
 
 /**
  * Browse by Goal — the visible primary navigation above All Resources.
@@ -28,8 +28,6 @@ type BaseGoal = {
   /** Visible lane title — the goal, not the taxonomy label. */
   title: string;
   description: string;
-  /** The learningPath this lane is backed by. */
-  path: LearningPath;
   ctaLabel: string;
 };
 
@@ -43,6 +41,13 @@ type BaseGoal = {
  */
 export type PathBackedGoal = BaseGoal & {
   destination: "path";
+  /**
+   * ActiveLearningPath, not LearningPath: this lane's card links to
+   * /knowledge/paths/<path>, and only an active path has that route. Typing
+   * it loosely would let a lane be declared against a routeless value like
+   * `developer-stacks` and render a card pointing at a 404.
+   */
+  path: ActiveLearningPath;
   sequence: readonly [string, ...string[]];
 };
 
@@ -59,6 +64,12 @@ export type PathBackedGoal = BaseGoal & {
  */
 export type HubBackedGoal = BaseGoal & {
   destination: "hub";
+  /**
+   * Any LearningPath, including one with no route — that is the point of a
+   * hub-backed lane. Kept so future guides tagged with this value are
+   * associated with the lane even though no path listing exists.
+   */
+  path: LearningPath;
   /** Canonical destination for this lane. */
   href: string;
   /** Short honest secondary line, e.g. "4 build types". Never a resource count. */
