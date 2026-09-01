@@ -33,10 +33,11 @@ const ContactSchema = z.object({
 export async function POST(req: NextRequest) {
 
   // ⚠️ Rate limiting by IP (dev-only - see rateLimit.ts for production alternatives)
-  // IP address is used transiently for rate limiting and is not included in
-  // the contact email. It lives only in the in-memory map in rateLimit.ts,
-  // whose window is RATE_LIMIT_WINDOW (~60s) — there is no database, and no
-  // retention period is defined anywhere for it.
+  // IP address is used for rate limiting and is not included in the contact
+  // email. It lives only in the in-memory map in rateLimit.ts. The rate-limit
+  // window is RATE_LIMIT_WINDOW (~60s), but expired entries may remain until
+  // a later lazy cleanup pass or process restart. There is no database-backed
+  // storage or fixed retention period defined here.
   // Try multiple sources to get client IP
   const xff = req.headers.get('x-forwarded-for');
   const realIp = req.headers.get('x-real-ip');

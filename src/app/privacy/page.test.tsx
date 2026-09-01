@@ -4,13 +4,28 @@ import path from "path";
 import { render, screen, within } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { SITE, getBaseUrl } from "@/lib/site";
-import PrivacyPage, { metadata, PRIVACY_LAST_UPDATED } from "./page";
+import PrivacyPage, {
+  metadata,
+  PRIVACY_LAST_UPDATED,
+  formatPolicyDate,
+} from "./page";
 import sitemap from "../sitemap";
 import SiteShell from "@/components/SiteShell";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 const src = (rel: string) =>
   fs.readFileSync(path.join(process.cwd(), "src", rel), "utf8");
+
+/** Every non-test .ts/.tsx file under src/, for whole-tree assertions. */
+function sourceFiles(dir = path.join(process.cwd(), "src")): string[] {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) return sourceFiles(full);
+    if (!/\.tsx?$/.test(e.name)) return [];
+    if (/\.test\.tsx?$/.test(e.name)) return [];
+    return [full];
+  });
+}
 
 /** SiteShell renders ThemeToggle, which requires the provider. */
 const renderInShell = (ui: React.ReactElement) =>
@@ -92,6 +107,24 @@ describe("/privacy page structure", () => {
     expect(time?.getAttribute("datetime")).toBe(PRIVACY_LAST_UPDATED);
     expect(src("app/sitemap.ts")).toContain(`'/privacy': '${PRIVACY_LAST_UPDATED}'`);
   });
+
+  it("derives the visible date from PRIVACY_LAST_UPDATED rather than hardcoding it", () => {
+    const { container } = renderInShell(<PrivacyPage />);
+    const time = container.querySelector("time");
+    // Same constant on both sides: the label and the machine-readable value
+    // cannot drift, because the label is computed from the attribute's source.
+    expect(time?.textContent?.trim()).toBe(formatPolicyDate(PRIVACY_LAST_UPDATED));
+    expect(src("app/privacy/page.tsx")).not.toMatch(/>August 31, 2026</);
+  });
+
+  it("formats the date deterministically in UTC, whatever the local timezone", () => {
+    // A date-only string parsed locally renders as the previous day west of
+    // UTC; pinning to T00:00:00Z + timeZone UTC keeps label and attribute
+    // describing the same calendar day everywhere.
+    expect(formatPolicyDate("2026-08-31")).toBe("August 31, 2026");
+    expect(formatPolicyDate("2026-01-01")).toBe("January 1, 2026");
+    expect(src("app/privacy/page.tsx")).toContain('timeZone: "UTC"');
+  });
 });
 
 describe("footer legal links", () => {
@@ -144,9 +177,18 @@ describe("policy claims match actual site behavior", () => {
   });
 
   it("says the site sets no cookies of its own — nothing in src sets one", () => {
-    // ContactForm only *reads* a legacy _csrfSecret cookie; the proxy does
-    // Origin/Referer checks and issues no Set-Cookie.
-    expect(src("proxy.ts")).not.toMatch(/set-cookie|cookies\(\)\.set/i);
+    // Scans the whole source tree rather than one file: the claim is about
+    // the site, so any new cookie-setting call anywhere should fail it.
+    // Reads are fine — ContactForm only *reads* a legacy _csrfSecret cookie,
+    // and the proxy does Origin/Referer checks and issues no Set-Cookie —
+    // so this matches writes only.
+    const setsCookie = /document\.cookie\s*=|cookies\(\)\s*\.\s*set\b|\.cookies\.set\b|["'`]set-cookie["'`]|headers\.(set|append)\(\s*["'`]set-cookie/i;
+    const files = sourceFiles();
+    // Guard against a vacuous pass if the walker ever stops finding files.
+    expect(files.length).toBeGreaterThan(50);
+    expect(setsCookie.test('document.cookie = "a=b"')).toBe(true);
+    const offenders = files.filter((f) => setsCookie.test(fs.readFileSync(f, "utf8")));
+    expect(offenders.map((f) => path.relative(process.cwd(), f))).toEqual([]);
     expect(policyText()).toContain("does not set any cookies of its own");
   });
 
@@ -163,6 +205,67 @@ describe("policy claims match actual site behavior", () => {
     expect(src("app/api/contact/route.ts")).toContain("checkRateLimit");
     expect(src("lib/rateLimit.ts")).toContain("RATE_LIMIT_WINDOW");
     expect(policyText()).toContain("rate limit");
+  });
+
+  /**
+   * rateLimit.ts only deletes expired entries inside a lazy cleanup branch
+   * gated on `ipMap.size > CLEANUP_THRESHOLD`. Below that threshold an
+   * expired entry is simply overwritten on the IP's next request, so the
+   * rate-limit *window* is ~60s while the stored entry can outlive it. The
+   * policy must not collapse those two into "deleted after a minute".
+   */
+  it("does not claim the IP is deleted or held for only about a minute", () => {
+    const limiter = src("lib/rateLimit.ts");
+    // The premise: deletion is conditional on the cleanup threshold.
+    expect(limiter).toMatch(/if \(ipMap\.size > CLEANUP_THRESHOLD\)/);
+    const text = policyText();
+    expect(text).not.toContain("held in the server's memory for about a minute");
+    expect(text).not.toMatch(/deleted after (about )?(a|one) minute/);
+    expect(text).not.toMatch(/only (a|one) minute/);
+  });
+
+  it("distinguishes the rate-limit window from how long the entry stays in memory", () => {
+    const text = policyText();
+    expect(text).toContain("rate-limit window itself is about a minute");
+    expect(text).toContain("can stay in memory past that window");
+    expect(text).toContain("cleanup pass");
+    expect(text).toContain("server process restarts");
+    // The two hard guarantees that *are* true stay stated.
+    expect(text).toContain("never written to a database");
+    expect(text).toContain("never included in the email");
+  });
+
+  it("keeps the contact route's source comment consistent with that behavior", () => {
+    const route = src("app/api/contact/route.ts");
+    expect(route).toContain("expired entries may remain until");
+    expect(route).toContain("lazy cleanup pass or process restart");
+    expect(route).toContain("no database-backed");
+    // The stale claim this PR set out to remove must never come back.
+    expect(route).not.toMatch(/Retention:\s*30 days/i);
+    expect(route).not.toMatch(/lives only in the in-memory map in rateLimit\.ts,\s*\n\s*\/\/ whose window/);
+  });
+
+  /**
+   * GoogleAnalytics renders unconditionally in production — nothing consults
+   * cookie state — so deleting cookies clears stored identifiers but does not
+   * stop GA4 loading again and setting new ones.
+   */
+  it("does not present deleting cookies as an analytics opt-out", () => {
+    const ga = src("components/GoogleAnalytics.tsx");
+    // No gate on existing cookies/consent anywhere in the component.
+    expect(ga).not.toMatch(/document\.cookie|consent|opt[-_ ]?out/i);
+    const text = policyText();
+    expect(text).toContain("does not prevent google analytics from loading on your next visit");
+    // Blocking-style mechanisms are what's offered as actually effective.
+    expect(text).toContain("blocking cookies or scripts");
+    expect(text).toContain("tracking protection");
+    expect(text).toContain("opt-out browser add-on");
+  });
+
+  it("does not claim the site has its own analytics opt-out control", () => {
+    // Nothing in the app renders an analytics toggle.
+    expect(src("components/GoogleAnalytics.tsx")).not.toMatch(/toggle|checkbox|button/i);
+    expect(policyText()).toContain("do not offer an opt-out toggle on the site itself");
   });
 
   it("does not quote a fixed retention period, since none is implemented", () => {

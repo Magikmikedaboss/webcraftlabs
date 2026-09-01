@@ -12,6 +12,22 @@ const PRIVACY_DESCRIPTION =
  */
 export const PRIVACY_LAST_UPDATED = "2026-08-31";
 
+/**
+ * Renders PRIVACY_LAST_UPDATED as a human-readable label. Pinned to UTC and
+ * built from an explicit `T00:00:00Z` instant so the rendered date is the
+ * same on the server, in the browser, and in any timezone — a date-only
+ * string parsed locally can otherwise render as the previous day west of
+ * UTC and desync from the `dateTime` attribute beside it.
+ */
+export function formatPolicyDate(isoDate: string): string {
+  return new Date(`${isoDate}T00:00:00Z`).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: PRIVACY_DESCRIPTION,
@@ -65,7 +81,9 @@ export default function PrivacyPage() {
         <div className="max-w-3xl">
           <p className="mt-8 text-[15px] leading-7 text-[var(--muted)]">
             Last updated:{" "}
-            <time dateTime={PRIVACY_LAST_UPDATED}>August 31, 2026</time>
+            <time dateTime={PRIVACY_LAST_UPDATED}>
+              {formatPolicyDate(PRIVACY_LAST_UPDATED)}
+            </time>
           </p>
 
           <Section heading="The short version">
@@ -116,10 +134,16 @@ export default function PrivacyPage() {
               We use it to reply to you and to discuss the work you asked about.
             </p>
             <p>
-              The IP address used for rate limiting is held in the server&apos;s memory for about a
-              minute and is not written to a database or included in the email we receive. Our own
-              application log of a submission deliberately records only whether the optional fields
-              were filled in and when it happened — not your name, email, or message.
+              The IP address used for rate limiting is kept only in the in-memory rate-limit list
+              held by the server process. The rate-limit window itself is about a minute, but an
+              entry can stay in memory past that window until a later cleanup pass, until the same
+              address makes another request, or until the server process restarts — so we cannot
+              honestly promise a fixed deletion time. What we can tell you is that it is never
+              written to a database and never included in the email we receive.
+            </p>
+            <p>
+              Our own application log of a submission deliberately records only whether the optional
+              fields were filled in and when it happened — not your name, email, or message.
             </p>
           </Section>
 
@@ -266,11 +290,18 @@ export default function PrivacyPage() {
               and we are not going to pretend otherwise.
             </p>
             <p>
-              <strong className="text-[var(--text)]">About analytics.</strong> You can block or
-              delete cookies through your browser settings, use your browser&apos;s tracking
-              protection, or install Google&apos;s official browser add-on to opt out of Google
-              Analytics. Any of those will keep you out of our analytics; none of them will stop the
+              <strong className="text-[var(--text)]">About analytics.</strong> To actually stay out
+              of our analytics, you need to stop the tracking rather than clean up after it:
+              blocking cookies or scripts for this site in your browser settings, turning on your
+              browser&apos;s tracking protection, or installing Google&apos;s official Google
+              Analytics opt-out browser add-on. Any of those works, and none of them will stop the
               site from working.
+            </p>
+            <p>
+              Deleting cookies is worth knowing about but is a different thing: it clears the
+              identifiers already stored on your device, and it does not prevent Google Analytics
+              from loading on your next visit and setting new ones. We do not offer an opt-out
+              toggle on the site itself.
             </p>
             <p>
               <strong className="text-[var(--text)]">About browser storage.</strong> Clearing site
