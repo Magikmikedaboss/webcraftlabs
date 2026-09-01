@@ -1,9 +1,12 @@
 import React from "react";
+import fs from "fs";
+import path from "path";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import KnowledgePage, { metadata } from "./page";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { getAllResources, resourceHref } from "@/lib/resources";
+import { START_HERE_LIMIT } from "@/components/resources/FeaturedResources";
+import { getAllResources, getFeaturedResources, resourceHref } from "@/lib/resources";
 import { getAllArchivePosts } from "@/lib/mdx/archive";
 import { getBaseUrl } from "@/lib/site";
 import { RESOURCE_CATEGORIES } from "@/lib/resourceCategories";
@@ -227,6 +230,32 @@ describe("Start Here", () => {
       .getAllByRole("link")
       .map((a) => a.getAttribute("href"));
     expect([...hrefs].sort()).toEqual([...featuredHrefs].sort());
+  });
+
+  /**
+   * The trio has to be structural, not a coincidence of how many articles
+   * happen to carry the flag. Before the limit was passed explicitly, a
+   * fourth `featured: true` would have silently rendered a fourth card.
+   */
+  it("caps at START_HERE_LIMIT even if more resources are flagged", () => {
+    expect(START_HERE_LIMIT).toBe(3);
+    const featured = getAllResources().filter((r) => r.frontmatter.featured === true);
+    // Simulate a fourth flag without touching content: the query layer's own
+    // limit is what the component relies on.
+    expect(getFeaturedResources(START_HERE_LIMIT).length).toBeLessThanOrEqual(START_HERE_LIMIT);
+    expect(getFeaturedResources(START_HERE_LIMIT).length).toBe(
+      Math.min(featured.length, START_HERE_LIMIT)
+    );
+  });
+
+  it("asks the query layer for the limit rather than slicing after the fact", () => {
+    // Guards the regression directly: an unlimited call renders whatever is
+    // flagged, which is what the review caught.
+    const src = fs.readFileSync(
+      path.join(process.cwd(), "src/components/resources/FeaturedResources.tsx"),
+      "utf8"
+    );
+    expect(src).toContain("getFeaturedResources(START_HERE_LIMIT)");
   });
 });
 

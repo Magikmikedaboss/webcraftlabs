@@ -1,9 +1,20 @@
 import Link from "next/link";
 import { getFeaturedResources, resourceHref } from "@/lib/resources";
 
-/** Driven entirely by frontmatter.featured === true — a small, curated set, never everything. */
+/**
+ * Start Here — a fixed-size curated slot, not a list of everything flagged.
+ *
+ * The section is three cards by design, one per core concern (a website, a
+ * software decision, AI). Passing the limit explicitly is what makes that
+ * true structurally: without it the section renders however many resources
+ * happen to carry `featured: true`, so a fourth flag would silently turn a
+ * deliberate trio into a four-card row. Anything beyond the limit is not
+ * lost — it still appears in All Resources like every other resource.
+ */
+export const START_HERE_LIMIT = 3;
+
 export default function FeaturedResources() {
-  const featured = getFeaturedResources();
+  const featured = getFeaturedResources(START_HERE_LIMIT);
 
   if (featured.length === 0) return null;
 

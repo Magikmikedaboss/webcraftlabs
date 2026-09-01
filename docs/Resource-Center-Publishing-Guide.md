@@ -48,7 +48,7 @@ featured: true            # optional — keep this to a small, genuinely strong 
 |---|---|
 | `resourceType` | Eligibility for the whole Resource Center, and the type label on each All Resources row |
 | `learningPath` | `getResourcesByPath()` — powers each `/knowledge/paths/[path]` page and the Learning Paths section. **Also decides the All Resources category chip**, via `RESOURCE_CATEGORIES` in `src/lib/resourceCategories.ts` |
-| `featured` | `getFeaturedResources()` — powers **Start here**, which shows a deliberately small set. Adding a fifth `featured: true` changes what that section renders, so treat it as an editorial decision, not a tag |
+| `featured` | `getFeaturedResources(START_HERE_LIMIT)` — powers **Start here**. The section is capped at **3 cards** (`START_HERE_LIMIT` in `FeaturedResources.tsx`), taken in `getAllResources()` order, which is newest-first. Flagging a fourth resource does **not** add a fourth card — it competes for the three slots, and whichever falls outside them simply doesn't appear there. Treat `featured` as an editorial decision about those three slots, not a tag |
 | `audience` | Metadata only. Kept for filtering, recommendations, related content, and SEO — it **no longer drives any visible section**. Setting it is still worthwhile; it will not change what renders today |
 | `template: "lab"` (pre-existing field, not new) | The Lab Notebook article template at `/blog/<slug>`. It no longer drives a Resource Center section |
 | `relatedService` | Not yet rendered anywhere — reserved for a future "related service" callout. Safe to set now; has no effect until that's built |
@@ -124,13 +124,21 @@ project like Axon).
 
 ## Keeping counts honest
 
-Every count shown anywhere in the Resource Center (`X resources on this
-path`, `X published resources`, learning-path card counts, All Resources
-chip counts, "Showing X of Y") is computed live from `getAllResources()` /
-`getResourcesByPath()` at build time — never hardcoded. If you add or remove
-taxonomy fields from content, the counts update automatically on the next
-build. Do not reintroduce a hardcoded number anywhere in this section.
+There are two kinds of count on this page, and they are not the same thing.
 
-The "Published resources" stat and the All Resources listing read the *same*
-array, and a test asserts the displayed number equals the number of unique
-rows rendered — so the two can never disagree.
+**Build-time totals** — `X published resources` in the hero, learning-path
+card counts, `X resources on this path`, and the All Resources category chip
+counts. These are computed at build time from `getAllResources()` /
+`getResourcesByPath()` and never hardcoded. Add or remove taxonomy fields on
+content and they update on the next build.
+
+**A client-side filtered count** — `Showing X of Y` in All Resources.
+`AllResourcesClient.tsx` computes this in the browser from whatever search
+term and category are currently selected, so **X changes as the visitor
+filters**. `Y` is the build-time total, so `Showing Y of Y` is the unfiltered
+state. Don't quote `X` anywhere as though it were a total.
+
+Do not reintroduce a hardcoded number for either kind. The "Published
+resources" stat and the All Resources listing read the *same* array, and a
+test asserts the displayed number equals the number of unique rows
+rendered — so those two can never disagree.
