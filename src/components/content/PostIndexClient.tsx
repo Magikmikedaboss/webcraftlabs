@@ -229,13 +229,19 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
       return;
     }
 
+    // Home/End only belong to the listbox once the user has actually entered
+    // navigation, the same rule Enter follows above. This is an editable
+    // combobox and the popup is open for any matching query, so intercepting
+    // them earlier would steal the caret keys from ordinary text editing.
     if (event.key === "Home") {
+      if (activeIndex < 0) return;
       event.preventDefault();
       moveActiveTo(0);
       return;
     }
 
     if (event.key === "End") {
+      if (activeIndex < 0) return;
       event.preventDefault();
       moveActiveTo(suggestions.length - 1);
     }

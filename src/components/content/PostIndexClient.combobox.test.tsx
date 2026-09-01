@@ -147,15 +147,21 @@ describe("post search combobox — keyboard", () => {
     expect(selected).toHaveLength(1);
   });
 
-  it("Home and End jump to the first and last option while open", () => {
+  it("Home and End jump to the first and last option once navigation has begun", () => {
     const input = openWith();
+    // ArrowDown is what enters listbox navigation; only then do Home/End
+    // belong to the list rather than to the text caret.
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+
     fireEvent.keyDown(input, { key: "End" });
     let opts = options();
     expect(opts[opts.length - 1].getAttribute("aria-selected")).toBe("true");
+    expect(activeDescendant(input)).toBe(opts[opts.length - 1].getAttribute("id"));
 
     fireEvent.keyDown(input, { key: "Home" });
     opts = options();
     expect(opts[0].getAttribute("aria-selected")).toBe("true");
+    expect(activeDescendant(input)).toBe(opts[0].getAttribute("id"));
   });
 
   it("Enter accepts the active suggestion and closes the popup", () => {
@@ -238,6 +244,63 @@ describe("post search combobox — pointer and state safety", () => {
     expect(screen.queryByRole("listbox")).toBeNull();
     expect(activeDescendant(input)).toBeNull();
     expect(input.getAttribute("aria-expanded")).toBe("false");
+  });
+});
+
+/**
+ * This is an *editable* combobox: the popup opens as soon as the query matches
+ * anything, which is exactly when the user is most likely to want Home/End to
+ * move the text caret. Those keys only belong to the listbox once the user has
+ * actually entered navigation — the same rule Enter already follows.
+ */
+describe("post search combobox — Home/End stay with the caret until navigation starts", () => {
+  it("does not intercept Home while the popup is open with nothing active", () => {
+    const input = openWith();
+    expect(activeDescendant(input)).toBeNull();
+
+    const notPrevented = fireEvent.keyDown(input, { key: "Home" });
+
+    expect(notPrevented).toBe(true);
+    expect(activeDescendant(input)).toBeNull();
+    expect(options().every((o) => o.getAttribute("aria-selected") === "false")).toBe(true);
+  });
+
+  it("does not intercept End while the popup is open with nothing active", () => {
+    const input = openWith();
+    expect(activeDescendant(input)).toBeNull();
+
+    const notPrevented = fireEvent.keyDown(input, { key: "End" });
+
+    expect(notPrevented).toBe(true);
+    expect(activeDescendant(input)).toBeNull();
+    expect(options().every((o) => o.getAttribute("aria-selected") === "false")).toBe(true);
+  });
+
+  it("hands Home and End to the listbox once ArrowDown has entered navigation", () => {
+    const input = openWith();
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+
+    // Now they belong to the list, and are consumed.
+    expect(fireEvent.keyDown(input, { key: "End" })).toBe(false);
+    expect(activeDescendant(input)).toBe(options()[options().length - 1].getAttribute("id"));
+
+    expect(fireEvent.keyDown(input, { key: "Home" })).toBe(false);
+    expect(activeDescendant(input)).toBe(options()[0].getAttribute("id"));
+  });
+
+  it("returns Home and End to the caret after Escape leaves navigation", () => {
+    const input = openWith();
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    fireEvent.keyDown(input, { key: "Escape" });
+    // Reopen by typing again. The value must actually differ, or React dedupes
+    // the change, the popup never reopens, and the assertion below passes for
+    // the wrong reason.
+    fireEvent.change(input, { target: { value: "alph" } });
+
+    expect(screen.getByRole("listbox")).toBeTruthy();
+    expect(activeDescendant(input)).toBeNull();
+    expect(fireEvent.keyDown(input, { key: "Home" })).toBe(true);
+    expect(activeDescendant(input)).toBeNull();
   });
 });
 
