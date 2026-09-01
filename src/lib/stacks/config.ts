@@ -3,10 +3,12 @@ import type { StackTrack, StackCriterion, DecisionTopic } from "./types";
 /**
  * Developer Stack Library content map.
  *
- * Every track is `planned` today — no stack guide is published yet. When one
+ * Solo SaaS is published; the other three tracks are still `planned`. When one
  * ships as /blog/<slug>, flip its status to "published" and add the href;
  * nothing else changes. All Resources picks the article up on its own,
- * because it derives from the content collections rather than from this file.
+ * because it derives from the content collections rather than from this file,
+ * and buildStackItemList derives the CollectionPage ItemList from the same
+ * status flags.
  *
  * This config never invents a resource. It describes what the library covers
  * and what it will cover; it is not a source of links to things that do not
@@ -20,7 +22,8 @@ export const STACK_TRACKS: readonly StackTrack[] = [
       "A product one person can ship and keep running without a platform team. Optimises for the smallest number of moving parts you can still grow on.",
     useCase: "One founder or a very small team, running it themselves",
     shape: "Managed everything, few services, boring where it counts",
-    status: "planned",
+    status: "published",
+    href: "/blog/solo-saas-stack",
   },
   {
     id: "fast-mvp",

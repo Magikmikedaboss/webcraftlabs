@@ -69,7 +69,18 @@ describe("buildStackItemList", () => {
     expect(JSON.stringify(list)).not.toContain("fast-mvp");
   });
 
-  it("matches the live config's current state — nothing published yet", () => {
-    expect(buildStackItemList(STACK_TRACKS, BASE)).toBeUndefined();
+  it("matches the live config's current state — only Solo SaaS is published", () => {
+    const list = buildStackItemList(STACK_TRACKS, BASE);
+    expect(list).toBeDefined();
+    expect(list!.numberOfItems).toBe(1);
+    const items = list!.itemListElement as { url: string; name: string }[];
+    expect(items).toHaveLength(1);
+    expect(items[0].url).toBe(`${BASE}/blog/solo-saas-stack`);
+    expect(items[0].name).toBe("Solo SaaS");
+    // The three planned tracks stay out of the structured data entirely.
+    const serialised = JSON.stringify(list);
+    for (const id of ["fast-mvp", "ai-application", "marketing-website"]) {
+      expect(serialised).not.toContain(id);
+    }
   });
 });

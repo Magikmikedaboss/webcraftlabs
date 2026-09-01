@@ -1,0 +1,567 @@
+---
+title: "The Solo SaaS Stack: What One Person Can Actually Ship and Maintain in 2026"
+description: >-
+  A practical technology stack for solo SaaS builders, with clear tradeoffs
+  across framework, database, authentication, hosting, payments, email,
+  analytics, monitoring, and operations.
+summary: >-
+  If one person is responsible for building, launching, operating, and
+  maintaining a SaaS product, the right architecture is the one that gives
+  them the most capability without turning infrastructure into a second job.
+  Here's a stack built around that constraint, and where it stops applying.
+date: '2026-09-01'
+author: WebCraft Labz
+tags:
+  - saas
+  - developer-stacks
+  - architecture
+  - next-js
+  - postgres
+  - solo-founder
+collection: blog
+resourceType: guide
+audience: [developers, founders]
+learningPath: developer-stacks
+difficulty: intermediate
+relatedService: /services/saas-platform-development
+featured: false
+---
+
+There is no universal best SaaS stack. There are only stacks that fit a
+particular set of constraints, and the constraint that changes the most
+decisions is how many people are responsible for the result.
+
+This guide answers one question: if a single person is building, launching,
+operating, and maintaining a SaaS product, what architecture gives them the
+most useful capability without turning infrastructure into a second full-time
+job?
+
+That framing rules a lot in and a lot out. It is not the stack I would pick
+for a team of fifteen with a platform engineer. It is not the stack for a
+product with hard data-residency requirements or a million writes a minute.
+It is a starting point for the specific situation where the person writing the
+feature is also the person who gets paged when it breaks.
+
+---
+
+## 1. The solo builder constraint
+
+When a team grows, work gets divided. Someone owns deploys, someone owns the
+database, someone is on call. Every service you add has an owner who can hold
+its failure modes in their head.
+
+A solo builder has none of that. Every service is owned by the same person, and
+that person also has to write the actual product. This changes what "good
+architecture" means in a few concrete ways.
+
+**Cognitive load is the real budget.** You can only hold so many systems in
+working memory. A stack with four services you understand deeply will beat a
+stack with eleven you half-remember. The cost of an extra service is not its
+monthly bill — it is the mental space it occupies permanently.
+
+**Operational burden compounds while you sleep.** Anything you run yourself
+needs patching, monitoring, backups, and capacity attention. Managed services
+move that work to someone whose full-time job it is. For a solo builder, this
+trade is almost always worth making, even at a visible price premium.
+
+**Debugging spans the whole stack.** When something breaks, you cannot hand it
+off. A bug might live in the frontend, the API layer, a database query, a
+webhook handler, or a third-party outage. Fewer moving parts means fewer places
+to look, and shared language across layers means less context-switching to look
+there.
+
+**Deployment has to be boring.** If shipping is risky or slow, you ship less.
+That is not a discipline problem; it is a design problem. The deploy path
+should be so uneventful you stop thinking about it.
+
+**Every vendor is a relationship you maintain.** Each one has an account,
+billing, credentials, an API that changes, a status page you should be watching,
+and a migration cost if it disappoints you. Vendor count is a real number worth
+keeping small.
+
+**Support work is engineering work.** When a customer reports something odd,
+you need to answer "what actually happened to this user?" quickly. That is a
+requirement on your architecture — specifically on your logging, your error
+tracking, and your ability to query production data safely.
+
+**Switching costs decide your future options.** The question is never just "is
+this the best tool?" It is "if this turns out to be wrong in eighteen months,
+what does leaving cost me?" Some choices are cheap to reverse. Some quietly
+become the product.
+
+<Insight title="The organising principle">
+Optimise for the number of things you personally have to understand and
+operate — not for theoretical performance, and not for what a much larger
+company chose under completely different constraints.
+</Insight>
+
+---
+
+## 2. The stack at a glance
+
+| Layer | Starting point | Why | Reconsider when |
+| --- | --- | --- | --- |
+| Application | Next.js + TypeScript | One codebase, one language, one deploy | You need a heavy non-JS backend, or a native-first product |
+| Database | Managed Postgres | Relational, boring, portable, well understood | Genuinely non-relational access patterns dominate |
+| Auth | Hosted auth provider | Highest risk-to-effort ratio to build yourself | Enterprise SSO or unusual identity rules become core |
+| Hosting | Vercel | Zero-config for this stack, previews on every PR | Costs scale badly, or you need workloads it doesn't run |
+| Payments | Stripe | The compliance surface is the product | You need a merchant of record for global tax |
+| Email | Resend | Transactional sending without deliverability work | Volume or marketing automation outgrow it |
+| Product analytics | PostHog | Funnels and retention without a data pipeline | You need a real warehouse and modelling layer |
+| Errors | Sentry | Tells you before the customer does | Rarely — this stays useful at every size |
+| Storage | Managed object storage | Files do not belong in your database | You have no user-uploaded files at all |
+| Background jobs | Nothing at first | Most early work fits in a request | A real workflow demands it — see section 10 |
+
+Read the "reconsider when" column as the important one. The recommendation is
+only as good as the conditions attached to it.
+
+---
+
+## 3. Application layer
+
+**Start with Next.js and TypeScript.**
+
+The argument is not that it is the finest framework available. It is that a
+solo builder gets a disproportionate benefit from one codebase, in one
+language, deployed as one unit.
+
+You write the marketing pages, the authenticated app, and the API endpoints in
+the same project. You share types between the server that produces data and the
+client that renders it, so a renamed field is a compile error rather than a
+runtime surprise a customer finds. When you need to trace a bug from a button
+to a query, you do it in one editor, in one repository, without a context
+switch between languages or teams.
+
+TypeScript earns its keep here for a specific reason. A solo builder does not
+have code review. Types are the closest thing to a second pair of eyes that
+runs on every save, and they matter most in exactly the places you will be
+sloppiest at 11pm.
+
+The server/client boundary deserves attention rather than avoidance. Server
+components and server actions let you keep data access on the server without
+building a separate API layer for every screen — but the boundary is real, and
+being casual about what crosses it is how secrets leak into a bundle. Learn it
+once, deliberately, early.
+
+**When something else is better.** If your product's core is heavy data
+processing, scientific computing, or ML training, a Python service is the right
+home for it and you should not contort JavaScript to avoid that. If you are
+building a mobile-first product where the web app is secondary, start where
+your users are. If your team's existing depth is Rails, Django, or Laravel,
+that depth is worth more than any framework's marginal advantage — a mature
+tool you know beats a better tool you are learning while shipping.
+
+---
+
+## 4. Database
+
+**Start with Postgres, and put it at the centre.**
+
+Relational databases are the correct default because most SaaS data is
+relational. Users belong to accounts, accounts have subscriptions,
+subscriptions have invoices. Modelling that as documents means reimplementing
+joins in application code, badly.
+
+Postgres specifically because it is boring in the way you want infrastructure
+to be boring: extremely well understood, with decades of accumulated answers to
+the question you are about to search for at 2am. It also stretches much further
+than people expect — JSON columns for genuinely schemaless corners, full-text
+search that is fine until it isn't, and extensions when you need them.
+
+The real choice is not which database but which managed Postgres. The three
+common shapes:
+
+- **Plain managed Postgres** (RDS, Cloud SQL, or a smaller host) gives you a
+  database and nothing else. Most portable, least opinionated, most assembly
+  required.
+- **Supabase** gives you Postgres plus auth, storage, and generated APIs. The
+  appeal for a solo builder is real: several vendors collapse into one. The
+  tradeoff is that you are adopting a platform, not just a database, and its
+  conventions will shape your application.
+- **Neon** gives you Postgres with serverless scaling and database branching,
+  so a preview deploy can have its own throwaway database. That workflow is
+  genuinely useful. It is still just Postgres underneath, which keeps the exit
+  cheap.
+
+For a solo builder I would lean toward whichever reduces vendor count without
+locking up the product's core. If you want auth and storage solved in the same
+breath, Supabase's integration is the argument. If you want the database to
+stay a database, plain managed Postgres or Neon keeps that line clean.
+
+A dedicated comparison of these three is coming in the
+[Developer Stack Library](/knowledge/developer-stacks) — this section is
+deliberately the short version.
+
+**On the query layer**, there is no universal winner. Drizzle stays close to
+SQL and has a light runtime, which suits people who already think in SQL.
+Prisma has a better-known developer experience and stronger migration tooling,
+at the cost of more abstraction between you and the query. Writing SQL directly
+is entirely reasonable for a small schema and removes a dependency
+permanently. Pick based on how much you want to think in SQL, not on which has
+more stars.
+
+---
+
+## 5. Authentication
+
+**Do not build authentication yourself.**
+
+This is the strongest single recommendation in this guide, and it is not about
+difficulty. A login form is easy. What is hard is the long tail: password
+reset flows that cannot be used to enumerate accounts, session invalidation
+that actually invalidates, secure token storage, rate limiting, OAuth provider
+quirks, email verification, MFA when a customer asks for it, and the security
+patches you will need to apply for as long as the product exists.
+
+That tail never ends, and every item on it is a place where a mistake is a
+breach rather than a bug.
+
+The categories worth considering:
+
+**Hosted auth providers** (Clerk, Auth0, WorkOS) sell you the whole problem
+solved, including the UI. Clerk in particular is pleasant for exactly this
+stack. You pay per user, and pricing is the thing to model honestly before you
+commit — it is fine early and can become a real line item later.
+
+**Database-integrated auth** (Supabase Auth) puts users in your Postgres
+instance, which means you can join against them directly instead of
+reconciling an external user ID with a local record. That is a genuine
+simplification. It also ties auth to your database platform choice.
+
+**Framework libraries** (Auth.js and similar) leave you owning more of the
+implementation while avoiding a vendor. That is a reasonable middle ground if
+you have done it before, and a poor one if you have not.
+
+**When building it yourself is justified:** when your identity requirements are
+genuinely unusual — complex delegated access, an existing identity system you
+must integrate with, or regulatory constraints that forbid a third party
+holding credentials. "We might want to customise the login page" is not on
+that list.
+
+---
+
+## 6. Hosting and deployment
+
+**Start on Vercel, and be honest about why.**
+
+For this particular stack, it is close to zero-configuration. Push to a branch
+and get a preview URL. Merge and get production. Rollback is a click. For a
+solo builder, that is not convenience — it is the difference between deploying
+several times a day and deploying when you have the energy for it.
+
+Preview deployments are undersold. Being able to open a real, running version
+of a change on your phone is the fastest way to catch the thing you would
+otherwise ship.
+
+Two honest counterweights. **Cost** can scale in ways that surprise people,
+particularly around bandwidth and function execution on content-heavy or
+high-traffic sites; model it before you are surprised by it. **Lock-in** is
+mild but real — the more platform-specific features you adopt, the more a move
+costs later. Standard Next.js runs elsewhere; deeply platform-coupled Next.js
+is stickier.
+
+**When to look elsewhere.** If your workloads are long-running or
+compute-heavy, a container platform is a better fit than serverless functions.
+If you are bandwidth-heavy, Cloudflare's economics are hard to argue with. If
+you have real infrastructure skill and enjoy it, a VPS running containers is
+cheaper and entirely defensible — as long as you are honest that you have just
+hired yourself as the ops team.
+
+---
+
+## 7. Payments
+
+**Use Stripe. Do not be clever here.**
+
+Payments is the clearest case in the stack where "boring" is a feature rather
+than a compromise. The value is not the checkout form — it is everything
+underneath: PCI scope you do not want, card network rules, 3D Secure, fraud
+signals, retries on failed renewals, and the fact that when something goes
+wrong with money, it needs to be already-solved rather than interesting.
+
+The pieces you will actually touch:
+
+- **Subscriptions**, including the awkward parts — upgrades mid-cycle,
+  proration, cancellations that should stay active until period end.
+- **Webhooks**, which are how your database learns what happened. Treat them as
+  the source of truth for subscription state, verify signatures, and make
+  handlers idempotent — you will receive duplicates.
+- **The customer portal**, which is free and removes an entire category of
+  support work by letting customers update cards and cancel themselves.
+- **Tax and compliance**, which is where solo builders get caught. Digital
+  goods sold internationally can create VAT and sales-tax obligations. Stripe
+  Tax helps with calculation. If you would rather not think about it at all, a
+  merchant of record such as Paddle or Lemon Squeezy takes on the liability
+  and charges more for doing so. That is a legitimate trade for a one-person
+  business.
+
+---
+
+## 8. Transactional email
+
+**Use a modern transactional provider — Resend fits this stack well.**
+
+Transactional email is not marketing email. It is password resets, email
+verification, receipts, and notifications: low volume, high importance, and
+completely invisible until it stops working.
+
+Do not send it from your application server. Deliverability is a specialist
+problem involving SPF, DKIM, DMARC, IP and domain reputation, and feedback
+loops, and getting it wrong means your password resets land in spam and you
+find out through a support ticket.
+
+What matters when choosing: a clean API you can integrate in an afternoon,
+visibility into what was sent and what bounced, and a sending domain you
+control so reputation follows you if you move providers. Send from your own
+domain, set up authentication records properly on day one, and separate
+transactional sending from any marketing sending you do later — mixing them
+lets a promotional campaign damage delivery of your password resets.
+
+---
+
+## 9. Analytics and observability
+
+These are three different problems that get bundled together and should not be.
+
+**Marketing analytics** answers "where did visitors come from and what did they
+do before signing up?" This is a website question, and lightweight
+privacy-conscious tools handle it well.
+
+**Product analytics** answers "what do users actually do inside the product,
+and who stops?" This needs events you deliberately instrument. PostHog is a
+practical choice for a solo builder because funnels, retention, and session
+context come in one tool without building a data pipeline. Its cheaper virtue
+is that you can start with a handful of events rather than an event taxonomy
+you designed in advance and never revisited.
+
+**Error monitoring** answers "what is broken right now, and for whom?" Sentry
+is the default for good reason: stack traces with the user and request context
+attached, grouped so ten thousand instances of one bug are one issue.
+
+The lean starting setup is genuinely small: Sentry on both server and client,
+product analytics on the five or six events that describe your core loop
+(signed up, completed onboarding, performed the key action, invited someone,
+subscribed, cancelled), and basic marketing attribution. That is enough to
+answer most questions you will have in the first year. Resist instrumenting
+everything — unused events are a maintenance cost with no payoff.
+
+---
+
+## 10. Background jobs
+
+This section matters more than its length suggests, because this is where solo
+builders most often over-build.
+
+**Do not add asynchronous infrastructure until a real workflow requires it.**
+
+Queues, workers, schedulers, event buses, and workflow engines all solve real
+problems. They also add a second execution environment that can fail
+independently of your application, needs its own monitoring, and makes every
+bug harder to trace. That is a large tax to pay before you have the problem.
+
+Most early SaaS work fits inside a request. Sending one email, writing a few
+rows, calling one API — do it inline, and let the user see the result.
+
+**What actually justifies adding it:**
+
+- Work that takes longer than a request should (video processing, large
+  imports, generating big reports).
+- Work that must survive failure and be retried — a payment webhook that must
+  eventually reconcile, not one that gives up silently.
+- Genuinely scheduled work: nightly digests, trial-expiry checks, dunning.
+- Fan-out where one action triggers many slow operations.
+- Third-party calls slow or flaky enough that your user should not wait.
+
+When you do need it, add the smallest thing that works. A scheduled function on
+your existing host handles cron-shaped work. A managed queue handles retryable
+work. A database-backed job table is a completely respectable first queue for a
+small product, and it has the significant advantage of living in the database
+you already understand and back up.
+
+<Insight title="A useful test">
+If you cannot name the specific workflow that requires it and describe what
+happens when it fails, you are not ready to add background processing yet.
+</Insight>
+
+---
+
+## 11. Storage
+
+Most SaaS products need somewhere to put files, and that place is not your
+database.
+
+Storing binary data in Postgres inflates your backups, slows restores, and puts
+bandwidth-shaped load on a system optimised for queries. Managed object storage
+— S3, R2, or your platform's equivalent — is cheap, effectively unlimited, and
+serves files without touching your application.
+
+The pattern worth learning early is presigned uploads: your server issues a
+short-lived URL, the browser uploads directly to storage, and your database
+stores only the key and metadata. Large files never pass through your
+application at all.
+
+You do not need object storage if your product handles no user files. Plenty of
+SaaS products genuinely do not. Skip it until something needs storing.
+
+---
+
+## 12. What I would not add at launch
+
+None of these are bad technologies. They solve real problems. They are usually
+not the first problems of a one-person SaaS, and each one costs you attention
+you cannot spare.
+
+**Kubernetes.** Built for orchestrating many services across many machines with
+a team to operate it. As a solo builder you would be running a control plane to
+schedule a handful of containers.
+
+**Microservices.** Service boundaries are hard to place correctly before you
+understand the domain, and wrong boundaries are far more expensive than a
+monolith. Distributed systems problems are real problems you would be adopting
+voluntarily. Split when a piece has genuinely different scaling or deployment
+needs — not on principle.
+
+**Custom authentication.** See section 5. The tail is endless and the failure
+mode is a breach.
+
+**Multiple databases.** One Postgres instance until you have a specific,
+articulated reason. "Redis for caching" is often premature; correct queries
+against a properly indexed database are usually fast enough at small scale, and
+a cache is a second source of truth that can be wrong.
+
+**Event streaming.** Kafka and friends are for high-throughput multi-consumer
+pipelines. If your event volume fits in a table, put it in a table.
+
+**A dedicated search engine.** Postgres full-text search is fine for a long
+time. Add Elasticsearch, Typesense, or Algolia when search quality or scale
+actually becomes a complaint — not in anticipation of one.
+
+**A vector database, because the product uses AI.** If you are storing
+thousands of embeddings, pgvector in the Postgres you already run is enough. A
+dedicated vector store earns its place at a scale most products never reach.
+
+**GraphQL for architectural fashion.** GraphQL solves a real problem: many
+clients with different data needs. One web client talking to its own backend is
+not that problem, and you would be adding a schema layer, a caching story, and
+query-complexity concerns for nothing.
+
+**Self-hosting everything to save money.** Running your own Postgres, Redis,
+and mail server might save fifty dollars a month. It will cost you far more
+than that in hours, and those hours come out of building the product. Your time
+is the scarcest resource in a one-person company.
+
+---
+
+## 13. When this stack stops being enough
+
+Every recommendation here has an expiry condition. The honest ones:
+
+- **A real engineering team.** Once several people ship concurrently, the
+  constraints that shaped this stack no longer apply. Deliberate service
+  boundaries and stronger CI start to earn their cost.
+- **Specialised infrastructure.** Heavy data processing, ML training, real-time
+  collaboration, video pipelines — these want purpose-built components rather
+  than a general-purpose application server.
+- **Regulatory requirements.** HIPAA, PCI beyond Stripe's scope, FedRAMP, or
+  strict data residency reshape hosting and vendor choices from the ground up.
+  Data residency in particular will contradict several defaults above.
+- **High write throughput.** Sustained heavy writes eventually need
+  partitioning, read replicas, or a different storage engine for the hot path.
+- **Complex global workloads.** Users on multiple continents expecting low
+  latency need edge strategy and replication, not a single-region database.
+- **Enterprise identity.** SAML, SCIM provisioning, and directory sync arrive
+  the moment you sell to large companies, and they change the auth decision.
+- **Sophisticated event processing.** Real-time analytics over large streams is
+  the case where streaming infrastructure genuinely pays for itself.
+
+Reaching one of these is a good sign. It means the product worked. Re-architect
+when you get there — not in anticipation of a scale you have not reached.
+
+---
+
+## 14. What a request actually looks like
+
+Concretely, here is a user signing up, and which system owns what.
+
+1. **The visitor hits a marketing page.** Statically rendered, served from a
+   CDN. No database involved.
+2. **They submit the signup form.** Your auth provider owns this: it validates
+   the credential, creates the identity, and returns a session. Your
+   application never stores a password.
+3. **Your application creates the account record.** In Postgres, keyed to the
+   auth provider's user ID. This is where "user" becomes "customer" — with a
+   plan, a trial end date, and whatever your domain needs.
+4. **A verification email goes out.** Your email provider owns delivery; your
+   application owns the token and the content.
+5. **They subscribe.** Stripe owns the card, the charge, and the subscription
+   object. Your application redirects to Checkout and never touches card data.
+6. **Stripe calls your webhook.** Your application verifies the signature and
+   updates the subscription state in Postgres. **Postgres is the source of
+   truth your application reads**; Stripe is the source of truth for billing.
+   Keeping that distinction clear prevents a whole class of bugs.
+7. **Analytics records the events.** Signed up, verified, subscribed —
+   deliberately instrumented, not incidental.
+8. **If anything throws, Sentry captures it** with user and request context, so
+   you find out before the customer emails you.
+
+Eight steps, five vendors, one database, one codebase. Every boundary is a
+place where one system's responsibility ends and another's begins — and you
+can hold all of it in your head.
+
+---
+
+## 15. The decision framework
+
+When you hit a choice this guide does not cover, this is the test worth
+applying. Choose the simplest option that:
+
+<Checklist items={[
+  "Solves a requirement you have today, not one you are anticipating",
+  "Has a credible next step if the product grows, so you are not designing a rewrite",
+  "Reduces the amount of infrastructure you personally operate and patch",
+  "Can be replaced later without rebuilding the product around its absence",
+  "You will still understand in six months when something breaks at an inconvenient hour"
+]} />
+
+That last one is easy to skip and hard to recover from. Clever architecture you
+cannot debug under pressure is worse than plain architecture you can.
+
+---
+
+## 16. The baseline, stated plainly
+
+For a solo builder starting a SaaS product today:
+
+- **Next.js and TypeScript** for the application
+- **Managed Postgres** as the durable centre
+- **A hosted auth provider** rather than anything you wrote
+- **Vercel** for hosting and deployment
+- **Stripe** for payments
+- **Resend** for transactional email
+- **PostHog** for product analytics, **Sentry** for errors
+- **Object storage** only if you have files
+- **No background job system** until a specific workflow demands one
+
+This is what I would start with. It is not what every SaaS must use, and the
+"reconsider when" column in section 2 is the part worth re-reading before you
+treat any of it as settled.
+
+The stack is deliberately replaceable. Every component can be swapped without
+rebuilding the others, which is the property that matters most when you are
+choosing under uncertainty — and you always are.
+
+If you are still deciding whether to build custom software at all, or what
+stage you are actually at, these are the adjacent questions worth settling
+first:
+
+- [Custom Software vs. Off-the-Shelf Tools](/blog/custom-software-vs-off-the-shelf-tools)
+  — whether this should be a build in the first place.
+- [MVP vs. Prototype vs. Production Application](/blog/mvp-vs-prototype-vs-production-application)
+  — which of the three you are actually scoping.
+- [What Drives the Cost of a SaaS MVP](/blog/what-drives-the-cost-of-a-saas-mvp-in-2026)
+  — what the scope above implies for budget.
+- [Building Your First Developer Workbench](/blog/building-your-first-developer-workbench)
+  — the local environment underneath all of this.
+
+More build-type stacks and the cross-cutting comparisons referenced above are
+collected in the [Developer Stack Library](/knowledge/developer-stacks).

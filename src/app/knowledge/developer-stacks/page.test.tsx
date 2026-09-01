@@ -67,36 +67,36 @@ describe("structured data reflects only real links", () => {
     expect(data.itemListElement[2].item).toBe(`${getBaseUrl()}/knowledge/developer-stacks`);
   });
 
-  it("emits CollectionPage without a fabricated ItemList", () => {
+  it("emits a CollectionPage whose ItemList holds exactly the published guides", () => {
     const { container } = renderHub();
     const data = jsonLd(container, "stacks-collection-jsonld");
     expect(data["@type"]).toBe("CollectionPage");
     expect(data.url).toBe(`${getBaseUrl()}/knowledge/developer-stacks`);
-    // No stack guide is published, so there is no list of real URLs to
-    // describe. An ItemList here would claim pages that do not exist.
-    expect(data.mainEntity).toBeUndefined();
-    expect(JSON.stringify(data)).not.toContain("ItemList");
+
+    const publishedTracks = STACK_TRACKS.filter(isPublished);
+    expect(data.mainEntity["@type"]).toBe("ItemList");
+    expect(data.mainEntity.numberOfItems).toBe(publishedTracks.length);
+    expect(data.mainEntity.itemListElement.map((i: { url: string }) => i.url)).toEqual(
+      publishedTracks.map((t) => `${getBaseUrl()}${t.href}`)
+    );
   });
 
-  it("derives the ItemList from the tracks, so publishing one adds it", () => {
-    // The page must not hardcode the absence — see itemList.test.ts, which
-    // exercises the published branch that live config cannot reach.
-    const withPublished = buildStackItemList(
-      [
-        {
-          id: "solo-saas",
-          title: "Solo SaaS",
-          description: "d",
-          useCase: "u",
-          shape: "s",
-          status: "published",
-          href: "/blog/solo-saas-stack",
-        },
-      ],
-      getBaseUrl()
-    );
-    expect(withPublished).toBeDefined();
-    expect(buildStackItemList(STACK_TRACKS, getBaseUrl())).toBeUndefined();
+  it("never advertises a planned track as a URL", () => {
+    const { container } = renderHub();
+    const serialised = JSON.stringify(jsonLd(container, "stacks-collection-jsonld"));
+    for (const track of STACK_TRACKS.filter((t) => !isPublished(t))) {
+      expect(serialised).not.toContain(track.id);
+    }
+  });
+
+  it("derives the ItemList from the tracks rather than hardcoding it", () => {
+    // Same derivation the page uses, so the structured data cannot drift from
+    // the config that drives the visible cards.
+    const derived = buildStackItemList(STACK_TRACKS, getBaseUrl());
+    expect(derived).toBeDefined();
+    expect(derived!.numberOfItems).toBe(STACK_TRACKS.filter(isPublished).length);
+    // Still returns undefined when nothing is published — the honest empty case.
+    expect(buildStackItemList([], getBaseUrl())).toBeUndefined();
   });
 });
 
@@ -224,16 +224,33 @@ describe("affiliate safety", () => {
 describe("All Resources is unaffected by the hub", () => {
   it("contains no fabricated stack guides", () => {
     const slugs = getAllResources().map((r) => r.slug);
-    for (const track of STACK_TRACKS) {
+    // A planned track must never correspond to a real resource — that would
+    // mean the hub is withholding something that exists. A published track
+    // must, which is asserted separately below.
+    for (const track of STACK_TRACKS.filter((t) => !isPublished(t))) {
       expect(slugs).not.toContain(track.id);
       expect(slugs).not.toContain(`${track.id}-stack`);
     }
   });
 
-  it("still derives only from published content", () => {
-    // 16 published resources; the hub adds none. If a real stack guide
-    // publishes later this number moves for the right reason.
-    expect(getAllResources()).toHaveLength(16);
+  it("every published track points at a resource that actually exists", () => {
+    const hrefs = new Set(getAllResources().map((r) => `/${r.type}/${r.slug}`));
+    const published = STACK_TRACKS.filter(isPublished);
+    expect(published.length).toBeGreaterThan(0);
+    for (const track of published) {
+      expect(hrefs.has(track.href), `${track.href} is not a published resource`).toBe(true);
+    }
+  });
+
+  it("still derives its count from published content rather than the hub", () => {
+    // Derived, never hardcoded: the hub contributes nothing of its own, so the
+    // count is exactly the content collections' own total.
+    const resources = getAllResources();
+    const stackGuides = resources.filter(
+      (r) => r.frontmatter.learningPath === "developer-stacks"
+    );
+    expect(stackGuides).toHaveLength(STACK_TRACKS.filter(isPublished).length);
+    expect(resources.length).toBeGreaterThan(stackGuides.length);
   });
 });
 
