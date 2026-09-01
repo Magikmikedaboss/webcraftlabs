@@ -9,7 +9,8 @@ import {
   DECISION_TOPICS,
   RELATED_RESOURCE_SLUGS,
 } from "@/lib/stacks/config";
-import { isPublished } from "@/lib/stacks/types";
+import { isPublished, isPublishedTopic } from "@/lib/stacks/types";
+import { buildStackItemList } from "@/lib/stacks/itemList";
 
 const DESCRIPTION =
   "There is no best tech stack — only one that matches what you're building. Practical technology combinations for SaaS products, MVPs, AI applications, and marketing sites.";
@@ -68,13 +69,12 @@ export default function DeveloperStacksPage() {
   );
 
   /**
-   * CollectionPage without an ItemList, deliberately.
-   *
-   * No stack guide is published yet, so there is no list of real URLs to
-   * describe. Emitting an ItemList of planned tracks would tell search
-   * engines that pages exist which do not. The ItemList arrives with the
-   * first published guide.
+   * ItemList of published guides only — derived, so it appears by itself the
+   * moment a track flips to "published", and stays absent while none are.
+   * Emitting planned tracks would tell search engines that pages exist which
+   * do not.
    */
+  const itemList = buildStackItemList(STACK_TRACKS, baseUrl);
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -84,7 +84,12 @@ export default function DeveloperStacksPage() {
     description: DESCRIPTION,
     isPartOf: { "@type": "WebSite", "@id": `${baseUrl}#website`, url: baseUrl },
     publisher: { "@type": "Organization", name: SITE.name, url: baseUrl },
+    ...(itemList ? { mainEntity: itemList } : {}),
   };
+
+  // Section copy derived from real state rather than asserted: the intro
+  // must stop claiming nothing is published the moment something is.
+  const publishedTopics = DECISION_TOPICS.filter(isPublishedTopic).length;
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -189,18 +194,38 @@ export default function DeveloperStacksPage() {
         <Section
           eyebrow="Technology decision guides"
           heading="The choices that recur across every stack"
-          intro="Some decisions come up whatever you're building. These get their own comparisons rather than being re-argued in each guide — none are published yet, so this is what the library will cover."
+          intro={
+            publishedTopics === 0
+              ? "Some decisions come up whatever you're building. These get their own comparisons rather than being re-argued in each guide — none are published yet, so this is what the library will cover."
+              : "Some decisions come up whatever you're building. These get their own comparisons rather than being re-argued in each guide."
+          }
         >
           <ul className="grid gap-4 md:grid-cols-2">
-            {DECISION_TOPICS.map((t) => (
-              <li key={t.id} className="rc-card">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="rc-card-title">{t.label}</h3>
-                  {t.status === "planned" && <span className="rc-badge-muted">Planned</span>}
-                </div>
-                <p className="rc-card-body mt-2">{t.detail}</p>
-              </li>
-            ))}
+            {DECISION_TOPICS.map((t) => {
+              const body = (
+                <>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="rc-card-title">{t.label}</h3>
+                    {!isPublishedTopic(t) && <span className="rc-badge-muted">Planned</span>}
+                  </div>
+                  <p className="rc-card-body mt-2">{t.detail}</p>
+                </>
+              );
+              // A published topic must be reachable, or publishing it hides
+              // it. The type guarantees it has an href.
+              return (
+                <li key={t.id}>
+                  {isPublishedTopic(t) ? (
+                    <Link href={t.href} className="rc-card rc-card-link block h-full">
+                      {body}
+                      <span className="rc-card-cta mt-4">Read the comparison →</span>
+                    </Link>
+                  ) : (
+                    <div className="rc-card h-full">{body}</div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </Section>
 

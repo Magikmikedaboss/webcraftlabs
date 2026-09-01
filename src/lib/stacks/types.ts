@@ -52,12 +52,29 @@ export type StackCriterion = {
 
 /**
  * A cross-cutting comparison the library intends to cover (databases, auth,
- * hosting…). Same published/planned discipline as tracks.
+ * hosting…). Same published/planned discipline as tracks, and the same
+ * union rather than an optional href — a published topic without a
+ * destination would be unreachable, and a planned one with a destination
+ * would be a dead link.
  */
-export type DecisionTopic = {
+type BaseTopic = {
   id: string;
   label: string;
   detail: string;
-  status: "published" | "planned";
-  href?: string;
 };
+
+export type PublishedDecisionTopic = BaseTopic & {
+  status: "published";
+  href: string;
+};
+
+export type PlannedDecisionTopic = BaseTopic & {
+  status: "planned";
+  href?: undefined;
+};
+
+export type DecisionTopic = PublishedDecisionTopic | PlannedDecisionTopic;
+
+export function isPublishedTopic(topic: DecisionTopic): topic is PublishedDecisionTopic {
+  return topic.status === "published";
+}

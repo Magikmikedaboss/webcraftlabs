@@ -8,7 +8,8 @@ import { getBaseUrl, SITE } from "@/lib/site";
 import { getAllResources, ACTIVE_LEARNING_PATHS } from "@/lib/resources";
 import { LEARNING_PATHS } from "@/lib/mdx/frontmatterSchema";
 import { STACK_TRACKS, DECISION_TOPICS, RELATED_RESOURCE_SLUGS } from "@/lib/stacks/config";
-import { isPublished } from "@/lib/stacks/types";
+import { buildStackItemList } from "@/lib/stacks/itemList";
+import { isPublished, isPublishedTopic } from "@/lib/stacks/types";
 
 const renderHub = () => render(<ThemeProvider>{DeveloperStacksPage()}</ThemeProvider>);
 
@@ -75,6 +76,27 @@ describe("structured data reflects only real links", () => {
     // describe. An ItemList here would claim pages that do not exist.
     expect(data.mainEntity).toBeUndefined();
     expect(JSON.stringify(data)).not.toContain("ItemList");
+  });
+
+  it("derives the ItemList from the tracks, so publishing one adds it", () => {
+    // The page must not hardcode the absence — see itemList.test.ts, which
+    // exercises the published branch that live config cannot reach.
+    const withPublished = buildStackItemList(
+      [
+        {
+          id: "solo-saas",
+          title: "Solo SaaS",
+          description: "d",
+          useCase: "u",
+          shape: "s",
+          status: "published",
+          href: "/blog/solo-saas-stack",
+        },
+      ],
+      getBaseUrl()
+    );
+    expect(withPublished).toBeDefined();
+    expect(buildStackItemList(STACK_TRACKS, getBaseUrl())).toBeUndefined();
   });
 });
 
@@ -144,11 +166,31 @@ describe("published vs planned tracks", () => {
 
   it("frames decision topics as planned scope, not published links", () => {
     const { container } = renderHub();
-    for (const topic of DECISION_TOPICS) {
+    for (const topic of DECISION_TOPICS.filter((t) => !isPublishedTopic(t))) {
       const heading = screen.getByRole("heading", { name: topic.label });
       expect(heading.closest("li")!.querySelector("a")).toBeNull();
     }
     expect(container.textContent).toContain("Planned");
+  });
+
+  it("would render a published decision topic as a reachable link", () => {
+    // Guards the branch: a published topic that renders as a plain card is
+    // unreachable, which makes publishing it pointless. The type requires an
+    // href, and the renderer must use it.
+    const { container } = renderHub();
+    for (const topic of DECISION_TOPICS.filter(isPublishedTopic)) {
+      const heading = screen.getByRole("heading", { name: topic.label });
+      const link = heading.closest("li")!.querySelector("a");
+      expect(link).not.toBeNull();
+      expect(link!.getAttribute("href")).toBe(topic.href);
+    }
+    // Today none are published, so the intro says so.
+    const publishedCount = DECISION_TOPICS.filter(isPublishedTopic).length;
+    if (publishedCount === 0) {
+      expect(container.textContent).toContain("none are published yet");
+    } else {
+      expect(container.textContent).not.toContain("none are published yet");
+    }
   });
 });
 
