@@ -25,7 +25,10 @@ export function LabHero({
         <span>{label}</span>
         {date && <span>{date}</span>}
       </div>
-      <h1 className="mt-14 text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[7rem] font-black leading-[0.92] tracking-tight text-slate-950">
+      {/* Capped on the same principle as EditorialTemplateV2's h1, but a step
+          larger at xl so the notebook keeps its own louder identity. Base
+          through md are untouched. */}
+      <h1 className="mt-14 text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] xl:text-[6rem] font-black leading-[0.92] tracking-tight text-slate-950">
         {title}
       </h1>
       {edition && (

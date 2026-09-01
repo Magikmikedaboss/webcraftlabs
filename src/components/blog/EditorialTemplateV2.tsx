@@ -320,9 +320,13 @@ export default function EditorialTemplateV2({
           <span className="inline-flex rounded-full bg-slate-950 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white sm:px-5 sm:text-xs">
             {post.badge || post.topic || "Editorial"}
           </span>
+          {/* Desktop steps are capped deliberately: an article headline, not a
+              homepage billboard. 5.5rem is the largest size that still wraps the
+              longest published title to 4 lines at 1280 (5.75rem spills to 5).
+              Base/sm are untouched, so mobile renders identically. */}
           <h1
             id="post-title"
-            className="mt-8 max-w-6xl text-5xl font-black leading-[0.88] tracking-tighter text-slate-950 sm:mt-10 sm:text-7xl lg:text-[8rem] xl:text-[9rem]"
+            className="mt-8 max-w-6xl text-5xl font-black leading-[0.88] tracking-tighter text-slate-950 sm:mt-10 sm:text-7xl lg:text-[5rem] xl:text-[5.5rem]"
           >
             {post.displayTitle || post.title}
           </h1>
