@@ -36,6 +36,7 @@ export const STATIC_ROUTE_LAST_MODIFIED: Record<string, string> = {
   '/build': '2026-08-22',
   '/services': '2026-08-22',
   '/knowledge': '2026-08-23',
+  '/knowledge/developer-stacks': '2026-09-01',
   '/knowledge/paths': '2026-08-23',
   '/las-vegas-web-design': '2026-08-22',
   '/portfolio': '2026-08-24',
@@ -157,6 +158,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     staticEntry(baseUrl, '/build', 'monthly', 0.9),
     staticEntry(baseUrl, '/services', 'monthly', 0.8),
     staticEntry(baseUrl, '/knowledge', 'monthly', 0.75),
+    // The Developer Stack Library's canonical hub. There is deliberately no
+    // /knowledge/paths/developer-stacks entry — see RESOURCE_GOALS.
+    staticEntry(baseUrl, '/knowledge/developer-stacks', 'monthly', 0.7),
     ...ACTIVE_LEARNING_PATHS.map((path) =>
       staticEntry(baseUrl, `/knowledge/paths/${path}`, 'monthly', 0.7, { registryKey: '/knowledge/paths' })
     ),

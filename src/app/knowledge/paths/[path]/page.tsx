@@ -10,7 +10,7 @@ import {
   resourceHref,
 } from "@/lib/resources";
 import { LEARNING_PATH_META, sortByExplicitOrder } from "@/lib/resourcePathMeta";
-import { goalForPath } from "@/lib/resourceGoals";
+import { goalForPath, isPathBacked } from "@/lib/resourceGoals";
 
 // Every path in ACTIVE_LEARNING_PATHS is pre-rendered, whether or not it is
 // visibly promoted as a goal lane. Route existence is deliberately decoupled
@@ -66,7 +66,12 @@ export default async function LearningPathPage({
 
   const meta = LEARNING_PATH_META[path];
   const resources = getResourcesByPath(path);
-  const goal = goalForPath(path);
+  const promoted = goalForPath(path);
+  // Only a sequenced (path-backed) lane supplies a reading order. A
+  // hub-backed lane like Developer Stacks has no path route at all, so this
+  // is defensive rather than reachable — but it keeps the page honest if one
+  // is ever added to ACTIVE_LEARNING_PATHS.
+  const goal = promoted && isPathBacked(promoted) ? promoted : undefined;
   const baseUrl = getBaseUrl();
   const url = `${baseUrl}/knowledge/paths/${path}`;
 

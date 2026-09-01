@@ -4,7 +4,10 @@ import { describe, it, expect } from "vitest";
 import PathPage, { generateStaticParams, generateMetadata } from "./page";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ACTIVE_LEARNING_PATHS, getResourcesByPath, resourceHref } from "@/lib/resources";
-import { RESOURCE_GOALS, goalForPath } from "@/lib/resourceGoals";
+import { RESOURCE_GOALS, goalForPath, isPathBacked } from "@/lib/resourceGoals";
+
+/** Only sequenced lanes have path pages to test. */
+const PATH_GOALS = RESOURCE_GOALS.filter(isPathBacked);
 import { getBaseUrl } from "@/lib/site";
 
 const renderPath = async (path: string) => {
@@ -20,7 +23,7 @@ const steps = (container: HTMLElement) =>
   Array.from(container.querySelectorAll('ol[aria-label="Reading order"] > li'));
 
 describe("goal path pages render an intentional sequence", () => {
-  for (const goal of RESOURCE_GOALS) {
+  for (const goal of PATH_GOALS) {
     describe(goal.title, () => {
       it("renders the configured sequence in configured order", async () => {
         const { container } = await renderPath(goal.path);
@@ -91,7 +94,7 @@ describe("goal path pages render an intentional sequence", () => {
   }
 
   it("lists path resources outside the sequence under 'More on this topic'", async () => {
-    const ai = RESOURCE_GOALS.find((g) => g.id === "ai")!;
+    const ai = PATH_GOALS.find((g) => g.id === "ai")!;
     const { container } = await renderPath(ai.path);
     expect(container.textContent).toContain("More on this topic");
     // The speculative essay is on the path but out of the sequence — it must

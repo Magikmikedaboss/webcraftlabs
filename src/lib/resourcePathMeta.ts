@@ -1,4 +1,4 @@
-import type { ActiveLearningPath, LearningPath } from "./resources";
+import type { ActiveLearningPath } from "./resources";
 
 export type LearningPathMeta = {
   label: string;
@@ -49,7 +49,13 @@ export function sortByExplicitOrder<T extends { slug: string }>(
   });
 }
 
-export const LEARNING_PATH_META: Record<LearningPath, LearningPathMeta> = {
+/**
+ * Metadata for path *pages*. Keyed by ActiveLearningPath rather than
+ * LearningPath: only routable paths have a page to describe. `developer-stacks`
+ * is a valid taxonomy value with no path route — its canonical destination is
+ * the hub at /knowledge/developer-stacks — so it correctly has no entry here.
+ */
+export const LEARNING_PATH_META: Record<ActiveLearningPath, LearningPathMeta> = {
   "modern-web-development": {
     label: "Modern Web Development",
     status: "active",
