@@ -1,11 +1,19 @@
 # Resource Center — Classification & Publishing Guide
 
 The WebCraft Resource Center (`/knowledge`) organizes existing Blog and News
-content into learning paths, a topic map, featured resources, "From the Lab"
-project breakdowns, and "Projects & Experiments." It does **not** have its
-own content pipeline — it reads from the same validated MDX loaders as the
-rest of the site (`src/lib/mdx/blog.ts`, `src/lib/mdx/news.ts`) through one
-query layer: `src/lib/resources.ts`.
+content into a hero, a "Start here" trio, learning paths, tools, and the
+canonical **All Resources** listing. It does **not** have its own content
+pipeline — it reads from the same validated MDX loaders as the rest of the
+site (`src/lib/mdx/blog.ts`, `src/lib/mdx/news.ts`) through one query layer:
+`src/lib/resources.ts`.
+
+The page order is: Hero → Start Here → Learning Paths → Tools → All
+Resources → Archive pointer.
+
+**Every eligible resource appears in All Resources exactly once**, whatever
+else is set on it. The other sections are curation on top of that listing,
+not alternative routes into it — so a resource is never invisible because it
+lacks a particular tag, and never duplicated because it has several.
 
 ## How a resource gets into the Resource Center
 
@@ -38,12 +46,39 @@ featured: true            # optional — keep this to a small, genuinely strong 
 
 | Field | Used by |
 |---|---|
-| `learningPath` | `getResourcesByPath()` — powers each `/knowledge/paths/[path]` page and the Learning Paths section |
-| `audience` | `getResourcesByAudience()` — powers the "Find resources for you" section |
-| `featured` | `getFeaturedResources()` — powers the Featured Resources section |
-| `template: "lab"` (pre-existing field, not new) | `FromTheLab` section |
-| `resourceType: "announcement"` | Renders a visible "Announcement" badge in Projects & Experiments |
+| `resourceType` | Eligibility for the whole Resource Center, and the type label on each All Resources row |
+| `learningPath` | `getResourcesByPath()` — powers each `/knowledge/paths/[path]` page and the Learning Paths section. **Also decides the All Resources category chip**, via `RESOURCE_CATEGORIES` in `src/lib/resourceCategories.ts` |
+| `featured` | `getFeaturedResources()` — powers **Start here**, which shows a deliberately small set. Adding a fifth `featured: true` changes what that section renders, so treat it as an editorial decision, not a tag |
+| `audience` | Metadata only. Kept for filtering, recommendations, related content, and SEO — it **no longer drives any visible section**. Setting it is still worthwhile; it will not change what renders today |
+| `template: "lab"` (pre-existing field, not new) | The Lab Notebook article template at `/blog/<slug>`. It no longer drives a Resource Center section |
 | `relatedService` | Not yet rendered anywhere — reserved for a future "related service" callout. Safe to set now; has no effect until that's built |
+
+### Category chips in All Resources
+
+Chips are derived from `learningPath`, never from individual slugs:
+
+| Category | Learning path |
+|---|---|
+| Websites | `websites-that-grow-businesses` |
+| Software | `building-software-products` |
+| Development | `modern-web-development` |
+| AI & Automation | `ai-workflow-automation` |
+
+A chip only renders when that category actually has resources. A path with
+no category mapping — currently `experiments-emerging-ideas` — still appears
+in All Resources under **All** and in search, just without a chip. To add or
+remap a category, edit `RESOURCE_CATEGORIES`; nothing else needs changing.
+
+## Creative and speculative work
+
+The Resource Center is for practical guides, technical education, business
+and software decisions, AI education, and tools. Creative, speculative, and
+experimental writing is pointed at via a single Archive link near the bottom
+of the page rather than promoted with its own section.
+
+Such content is still eligible for the Resource Center and still appears
+once in All Resources — but **do not set `featured: true` on it**, since
+Start here is reserved for practical starting points.
 
 ## Activating a held-back path
 
@@ -60,10 +95,13 @@ path that needs it:
    `resources.test.ts` will fail the build if it isn't).
 4. The `/knowledge/paths/[path]` route and sitemap entry pick it up
    automatically — no route code changes needed.
-5. Check any component that renders a hardcoded "coming soon" teaser for the
-   path (e.g. `LearningPaths.tsx`) actually gates that teaser on the path's
-   own `status`, rather than assuming it's always held back — Phase 4 found
-   and fixed exactly this bug.
+5. Decide whether the new path needs an All Resources category chip. If so,
+   add it to `RESOURCE_CATEGORIES` in `src/lib/resourceCategories.ts`; if
+   not, its resources still appear under **All**.
+
+> The "coming soon" teaser this list used to mention was removed — it had
+> become dead code, gated on a `status` that was already `"active"`. Don't
+> reintroduce a hardcoded teaser; an empty path simply has no card.
 
 Do the same in reverse to hold a path back if it ever runs out of real
 content.
@@ -77,9 +115,9 @@ Resource Center by setting any of the fields above.
 ## News vs. Blog in the Resource Center
 
 News stays News — genuine company/product announcements. A News item can
-appear in the Resource Center (most often under Projects & Experiments) but
-should be tagged `resourceType: announcement` so it renders with a visible
-"Announcement" badge rather than looking like an evergreen guide. Prefer
+appear in the Resource Center and should be tagged
+`resourceType: announcement`, which renders an "Announcement" label on its
+All Resources row rather than letting it look like an evergreen guide. Prefer
 Blog content as the backbone of a learning path; use News sparingly, and
 only where it provides necessary context (e.g., an origin story for a
 project like Axon).
@@ -87,8 +125,12 @@ project like Axon).
 ## Keeping counts honest
 
 Every count shown anywhere in the Resource Center (`X resources on this
-path`, `X published resources`, learning-path card counts) is computed live
-from `getAllResources()` / `getResourcesByPath()` at build time — never
-hardcoded. If you add or remove taxonomy fields from content, the counts
-update automatically on the next build. Do not reintroduce a hardcoded
-number anywhere in this section.
+path`, `X published resources`, learning-path card counts, All Resources
+chip counts, "Showing X of Y") is computed live from `getAllResources()` /
+`getResourcesByPath()` at build time — never hardcoded. If you add or remove
+taxonomy fields from content, the counts update automatically on the next
+build. Do not reintroduce a hardcoded number anywhere in this section.
+
+The "Published resources" stat and the All Resources listing read the *same*
+array, and a test asserts the displayed number equals the number of unique
+rows rendered — so the two can never disagree.
