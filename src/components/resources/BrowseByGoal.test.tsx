@@ -154,6 +154,16 @@ describe("goal sequences are intentional, not publish-date order", () => {
       expect(recommendedStartFor(goal)).toBe(goal.sequence[0]);
     }
   });
+
+  it("never has an empty sequence, so every lane has a starting point", () => {
+    // `sequence` is typed `readonly [string, ...string[]]`, so an empty one
+    // fails to compile. This asserts the same invariant at runtime, and that
+    // recommendedStartFor never hands the card an undefined start.
+    for (const goal of RESOURCE_GOALS) {
+      expect(goal.sequence.length).toBeGreaterThan(0);
+      expect(typeof recommendedStartFor(goal)).toBe("string");
+    }
+  });
 });
 
 describe("no Developer Stacks lane exists yet", () => {

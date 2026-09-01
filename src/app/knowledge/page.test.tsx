@@ -321,6 +321,20 @@ describe("removed sections stay removed", () => {
     expect(container.textContent).not.toContain("Learning paths");
   });
 
+  it("site-wide Resources nav points at the goal anchor, not the removed one", async () => {
+    const { HEADER_NAV } = await import("@/lib/site");
+    const item = HEADER_NAV.resources.items.find((i) =>
+      i.href.startsWith("/knowledge#")
+    );
+    expect(item).toBeDefined();
+    expect(item!.href).toBe("/knowledge#goals");
+    expect(item!.label).toBe("Browse by Goal");
+
+    // And the anchor it advertises actually exists on the page.
+    const { container } = renderPage();
+    expect(container.querySelector("#goals")).not.toBeNull();
+  });
+
   it("hero jump links point only at sections that exist", () => {
     const { container } = renderPage();
     const anchors = Array.from(container.querySelectorAll('a[href^="#"]')).map((a) =>

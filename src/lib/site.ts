@@ -64,7 +64,7 @@ export const HEADER_NAV = {
     label: "Resources",
     items: [
       { href: "/knowledge", label: "Resource Center" },
-      { href: "/knowledge#paths", label: "Learning Paths" },
+      { href: "/knowledge#goals", label: "Browse by Goal" },
       { href: "/blog", label: "Blog" },
       { href: "/news", label: "News" },
       { href: "/archive", label: "Creative Archive" },

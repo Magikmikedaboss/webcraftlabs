@@ -34,8 +34,13 @@ export type ResourceGoal = {
   /**
    * Explicit teaching order, by slug. The first entry is the recommended
    * starting point — derived, never configured twice.
+   *
+   * Typed as a non-empty tuple so a goal cannot be declared with an empty
+   * sequence: that would make recommendedStartFor() return undefined and
+   * render a lane card with no starting point, which is exactly the kind of
+   * half-populated navigation this cleanup removed.
    */
-  sequence: readonly string[];
+  sequence: readonly [string, ...string[]];
 };
 
 export const RESOURCE_GOALS: readonly ResourceGoal[] = [
