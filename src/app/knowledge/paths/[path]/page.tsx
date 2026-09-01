@@ -10,11 +10,15 @@ import {
   resourceHref,
 } from "@/lib/resources";
 import { LEARNING_PATH_META, sortByExplicitOrder } from "@/lib/resourcePathMeta";
+import { goalForPath } from "@/lib/resourceGoals";
 
-// Only the four active paths are pre-rendered. Any other segment (including
-// "building-software-products", the held-back path) 404s rather than
-// rendering a thin/empty page — mirrors the dynamicParams:false convention
-// already used by blog/[slug] and archive/[slug].
+// Every path in ACTIVE_LEARNING_PATHS is pre-rendered, whether or not it is
+// visibly promoted as a goal lane. Route existence is deliberately decoupled
+// from navigation (see RESOURCE_GOALS): `modern-web-development` and
+// `experiments-emerging-ideas` are no longer surfaced on /knowledge but their
+// URLs keep working, so no previously-reachable page becomes a 404. Any
+// segment outside the list still 404s — the dynamicParams:false convention
+// used by blog/[slug] and archive/[slug].
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -62,23 +66,64 @@ export default async function LearningPathPage({
 
   const meta = LEARNING_PATH_META[path];
   const resources = getResourcesByPath(path);
-  const recommended = resources.find((r) => r.slug === meta.recommendedStart);
-  const rest = sortByExplicitOrder(
-    resources.filter((r) => r.slug !== meta.recommendedStart),
-    meta.order
-  );
+  const goal = goalForPath(path);
+  const baseUrl = getBaseUrl();
+  const url = `${baseUrl}/knowledge/paths/${path}`;
+
+  /**
+   * A promoted goal lane renders RESOURCE_GOALS' explicit sequence, in that
+   * order — publish date is not a teaching order. Anything on the path but
+   * outside the sequence is listed separately rather than dropped, so no
+   * resource silently disappears from a page it used to appear on.
+   *
+   * Unpromoted paths keep the previous behavior: recommendedStart first,
+   * then LEARNING_PATH_META.order, then natural order.
+   */
+  const bySlug = new Map(resources.map((r) => [r.slug, r]));
+  const sequence = goal
+    ? goal.sequence.map((slug) => bySlug.get(slug)).filter((r) => r !== undefined)
+    : [];
+  const sequenced = goal
+    ? sequence
+    : (() => {
+        const start = resources.find((r) => r.slug === meta.recommendedStart);
+        const rest = sortByExplicitOrder(
+          resources.filter((r) => r.slug !== meta.recommendedStart),
+          meta.order
+        );
+        return start ? [start, ...rest] : rest;
+      })();
+  const sequencedSlugs = new Set(sequenced.map((r) => r.slug));
+  const alsoOnPath = resources.filter((r) => !sequencedSlugs.has(r.slug));
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: baseUrl },
+      { "@type": "ListItem", position: 2, name: "Resource Center", item: `${baseUrl}/knowledge` },
+      { "@type": "ListItem", position: 3, name: goal?.title ?? meta.label, item: url },
+    ],
+  };
 
   return (
     <SiteShell
       background="bg"
-      title={meta.label}
-      intro={meta.description}
+      title={goal?.title ?? meta.label}
+      intro={goal?.description ?? meta.description}
       breadcrumbs={[
         { label: "Home", href: "/" },
         { label: "Resource Center", href: "/knowledge" },
-        { label: meta.label },
+        { label: goal?.title ?? meta.label },
       ]}
     >
+      <script
+        id={`path-breadcrumb-jsonld-${path}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\u003c"),
+        }}
+      />
       <div className="rc-root">
         <section className="rc-canvas px-6 py-10">
           <div className="mx-auto max-w-4xl">
@@ -86,50 +131,62 @@ export default async function LearningPathPage({
               <strong>Who this is for:</strong> {meta.audience}
             </p>
             <p className="rc-body mt-2">
-              {resources.length} {resources.length === 1 ? "resource" : "resources"} on this path.
+              {sequenced.length} {sequenced.length === 1 ? "resource" : "resources"}, in the order
+              we&apos;d read them.
             </p>
 
             {resources.length === 0 ? (
               <div className="rc-panel mt-8">
                 <p className="rc-body">
                   No resources are published on this path yet — check back soon, or explore another
-                  path from the{" "}
-                  <Link href="/knowledge#paths" className="rc-inline-link">
+                  goal from the{" "}
+                  <Link href="/knowledge#goals" className="rc-inline-link">
                     Resource Center
                   </Link>
                   .
                 </p>
               </div>
             ) : (
-              <>
-                {recommended && (
-                  <div className="rc-panel mt-8">
-                    <span className="rc-eyebrow">Recommended starting point</span>
-                    <h2 className="rc-h3 mt-2">
-                      <Link href={resourceHref(recommended)} className="rc-inline-link">
-                        {recommended.frontmatter.title}
+              <ol aria-label="Reading order" className="mt-8 flex flex-col gap-4">
+                {sequenced.map((r, i) => (
+                  <li key={`${r.type}-${r.slug}`} className="rc-card flex gap-4">
+                    <span
+                      aria-hidden="true"
+                      className="rc-step-number"
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className="min-w-0">
+                      <Link href={resourceHref(r)} className="rc-card-title-link">
+                        {r.frontmatter.title}
                       </Link>
-                    </h2>
-                    <p className="rc-body mt-2">{recommended.frontmatter.description}</p>
-                  </div>
-                )}
+                      <p className="rc-card-body mt-1">{r.frontmatter.description}</p>
+                      <span className="rc-card-meta">
+                        {i === 0 ? "Start here · " : ""}
+                        {r.type === "news" ? "Announcement / update" : r.frontmatter.resourceType ?? "Resource"}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            )}
 
-                {rest.length > 0 && (
-                  <ol className="mt-8 flex flex-col gap-4">
-                    {rest.map((r) => (
-                      <li key={`${r.type}-${r.slug}`} className="rc-card">
-                        <Link href={resourceHref(r)} className="rc-card-title-link">
-                          {r.frontmatter.title}
-                        </Link>
-                        <p className="rc-card-body mt-1">{r.frontmatter.description}</p>
-                        <span className="rc-card-meta">
-                          {r.type === "news" ? "Announcement / update" : r.frontmatter.resourceType ?? "Resource"}
-                        </span>
-                      </li>
-                    ))}
-                  </ol>
-                )}
-              </>
+            {alsoOnPath.length > 0 && (
+              <div className="mt-10">
+                <h2 className="rc-h3">More on this topic</h2>
+                <p className="rc-body mt-2">
+                  Related reading that sits outside the sequence above.
+                </p>
+                <ul className="mt-4 flex flex-col gap-2">
+                  {alsoOnPath.map((r) => (
+                    <li key={`${r.type}-${r.slug}`}>
+                      <Link href={resourceHref(r)} className="rc-inline-link">
+                        {r.frontmatter.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
 
             {meta.nextStep && (

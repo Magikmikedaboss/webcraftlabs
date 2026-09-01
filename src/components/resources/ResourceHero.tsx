@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { getAllResources, ACTIVE_LEARNING_PATHS } from "@/lib/resources";
+import { getAllResources } from "@/lib/resources";
 
 export default function ResourceHero() {
   const totalResources = getAllResources().length;
-  const activePathCount = ACTIVE_LEARNING_PATHS.length;
 
   return (
     <section className="rc-canvas rc-hero px-6 pb-14 pt-16 md:pb-20 md:pt-24">
@@ -24,8 +23,8 @@ export default function ResourceHero() {
           <Link href="#start-here" className="rc-pill-link">
             Start here
           </Link>
-          <Link href="#paths" className="rc-pill-link">
-            Learning Paths
+          <Link href="#goals" className="rc-pill-link">
+            Browse by Goal
           </Link>
           <Link href="#all-resources" className="rc-pill-link">
             All Resources
@@ -35,13 +34,12 @@ export default function ResourceHero() {
           </Link>
         </div>
 
-        {/* Honest counts only — no fabricated stats. */}
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          <div className="rc-stat-card">
-            <div className="rc-stat-label">Learning paths</div>
-            <div className="rc-stat-value">{activePathCount}</div>
-            <p className="rc-stat-body">Active, with real published resources on each.</p>
-          </div>
+        {/* One honest count, computed live. The former "Learning paths"
+            stat was removed rather than replaced: it counted routes, not
+            learning value, and inflated on paths that were never worth
+            promoting. Nothing takes its place — a second number here would
+            be decoration, not information. */}
+        <div className="mt-10 max-w-sm">
           <div className="rc-stat-card">
             <div className="rc-stat-label">Published resources</div>
             <div className="rc-stat-value">{totalResources}</div>

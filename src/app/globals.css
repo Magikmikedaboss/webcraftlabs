@@ -376,6 +376,19 @@ body {
   color: var(--rc-ink);
 }
 
+/* Step marker on goal-path pages ("01", "02", …). aria-hidden in markup —
+   the ordered list already conveys sequence to assistive tech, so this is
+   a visual cue only and must not be announced twice. */
+.rc-step-number {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  color: var(--rc-accent);
+}
+
 .rc-lede {
   font-size: 1.1rem;
   line-height: 1.7;

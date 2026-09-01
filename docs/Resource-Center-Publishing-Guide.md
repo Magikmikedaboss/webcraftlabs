@@ -1,14 +1,20 @@
 # Resource Center — Classification & Publishing Guide
 
 The WebCraft Resource Center (`/knowledge`) organizes existing Blog and News
-content into a hero, a "Start here" trio, learning paths, tools, and the
+content into a hero, a "Start here" trio, goal lanes, tools, and the
 canonical **All Resources** listing. It does **not** have its own content
 pipeline — it reads from the same validated MDX loaders as the rest of the
 site (`src/lib/mdx/blog.ts`, `src/lib/mdx/news.ts`) through one query layer:
 `src/lib/resources.ts`.
 
-The page order is: Hero → Start Here → Learning Paths → Tools → All
+The page order is: Hero → Start Here → **Browse by Goal** → Tools → All
 Resources → Archive pointer.
+
+**Visible UI says "Browse by Goal". The frontmatter field is still
+`learningPath`.** That naming split is deliberate: `learningPath` remains the
+taxonomy primitive in content and code, while what a visitor sees is framed
+as the goal they are trying to achieve ("Build a Better Website"), not the
+internal label. Do not rename the field.
 
 **Every eligible resource appears in All Resources exactly once**, whatever
 else is set on it. The other sections are curation on top of that listing,
@@ -47,7 +53,7 @@ featured: true            # optional — keep this to a small, genuinely strong 
 | Field | Used by |
 |---|---|
 | `resourceType` | Eligibility for the whole Resource Center, and the type label on each All Resources row |
-| `learningPath` | `getResourcesByPath()` — powers each `/knowledge/paths/[path]` page and the Learning Paths section. **Also decides the All Resources category chip**, via `RESOURCE_CATEGORIES` in `src/lib/resourceCategories.ts` |
+| `learningPath` | `getResourcesByPath()` — powers each `/knowledge/paths/[path]` page, and decides which goal lane (if any) a resource belongs to via `RESOURCE_GOALS` in `src/lib/resourceGoals.ts`. **Also decides the All Resources category chip**, via `RESOURCE_CATEGORIES` in `src/lib/resourceCategories.ts` |
 | `featured` | `getFeaturedResources(START_HERE_LIMIT)` — powers **Start here**. The section is capped at **3 cards** (`START_HERE_LIMIT` in `FeaturedResources.tsx`), taken in `getAllResources()` order, which is newest-first. Flagging a fourth resource does **not** add a fourth card — it competes for the three slots, and whichever falls outside them simply doesn't appear there. Treat `featured` as an editorial decision about those three slots, not a tag |
 | `audience` | Metadata only. Kept for filtering, recommendations, related content, and SEO — it **no longer drives any visible section**. Setting it is still worthwhile; it will not change what renders today |
 | `template: "lab"` (pre-existing field, not new) | The Lab Notebook article template at `/blog/<slug>`. It no longer drives a Resource Center section |
@@ -69,6 +75,49 @@ no category mapping — currently `experiments-emerging-ideas` — still appears
 in All Resources under **All** and in search, just without a chip. To add or
 remap a category, edit `RESOURCE_CATEGORIES`; nothing else needs changing.
 
+## Goal lanes: not every path becomes one
+
+`RESOURCE_GOALS` (`src/lib/resourceGoals.ts`) is the single source for what
+Browse by Goal shows. Three concepts are kept separate on purpose:
+
+| Concept | Lives in | Means |
+|---|---|---|
+| The taxonomy value | `learningPath` frontmatter | which path a resource is on |
+| Route exists | `ACTIVE_LEARNING_PATHS` (`src/lib/resources.ts`) | `/knowledge/paths/<path>` renders and is in the sitemap |
+| Visibly promoted | `RESOURCE_GOALS` | a card appears in Browse by Goal |
+
+**Route existence must never depend on visible promotion.** Removing a lane
+from navigation must not turn a working URL into a 404 — that is why the two
+lists are separate rather than one list doing both jobs.
+
+A path earns a visible goal lane only when **both** are true:
+
+1. It has several genuinely related resources. A one-resource path is not a
+   sequence and must not be promoted — `modern-web-development` is routable
+   and has an All Resources category, but no lane.
+2. There is an intentional order someone would actually read them in, written
+   out in `sequence`.
+
+**Publish date is not a teaching order.** The website lane runs diagnose →
+structure → cost, which is deliberately *not* newest-first; ordering it by
+date would teach it backwards. Always write the order out explicitly.
+
+A content bucket is not a learning sequence. `experiments-emerging-ideas`
+groups creative and speculative pieces that were never meant to be read in
+order, so it is routable but not promoted.
+
+### Sequences do not have to include everything on the path
+
+`sequence` lists only the resources that belong in the taught progression.
+Anything else on that path still appears once in All Resources, and the path
+page lists it under **More on this topic** — nothing is dropped. Use this
+when a resource is more editorial or speculative than instructional:
+"The Invisible Workforce" sits on the AI path but outside its sequence,
+because including it would make the lane less coherent.
+
+The recommended starting point is always `sequence[0]` — derived, never
+configured twice.
+
 ## Creative and speculative work
 
 The Resource Center is for practical guides, technical education, business
@@ -89,7 +138,9 @@ Software vs. Off-the-Shelf Tools, and What Drives the Cost of a SaaS MVP in
 path that needs it:
 
 1. Set `learningPath: <path>` on at least one real, published resource.
-2. In `src/lib/resources.ts`, add the path to `ACTIVE_LEARNING_PATHS`.
+2. In `src/lib/resources.ts`, add the path to `ACTIVE_LEARNING_PATHS`. This
+   creates the route and the sitemap entry — it does **not** promote it into
+   Browse by Goal.
 3. In `src/lib/resourcePathMeta.ts`, set its `status` to `"active"` and add a
    `recommendedStart` slug (must be one of the resources now on that path —
    `resources.test.ts` will fail the build if it isn't).
@@ -98,6 +149,10 @@ path that needs it:
 5. Decide whether the new path needs an All Resources category chip. If so,
    add it to `RESOURCE_CATEGORIES` in `src/lib/resourceCategories.ts`; if
    not, its resources still appear under **All**.
+6. Decide whether it deserves a visible goal lane. Only add an entry to
+   `RESOURCE_GOALS` once it has several related resources *and* an
+   intentional `sequence`. Skipping this step is a valid outcome — the route
+   works either way.
 
 > The "coming soon" teaser this list used to mention was removed — it had
 > become dead code, gated on a `status` that was already `"active"`. Don't

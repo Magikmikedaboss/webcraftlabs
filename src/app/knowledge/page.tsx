@@ -1,6 +1,6 @@
 import SiteShell from "@/components/SiteShell";
 import ResourceHero from "@/components/resources/ResourceHero";
-import LearningPaths from "@/components/resources/LearningPaths";
+import BrowseByGoal from "@/components/resources/BrowseByGoal";
 import FeaturedResources from "@/components/resources/FeaturedResources";
 import ResourceTools from "@/components/resources/ResourceTools";
 import AllResources from "@/components/resources/AllResources";
@@ -91,7 +91,7 @@ export default function KnowledgePage() {
       <div className="rc-root">
         <ResourceHero />
         <FeaturedResources />
-        <LearningPaths />
+        <BrowseByGoal />
         <ResourceTools />
         <AllResources />
         <ArchivePointer />

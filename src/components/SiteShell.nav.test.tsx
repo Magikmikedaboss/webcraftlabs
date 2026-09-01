@@ -70,7 +70,7 @@ describe("SiteShell desktop navigation", () => {
 
     expect(links).toEqual([
       ["Resource Center", "/knowledge"],
-      ["Learning Paths", "/knowledge#paths"],
+      ["Browse by Goal", "/knowledge#goals"],
       ["Blog", "/blog"],
       ["News", "/news"],
       ["Creative Archive", "/archive"],
