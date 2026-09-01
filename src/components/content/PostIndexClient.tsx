@@ -170,8 +170,13 @@ export default function PostIndexClient({ posts, kind }: PostIndexClientProps) {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     // Tab is never trapped — it just dismisses the popup on the way out.
+    // The active option is dropped here rather than left to the deferred blur
+    // handler: returning with Shift+Tab inside that 150ms window cancels the
+    // timer, and a surviving activeValue would come back with the popup as a
+    // selection the user never made on this visit.
     if (event.key === "Tab") {
       setShowSuggestions(false);
+      setActiveValue(null);
       return;
     }
 

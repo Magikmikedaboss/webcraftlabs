@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, within } from "@testing-library/react";
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, within, act } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import PostIndexClient from "./PostIndexClient";
 
 /**
@@ -238,6 +238,68 @@ describe("post search combobox — pointer and state safety", () => {
     expect(screen.queryByRole("listbox")).toBeNull();
     expect(activeDescendant(input)).toBeNull();
     expect(input.getAttribute("aria-expanded")).toBe("false");
+  });
+});
+
+/**
+ * Tab closes the popup immediately, but the active option is only cleared by
+ * the deferred blur handler. Returning to the field inside that window cancels
+ * the timer, so without an explicit clear the old highlight comes back with the
+ * popup — announcing a selection the user never made on this visit.
+ */
+describe("post search combobox — Tab away and back", () => {
+  it("does not revive a stale selection when focus returns before the blur timer fires", () => {
+    vi.useFakeTimers();
+    try {
+      render(<PostIndexClient posts={posts} kind="blog" />);
+      const input = screen.getByRole("combobox");
+      fireEvent.change(input, { target: { value: "alpha" } });
+      fireEvent.keyDown(input, { key: "ArrowDown" });
+      expect(activeDescendant(input)).toBeTruthy();
+
+      // Tab dismisses the popup on the way out...
+      fireEvent.keyDown(input, { key: "Tab" });
+      expect(screen.queryByRole("listbox")).toBeNull();
+      expect(activeDescendant(input)).toBeNull();
+
+      // ...and the browser then fires blur, starting the 150ms teardown.
+      fireEvent.blur(input);
+
+      // Shift+Tab lands back on the field before that timer can run.
+      act(() => {
+        vi.advanceTimersByTime(50);
+      });
+      fireEvent.focus(input);
+
+      // Reopening is the existing, intended focus behaviour. Reviving the old
+      // highlight is not: nothing may be active until the user navigates again.
+      expect(activeDescendant(input)).toBeNull();
+      expect(options().filter((o) => o.getAttribute("aria-selected") === "true")).toHaveLength(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("still lets the user navigate normally after returning", () => {
+    vi.useFakeTimers();
+    try {
+      render(<PostIndexClient posts={posts} kind="blog" />);
+      const input = screen.getByRole("combobox");
+      fireEvent.change(input, { target: { value: "alpha" } });
+      fireEvent.keyDown(input, { key: "ArrowDown" });
+      fireEvent.keyDown(input, { key: "Tab" });
+      fireEvent.blur(input);
+      act(() => {
+        vi.advanceTimersByTime(50);
+      });
+      fireEvent.focus(input);
+
+      // A fresh ArrowDown starts from the top again, not from the stale row.
+      fireEvent.keyDown(input, { key: "ArrowDown" });
+      expect(activeDescendant(input)).toBe(options()[0].getAttribute("id"));
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
 
