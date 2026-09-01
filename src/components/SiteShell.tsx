@@ -231,13 +231,25 @@ export default function SiteShell({
             {/* Site-wide legal links. Kept in the existing centered stack
                 under the copyright line rather than added to SITE.nav —
                 these belong with the copyright, not with the primary
-                footer navigation. */}
-            <Link
-              href="/disclosure"
-              className="text-[10px] sm:text-xs text-[var(--muted)] hover:text-[var(--primary)] transition"
-            >
-              Affiliate Disclosure
-            </Link>
+                footer navigation. Laid out as one wrapping row rather than
+                a second and third stacked line, so adding Privacy doesn't
+                stretch the footer; flex-wrap lets it break onto two lines
+                on narrow viewports instead of overflowing. */}
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] sm:text-xs text-[var(--muted)]">
+              <Link
+                href="/privacy"
+                className="hover:text-[var(--primary)] transition"
+              >
+                Privacy Policy
+              </Link>
+              <span aria-hidden="true">·</span>
+              <Link
+                href="/disclosure"
+                className="hover:text-[var(--primary)] transition"
+              >
+                Affiliate Disclosure
+              </Link>
+            </div>
             {/* Example of PoweredBy badge - you can remove this from your own site and give to clients */}
             <PoweredBy variant="light" size="sm" />
             {/* Archive is deliberately not part of primary navigation or SITE.nav —
