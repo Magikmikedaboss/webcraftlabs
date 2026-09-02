@@ -46,6 +46,19 @@ describe("solo-saas-stack article", () => {
     expect(post.content.toLowerCase()).not.toContain("affiliate");
   });
 
+  it("keeps verification-token ownership with the hosted auth provider", () => {
+    // Section 5 tells readers not to build auth, and lists email verification
+    // as part of exactly that long tail. The walkthrough must not then hand the
+    // application the verification token, or the guide contradicts itself and
+    // points readers back at the custom-auth surface it warned them off.
+    const { content } = getPostBySlug(SLUG)!;
+    expect(content).not.toMatch(/application owns the token/i);
+
+    const step = /A verification email goes out\.[\s\S]{0,260}/.exec(content)?.[0] ?? "";
+    expect(step).not.toBe("");
+    expect(step).toMatch(/auth provider owns the token/i);
+  });
+
   it("keeps its canonical URL at /blog/solo-saas-stack", () => {
     const resource = getAllResources().find((r) => r.slug === SLUG);
     expect(resource).toBeDefined();
