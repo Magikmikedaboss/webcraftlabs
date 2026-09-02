@@ -491,8 +491,10 @@ Concretely, here is a user signing up, and which system owns what.
 3. **Your application creates the account record.** In Postgres, keyed to the
    auth provider's user ID. This is where "user" becomes "customer" — with a
    plan, a trial end date, and whatever your domain needs.
-4. **A verification email goes out.** Your email provider owns delivery; your
-   application owns the token and the content.
+4. **A verification email goes out.** Your auth provider owns the token — it
+   issues it, validates it, and holds the verified state. Your email provider
+   owns delivery, and your application supplies the content and reacts once the
+   identity comes back verified.
 5. **They subscribe.** Stripe owns the card, the charge, and the subscription
    object. Your application redirects to Checkout and never touches card data.
 6. **Stripe calls your webhook.** Your application verifies the signature and
