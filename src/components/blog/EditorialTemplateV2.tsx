@@ -119,8 +119,8 @@ export function Chapter({
 
 export function BigQuote({ children }: { children: React.ReactNode }) {
   return (
-    <aside className="not-prose mx-auto my-16 max-w-5xl px-2 text-center sm:my-24 sm:px-4">
-      <div className="text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-7xl">
+    <aside className="not-prose mx-auto my-16 max-w-4xl px-2 text-center sm:my-24 sm:px-4">
+      <div className="text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
         &ldquo;{children}&rdquo;
       </div>
       <div className="mx-auto mt-8 h-1 w-20 rounded-full bg-indigo-600 sm:mt-10 sm:w-24" />
