@@ -17,11 +17,17 @@ function getNewsPostMeta(slug: string, image?: string) {
   const baseUrl = getBaseUrl();
   const normalizedImage = image
     ? `${baseUrl}${image.startsWith('/') ? image : `/${image}`}`
-    : `${baseUrl}/images/dreamy-city-street-lined-with-trees-and-tall-buildings-beneath.jpg`;
+    : `${baseUrl}/images/og-news-default.jpg`;
   return {
     baseUrl,
     url: `${baseUrl}/news/${slug}`,
     socialImage: normalizedImage,
+    /**
+     * Only the fallback has known dimensions — og-news-default.jpg is a
+     * purpose-made 1200x630 card. A custom frontmatter image can be any
+     * shape, so width/height are omitted for it rather than asserted.
+     */
+    usesFallbackImage: !image,
   };
 }
 
@@ -34,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const post = getNewsBySlug(slug as string);
     if (!isNewsPublished(post.frontmatter)) return { title: `News | ${SITE.name}` };
-    const { url, socialImage } = getNewsPostMeta(slug, post.frontmatter.image);
+    const { url, socialImage, usesFallbackImage } = getNewsPostMeta(slug, post.frontmatter.image);
 
     return {
       title: post.frontmatter.title,
@@ -51,12 +57,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         authors: [post.frontmatter.author || SITE.name],
         tags: post.frontmatter.tags || [],
         images: [
-          {
-            url: socialImage,
-            width: 1200,
-            height: 630,
-            alt: post.frontmatter.title,
-          },
+          usesFallbackImage
+            ? { url: socialImage, width: 1200, height: 630, alt: post.frontmatter.title }
+            : { url: socialImage, alt: post.frontmatter.title },
         ],
       },
       twitter: {

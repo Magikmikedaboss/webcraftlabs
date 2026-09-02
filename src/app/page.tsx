@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg",
+        url: "/images/og-home.jpg",
         width: 1200,
         height: 630,
         alt: `${SITE.name} - Professional Web Development`,
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: `${SITE.name} — Websites, Software, and AI Automation`,
     description:
       "WebCraft Labz designs high-converting websites, custom software, and practical automation for growing businesses, startups, and organizations.",
-    images: ["/images/tranquil-scene-grass-meadow-sky-sunset-mountain-water-webcraft-labs-hero-image.jpg"],
+    images: ["/images/og-home.jpg"],
   },
   alternates: {
     canonical: getBaseUrl(),

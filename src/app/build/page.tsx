@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/dynamic-website-speed-light-trails-with-long-exposure-.jpg",
+        url: "/images/og-build.jpg",
         width: 1200,
         height: 630,
         alt: "WebCraft Labz Build Calculator - Get Your Quote",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Website Cost Calculator | Get Instant Quote - WebCraft Labz",
     description: "Calculate your website project cost and timeline instantly. Use our interactive configurator to choose pages, design, and features for an accurate estimate.",
-    images: ["/images/dynamic-website-speed-light-trails-with-long-exposure-.jpg"],
+    images: ["/images/og-build.jpg"],
   },
   alternates: {
     canonical: `${getBaseUrl()}/build`,

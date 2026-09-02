@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg",
+        url: "/images/og-portfolio.jpg",
         width: 1200,
         height: 630,
         alt: "WebCraft Labz Selected Builds",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Selected Builds | WebCraft Labz",
     description: PORTFOLIO_DESCRIPTION,
-    images: ["/images/modern-computer-display-on-an-office-desk-with-a-web-design.jpg"],
+    images: ["/images/og-portfolio.jpg"],
   },
   alternates: {
     canonical: `${getBaseUrl()}/portfolio`,

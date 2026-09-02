@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     images: [
       {
-        url: "/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg",
+        url: "/images/og-contact.jpg",
         width: 1200,
         height: 630,
         alt: "Contact WebCraft LabZ - Get in Touch",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `Contact ${SITE.name} | Las Vegas Web Design & Marketing`,
     description: `Contact ${SITE.name} for a personalized website quote, marketing strategy, or to discuss your next project. Fast replies, expert advice, and a team that cares about your business.`,
-    images: ["/images/website-marketing-design-man-holding-megaphone-standing-on-orchid.jpg"],
+    images: ["/images/og-contact.jpg"],
   },
   alternates: {
     canonical: `${getBaseUrl()}/contact`
