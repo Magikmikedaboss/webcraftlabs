@@ -57,10 +57,11 @@ export type PathBackedGoal = BaseGoal & {
  * one canonical URL and /knowledge/paths/developer-stacks deliberately does
  * not exist.
  *
- * A hub-backed goal has no `sequence`: its guides are not published yet, and
- * promising an order for content that does not exist is exactly the kind of
- * claim the Resource Center cleanup removed. It gains one when there are
- * real guides to order.
+ * A hub-backed goal has no `sequence`. One stack guide is published today
+ * (Solo SaaS); the remaining tracks are still planned, and a single guide is
+ * not a reading order. Promising an order for content that does not exist is
+ * exactly the kind of claim the Resource Center cleanup removed. It gains a
+ * sequence when there are enough real guides to order.
  */
 export type HubBackedGoal = BaseGoal & {
   destination: "hub";
@@ -121,12 +122,20 @@ export const RESOURCE_GOALS: readonly ResourceGoal[] = [
     path: "ai-workflow-automation",
     ctaLabel: "Explore AI & automation",
     destination: "path",
-    // Fundamentals → practical application → organizational implications →
-    // deeper analysis. "The Invisible Workforce" is on this path but stays
-    // out of the sequence: it is speculative economics rather than
-    // instruction, and including it would make the lane less coherent. It
-    // remains in All Resources and under "More on this topic".
+    // Fundamentals → workplace framing → practical application →
+    // organizational implications → deeper analysis.
+    //
+    // AI 101 leads: it is the broad general-audience primer, and a reader who
+    // needs "what is AI" at all needs it before the workplace-scoped guide.
+    // "What Is AI? …for Professionals" stays second rather than being merged
+    // or redirected — it is deliberately the short career-focused read.
+    //
+    // "The Invisible Workforce" is on this path but stays out of the
+    // sequence: it is speculative economics rather than instruction, and
+    // including it would make the lane less coherent. It remains in All
+    // Resources and under "More on this topic".
     sequence: [
+      "ai-101-beginners-guide-artificial-intelligence",
       "what-is-ai-beginners-guide-professionals",
       "how-i-used-ai-to-rebuild-my-workflow",
       "enterprise-ai-human-bottleneck",

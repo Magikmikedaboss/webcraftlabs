@@ -54,6 +54,18 @@ export function sortByExplicitOrder<T extends { slug: string }>(
  * LearningPath: only routable paths have a page to describe. `developer-stacks`
  * is a valid taxonomy value with no path route — its canonical destination is
  * the hub at /knowledge/developer-stacks — so it correctly has no entry here.
+ *
+ * **`RESOURCE_GOALS` owns the reading order, not this file.** When a path has
+ * a promoted path-backed lane, the path page renders that lane's `sequence`
+ * and ignores `recommendedStart`/`order` entirely (see
+ * `app/knowledge/paths/[path]/page.tsx`). The fields below are the fallback
+ * for *unpromoted* paths, and are kept here so removing a lane from
+ * navigation never silently drops an editorial order back to date order.
+ *
+ * Because that makes the order reachable from two places, a test in
+ * `resourcePathMeta.test.ts` asserts they agree: for every path-backed goal,
+ * `recommendedStart` must equal `sequence[0]` and any `order` must match the
+ * sequence. Drift is a build failure, not a silent inconsistency.
  */
 export const LEARNING_PATH_META: Record<ActiveLearningPath, LearningPathMeta> = {
   "modern-web-development": {
@@ -71,7 +83,7 @@ export const LEARNING_PATH_META: Record<ActiveLearningPath, LearningPathMeta> = 
     audience: "Founders and teams deciding where automation and AI actually help.",
     description:
       "Guides and analysis on when to automate, when to use AI, and how enterprise workflows are actually changing.",
-    recommendedStart: "what-is-ai-beginners-guide-professionals",
+    recommendedStart: "ai-101-beginners-guide-artificial-intelligence",
     nextStep: { label: "Explore AI & Automation services", href: "/services/ai-automation" },
   },
   "websites-that-grow-businesses": {
@@ -98,10 +110,13 @@ export const LEARNING_PATH_META: Record<ActiveLearningPath, LearningPathMeta> = 
     audience: "Founders and business owners scoping custom software or a SaaS product.",
     description:
       "Guides on MVP scope, build-vs-buy decisions, and what actually drives SaaS product cost.",
-    recommendedStart: "mvp-vs-prototype-vs-production-application",
+    // Build-vs-buy first: there is no point choosing between a prototype and
+    // an MVP before deciding to build anything at all. This matches the
+    // Build Software lane's `sequence` — see the sync note above.
+    recommendedStart: "custom-software-vs-off-the-shelf-tools",
     order: [
-      "mvp-vs-prototype-vs-production-application",
       "custom-software-vs-off-the-shelf-tools",
+      "mvp-vs-prototype-vs-production-application",
       "what-drives-the-cost-of-a-saas-mvp-in-2026",
     ],
     nextStep: { label: "Explore SaaS platform development services", href: "/services/saas-platform-development" },

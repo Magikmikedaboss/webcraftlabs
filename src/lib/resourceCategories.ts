@@ -8,10 +8,17 @@ import type { LearningPath } from "./resources";
  * editing when content is published. When the learning-path taxonomy is
  * reworked into goal lanes, this map is the single place that changes.
  *
- * `experiments-emerging-ideas` is deliberately absent: creative and
- * speculative work is being pointed at the Archive rather than promoted as
- * a peer browsing category. Resources on that path still appear in All
- * Resources exactly once under "All" — they simply have no category chip.
+ * Two paths are deliberately absent, for different reasons:
+ *
+ * `experiments-emerging-ideas` — creative and speculative work is pointed at
+ * the Archive rather than promoted as a peer browsing category.
+ *
+ * `developer-stacks` — discovery for stack guides is handled by the dedicated
+ * hub at /knowledge/developer-stacks, which is their canonical destination.
+ * A chip here would be a second, weaker entry point to the same content.
+ *
+ * Resources on either path still appear in All Resources exactly once under
+ * "All", and in search — they simply have no category chip.
  */
 export type ResourceCategory = {
   id: string;

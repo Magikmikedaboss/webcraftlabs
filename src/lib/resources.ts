@@ -5,10 +5,13 @@ import { LEARNING_PATHS, AUDIENCES, type BlogFrontmatter } from "./mdx/frontmatt
 const ARCHIVE_COLLECTION = "webcraft-archive";
 
 /**
- * Paths with real, migrated content today. Building Software Products is a
- * valid taxonomy value (see frontmatterSchema.ts) but intentionally has no
- * page and no active resources yet — do not add it here until real content
- * exists for it.
+ * Paths with a real `/knowledge/paths/<path>` route. A path belongs here once
+ * it has real published resources — Building Software Products was activated
+ * in Phase 4 and now has three.
+ *
+ * `developer-stacks` is deliberately absent: its canonical destination is the
+ * hub at /knowledge/developer-stacks, and adding it here would generate a
+ * second, competing path listing for the same content.
  */
 export const ACTIVE_LEARNING_PATHS = [
   "modern-web-development",

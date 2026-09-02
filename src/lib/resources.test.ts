@@ -183,7 +183,9 @@ describe("building-software-products is now active (Phase 4)", () => {
   it("is marked active with a recommendedStart that actually exists on the path", () => {
     const meta = LEARNING_PATH_META["building-software-products"];
     expect(meta.status).toBe("active");
-    expect(meta.recommendedStart).toBe("mvp-vs-prototype-vs-production-application");
+    // Build-vs-buy first, matching the Build Software lane's sequence — a
+    // reader decides whether to build at all before comparing build types.
+    expect(meta.recommendedStart).toBe("custom-software-vs-off-the-shelf-tools");
     const slugs = getResourcesByPath("building-software-products").map((r) => r.slug);
     expect(isRecommendedStartValid("building-software-products", slugs)).toBe(true);
   });

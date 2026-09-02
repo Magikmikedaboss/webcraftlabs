@@ -165,9 +165,13 @@ describe("goal sequences are intentional, not publish-date order", () => {
     ]);
   });
 
-  it("orders the AI lane fundamentals → application → implications", () => {
+  it("orders the AI lane fundamentals → workplace → application → implications", () => {
+    // AI 101 leads: the broad general-audience primer comes before the short
+    // workplace-scoped guide. Both stay — they are different reads, not
+    // duplicates, and neither redirects to the other.
     const goal = pathGoal("ai");
     expect(goal.sequence).toEqual([
+      "ai-101-beginners-guide-artificial-intelligence",
       "what-is-ai-beginners-guide-professionals",
       "how-i-used-ai-to-rebuild-my-workflow",
       "enterprise-ai-human-bottleneck",

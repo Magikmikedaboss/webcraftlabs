@@ -72,10 +72,19 @@ Chips are derived from `learningPath`, never from individual slugs:
 | Development | `modern-web-development` |
 | AI & Automation | `ai-workflow-automation` |
 
-A chip only renders when that category actually has resources. A path with
-no category mapping — currently `experiments-emerging-ideas` — still appears
-in All Resources under **All** and in search, just without a chip. To add or
-remap a category, edit `RESOURCE_CATEGORIES`; nothing else needs changing.
+A chip only renders when that category actually has resources. Two paths have
+no category mapping and still appear in All Resources under **All** and in
+search, just without a chip:
+
+- `experiments-emerging-ideas` — creative and speculative work is pointed at
+  the Archive rather than promoted as a peer browsing category.
+- `developer-stacks` — **intentionally unchipped.** Discovery for stack guides
+  is handled by the dedicated hub at `/knowledge/developer-stacks`, which is
+  their canonical destination; a chip would be a second, weaker entry point to
+  the same content.
+
+To add or remap a category, edit `RESOURCE_CATEGORIES`; nothing else needs
+changing.
 
 ## Goal lanes: not every path becomes one
 
@@ -118,7 +127,12 @@ when a resource is more editorial or speculative than instructional:
 because including it would make the lane less coherent.
 
 The recommended starting point is always `sequence[0]` — derived, never
-configured twice.
+configured twice. `LEARNING_PATH_META` also carries a `recommendedStart` (and
+sometimes an `order`), but for a promoted path-backed lane the path page
+ignores both and renders the lane's `sequence`; those fields are the fallback
+for *unpromoted* paths, so unpromoting a lane never drops its editorial order
+back to date order. A test in `resourcePathMeta.test.ts` asserts the two agree,
+so they cannot silently diverge.
 
 ## Developer Stacks: a hub-backed goal lane
 
@@ -138,9 +152,11 @@ the hub for the same content. One canonical destination, not two.
 
 `RESOURCE_GOALS` models this with a discriminated union: a `destination: "path"`
 goal resolves to its path page and must declare a `sequence`; a
-`destination: "hub"` goal carries its own `href` and has no sequence, because
-no stack guide is published yet. Components call `goalDestination(goal)` — no
-component special-cases a lane.
+`destination: "hub"` goal carries its own `href` and has no sequence. One
+stack guide is published today (Solo SaaS); a single guide is not a reading
+order, so the lane gains a sequence only when enough tracks ship to justify
+one. Components call `goalDestination(goal)` — no component special-cases a
+lane.
 
 ### Publishing a stack guide
 

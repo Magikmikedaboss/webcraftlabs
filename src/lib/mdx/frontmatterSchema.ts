@@ -10,11 +10,9 @@ export const AUDIENCES = ['developers', 'founders', 'business-owners', 'ai-adopt
 export const DIFFICULTIES = ['beginner', 'intermediate', 'advanced'] as const;
 
 /**
- * "building-software-products" is intentionally included as a valid value
- * now, even though no published resource uses it yet and no page exists for
- * it — it's a held-back path (see ACTIVE_LEARNING_PATHS in src/lib/resources.ts),
- * not a hypothetical field. Including it here avoids a second schema change
- * when the path activates later.
+ * Every value here is a real taxonomy value, not a hypothetical field.
+ * "building-software-products" was activated in Phase 4 and now has published
+ * resources and a path page (see ACTIVE_LEARNING_PATHS in src/lib/resources.ts).
  */
 export const LEARNING_PATHS = [
   'modern-web-development',

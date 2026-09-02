@@ -1,10 +1,17 @@
 import { describe, it, expect } from "vitest";
 import { LEARNING_PATH_META, sortByExplicitOrder, isRecommendedStartValid } from "./resourcePathMeta";
 import { getResourcesByPath, ACTIVE_LEARNING_PATHS } from "./resources";
+import { RESOURCE_GOALS, isPathBacked } from "./resourceGoals";
 
+/**
+ * Build-vs-buy first — a reader decides whether to build at all before
+ * choosing between a prototype, an MVP, and a production application. This
+ * mirrors the Build Software lane's `sequence`; the describe block at the
+ * bottom of this file asserts the two never diverge.
+ */
 const BUILDING_SOFTWARE_PRODUCTS_ORDER = [
-  "mvp-vs-prototype-vs-production-application",
   "custom-software-vs-off-the-shelf-tools",
+  "mvp-vs-prototype-vs-production-application",
   "what-drives-the-cost-of-a-saas-mvp-in-2026",
 ];
 
@@ -79,6 +86,41 @@ describe("building-software-products path order (Phase 4 fix)", () => {
     const slugs = getResourcesByPath("building-software-products").map((r) => r.slug);
     expect(isRecommendedStartValid("building-software-products", slugs)).toBe(true);
   });
+});
+
+/**
+ * The reading order is reachable from two places: RESOURCE_GOALS' `sequence`
+ * (what the path page actually renders for a promoted lane) and
+ * LEARNING_PATH_META's `recommendedStart`/`order` (the fallback used only if
+ * that lane is ever unpromoted). They previously disagreed for
+ * building-software-products — the lane taught build-vs-buy first while the
+ * fallback started at MVP-vs-prototype — which was invisible precisely
+ * because the fallback is unreachable while the lane exists.
+ *
+ * These assert the two can never drift again.
+ */
+describe("path-backed lane sequence and path meta agree", () => {
+  const pathGoals = RESOURCE_GOALS.filter(isPathBacked);
+
+  it("covers every promoted path-backed lane", () => {
+    expect(pathGoals.length).toBeGreaterThan(0);
+  });
+
+  it.each(pathGoals.map((g) => [g.path, g] as const))(
+    "%s: recommendedStart equals the lane's first sequence entry",
+    (path, goal) => {
+      expect(LEARNING_PATH_META[path].recommendedStart).toBe(goal.sequence[0]);
+    }
+  );
+
+  it.each(pathGoals.map((g) => [g.path, g] as const))(
+    "%s: any explicit order matches the lane sequence",
+    (path, goal) => {
+      const { order } = LEARNING_PATH_META[path];
+      if (order === undefined) return; // no second copy to disagree with
+      expect([...order]).toEqual(goal.sequence.filter((slug) => order.includes(slug)));
+    }
+  );
 });
 
 describe("other learning paths retain their existing (unordered) behavior", () => {
