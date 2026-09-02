@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         : imageVal.startsWith('/')
         ? `${siteUrl}${imageVal}`
         : new URL(imageVal, siteUrl).toString()
-      : `${siteUrl}/images/structure-database-software-development.jpg`;
+      : `${siteUrl}/images/dreamy-city-street-lined-with-trees-and-tall-buildings-beneath.jpg`;
 
     return {
       title: post.frontmatter.title,
@@ -95,7 +95,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       : imageVal.startsWith('/')
       ? `${siteUrl}${imageVal}`
       : new URL(imageVal, siteUrl).toString()
-    : `${siteUrl}/images/structure-database-software-development.jpg`;
+    : `${siteUrl}/images/dreamy-city-street-lined-with-trees-and-tall-buildings-beneath.jpg`;
   // Ensure we only pass a string date for rendered publication text.
   // `post.frontmatter.published` may be a boolean sentinel; coerce to
   // a string only when it's explicitly a string (legacy tokens), otherwise

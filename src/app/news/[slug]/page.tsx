@@ -17,7 +17,7 @@ function getNewsPostMeta(slug: string, image?: string) {
   const baseUrl = getBaseUrl();
   const normalizedImage = image
     ? `${baseUrl}${image.startsWith('/') ? image : `/${image}`}`
-    : `${baseUrl}/images/business-marketing-solutions-concept-art.webp`;
+    : `${baseUrl}/images/dreamy-city-street-lined-with-trees-and-tall-buildings-beneath.jpg`;
   return {
     baseUrl,
     url: `${baseUrl}/news/${slug}`,

@@ -47,7 +47,7 @@ export async function generateMetadata({
         : imageVal.startsWith('/')
         ? `${siteUrl}${imageVal}`
         : new URL(imageVal, siteUrl).toString()
-      : `${siteUrl}/images/structure-database-software-development.jpg`;
+      : `${siteUrl}/images/dreamy-city-street-lined-with-trees-and-tall-buildings-beneath.jpg`;
 
     return {
       title: post.frontmatter.title,
@@ -103,7 +103,7 @@ export default async function ArchiveDocPage({
       : imageVal.startsWith('/')
       ? `${siteUrl}${imageVal}`
       : new URL(imageVal, siteUrl).toString()
-    : `${siteUrl}/images/structure-database-software-development.jpg`;
+    : `${siteUrl}/images/dreamy-city-street-lined-with-trees-and-tall-buildings-beneath.jpg`;
 
   const isSyntheticMinds = post.frontmatter.archiveCollection === "synthetic-minds";
 
