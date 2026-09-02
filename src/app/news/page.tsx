@@ -15,7 +15,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/business-marketing-solutions-concept-art.jpg",
+        url: "/images/og-news-index.jpg",
         width: 1200,
         height: 630,
         alt: "WebCraft Labz News - Company Updates & Announcements",
@@ -26,7 +26,7 @@ export const metadata = {
     card: "summary_large_image",
     title: `Company News & Updates | ${SITE.name}`,
     description: `Latest product launches, feature updates, and company announcements from ${SITE.name}.`,
-    images: ["/images/business-marketing-solutions-concept-art.jpg"],
+    images: ["/images/og-news-index.jpg"],
   },
   alternates: {
     canonical: `${getBaseUrl()}/news`,

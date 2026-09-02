@@ -15,7 +15,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/web-development-cross-platform-solutions-design-and-development.webp",
+        url: "/images/og-about.jpg",
         width: 1200,
         height: 630,
         alt: "About WebCraft Labz - Intelligence Layer for Modern Business",
@@ -26,7 +26,7 @@ export const metadata = {
     card: "summary_large_image",
     title: `About | ${SITE.name}`,
     description: ABOUT_DESCRIPTION,
-    images: ["/images/web-development-cross-platform-solutions-design-and-development.webp"],  },
+    images: ["/images/og-about.jpg"],  },
   alternates: {
     canonical: `${getBaseUrl()}/about`,
   },

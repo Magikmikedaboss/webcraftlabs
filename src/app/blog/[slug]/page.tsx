@@ -32,13 +32,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/blog/${slug}`;
     const imageVal = post.frontmatter.image as string | undefined;
+    /**
+     * Only the fallback has known dimensions. og-blog-default.jpg is a
+     * purpose-made 1200x630 card, so declaring that size is accurate; a
+     * custom frontmatter image can be any shape, so we omit width/height
+     * for it rather than assert a size we have not measured.
+     */
+    const usesFallbackImage = !imageVal;
     const socialImage = imageVal
       ? imageVal.startsWith('http')
         ? imageVal
         : imageVal.startsWith('/')
         ? `${siteUrl}${imageVal}`
         : new URL(imageVal, siteUrl).toString()
-      : `${siteUrl}/images/structure-database-software-development.jpg`;
+      : `${siteUrl}/images/og-blog-default.jpg`;
 
     return {
       title: post.frontmatter.title,
@@ -57,12 +64,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         authors: [post.frontmatter.author || SITE.name],
         tags: post.frontmatter.tags || [],
         images: [
-          {
-            url: socialImage,
-            width: 1200,
-            height: 630,
-            alt: post.frontmatter.title,
-          },
+          usesFallbackImage
+            ? { url: socialImage, width: 1200, height: 630, alt: post.frontmatter.title }
+            : { url: socialImage, alt: post.frontmatter.title },
         ],
       },
       twitter: {
@@ -95,7 +99,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       : imageVal.startsWith('/')
       ? `${siteUrl}${imageVal}`
       : new URL(imageVal, siteUrl).toString()
-    : `${siteUrl}/images/structure-database-software-development.jpg`;
+    : `${siteUrl}/images/og-blog-default.jpg`;
   // Ensure we only pass a string date for rendered publication text.
   // `post.frontmatter.published` may be a boolean sentinel; coerce to
   // a string only when it's explicitly a string (legacy tokens), otherwise

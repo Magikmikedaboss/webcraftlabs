@@ -15,7 +15,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/web-development-cross-platform-solutions-design-and-development.webp",
+        url: "/images/og-services.jpg",
         width: 1200,
         height: 630,
         alt: "WebCraft Labz Services - Custom Web Development",
@@ -26,7 +26,7 @@ export const metadata = {
     card: "summary_large_image",
     title: `Services | ${SITE.name}`,
     description: 'SEO-optimized website design, marketing funnels, and growth strategies. Custom web development, SaaS platforms, and digital solutions built for real business growth.',
-    images: ["/images/web-development-cross-platform-solutions-design-and-development.webp"],
+    images: ["/images/og-services.jpg"],
   },
   alternates: {
     canonical: `${baseUrl}/services`,

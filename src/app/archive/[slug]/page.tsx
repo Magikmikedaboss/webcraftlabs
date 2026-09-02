@@ -41,13 +41,19 @@ export async function generateMetadata({
     const siteUrl = getBaseUrl();
     const url = `${siteUrl}/archive/${slug}`;
     const imageVal = post.frontmatter.image as string | undefined;
+    /**
+     * Only the fallback has known dimensions — og-archive-default.jpg is a
+     * purpose-made 1200x630 card. A custom frontmatter image can be any
+     * shape, so width/height are omitted for it rather than asserted.
+     */
+    const usesFallbackImage = !imageVal;
     const socialImage = imageVal
       ? imageVal.startsWith('http')
         ? imageVal
         : imageVal.startsWith('/')
         ? `${siteUrl}${imageVal}`
         : new URL(imageVal, siteUrl).toString()
-      : `${siteUrl}/images/structure-database-software-development.jpg`;
+      : `${siteUrl}/images/og-archive-default.jpg`;
 
     return {
       title: post.frontmatter.title,
@@ -61,7 +67,11 @@ export async function generateMetadata({
         publishedTime: post.frontmatter.date,
         authors: [post.frontmatter.author || SITE.name],
         tags: post.frontmatter.tags || [],
-        images: [{ url: socialImage, width: 1200, height: 630, alt: post.frontmatter.title }],
+        images: [
+          usesFallbackImage
+            ? { url: socialImage, width: 1200, height: 630, alt: post.frontmatter.title }
+            : { url: socialImage, alt: post.frontmatter.title },
+        ],
       },
       twitter: {
         card: "summary_large_image",
@@ -103,7 +113,7 @@ export default async function ArchiveDocPage({
       : imageVal.startsWith('/')
       ? `${siteUrl}${imageVal}`
       : new URL(imageVal, siteUrl).toString()
-    : `${siteUrl}/images/structure-database-software-development.jpg`;
+    : `${siteUrl}/images/og-archive-default.jpg`;
 
   const isSyntheticMinds = post.frontmatter.archiveCollection === "synthetic-minds";
 
