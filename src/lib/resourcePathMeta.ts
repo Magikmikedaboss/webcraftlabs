@@ -8,12 +8,17 @@ export type LearningPathMeta = {
   /** Slug of the resource to recommend starting with — must be a resource actually on this path. */
   recommendedStart?: string;
   /**
-   * Explicit editorial reading order for this path's resources *after*
-   * recommendedStart, by slug. Optional — most paths don't need it and rely
-   * on the natural (date-descending) order getResourcesByPath() already
-   * returns. Use this only when the intended reading sequence must not
-   * depend on publish dates (e.g. resources genuinely published the same
-   * day, or where date order and reading order are allowed to differ).
+   * Explicit editorial reading order for this path's resources, by slug,
+   * starting with recommendedStart.
+   *
+   * **Required for every path with a promoted path-backed goal lane**, and
+   * it must equal that lane's `sequence` exactly — a test enforces both.
+   * Without it, unpromoting a lane would silently drop the whole reading
+   * order back to date order rather than just its first entry.
+   *
+   * Optional for unpromoted paths, which have no lane sequence to preserve
+   * and rely on the natural (date-descending) order getResourcesByPath()
+   * already returns.
    *
    * Resources not listed here keep their natural relative order and are
    * appended after every explicitly-ordered slug — adding an unrelated
@@ -64,8 +69,9 @@ export function sortByExplicitOrder<T extends { slug: string }>(
  *
  * Because that makes the order reachable from two places, a test in
  * `resourcePathMeta.test.ts` asserts they agree: for every path-backed goal,
- * `recommendedStart` must equal `sequence[0]` and any `order` must match the
- * sequence. Drift is a build failure, not a silent inconsistency.
+ * `recommendedStart` must equal `sequence[0]` and `order` must be present and
+ * equal the full `sequence`. Drift is a build failure, not a silent
+ * inconsistency.
  */
 export const LEARNING_PATH_META: Record<ActiveLearningPath, LearningPathMeta> = {
   "modern-web-development": {
@@ -84,6 +90,13 @@ export const LEARNING_PATH_META: Record<ActiveLearningPath, LearningPathMeta> = 
     description:
       "Guides and analysis on when to automate, when to use AI, and how enterprise workflows are actually changing.",
     recommendedStart: "ai-101-beginners-guide-artificial-intelligence",
+    order: [
+      "ai-101-beginners-guide-artificial-intelligence",
+      "what-is-ai-beginners-guide-professionals",
+      "how-i-used-ai-to-rebuild-my-workflow",
+      "enterprise-ai-human-bottleneck",
+      "ai-backbone-enterprise-architecture-human-adaptation",
+    ],
     nextStep: { label: "Explore AI & Automation services", href: "/services/ai-automation" },
   },
   "websites-that-grow-businesses": {
@@ -93,6 +106,11 @@ export const LEARNING_PATH_META: Record<ActiveLearningPath, LearningPathMeta> = 
     description:
       "Straight-talk guides on website cost, conversion, and what actually makes a business website work.",
     recommendedStart: "why-most-websites-dont-convert-and-how-to-fix-yours-in-24-hours",
+    order: [
+      "why-most-websites-dont-convert-and-how-to-fix-yours-in-24-hours",
+      "marketing-websites-that-convert",
+      "how-much-does-custom-website-cost-2026",
+    ],
     nextStep: { label: "Explore website development services", href: "/services/custom-website-development" },
   },
   "experiments-emerging-ideas": {

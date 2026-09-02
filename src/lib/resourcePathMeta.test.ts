@@ -114,20 +114,42 @@ describe("path-backed lane sequence and path meta agree", () => {
   );
 
   it.each(pathGoals.map((g) => [g.path, g] as const))(
-    "%s: any explicit order matches the lane sequence",
+    "%s: declares a fallback order",
+    (path) => {
+      // Required, not optional. A promoted lane that omits `order` keeps only
+      // its first entry on unpromotion — the rest collapses to date order,
+      // silently discarding the editorial sequence.
+      expect(LEARNING_PATH_META[path].order).toBeDefined();
+    }
+  );
+
+  it.each(pathGoals.map((g) => [g.path, g] as const))(
+    "%s: the fallback order equals the lane sequence exactly",
     (path, goal) => {
-      const { order } = LEARNING_PATH_META[path];
-      if (order === undefined) return; // no second copy to disagree with
-      expect([...order]).toEqual(goal.sequence.filter((slug) => order.includes(slug)));
+      // Compared whole and unfiltered, in order — filtering either side would
+      // let an omission or an extra slug pass unnoticed.
+      expect(LEARNING_PATH_META[path].order).toEqual([...goal.sequence]);
     }
   );
 });
 
-describe("other learning paths retain their existing (unordered) behavior", () => {
-  it.each(ACTIVE_LEARNING_PATHS.filter((p) => p !== "building-software-products"))(
-    "%s has no explicit order configured",
-    (path) => {
-      expect(LEARNING_PATH_META[path].order).toBeUndefined();
-    }
-  );
+/**
+ * Replaces an earlier expectation that only building-software-products
+ * carried an `order`. That became obsolete once every promoted path-backed
+ * lane was required to declare one; the meaningful line is now promoted vs.
+ * unpromoted, not one hardcoded path vs. the rest.
+ */
+describe("unpromoted paths retain their existing (unordered) behavior", () => {
+  const promoted = new Set(RESOURCE_GOALS.filter(isPathBacked).map((g) => g.path as string));
+  const unpromoted = ACTIVE_LEARNING_PATHS.filter((p) => !promoted.has(p));
+
+  it("there is at least one unpromoted active path to assert against", () => {
+    expect(unpromoted.length).toBeGreaterThan(0);
+  });
+
+  it.each(unpromoted)("%s has no explicit order configured", (path) => {
+    // No lane sequence to preserve, so nothing to keep in sync — these rely
+    // on recommendedStart plus natural date order.
+    expect(LEARNING_PATH_META[path].order).toBeUndefined();
+  });
 });
