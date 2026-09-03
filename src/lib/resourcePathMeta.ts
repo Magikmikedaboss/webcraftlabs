@@ -93,6 +93,7 @@ export const LEARNING_PATH_META: Record<ActiveLearningPath, LearningPathMeta> = 
     order: [
       "ai-101-beginners-guide-artificial-intelligence",
       "what-is-ai-beginners-guide-professionals",
+      "human-skills-that-matter-more-in-an-ai-world",
       "how-i-used-ai-to-rebuild-my-workflow",
       "enterprise-ai-human-bottleneck",
       "ai-backbone-enterprise-architecture-human-adaptation",
