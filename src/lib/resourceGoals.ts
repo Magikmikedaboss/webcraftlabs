@@ -122,13 +122,20 @@ export const RESOURCE_GOALS: readonly ResourceGoal[] = [
     path: "ai-workflow-automation",
     ctaLabel: "Explore AI & automation",
     destination: "path",
-    // Fundamentals → workplace framing → practical application →
-    // organizational implications → deeper analysis.
+    // Broad fundamentals → professional context → the human judgment layer →
+    // applied workflow → organizational implications → deeper analysis.
     //
     // AI 101 leads: it is the broad general-audience primer, and a reader who
-    // needs "what is AI" at all needs it before the workplace-scoped guide.
+    // needs "what is AI" at all needs it before anything else here.
+    //
     // "What Is AI? …for Professionals" stays second rather than being merged
-    // or redirected — it is deliberately the short career-focused read.
+    // or redirected — it is deliberately the short career-focused read, and it
+    // frames the workplace before the skills guide asks what to be good at.
+    //
+    // "The Human Skills That Matter More in an AI World" then sits third: it
+    // is the judgment and direction layer, and it lands better once a reader
+    // has both the fundamentals and the professional framing. Placing it here
+    // also keeps the two longest reads apart.
     //
     // "The Invisible Workforce" is on this path but stays out of the
     // sequence: it is speculative economics rather than instruction, and
@@ -137,6 +144,7 @@ export const RESOURCE_GOALS: readonly ResourceGoal[] = [
     sequence: [
       "ai-101-beginners-guide-artificial-intelligence",
       "what-is-ai-beginners-guide-professionals",
+      "human-skills-that-matter-more-in-an-ai-world",
       "how-i-used-ai-to-rebuild-my-workflow",
       "enterprise-ai-human-bottleneck",
       "ai-backbone-enterprise-architecture-human-adaptation",
